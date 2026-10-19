@@ -141,9 +141,12 @@ function Study() {
     if (!result) return;
     resultRef.current?.focus({ preventScroll: true });
     const timer = window.setTimeout(() => {
-      resultRef.current?.querySelector('.explanation-heading')?.scrollIntoView({
-        block: 'nearest', behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth',
-      });
+      const heading = resultRef.current?.querySelector<HTMLElement>('.explanation-heading'); if (!heading) return;
+      const behavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth';
+      if (!result.correct) { heading.scrollIntoView({ block: 'nearest', behavior }); return; }
+      // A correct answer needs no second look at the choices, so bring the explanation up under the sticky header.
+      const header = document.querySelector('.site-header')?.getBoundingClientRect().height ?? 0;
+      window.scrollTo({ top: heading.getBoundingClientRect().top + window.scrollY - header - 16, behavior });
     }, 800);
     return () => window.clearTimeout(timer);
   }, [result]);
