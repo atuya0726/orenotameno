@@ -19,7 +19,7 @@ async function readRecords(page: Page) {
 
 test('toggles a review request after answering and preserves it across reloads', async ({ page }) => {
   await page.goto('/study/A1?question=sc-2025-autumn-a1-2');
-  const toggle = page.getByRole('button', { name: '復習したい', exact: true });
+  const toggle = page.getByRole('button', { name: '復習リストに追加', exact: true });
   await expect(toggle).toHaveCount(0);
   await page.getByRole('button', { name: 'イで回答', exact: true }).click();
   await expect(page.getByRole('button', { name: '迷った', exact: true })).toHaveCount(0);
@@ -53,7 +53,7 @@ test('prioritizes unknown answers and clears them after a confident correct revi
   expect((await readRecords(page)).cards[0].remainingReviews).toBe(3);
   await page.goto('/study/A1?question=sc-2025-autumn-a1-2');
   await page.getByRole('button', { name: 'イで回答', exact: true }).click();
-  const toggle = page.getByRole('button', { name: '復習したい', exact: true });
+  const toggle = page.getByRole('button', { name: '復習リストに追加', exact: true });
   await toggle.click();
   await expect(toggle).toHaveAttribute('aria-pressed', 'true');
   await page.goto('/reviews');
@@ -61,7 +61,7 @@ test('prioritizes unknown answers and clears them after a confident correct revi
   await expect(page.locator('.question-row').first()).toContainText('優先して復習');
   await expect(page.locator('.question-row').last()).toContainText('要復習');
   await page.getByRole('link', { name: '科目A1を復習', exact: true }).click();
-  await expect(page.locator('.question-number')).toHaveText('問1');
+  await expect(page.locator('.question-card h2')).toContainText('伝票処理システム');
   await page.getByRole('button', { name: 'イで回答', exact: true }).click();
   await expect(toggle).toHaveAttribute('aria-pressed', 'false');
   await page.goto('/reviews');
@@ -87,7 +87,7 @@ test('shows an earlier doubt flag as a review request that can be cleared', asyn
     await done; db.close();
   }, original.id);
   await page.goto(`/record/${original.id}`);
-  const toggle = page.getByRole('button', { name: '復習したい', exact: true });
+  const toggle = page.getByRole('button', { name: '復習リストに追加', exact: true });
   await expect(toggle).toHaveAttribute('aria-pressed', 'true');
   await toggle.click();
   await expect(toggle).toHaveAttribute('aria-pressed', 'false');
@@ -113,7 +113,7 @@ test('picks multiple question terms and restores them without adding an attempt'
   expect(attempts).toHaveLength(1);
   expect(attempts[0].reviewTerms).toEqual(['ROC曲線', '偽陽性率']);
   expect(cards[0].remainingReviews).toBe(2);
-  const questionToggle = page.getByRole('button', { name: '復習したい', exact: true });
+  const questionToggle = page.getByRole('button', { name: '復習リストに追加', exact: true });
   await questionToggle.click();
   await expect(questionToggle).toHaveAttribute('aria-pressed', 'true');
   await questionToggle.click();
@@ -174,7 +174,7 @@ test('keeps the saved state on failure and allows retrying the request', async (
   });
   await page.goto('/study/A1?question=sc-2025-autumn-a1-2');
   await page.getByRole('button', { name: 'イで回答', exact: true }).click();
-  const toggle = page.getByRole('button', { name: '復習したい', exact: true });
+  const toggle = page.getByRole('button', { name: '復習リストに追加', exact: true });
   await toggle.click();
   await expect(page.getByRole('alert')).toContainText('保存できませんでした');
   await expect(toggle).toBeEnabled();

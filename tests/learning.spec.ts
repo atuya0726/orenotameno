@@ -5,7 +5,7 @@ async function answerFirst(page: Page, selected = 'イ', requested = false) {
   await page.getByRole('button', { name: `${selected}で回答`, exact: true }).click();
   await expect(page.getByRole('region', { name: '解答結果と解説' })).toBeVisible();
   if (requested) {
-    const toggle = page.getByRole('button', { name: '復習したい', exact: true });
+    const toggle = page.getByRole('button', { name: '復習リストに追加', exact: true });
     await toggle.click();
     await expect(toggle).toHaveAttribute('aria-pressed', 'true');
   }
@@ -35,7 +35,7 @@ test('answers a calculation in one tap and keeps untouched options unassessed', 
   await expect(page.getByTestId('option-b')).toBeDisabled();
   await expect(page.locator('.choice-selected')).toContainText('イ');
   await expect(page.locator('.answer-outcome').getByText('正解', { exact: true })).toBeVisible();
-  await expect(page.getByRole('button', { name: '復習したい', exact: true })).toBeVisible();
+  await expect(page.getByRole('button', { name: '復習リストに追加', exact: true })).toBeVisible();
   await expect(page.getByText('未評価', { exact: true })).toHaveCount(0);
   const [attempt] = await storedAttempts(page);
   expect(attempt).toMatchObject({ inputMode: 'quick', selected: 'b', confidence: 'high', uncertainOptions: [] });
@@ -56,8 +56,8 @@ test('can choose unknown without selecting an answer in both calculation and kno
     const unknown = page.getByRole('button', { name: 'わからない', exact: true });
     await expect(unknown).toBeEnabled();
     await unknown.click();
-    await expect(page.getByText('あなたの解答：未解答')).toBeVisible();
-    await expect(page.getByRole('button', { name: '復習したい', exact: true })).toBeVisible();
+    await expect(page.locator('.answer-outcome strong')).toHaveText('未解答');
+    await expect(page.getByRole('button', { name: '復習リストに追加', exact: true })).toBeVisible();
     await expect(page.getByText('未評価', { exact: true })).toHaveCount(0);
     await expect(page.locator('.answer-outcome')).toHaveClass(/result-unknown/);
   }
@@ -75,7 +75,7 @@ test('keeps bookmarks across reloads and answers knowledge questions in one tap'
   await page.reload();
   await expect(page.getByRole('button', { name: 'あとで見るから外す', exact: true })).toBeVisible();
   await page.getByRole('button', { name: 'イで回答', exact: true }).click();
-  await expect(page.getByRole('button', { name: '復習したい', exact: true })).toBeVisible();
+  await expect(page.getByRole('button', { name: '復習リストに追加', exact: true })).toBeVisible();
   expect(await counts(page)).toEqual([1, 1, 0]);
   expect((await storedAttempts(page))[0]).toMatchObject({ selected: 'b', confidence: 'high', uncertainOptions: [] });
 });
@@ -84,7 +84,7 @@ test('asks about review requests only after answering', async ({ page }) => {
   await page.goto('/study/A1?question=sc-2025-autumn-a1-2');
   await expect(page.getByText('自信あり', { exact: false })).toHaveCount(0);
   await expect(page.getByRole('button', { name: '迷いあり', exact: true })).toHaveCount(0);
-  const toggle = page.getByRole('button', { name: '復習したい', exact: true });
+  const toggle = page.getByRole('button', { name: '復習リストに追加', exact: true });
   await expect(toggle).toHaveCount(0);
   expect(await counts(page)).toEqual([0, 0, 0]);
   await page.getByRole('button', { name: 'イで回答', exact: true }).click();
@@ -98,7 +98,7 @@ test('records a review request and resets the button for the next question', asy
   await page.getByRole('button', { name: 'イで回答', exact: true }).click();
   await page.getByRole('button', { name: '次の問題へ' }).click();
   await page.getByRole('button', { name: 'イで回答', exact: true }).click();
-  const toggle = page.getByRole('button', { name: '復習したい', exact: true });
+  const toggle = page.getByRole('button', { name: '復習リストに追加', exact: true });
   await toggle.click();
   await expect(toggle).toHaveAttribute('aria-pressed', 'true');
   expect((await storedAttempts(page)).find(a => a.questionId === 'sc-2025-autumn-a1-2')).toMatchObject({ selected: 'b', confidence: 'high', reviewRequested: true, uncertainOptions: [] });
@@ -106,7 +106,7 @@ test('records a review request and resets the button for the next question', asy
   await expect(toggle).toHaveCount(0);
   await page.getByRole('button', { name: 'イで回答', exact: true }).click();
   await expect(toggle).toHaveAttribute('aria-pressed', 'false');
-  await expect(page.getByRole('button', { name: '復習したい', exact: true })).toHaveAttribute('aria-pressed', 'false');
+  await expect(page.getByRole('button', { name: '復習リストに追加', exact: true })).toHaveAttribute('aria-pressed', 'false');
 });
 
 test('submits only once when choices are clicked rapidly', async ({ page }) => {
@@ -138,7 +138,7 @@ test('allows retrying the same choice after a storage failure', async ({ page })
   await expect(answer).toBeEnabled();
   expect(await storedAttempts(page)).toHaveLength(0);
   await answer.click();
-  await expect(page.getByRole('button', { name: '復習したい', exact: true })).toBeVisible();
+  await expect(page.getByRole('button', { name: '復習リストに追加', exact: true })).toBeVisible();
   expect(await storedAttempts(page)).toHaveLength(1);
   expect((await storedAttempts(page))[0]).toMatchObject({ selected: 'b', confidence: 'high' });
 });
@@ -149,13 +149,13 @@ test('answers with the keyboard without submitting when moving focus', async ({ 
   await answer.focus();
   expect(await storedAttempts(page)).toHaveLength(0);
   await answer.press('Enter');
-  await expect(page.getByRole('button', { name: '復習したい', exact: true })).toBeVisible();
+  await expect(page.getByRole('button', { name: '復習リストに追加', exact: true })).toBeVisible();
   expect(await storedAttempts(page)).toHaveLength(1);
 });
 
 test('queues a requested calculation review and finishes a session', async ({ page }) => {
   await answerFirst(page, 'イ', true);
-  await expect(page.getByRole('button', { name: '復習したい', exact: true })).toBeVisible();
+  await expect(page.getByRole('button', { name: '復習リストに追加', exact: true })).toBeVisible();
   await page.getByRole('button', { name: '今回の学習を終える' }).click();
   await expect(page.getByRole('heading', { name: '学習完了' })).toBeVisible();
   await page.getByRole('link', { name: '復習ノートを見る', exact: true }).click();
@@ -164,7 +164,7 @@ test('queues a requested calculation review and finishes a session', async ({ pa
 
 test('requires three reviews for a confident mistake and exposes them immediately', async ({ page }) => {
   await answerFirst(page, 'ア');
-  await expect(page.getByRole('button', { name: '復習したい', exact: true })).toBeVisible();
+  await expect(page.getByRole('button', { name: '復習リストに追加', exact: true })).toBeVisible();
   await page.goto('/reviews');
   await page.getByRole('link', { name: '科目A1を復習' }).click();
   await expect(page.getByRole('heading', { name: /伝票処理システム/ })).toBeVisible();

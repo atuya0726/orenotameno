@@ -32,10 +32,12 @@ describe('answering and recorded results', () => {
     expect(html).not.toContain('自信あり');
     expect(html).not.toContain('迷いあり');
     expect(html).not.toContain('>迷った</');
-    expect(html).not.toContain('>復習したい</');
+    expect(html).not.toContain('>復習リストに追加</');
     expect(html).not.toContain('復習したい単語リスト');
     expect(html).not.toContain('type="radio"');
     expect(html).not.toContain('これも迷った');
+    expect(html).not.toContain('pill-green');
+    expect(html).not.toContain('question-number');
   });
   it('keeps an earlier draft answer available for immediate submission without the old optional controls', () => {
     snapshot.drafts = [{ questionId: 'sc-2025-autumn-a1-2', selected: 'b', uncertainOptions: ['a'] }];
@@ -60,11 +62,12 @@ describe('answering and recorded results', () => {
     const { attempt, card } = scheduleAnswer(input, question, undefined, new Date('2026-10-19T03:00:00.000Z'));
     snapshot.attempts = [attempt]; snapshot.cards = [card];
     const html = render(`/record/${attempt.id}`);
-    expect(html).toContain('あなたの解答：未解答');
+    expect(html).not.toContain('あなたの解答：');
+    expect(html).not.toContain('正解：');
     expect(html).toContain('result-unknown');
     expect(html).not.toContain('復習はあと');
     expect(html).not.toContain('>迷った</');
-    expect(html).toContain('>復習したい</');
+    expect(html).toContain('>復習リストに追加</');
     expect(html).not.toContain('未評価');
     expect(html).not.toContain('your-assessment');
     expect(html).not.toContain('回答時の自信');
@@ -76,12 +79,12 @@ describe('answering and recorded results', () => {
     const { attempt } = scheduleAnswer(input, question, undefined, new Date('2026-10-19T03:00:00.000Z'));
     snapshot.attempts = [{ ...attempt, reviewDoubt: true }];
     const html = render(`/record/${attempt.id}`);
-    const button = (html.match(/<button\b[^>]*>[\s\S]*?<\/button>/g) ?? []).find(button => button.includes('>復習したい</'))!;
+    const button = (html.match(/<button\b[^>]*>[\s\S]*?<\/button>/g) ?? []).find(button => button.includes('>復習リストに追加</'))!;
     expect(button).toContain('aria-pressed="true"');
     expect(html.indexOf('review-actions')).toBeGreaterThan(html.indexOf('option-reviews'));
     expect(html).not.toContain('復習はあと');
   });
-  it('shows question vocabulary and restores the saved picks beneath the review button', () => {
+  it('shows saved word picks before the review action and places the official answer beneath option explanations', () => {
     const question = questions[1];
     const input = createQuickAnswer({ questionId: question.id, selected: question.correct, uncertainOptions: [] }, 'high', question);
     const { attempt } = scheduleAnswer(input, question, undefined, new Date('2026-10-19T03:00:00.000Z'));
@@ -90,7 +93,10 @@ describe('answering and recorded results', () => {
     const buttons = html.match(/<button\b[^>]*>[\s\S]*?<\/button>/g) ?? [];
     expect(buttons.find(button => button.includes('aria-label="ROC曲線を復習する"'))).toContain('aria-pressed="true"');
     expect(buttons.find(button => button.includes('aria-label="偽陽性率を復習する"'))).toContain('aria-pressed="false"');
-    expect(html.indexOf('review-term-picker')).toBeGreaterThan(html.indexOf('>復習したい</'));
+    expect(html.indexOf('official-answer-source')).toBeGreaterThan(html.indexOf('option-reviews'));
+    expect(html.indexOf('official-answer-source')).toBeLessThan(html.indexOf('review-term-picker'));
+    expect(html.indexOf('review-term-picker')).toBeLessThan(html.indexOf('result-actions'));
+    expect(html.indexOf('>復習リストに追加</')).toBeLessThan(html.indexOf('もう一度解く'));
     expect(html).not.toContain('ポアソン分布');
   });
 });

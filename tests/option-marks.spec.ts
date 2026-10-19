@@ -34,7 +34,7 @@ test('resets option notes when advancing to another question', async ({ page }) 
   await page.locator('.choice-mark-toggle').first().click();
   await page.getByRole('button', { name: 'わからない', exact: true }).click();
   await page.getByRole('button', { name: '次の問題へ' }).click();
-  await expect(page.locator('.question-number')).toHaveText('問2');
+  await expect(page.locator('.question-card h2')).toContainText('ROC曲線');
   await expect(page.locator('.choice-mark-toggle')).toHaveText(['?', '?', '?', '?']);
 });
 

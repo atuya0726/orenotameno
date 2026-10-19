@@ -168,8 +168,7 @@ function Study() {
       <AnswerForm key={question.id} question={question} saving={saving} result={result} submitError={submitError} onSubmit={submit} />
       {result && <AnswerFlash key={result.id} attempt={result} />}
       {result && <div ref={resultRef} tabIndex={-1} className="result-focus result-reveal" role="region" aria-label="解答結果と解説">
-        <ResultDetails question={question} attempt={result} />
-        <div className="next-question"><Button onClick={next}>{index + 1 === queue.length ? '今回の学習を終える' : '次の問題へ'}<ArrowRight size={17} /></Button></div>
+        <ResultDetails question={question} attempt={result} action={<Button onClick={next}>{index + 1 === queue.length ? '今回の学習を終える' : '次の問題へ'}<ArrowRight size={17} /></Button>} />
       </div>}
     </div></div>
   </>;
@@ -200,8 +199,7 @@ function QuestionHeader({ question }: { question: Question }) {
   const { snapshot, toggleBookmark } = useLearning();
   const saved = snapshot.bookmarks.includes(question.id);
   return <section className="question-card">
-    <div className="question-meta"><span className="pill pill-green">{courses[question.course].name}</span><span className="question-number">問{question.number}</span><button className={cn('bookmark-button', saved && 'bookmarked')} aria-label={saved ? 'あとで見るから外す' : 'あとで見るに追加'} aria-pressed={saved} onClick={() => void toggleBookmark(question.id)}><Bookmark size={19} fill={saved ? 'currentColor' : 'none'} /></button></div>
-    <h2><MathText text={question.prompt} /></h2>
+    <div className="question-heading"><h2><MathText text={question.prompt} /></h2><button className={cn('bookmark-button', saved && 'bookmarked')} aria-label={saved ? 'あとで見るから外す' : 'あとで見るに追加'} aria-pressed={saved} onClick={() => void toggleBookmark(question.id)}><Bookmark size={19} fill={saved ? 'currentColor' : 'none'} /></button></div>
     {question.details && <div className="question-details">{question.details.title && <h3>〔<MathText text={question.details.title} />〕</h3>}<ul>{question.details.items.map(item => <li key={item}><MathText text={item} /></li>)}</ul></div>}
     {question.table && <div className="question-table-scroll" role="region" aria-label={question.table.caption} tabIndex={0}><table className="question-table"><caption><MathText text={question.table.caption} /></caption><thead><tr>{question.table.headers.map(header => <th key={header} scope="col"><MathText text={header} /></th>)}</tr></thead><tbody>{question.table.rows.map((row, i) => <tr key={i}>{row.map((cell, j) => j === 0 ? <th key={j} scope="row"><MathText text={cell} /></th> : <td key={j}><MathText text={cell} /></td>)}</tr>)}</tbody></table></div>}
   </section>;
@@ -253,25 +251,25 @@ function AnswerForm({ question, saving, result, submitError, onSubmit }: { quest
   </form>;
 }
 
-function ResultDetails({ question, attempt }: { question: Question; attempt: Attempt }) {
+function ResultDetails({ question, attempt, action }: { question: Question; attempt: Attempt; action?: ReactNode }) {
   const quick = isQuickAnswer(attempt);
   const unanswered = quick && attempt.confidence === 'unknown';
   return <div className="result-content">
     <section className="explanation-card">
       <div className="explanation-heading"><h3>解説</h3><span className={cn('answer-outcome', unanswered ? 'result-unknown' : !attempt.correct && 'result-incorrect')}>{attempt.correct ? <Check size={17} /> : unanswered ? <CircleHelp size={17} /> : <X size={17} />}<strong>{attempt.correct ? '正解' : unanswered ? '未解答' : '不正解'}</strong></span></div>
-      <div className="answer-summary"><span>あなたの解答：{attempt.selected ? optionLabels[attempt.selected] : '未解答'}</span><span>正解：{optionLabels[question.correct]}</span></div>
-      <p><MathText text={question.explanation} /></p>{question.source.kind === 'ipa' && <a className="official-answer-link" href={question.source.answerUrl} target="_blank" rel="noreferrer">IPA公式の解答例 ↗</a>}
+      <p><MathText text={question.explanation} /></p>
     </section>
     <h3 className="option-review-title">選択肢の解説</h3>
     <div className="option-reviews">{question.options.map(option => <div key={option.id} className={cn('option-review', option.id === question.correct && 'correct-option')}>
       <div className="option-review-top"><span className="choice-letter">{optionLabels[option.id]}</span><strong><MathText text={option.text} /></strong>{option.id === question.correct && <span className="correct-answer-label"><Check size={14} />正解</span>}</div>
       <p><MathText text={option.explanation} /></p>
     </div>)}</div>
-    <ReviewActions question={question} attempt={attempt} />
+    {question.source.kind === 'ipa' && <div className="official-answer-source"><a className="official-answer-link" href={question.source.answerUrl} target="_blank" rel="noreferrer">IPA公式の解答例 ↗</a></div>}
+    <ReviewActions question={question} attempt={attempt} action={action} />
   </div>;
 }
 
-function ReviewActions({ question, attempt }: { question: Question; attempt: Attempt }) {
+function ReviewActions({ question, attempt, action }: { question: Question; attempt: Attempt; action?: ReactNode }) {
   const { snapshot, setReviewFlag, setReviewTerms } = useLearning();
   const current = snapshot.attempts.find(saved => saved.id === attempt.id) ?? attempt;
   const marked = Boolean(current.reviewRequested || current.reviewDoubt);
@@ -288,9 +286,6 @@ function ReviewActions({ question, attempt }: { question: Question; attempt: Att
     finally { savingRef.current = false; setPending(null); }
   }
   return <div className="review-actions">
-    <Button type="button" variant="outline" className={cn('review-flag', marked && 'review-flag-active')} aria-pressed={marked} aria-busy={pending === 'question'} disabled={pending !== null} onClick={() => void save('question', () => setReviewFlag(attempt.id, 'reviewRequested', !marked))}>
-      {pending === 'question' ? <LoaderCircle className="animate-spin" size={17} /> : marked ? <Check size={17} /> : <RotateCcw size={17} />}復習したい
-    </Button>
     {candidates.length > 0 && <section className="review-term-picker" aria-labelledby={`review-terms-${attempt.id}`}>
       <div className="review-term-heading"><h3 id={`review-terms-${attempt.id}`}>復習したい単語リスト</h3><span aria-live="polite">{selected.length}語選択中</span></div>
       <p>意味がよくわからなかった単語を選んでください。</p>
@@ -301,6 +296,12 @@ function ReviewActions({ question, attempt }: { question: Question; attempt: Att
         </button></li>;
       })}</ul>
     </section>}
+    <div className="result-actions">
+      <Button type="button" variant="outline" className={cn('review-flag', marked && 'review-flag-active')} aria-pressed={marked} aria-busy={pending === 'question'} disabled={pending !== null} onClick={() => void save('question', () => setReviewFlag(attempt.id, 'reviewRequested', !marked))}>
+        {pending === 'question' ? <LoaderCircle className="animate-spin" size={17} /> : marked ? <Check size={17} /> : <Plus size={17} />}復習リストに追加
+      </Button>
+      {action}
+    </div>
     {error && <p className="inline-error" role="alert">{error}</p>}
   </div>;
 }
@@ -311,7 +312,7 @@ function SavedResult() {
   const attempt = snapshot.attempts.find(a => a.id === attemptId);
   const question = attempt && questionById.get(attempt.questionId);
   if (!attempt || !question) return <Empty icon={<BookOpen />} title="回答の記録が見つかりません" description="記録は回答したブラウザで確認できます。"><Button asChild><Link to="/records">学習記録へ</Link></Button></Empty>;
-  return <><Link to="/records" className="back-link"><ArrowLeft size={15} />学習記録へ</Link><PageIntro title="回答の記録" description={formatDate(attempt.answeredAt, true)} /><div className="saved-result"><QuestionHeader question={question} /><ResultDetails question={question} attempt={attempt} /><QuestionSource question={question} /><div className="actions"><Button asChild><Link to={`/study/${question.course}?question=${question.id}`}>もう一度解く<RotateCcw size={16} /></Link></Button></div></div></>;
+  return <><Link to="/records" className="back-link"><ArrowLeft size={15} />学習記録へ</Link><PageIntro title="回答の記録" description={formatDate(attempt.answeredAt, true)} /><div className="saved-result"><QuestionHeader question={question} /><ResultDetails question={question} attempt={attempt} action={<Button asChild><Link to={`/study/${question.course}?question=${question.id}`}>もう一度解く<RotateCcw size={16} /></Link></Button>} /><QuestionSource question={question} /></div></>;
 }
 
 function QuestionLibrary() {

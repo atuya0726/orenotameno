@@ -36,7 +36,7 @@ test('clears the previous answer and explanation only when moving to the next qu
   await page.getByRole('button', { name: 'イで回答', exact: true }).click();
   await expect(page.getByRole('region', { name: '解答結果と解説' })).toBeVisible();
   await page.getByRole('button', { name: '次の問題へ' }).click();
-  await expect(page.locator('.question-number')).toHaveText('問2');
+  await expect(page.locator('.question-card h2')).toContainText('ROC曲線');
   await expect(page.getByRole('region', { name: '解答結果と解説' })).toHaveCount(0);
   await expect(page.locator('.choice-selected')).toHaveCount(0);
   await expect(page.getByRole('button', { name: 'わからない', exact: true })).toBeEnabled();
@@ -49,7 +49,7 @@ test('shows inline feedback on mobile with reduced motion', async ({ page }) => 
   await page.getByRole('button', { name: 'イで回答', exact: true }).click();
   const feedback = page.getByRole('region', { name: '解答結果と解説' });
   await expect(feedback).toBeVisible();
-  const toggle = feedback.getByRole('button', { name: '復習したい', exact: true });
+  const toggle = feedback.getByRole('button', { name: '復習リストに追加', exact: true });
   await toggle.click();
   await expect(toggle).toHaveAttribute('aria-pressed', 'true');
   expect(await feedback.evaluate(element => parseFloat(getComputedStyle(element).animationDuration))).toBeLessThan(0.001);
