@@ -30,4 +30,15 @@ describe('question vocabulary candidates', () => {
       owners.set(word, term.id);
     }
   });
+  it('opens a separate term for each certificate purpose while preserving server spelling variants', () => {
+    const certificates = ['サーバ証明書', 'クライアント証明書', 'コードサイニング証明書', 'EV SSL証明書'].map(termForWord);
+    expect(certificates.every(Boolean)).toBe(true);
+    expect(new Set(certificates.map(term => term?.id)).size).toBe(4);
+    expect(termForWord('サーバー証明書')).toBe(certificates[0]);
+    expect(termForWord('サーバ証明書')?.id).toBe('certificates');
+    for (const term of certificates) {
+      expect(term?.criteria).toHaveLength(1);
+      expect(term?.criteria[0].level ?? 'B').toBe('B');
+    }
+  });
 });

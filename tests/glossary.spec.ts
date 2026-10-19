@@ -14,6 +14,29 @@ async function entries(page: Page, name = 'orenotameno-glossary') {
   }, name);
 }
 
+test('practices certificate purposes separately and shows only one B point when sufficient', async ({ page }) => {
+  for (const [name, id] of [['サーバ証明書', 'certificates'], ['クライアント証明書', 'client-certificate'], ['コードサイニング証明書', 'code-signing-certificate'], ['EV SSL証明書', 'ev-ssl-certificate']]) {
+    await page.goto('/glossary');
+    await page.getByRole('textbox', { name: '用語を検索' }).fill(name);
+    await expect(page.locator('.term-card')).toHaveCount(1);
+    await page.getByRole('link', { name: '説明する', exact: true }).click();
+    await expect(page).toHaveURL(new RegExp(`/glossary/${id}$`));
+  }
+  const serverCertificate = termById.get('certificates')!;
+  const explanation = 'TLS通信で接続先のサーバーを認証するための証明書です。';
+  await page.route('**/api/glossary/evaluate', route => route.fulfill({ json: {
+    ...evaluation(explanation), grade: 'B', covered: 1, total: 1,
+    criteria: serverCertificate.criteria.map(c => ({ ...c, level: 'B', status: 'covered', evidence: explanation })),
+  } }));
+  await page.goto('/glossary/certificates');
+  await page.getByRole('textbox', { name: 'サーバー証明書についての説明' }).fill(explanation);
+  await check(page).click();
+  await expect(page.getByLabel('評価 B', { exact: true })).toBeVisible();
+  await expect(page.locator('.rubric-level-heading')).toHaveCount(1);
+  await expect(page.locator('.rubric-level-heading')).toContainText('基本');
+  await expect(page.locator('.rubric-item')).toHaveCount(1);
+});
+
 test('searches terms and persists drafts without exposing the reference first', async ({ page }) => {
   await page.goto('/glossary');
   await page.getByRole('textbox', { name: '用語を検索' }).fill('Digital signature');

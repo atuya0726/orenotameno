@@ -48,9 +48,21 @@ describe('LLM評価の検証と集計', () => {
     const extra = extraTerm('公開鍵基盤');
     const raw = { ...assessment(), definition: '公開鍵とその持ち主を認証局が証明書で結び付ける仕組みです。', criteria: [{ id: 'ca', title: '認証局が証明書を発行する', level: 'B', status: 'covered', evidence: text, feedback: 'OK' }, { id: 'binding', title: '公開鍵と持ち主を結び付ける', level: 'B', status: 'missing', evidence: '', feedback: '何と何を結び付けるかが足りません。' }, { id: 'chain', title: '証明書チェーンをルート証明書までたどる', level: 'A', status: 'missing', evidence: '', feedback: '信頼の連鎖が足りません。' }, { id: 'revoke', title: 'CRLやOCSPで失効を確認する', level: 'S', status: 'missing', evidence: '', feedback: '失効確認が足りません。' }] };
     expect(parseAssessment(raw, extra, text, 'gpt-6-luna')).toMatchObject({ status: 'partial', grade: 'C', covered: 1, total: 2, definition: raw.definition, criteria: [{ title: '認証局が証明書を発行する', level: 'B' }, { level: 'B' }, { level: 'A' }, { level: 'S' }] });
-    expect(() => parseAssessment({ ...raw, criteria: raw.criteria.slice(1) }, extra, text, 'gpt-6-luna')).toThrow('評価項目');
-    expect(() => parseAssessment({ ...raw, criteria: raw.criteria.slice(0, 3) }, extra, text, 'gpt-6-luna')).toThrow('評価項目');
+    expect(parseAssessment({ ...raw, criteria: raw.criteria.slice(1) }, extra, text, 'gpt-6-luna')).toMatchObject({ grade: 'C', covered: 0, total: 1 });
+    expect(parseAssessment({ ...raw, criteria: raw.criteria.slice(0, 3) }, extra, text, 'gpt-6-luna')).toMatchObject({ grade: 'C', covered: 1, total: 2 });
+    expect(() => parseAssessment({ ...raw, criteria: raw.criteria.slice(2) }, extra, text, 'gpt-6-luna')).toThrow('評価項目');
+    expect(() => parseAssessment({ ...raw, criteria: [raw.criteria[0], raw.criteria[0]] }, extra, text, 'gpt-6-luna')).toThrow('評価項目');
+    expect(() => parseAssessment({ ...raw, criteria: [{ ...raw.criteria[0], title: ' ' }] }, extra, text, 'gpt-6-luna')).toThrow('評価項目');
     expect(() => parseAssessment({ ...raw, definition: '' }, extra, text, 'gpt-6-luna')).toThrow('評価項目');
+  });
+  it('accepts a single B point for built-in and generated terms and keeps the grade at B', () => {
+    const serverCertificate = termById.get('certificates')!;
+    const raw = { ...assessment(), definition: '', criteria: serverCertificate.criteria.map(c => ({ id: c.id, title: '', level: 'B', status: 'covered', evidence: text, feedback: '説明できています。' })) };
+    expect(parseAssessment(raw, serverCertificate, text, 'gpt-6-luna')).toMatchObject({ grade: 'B', status: 'covered', covered: 1, total: 1 });
+    const generated = { ...raw, definition: '公開鍵とその持ち主を認証局が証明書で結び付ける仕組みです。', criteria: [{ ...raw.criteria[0], title: '公開鍵と持ち主を結び付ける' }] };
+    expect(parseAssessment(generated, extraTerm('公開鍵基盤'), text, 'gpt-6-luna')).toMatchObject({ grade: 'B', covered: 1, total: 1 });
+    generated.criteria[0].evidence = '入力にない引用';
+    expect(() => parseAssessment(generated, extraTerm('公開鍵基盤'), text, 'gpt-6-luna')).toThrow('引用');
   });
   it('rejects invented quotes, empty evidence, unknown and duplicated criteria', () => {
     const invented = assessment(); invented.criteria[0].evidence = '公開鍵で署名を作る';

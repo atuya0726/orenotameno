@@ -11,7 +11,7 @@ export const levelInfo: Record<Level, { name: string; description: string }> = {
 };
 export type Criterion = { id: string; title: string; hint: string; level?: Level };
 export type Term = {
-  // aliases are other spellings, or narrower words from questions, that open this term.
+  // Aliases are other spellings of the same concept; related concepts get their own terms.
   id: string; name: string; aliases?: string[]; reading: string; category: string; definition: string; example: string;
   criteria: Criterion[]; commonMistakes: string[]; related: string[];
 };
@@ -21,11 +21,18 @@ export const criterionResultSchema = z.object({
 export type CriterionResult = z.infer<typeof criterionResultSchema>;
 export const grades = ['S', 'A', 'B', 'C'] as const;
 export type Grade = typeof grades[number];
-// Any factual error or a missing B point is C; each higher grade needs every point of its level and below.
+// Only levels present in the rubric count. A B-only rubric can earn B, even with just one point.
 export function gradeOf(criteria: CriterionResult[]): Grade {
   if (criteria.some(c => c.status === 'review')) return 'C';
-  const met = (level: Level) => criteria.filter(c => (c.level ?? 'B') === level).every(c => c.status === 'covered');
-  return !met('B') ? 'C' : !met('A') ? 'B' : !met('S') ? 'A' : 'S';
+  const basics = criteria.filter(c => (c.level ?? 'B') === 'B');
+  if (!basics.length || basics.some(c => c.status !== 'covered')) return 'C';
+  let grade: Grade = 'B';
+  for (const level of ['A', 'S'] as const) {
+    const items = criteria.filter(c => c.level === level);
+    if (items.some(c => c.status !== 'covered')) break;
+    if (items.length) grade = level;
+  }
+  return grade;
 }
 // A follow-up term the AI suggests; termId is set only when it matches a built-in term.
 export const followUpSchema = z.object({ name: z.string().min(1).max(40), reason: z.string(), termId: z.string().optional() });

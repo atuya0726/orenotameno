@@ -27,12 +27,12 @@ const instructions = `あなたは情報処理安全確保支援士試験の用�
 評価するのは内容の要素だけです。
 要点には、情報処理安全確保支援士試験での出題頻度に応じた段階があります。
 ${levels.map(level => `${level}（${levelInfo[level].name}）: ${levelInfo[level].description}。`).join('\n')}
-資料にcriteriaがある場合は、そのidを全て、重複なく一度ずつ返し、titleは空文字、levelは資料のlevel（なければB）にしてください。criteriaが空の場合は、上の基準でBを2〜3個、Aを1〜2個、Sを1個考え、id（英小文字とハイフン）・title（短い要点）・levelを付けて返してください。
+資料にcriteriaがある場合は、そのidを全て、重複なく一度ずつ返し、titleは空文字、levelは資料のlevel（なければB）にしてください。項目や段階は追加しないこと。criteriaが空の場合は、その用語自体を説明するために必要な要点だけを考え、id（英小文字とハイフン）・title（短い要点）・levelを付けて返してください。Bは1個以上とし、1個で十分なら増やさないこと。A・Sは必要な論点がある場合だけ設け、Bだけでも構いません。別の用語の定義や周辺知識を盛り込んで項目数や段階をそろえないでください。
 A・Sは用語名を出しただけではcoveredにせず、その意味や理由まで合っていることを確認してください。
 covered: 要点の内容が説明されている。missing: その要点が説明されていない、または意味が確認できない。review: その要点について事実上の誤り（例：鍵の役割が逆）がある。誤変換で読み替えられるものは誤りにしないこと。
 evidenceは学習者の文章から改変せずに抜き出した連続する引用（誤字もそのまま）。covered/reviewでは必須。missingでは空文字。
 feedbackは、missingなら足りない要素が何かを、reviewなら内容のどこが事実と違うかを、具体的に短く伝えてください。coveredなら一言で十分です。表現の改善案は書かないこと。
-summaryは、確認できた要素と、次の段階に上がるために足りない要素を1〜2文で伝えてください。
+summaryは、確認できた要素と、評価項目の中で足りない要素を1〜2文で伝えてください。全項目がcoveredなら十分説明できていると伝え、資料にないA・Sの論点や別の用語の知識を不足として要求しないこと。
 definitionは、資料にdefinitionがある場合は空文字。ない場合は、その用語の正確な説明（100〜250文字程度）。
 followUpは、次に説明させたい用語・概念を1つだけ選びます。この説明から理解が足りていなさそうな用語・概念があればそれを優先し、なければこの用語に関連・類似する用語にしてください。nameは用語名、reasonはそれを選んだ理由を1文で。knownTermsの中に同じものがあればそのidをtermIdに、なければ空文字。今の用語そのものは選ばないこと。
 資料は基準であり、正しい言い換えや具体例を認めます。
@@ -47,7 +47,7 @@ export function parseAssessment(raw: unknown, term: Term, text: string, model: s
   const generated = term.criteria.length === 0;
   const count = (level: string) => assessment.criteria.filter(c => c.level === level).length;
   const complete = generated
-    ? ids.size === assessment.criteria.length && count('B') >= 2 && count('A') >= 1 && count('S') >= 1 && assessment.criteria.length <= 7 && assessment.criteria.every(c => c.title.trim()) && assessment.definition.trim().length >= 10
+    ? ids.size === assessment.criteria.length && count('B') >= 1 && assessment.criteria.length <= 7 && assessment.criteria.every(c => c.title.trim()) && assessment.definition.trim().length >= 10
     : ids.size === term.criteria.length && ids.size === assessment.criteria.length && term.criteria.every(c => ids.has(c.id));
   if (!complete) throw new EvaluationError('AIの評価項目が揃いませんでした。文章を残したまま再試行できます。');
   const validQuote = (quote: string) => quote.trim().length > 0 && text.includes(quote);
