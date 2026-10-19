@@ -1,13 +1,25 @@
 import { z } from 'zod';
 
-export type Criterion = { id: string; title: string; hint: string };
+// B is the minimum line every explanation must reach; A and S are deeper points. Criteria without a level are B.
+export const levels = ['B', 'A', 'S'] as const;
+export type Level = typeof levels[number];
+export type Criterion = { id: string; title: string; hint: string; level?: Level };
 export type Term = {
   id: string; name: string; reading: string; category: string; definition: string; example: string;
   criteria: Criterion[]; commonMistakes: string[]; related: string[];
 };
 export const criterionResultSchema = z.object({
-  id: z.string(), title: z.string(), status: z.enum(['covered', 'missing', 'review']), evidence: z.string(), hint: z.string(),
+  id: z.string(), title: z.string(), status: z.enum(['covered', 'missing', 'review']), evidence: z.string(), hint: z.string(), level: z.enum(levels).optional(),
 });
+export type CriterionResult = z.infer<typeof criterionResultSchema>;
+export const grades = ['S', 'A', 'B', 'C'] as const;
+export type Grade = typeof grades[number];
+// Any factual error or a missing B point is C; each higher grade needs every point of its level and below.
+export function gradeOf(criteria: CriterionResult[]): Grade {
+  if (criteria.some(c => c.status === 'review')) return 'C';
+  const met = (level: Level) => criteria.filter(c => (c.level ?? 'B') === level).every(c => c.status === 'covered');
+  return !met('B') ? 'C' : !met('A') ? 'B' : !met('S') ? 'A' : 'S';
+}
 // A follow-up term the AI suggests; termId is set only when it matches a built-in term.
 export const followUpSchema = z.object({ name: z.string().min(1).max(40), reason: z.string(), termId: z.string().optional() });
 export const evaluationSchema = z.object({
@@ -15,7 +27,7 @@ export const evaluationSchema = z.object({
   covered: z.number().int().nonnegative(), total: z.number().int().positive(),
   criteria: z.array(criterionResultSchema), summary: z.string(),
   engine: z.literal('openai'), model: z.string().min(1),
-  followUp: followUpSchema.optional(), definition: z.string().optional(),
+  followUp: followUpSchema.optional(), definition: z.string().optional(), grade: z.enum(grades).optional(),
   // Older evaluations stored these before wording feedback was dropped.
   concerns: z.array(z.object({ message: z.string(), evidence: z.string() })).optional(), improvedExplanation: z.string().optional(),
 });

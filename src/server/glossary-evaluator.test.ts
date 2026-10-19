@@ -6,7 +6,7 @@ import { extraTerm } from '../features/glossary/model';
 
 const term = termById.get('digital-signature')!;
 const text = '署名者の秘密鍵で署名を作り、公開鍵で検証して改ざんを検知します。';
-function assessment() { return { summary: '鍵の役割を説明できています。', criteria: term.criteria.map(c => ({ id: c.id, title: '', status: 'covered', evidence: text, feedback: '要点を正しく説明できています。' })), definition: '', followUp: { name: 'ハッシュ関数', reason: '署名の前に使われるため。', termId: 'hash' } }; }
+function assessment() { return { summary: '鍵の役割を説明できています。', criteria: term.criteria.map(c => ({ id: c.id, title: '', level: c.level ?? 'B', status: 'covered', evidence: text, feedback: '要点を正しく説明できています。' })), definition: '', followUp: { name: 'ハッシュ関数', reason: '署名の前に使われるため。', termId: 'hash' } }; }
 function upstream(raw: unknown = assessment(), extra: Record<string, unknown> = {}) { return Response.json({ status: 'completed', model: 'gpt-6-luna', output: [{ type: 'reasoning' }, { type: 'message', content: [{ type: 'output_text', text: JSON.stringify(raw) }] }], ...extra }); }
 const request = (body: unknown = { termId: term.id, text }, headers = {}) => new Request('https://example.test/api/glossary/evaluate', { method: 'POST', headers: { 'Content-Type': 'application/json', Origin: 'https://example.test', ...headers }, body: JSON.stringify(body) });
 afterEach(() => vi.unstubAllGlobals());
@@ -14,8 +14,24 @@ describe('LLM評価の検証と集計', () => {
   it('derives coverage from the returned criteria, not a model-reported score', () => {
     const raw = assessment(); raw.criteria[1] = { ...raw.criteria[1], status: 'missing', evidence: '' };
     const result = parseAssessment(raw, term, text, 'gpt-6-luna');
-    expect(result).toMatchObject({ covered: 2, total: 3, status: 'partial', engine: 'openai' });
+    expect(result).toMatchObject({ covered: 2, total: 3, status: 'partial', grade: 'C', engine: 'openai' });
     expect(result.criteria[0].title).toBe(term.criteria[0].title);
+  });
+  it('grades B as the minimum line and A/S on top of it', () => {
+    const grade = (missing: string[]) => { const raw = assessment(); raw.criteria = raw.criteria.map(c => missing.includes(c.id) ? { ...c, status: 'missing', evidence: '' } : c); return parseAssessment(raw, term, text, 'gpt-6-luna').grade; };
+    expect(grade([])).toBe('S');
+    expect(grade(['certificate'])).toBe('A');
+    expect(grade(['nonrepudiation'])).toBe('B');
+    expect(grade(['nonrepudiation', 'certificate'])).toBe('B');
+    expect(grade(['verify'])).toBe('C');
+    // S without A still stays at B
+    expect(grade(['digest'])).toBe('B');
+    const wrong = assessment(); wrong.criteria[4] = { ...wrong.criteria[4], status: 'review', evidence: '公開鍵で検証' };
+    expect(parseAssessment(wrong, term, text, 'gpt-6-luna').grade).toBe('C');
+  });
+  it('uses the term level, not the one the AI returned', () => {
+    const raw = assessment(); raw.criteria = raw.criteria.map(c => ({ ...c, level: 'B' }));
+    expect(parseAssessment(raw, term, text, 'gpt-6-luna').criteria.map(c => c.level)).toEqual(term.criteria.map(c => c.level ?? 'B'));
   });
   it('prioritizes a factual error over coverage', () => {
     const raw = assessment(); raw.criteria[0] = { ...raw.criteria[0], status: 'review', evidence: '公開鍵で検証' };
@@ -30,9 +46,10 @@ describe('LLM評価の検証と集計', () => {
   });
   it('lets the AI write criteria and a definition for a suggested term outside the list', () => {
     const extra = extraTerm('公開鍵基盤');
-    const raw = { ...assessment(), definition: '公開鍵とその持ち主を認証局が証明書で結び付ける仕組みです。', criteria: [{ id: 'ca', title: '認証局が証明書を発行する', status: 'covered', evidence: text, feedback: 'OK' }, { id: 'binding', title: '公開鍵と持ち主を結び付ける', status: 'missing', evidence: '', feedback: '何と何を結び付けるかが足りません。' }] };
-    expect(parseAssessment(raw, extra, text, 'gpt-6-luna')).toMatchObject({ status: 'partial', covered: 1, total: 2, definition: raw.definition, criteria: [{ title: '認証局が証明書を発行する' }, { title: '公開鍵と持ち主を結び付ける' }] });
-    expect(() => parseAssessment({ ...raw, criteria: raw.criteria.slice(0, 1) }, extra, text, 'gpt-6-luna')).toThrow('評価項目');
+    const raw = { ...assessment(), definition: '公開鍵とその持ち主を認証局が証明書で結び付ける仕組みです。', criteria: [{ id: 'ca', title: '認証局が証明書を発行する', level: 'B', status: 'covered', evidence: text, feedback: 'OK' }, { id: 'binding', title: '公開鍵と持ち主を結び付ける', level: 'B', status: 'missing', evidence: '', feedback: '何と何を結び付けるかが足りません。' }, { id: 'chain', title: '証明書チェーンをルート証明書までたどる', level: 'A', status: 'missing', evidence: '', feedback: '信頼の連鎖が足りません。' }, { id: 'revoke', title: 'CRLやOCSPで失効を確認する', level: 'S', status: 'missing', evidence: '', feedback: '失効確認が足りません。' }] };
+    expect(parseAssessment(raw, extra, text, 'gpt-6-luna')).toMatchObject({ status: 'partial', grade: 'C', covered: 1, total: 2, definition: raw.definition, criteria: [{ title: '認証局が証明書を発行する', level: 'B' }, { level: 'B' }, { level: 'A' }, { level: 'S' }] });
+    expect(() => parseAssessment({ ...raw, criteria: raw.criteria.slice(1) }, extra, text, 'gpt-6-luna')).toThrow('評価項目');
+    expect(() => parseAssessment({ ...raw, criteria: raw.criteria.slice(0, 3) }, extra, text, 'gpt-6-luna')).toThrow('評価項目');
     expect(() => parseAssessment({ ...raw, definition: '' }, extra, text, 'gpt-6-luna')).toThrow('評価項目');
   });
   it('rejects invented quotes, empty evidence, unknown and duplicated criteria', () => {
@@ -85,10 +102,10 @@ describe('Worker API boundary', () => {
     expect(await res.json()).toMatchObject({ engine: 'openai', model: 'gpt-6-luna', status: 'covered' });
   });
   it('evaluates a suggested term outside the built-in list', async () => {
-    const raw = { ...assessment(), definition: '公開鍵とその持ち主を認証局が証明書で結び付ける仕組みです。', criteria: [{ id: 'ca', title: '認証局', status: 'covered', evidence: text, feedback: 'OK' }, { id: 'binding', title: '結び付け', status: 'covered', evidence: text, feedback: 'OK' }] };
+    const raw = { ...assessment(), definition: '公開鍵とその持ち主を認証局が証明書で結び付ける仕組みです。', criteria: [{ id: 'ca', title: '認証局', level: 'B', status: 'covered', evidence: text, feedback: 'OK' }, { id: 'binding', title: '結び付け', level: 'B', status: 'covered', evidence: text, feedback: 'OK' }, { id: 'chain', title: 'チェーン', level: 'A', status: 'covered', evidence: text, feedback: 'OK' }, { id: 'revoke', title: '失効', level: 'S', status: 'missing', evidence: '', feedback: '失効確認が足りません。' }] };
     const fetcher = vi.fn().mockResolvedValue(upstream(raw)); vi.stubGlobal('fetch', fetcher);
     const res = await worker.fetch(request({ termId: 'extra:公開鍵基盤', text }), { OPENAI_API_KEY: 'key' });
-    expect(res.status).toBe(200); expect(await res.json()).toMatchObject({ status: 'covered', definition: raw.definition });
+    expect(res.status).toBe(200); expect(await res.json()).toMatchObject({ status: 'covered', grade: 'A', definition: raw.definition });
     expect(JSON.parse(JSON.parse(fetcher.mock.calls[0][1].body).input[0].content).term).toMatchObject({ name: '公開鍵基盤', criteria: [] });
     expect((await worker.fetch(request({ termId: `extra:${'あ'.repeat(41)}`, text }), { OPENAI_API_KEY: 'key' })).status).toBe(404);
   });

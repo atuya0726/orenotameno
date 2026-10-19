@@ -6,11 +6,13 @@ import { cn } from '@/lib/utils';
 import { formatDate, dayKey } from '@/lib/date';
 import { GlossaryProvider, useGlossary } from './useGlossary';
 import { terms, termById, termCategories } from './terms';
-import { explanationInputSchema, extraTerm, extraTermName, extraTermNameSchema, type Evaluation, type GlossaryAttempt, type GlossaryDraft, type Term } from './model';
+import { explanationInputSchema, extraTerm, extraTermName, extraTermNameSchema, levels, type Evaluation, type Grade, type GlossaryAttempt, type GlossaryDraft, type Level, type Term } from './model';
 import { serializeGlossary } from './db';
 import { useSpeech } from './useSpeech';
 
 const statusLabels: Record<Evaluation['status'], string> = { covered: '要点を確認', partial: '説明を補おう', review: '要点に誤りあり', unconfirmed: '要点を確認できず' };
+const gradeLabels: Record<Grade, string> = { S: '発展まで説明', A: '一歩深い説明', B: '最低ラインを達成', C: '最低ラインに届かず' };
+const levelLabels: Record<Level, string> = { B: '最低ライン', A: 'Aに必要な要点', S: 'Sに必要な要点' };
 export default function GlossaryApp() {
   return <GlossaryProvider><GlossaryShell /></GlossaryProvider>;
 }
@@ -43,7 +45,9 @@ function termPath(termId: string, attemptId?: string, fromTermId?: string) {
 function latestByTerm(attempts: GlossaryAttempt[]) { return new Map(attempts.map(attempt => [attempt.termId, attempt])); }
 function ResultBadge({ attempt }: { attempt?: GlossaryAttempt }) {
   if (!attempt) return <span className="pill">未練習</span>;
-  return <span className={cn('pill', attempt.evaluation.status === 'covered' ? 'pill-green' : 'pill-amber')}>{statusLabels[attempt.evaluation.status]}</span>;
+  const { grade, status } = attempt.evaluation;
+  if (grade) return <span className={cn('pill', grade === 'C' ? 'pill-amber' : 'pill-green')}>{grade} · {gradeLabels[grade]}</span>;
+  return <span className={cn('pill', status === 'covered' ? 'pill-green' : 'pill-amber')}>{statusLabels[status]}</span>;
 }
 function GlossaryLibrary() {
   const { snapshot } = useGlossary();
@@ -140,10 +144,11 @@ function Reference({ term, definition = term.definition }: { term: Term; definit
   return <section className="term-reference"><span className="eyebrow">用語の説明例</span><h2>{term.name}</h2><p>{definition}</p>{term.example && <div className="term-example"><strong>例えば</strong><p>{term.example}</p></div>}</section>;
 }
 function Feedback({ attempt }: { attempt: GlossaryAttempt }) {
-  const evaluation = attempt.evaluation;
-  return <section className="glossary-feedback" aria-label="説明のチェック結果"><div className={cn('glossary-result-heading', evaluation.status === 'covered' && 'glossary-result-covered')}><span className="glossary-result-icon">{evaluation.status === 'covered' ? <Check size={25} /> : <CircleHelp size={25} />}</span><div><h2>{statusLabels[evaluation.status]}</h2><p>{evaluation.summary}</p></div><span className="coverage-count"><strong>{evaluation.covered}<small> / {evaluation.total}</small></strong>確認できた要点</span></div>
+  const evaluation = attempt.evaluation; const { grade } = evaluation;
+  const passed = grade ? grade !== 'C' : evaluation.status === 'covered';
+  return <section className="glossary-feedback" aria-label="説明のチェック結果"><div className={cn('glossary-result-heading', passed && 'glossary-result-covered')}><span className={cn('glossary-result-icon', grade && 'glossary-grade')} aria-label={grade ? `評価 ${grade}` : undefined}>{grade ?? (passed ? <Check size={25} /> : <CircleHelp size={25} />)}</span><div><h2>{grade ? gradeLabels[grade] : statusLabels[evaluation.status]}</h2><p>{evaluation.summary}</p></div><span className="coverage-count"><strong>{evaluation.covered}<small> / {evaluation.total}</small></strong>{grade ? '最低ラインの要点' : '確認できた要点'}</span></div>
     <div className="glossary-result-meta"><span>OpenAI · {evaluation.model}</span><span>{attempt.usedVoice ? '音声入力を使用' : '文字で入力'}</span><span>{attempt.referenceViewed ? '説明例を参照した練習' : '説明例を見る前の練習'}</span><time>{formatDate(attempt.answeredAt, true)}</time></div>
-    <div className="rubric-results">{evaluation.criteria.map(criterion => <div className={cn('rubric-item', `rubric-${criterion.status}`)} key={criterion.id}><span className="rubric-icon">{criterion.status === 'covered' ? <Check size={17} /> : criterion.status === 'review' ? <TriangleAlert size={17} /> : <CircleHelp size={17} />}</span><div><span className="rubric-state">{criterion.status === 'covered' ? '説明に含まれています' : criterion.status === 'review' ? '内容に誤りがあります' : 'この説明では未確認'}</span><h3>{criterion.title}</h3>{criterion.evidence && <blockquote>{criterion.evidence}</blockquote>}<p>{criterion.hint}</p></div></div>)}</div>
+    {levels.map(level => { const items = evaluation.criteria.filter(c => (c.level ?? 'B') === level); return items.length > 0 && <div className="rubric-level" key={level}>{grade && <h3 className="rubric-level-heading"><span>{level}</span>{levelLabels[level]}</h3>}<div className="rubric-results">{items.map(criterion => <div className={cn('rubric-item', `rubric-${criterion.status}`)} key={criterion.id}><span className="rubric-icon">{criterion.status === 'covered' ? <Check size={17} /> : criterion.status === 'review' ? <TriangleAlert size={17} /> : <CircleHelp size={17} />}</span><div><span className="rubric-state">{criterion.status === 'covered' ? '説明に含まれています' : criterion.status === 'review' ? '内容に誤りがあります' : level === 'B' ? 'この説明では未確認' : 'まだ触れていません'}</span><h3>{criterion.title}</h3>{criterion.evidence && <blockquote>{criterion.evidence}</blockquote>}<p>{criterion.hint}</p></div></div>)}</div></div>; })}
     {evaluation.followUp && <FollowUp attempt={attempt} followUp={evaluation.followUp} />}<p className="glossary-check-limit">AI評価は誤る場合があります。説明例も確認してください。</p>
   </section>;
 }

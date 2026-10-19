@@ -27,6 +27,24 @@ export const terms: Term[] = [
         "id": "purpose",
         "title": "改ざんの検知や署名者の確認に使う",
         "hint": "署名があると、何を確認できるようになりますか？"
+      },
+      {
+        "id": "digest",
+        "title": "本文のハッシュ値（メッセージダイジェスト）に署名する",
+        "hint": "本文そのものではなく、何に対して署名を作りますか？",
+        "level": "A"
+      },
+      {
+        "id": "nonrepudiation",
+        "title": "署名者が後から送信を否認できない（否認防止）",
+        "hint": "秘密鍵を持つのが本人だけなら、署名者は後から何を主張できなくなりますか？",
+        "level": "A"
+      },
+      {
+        "id": "certificate",
+        "title": "公開鍵が本人のものであることは認証局の証明書（PKI）で保証する",
+        "hint": "検証に使う公開鍵が本当に署名者のものだと、どうやって確かめますか？",
+        "level": "S"
       }
     ],
     "commonMistakes": [
@@ -61,6 +79,18 @@ export const terms: Term[] = [
         "id": "use",
         "title": "比較による改ざん確認などの用途",
         "hint": "どのような場面で利用しますか？"
+      },
+      {
+        "id": "collision",
+        "title": "同じハッシュ値になる別の入力を見つけるのが困難（衝突耐性・第二原像耐性）",
+        "hint": "一方向性のほかに、暗号学的ハッシュに求められる性質は何ですか？",
+        "level": "A"
+      },
+      {
+        "id": "trapdoor",
+        "title": "落とし戸を持たない一方向関数で、公開鍵暗号の落とし戸付き一方向関数とは異なる",
+        "hint": "秘密の情報があれば逆算できる関数と比べて、ハッシュ関数はどう違いますか？",
+        "level": "S"
       }
     ],
     "commonMistakes": [
@@ -93,6 +123,24 @@ export const terms: Term[] = [
         "id": "purpose",
         "title": "同じパスワードの一致や事前計算の使い回しを防ぐ",
         "hint": "ソルトを加えると、攻撃者の何が難しくなりますか？"
+      },
+      {
+        "id": "precompute",
+        "title": "レインボーテーブルなどの事前計算攻撃を無効にする",
+        "hint": "ソルトがあると、どのような攻撃の準備が使い回せなくなりますか？",
+        "level": "A"
+      },
+      {
+        "id": "public",
+        "title": "ソルト自体は秘密にしなくてよく、ハッシュ値と一緒に保存する",
+        "hint": "ソルトは秘密にする必要がありますか？どこに保存しますか？",
+        "level": "A"
+      },
+      {
+        "id": "stretching",
+        "title": "ストレッチングや計算の遅いハッシュ（bcrypt・PBKDF2など）と組み合わせて総当たりのコストを上げる",
+        "hint": "ソルトだけでは防げない総当たり攻撃に、何を組み合わせますか？",
+        "level": "S"
       }
     ],
     "commonMistakes": [
@@ -125,6 +173,18 @@ export const terms: Term[] = [
         "id": "integrity",
         "title": "通信の改ざんを検知する",
         "hint": "盗聴への対策以外に、書き換えにはどう備えますか？"
+      },
+      {
+        "id": "hybrid",
+        "title": "ハンドシェイクで鍵を共有し、通信本体は共通鍵暗号で暗号化する",
+        "hint": "通信本体の暗号化には、どの方式の暗号を使いますか？その鍵はどう共有しますか？",
+        "level": "A"
+      },
+      {
+        "id": "forward-secrecy",
+        "title": "一時的な鍵交換（ECDHEなど）で前方秘匿性を確保し、サーバの秘密鍵が漏れても過去の通信を守る",
+        "hint": "サーバの秘密鍵が後から漏れたとき、過去の通信を守るには何が必要ですか？",
+        "level": "S"
       }
     ],
     "commonMistakes": [
@@ -157,6 +217,18 @@ export const terms: Term[] = [
         "id": "defense",
         "title": "パラメータ化して命令と値を分離する",
         "hint": "安全にSQLを組み立てる方法を説明できますか？"
+      },
+      {
+        "id": "mitigation",
+        "title": "DBアカウントの権限の最小化やエラー詳細を表示しないなどで被害を抑える",
+        "hint": "パラメータ化のほかに、被害を小さくする対策は何ですか？",
+        "level": "A"
+      },
+      {
+        "id": "static-placeholder",
+        "title": "静的プレースホルダはSQL文の構造を先に確定させるため、エスケープ処理より原理的に安全",
+        "hint": "プレースホルダを使うと、なぜ入力値が命令として解釈されなくなるのですか？",
+        "level": "S"
       }
     ],
     "commonMistakes": [
@@ -189,6 +261,18 @@ export const terms: Term[] = [
         "id": "defense",
         "title": "出力先に応じてエスケープする",
         "hint": "入力内容を画面に出すとき、どう処理しますか？"
+      },
+      {
+        "id": "types",
+        "title": "反射型・格納型（持続型）・DOMベースの種類がある",
+        "hint": "攻撃用スクリプトがページに入り込む経路には、どんな種類がありますか？",
+        "level": "A"
+      },
+      {
+        "id": "mitigation",
+        "title": "HttpOnly属性やCSP（Content Security Policy）で被害を緩和する",
+        "hint": "エスケープ漏れがあっても、Cookie窃取やスクリプト実行を抑える仕組みは何ですか？",
+        "level": "S"
       }
     ],
     "commonMistakes": [
@@ -220,6 +304,18 @@ export const terms: Term[] = [
         "id": "defense",
         "title": "CSRFトークンなどで正当な要求か検証する",
         "hint": "正規画面からの要求かを確認する対策は何ですか？"
+      },
+      {
+        "id": "token-reason",
+        "title": "トークンは攻撃者が知り得ない値なので、偽のリクエストと区別できる",
+        "hint": "CSRFトークンで偽のリクエストを見分けられるのはなぜですか？",
+        "level": "A"
+      },
+      {
+        "id": "samesite",
+        "title": "Cookieの SameSite 属性やOrigin・Refererヘッダの検証も対策になる",
+        "hint": "トークン以外に、他サイトからのリクエストを防ぐ仕組みは何ですか？",
+        "level": "S"
       }
     ],
     "commonMistakes": [
@@ -251,6 +347,18 @@ export const terms: Term[] = [
         "id": "example",
         "title": "異なる要素の具体例",
         "hint": "知識と所持、または知識と生体を使う例を挙げられますか？"
+      },
+      {
+        "id": "reason",
+        "title": "一つの要素が漏れても他の種類の要素がなければ突破できない",
+        "hint": "要素の種類を分けると、なぜ安全性が上がるのですか？",
+        "level": "A"
+      },
+      {
+        "id": "phishing",
+        "title": "SMSやワンタイムパスワードはリアルタイムフィッシングで突破され得るため、FIDO2などの耐フィッシング認証が有効",
+        "hint": "多要素認証でも突破される攻撃と、それに強い方式は何ですか？",
+        "level": "S"
       }
     ],
     "commonMistakes": [
@@ -284,6 +392,18 @@ export const terms: Term[] = [
         "id": "impact",
         "title": "誤操作や侵害時の被害を限定する",
         "hint": "権限を絞ることで、どのようなリスクを減らせますか？"
+      },
+      {
+        "id": "review",
+        "title": "権限を定期的に見直し、不要になった権限を削除する",
+        "hint": "一度与えた権限は、その後どう管理しますか？",
+        "level": "A"
+      },
+      {
+        "id": "jit",
+        "title": "特権は必要なときだけ一時的に付与し（特権ID管理）、職務分掌と組み合わせる",
+        "hint": "管理者権限のような強い権限は、どう与えると被害を抑えられますか？",
+        "level": "S"
       }
     ],
     "commonMistakes": [
@@ -316,6 +436,18 @@ export const terms: Term[] = [
         "id": "distributed",
         "title": "分散してレコードを管理する",
         "hint": "一つのサーバで全世界の情報を管理しているのでしょうか？"
+      },
+      {
+        "id": "servers",
+        "title": "フルリゾルバ（キャッシュDNSサーバ）が権威DNSサーバに問い合わせて名前解決する",
+        "hint": "名前解決では、どんな役割のDNSサーバが関わりますか？",
+        "level": "A"
+      },
+      {
+        "id": "poisoning",
+        "title": "キャッシュポイズニングの脅威と、DNSSECやソースポートのランダム化による対策",
+        "hint": "DNSの応答が偽装されると何が起き、どう防ぎますか？",
+        "level": "S"
       }
     ],
     "commonMistakes": [
@@ -347,6 +479,18 @@ export const terms: Term[] = [
         "id": "use",
         "title": "負荷分散・TLS終端・キャッシュなどの用途",
         "hint": "中継以外に、どのような機能を担当できますか？"
+      },
+      {
+        "id": "hide",
+        "title": "内部のサーバを直接公開せずに済み、WAFなどの防御を前段に置ける",
+        "hint": "セキュリティの面では、どんな利点がありますか？",
+        "level": "A"
+      },
+      {
+        "id": "forward",
+        "title": "クライアント側の代理であるフォワードプロキシとの違い",
+        "hint": "似た名前のフォワードプロキシとは、何が違いますか？",
+        "level": "S"
       }
     ],
     "commonMistakes": [
@@ -379,6 +523,18 @@ export const terms: Term[] = [
         "id": "purpose",
         "title": "送信ドメインの認証や改ざんの検知",
         "hint": "何を認証し、何の書き換えを検知できますか？"
+      },
+      {
+        "id": "selector",
+        "title": "セレクタでDNS上の公開鍵を特定し、転送されても署名を検証できる",
+        "hint": "受信側はどうやって検証用の公開鍵を見つけますか？転送の影響は？",
+        "level": "A"
+      },
+      {
+        "id": "dmarc",
+        "title": "DMARCでヘッダFromのドメインとの整合を確認し、認証失敗時の扱いを決める",
+        "hint": "DKIMの結果を、表示される送信者アドレスの詐称対策にどうつなげますか？",
+        "level": "S"
       }
     ],
     "commonMistakes": [
@@ -411,6 +567,18 @@ export const terms: Term[] = [
         "id": "limit",
         "title": "本文の改ざんは検知しない",
         "hint": "DKIMとは違い、本文の書き換えまで分かりますか？"
+      },
+      {
+        "id": "forwarding",
+        "title": "メールが転送されると接続元IPアドレスが変わり、認証に失敗しやすい",
+        "hint": "メールが転送されると、SPFの照合はどうなりますか？",
+        "level": "A"
+      },
+      {
+        "id": "envelope",
+        "title": "照合するのはエンベロープFrom（MAIL FROM）のドメインで、ヘッダFromの詐称はDMARCで補う",
+        "hint": "SPFが確認するのは、どの送信者アドレスのドメインですか？",
+        "level": "S"
       }
     ],
     "commonMistakes": [
@@ -442,6 +610,18 @@ export const terms: Term[] = [
         "id": "eventual",
         "title": "最終的に更新が行き渡る結果整合性",
         "hint": "時間が経ち更新が反映されると、どのような状態になりますか？"
+      },
+      {
+        "id": "vs-acid",
+        "title": "強い一貫性を求めるACID特性と対比される",
+        "hint": "BASE特性は、どの考え方と対比されますか？",
+        "level": "A"
+      },
+      {
+        "id": "cap",
+        "title": "CAP定理により、ネットワーク分断時は一貫性と可用性の両立ができない",
+        "hint": "分散システムで一貫性と可用性がトレードオフになる理由は何ですか？",
+        "level": "S"
       }
     ],
     "commonMistakes": [
@@ -473,6 +653,18 @@ export const terms: Term[] = [
         "id": "others",
         "title": "一貫性・独立性・耐久性も含む",
         "hint": "原子性以外の三つの性質を挙げて説明できますか？"
+      },
+      {
+        "id": "meanings",
+        "title": "一貫性・独立性（隔離性）・耐久性それぞれの意味",
+        "hint": "一貫性・独立性・耐久性は、それぞれ何を保証しますか？",
+        "level": "A"
+      },
+      {
+        "id": "mechanism",
+        "title": "ロックや分離レベルで独立性を、ログを使ったロールバック・ロールフォワードで原子性や耐久性を実現する",
+        "hint": "これらの性質を、DBMSはどんな仕組みで実現しますか？",
+        "level": "S"
       }
     ],
     "commonMistakes": [
@@ -502,6 +694,18 @@ export const terms: Term[] = [
         "id": "oldest",
         "title": "長く使われていないものを選ぶ",
         "hint": "新しく使ったものと、長く使わないもののどちらを追い出しますか？"
+      },
+      {
+        "id": "vs-others",
+        "title": "ロード順で選ぶFIFOや参照回数で選ぶLFUとの違い",
+        "hint": "FIFOやLFUとは、何を基準に選ぶ点が違いますか？",
+        "level": "A"
+      },
+      {
+        "id": "cost",
+        "title": "参照のたびに順序を更新する必要があり、実装では管理コストがかかる",
+        "hint": "LRUを実装するとき、参照のたびに何をする必要がありますか？",
+        "level": "S"
       }
     ],
     "commonMistakes": [
@@ -535,6 +739,18 @@ export const terms: Term[] = [
         "id": "least",
         "title": "最小限の権限を適用する",
         "hint": "認証した人には、どの範囲の権限を与えますか？"
+      },
+      {
+        "id": "continuous",
+        "title": "アクセスのたびに継続的に検証する",
+        "hint": "一度認証したら、その後のアクセスはどう扱いますか？",
+        "level": "A"
+      },
+      {
+        "id": "vs-perimeter",
+        "title": "侵入後の横展開やクラウド利用に弱い境界型防御の限界を踏まえた考え方",
+        "hint": "なぜ従来の境界型防御では不十分になったのですか？",
+        "level": "S"
       }
     ],
     "commonMistakes": [
@@ -566,6 +782,18 @@ export const terms: Term[] = [
         "id": "ips",
         "title": "IPSは遮断などで防止する",
         "hint": "IPSは検知後にどのような操作ができますか？"
+      },
+      {
+        "id": "detection",
+        "title": "シグネチャ型と異常（アノマリ）型の検知方式",
+        "hint": "不正をどのような方法で見つけますか？",
+        "level": "A"
+      },
+      {
+        "id": "placement",
+        "title": "IPSは通信経路上に置くため誤検知が正常な通信の遮断につながり、IDSはミラーポートなどで監視する",
+        "hint": "IDSとIPSは、ネットワークのどこに置きますか？誤検知の影響はどう違いますか？",
+        "level": "S"
       }
     ],
     "commonMistakes": [
