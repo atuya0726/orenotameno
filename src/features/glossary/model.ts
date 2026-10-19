@@ -39,13 +39,16 @@ export const evaluationSchema = z.object({
   concerns: z.array(z.object({ message: z.string(), evidence: z.string() })).optional(), improvedExplanation: z.string().optional(),
 });
 export type Evaluation = z.infer<typeof evaluationSchema>;
-export const explanationInputSchema = z.string().trim().min(10, '10文字以上で、用語の意味を説明してください。').max(5000, '説明は5,000文字以内にしてください。');
+export const EXPLANATION_MAX_LENGTH = 1000;
+const savedExplanationSchema = z.string().trim().min(10).max(5000);
+export const explanationInputSchema = z.string().trim().min(10, '10文字以上で、用語の意味を説明してください。').max(EXPLANATION_MAX_LENGTH, '説明は1,000文字以内にしてください。');
+// Keep older drafts and attempts readable after lowering the input limit.
 export const glossaryDraftSchema = z.object({
   termId: z.string(), text: z.string().max(5000), referenceViewed: z.boolean(), usedVoice: z.boolean(), updatedAt: z.string().datetime(),
 });
 export type GlossaryDraft = z.infer<typeof glossaryDraftSchema>;
 export const glossaryAttemptSchema = z.object({
-  id: z.string(), termId: z.string(), termName: z.string(), text: explanationInputSchema,
+  id: z.string(), termId: z.string(), termName: z.string(), text: savedExplanationSchema,
   answeredAt: z.string().datetime(), usedVoice: z.boolean(), referenceViewed: z.boolean(),
   evaluation: evaluationSchema, reference: z.string(),
 });

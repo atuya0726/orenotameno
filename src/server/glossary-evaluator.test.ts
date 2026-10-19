@@ -114,6 +114,9 @@ describe('Worker API boundary', () => {
     expect((await worker.fetch(request(), {})).status).toBe(503);
     expect((await worker.fetch(request({ termId: 'fake', text }), { OPENAI_API_KEY: 'key' })).status).toBe(404);
     expect((await worker.fetch(request({ termId: term.id, text: '短い' }), { OPENAI_API_KEY: 'key' })).status).toBe(400);
+    expect((await worker.fetch(request({ termId: term.id, text: 'あ'.repeat(1000) }), {})).status).toBe(503);
+    const tooLong = await worker.fetch(request({ termId: term.id, text: 'あ'.repeat(1001) }), { OPENAI_API_KEY: 'key' });
+    expect(tooLong.status).toBe(400); expect(await tooLong.json()).toEqual({ error: '用語と10〜1,000文字の説明を送信してください。' });
     expect((await worker.fetch(request({ termId: term.id, text, model: 'expensive' }), { OPENAI_API_KEY: 'key' })).status).toBe(400);
     expect(fetcher).not.toHaveBeenCalled();
   });

@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils';
 import { formatDate, dayKey } from '@/lib/date';
 import { GlossaryProvider, useGlossary } from './useGlossary';
 import { normalizeTermWord as normalize, termForWord, terms, termById, termCategories } from './terms';
-import { explanationInputSchema, extraTerm, extraTermName, extraTermNameSchema, levelInfo, levels, type Evaluation, type Grade, type GlossaryAttempt, type GlossaryDraft, type Term } from './model';
+import { EXPLANATION_MAX_LENGTH, explanationInputSchema, extraTerm, extraTermName, extraTermNameSchema, levelInfo, levels, type Evaluation, type Grade, type GlossaryAttempt, type GlossaryDraft, type Term } from './model';
 import { serializeGlossary } from './db';
 import { useLearning } from '@/lib/store';
 import { useSpeech } from './useSpeech';
@@ -175,9 +175,9 @@ function TermPractice({ term, referenceInitially, attemptId, review }: { term: T
           onKeyUp={e => { if (e.key === ' ' || e.key === 'Enter') speech.stop(); }} onBlur={speech.stop} onContextMenu={e => e.preventDefault()}>
           {speech.active ? <Square size={16} /> : <Mic size={17} />}{speech.phase === 'starting' ? 'マイクの準備中…' : speech.phase === 'listening' ? '離すと停止' : speech.phase === 'stopping' ? '文字起こしを確定中' : '押しながら話す'}</Button><span className={cn('speech-state', speech.active && 'speech-recording')} role="status">{speech.active ? <><span className="status-dot" />{speech.phase === 'listening' ? '聞き取り中' : speech.phase === 'stopping' ? '確定結果を待っています' : 'マイクの準備中'}</> : speech.supported ? '' : '音声入力は非対応です'}</span></div>
         {speech.error && <p className="inline-error" role="alert">{speech.error}</p>}
-        <label className="sr-only" htmlFor="term-explanation">{term.name}についての説明</label><textarea id="term-explanation" ref={textareaRef} value={draft.text} maxLength={5000} readOnly={speech.active || saving} onChange={e => change({ text: e.target.value })} placeholder="説明を入力（音声入力も可）" aria-describedby="explanation-input-help" />
+        <label className="sr-only" htmlFor="term-explanation">{term.name}についての説明</label><textarea id="term-explanation" ref={textareaRef} value={draft.text} maxLength={EXPLANATION_MAX_LENGTH} readOnly={speech.active || saving} onChange={e => change({ text: e.target.value })} placeholder="説明を入力（音声入力も可）" aria-describedby="explanation-input-help" />
         {speech.interim && <div className="speech-interim" role="status"><span>聞き取り途中</span><p>{speech.interim}</p></div>}
-        <div className="explanation-input-meta"><span id="explanation-input-help">{speech.active ? '離した後に修正・チェックできます。' : '10〜5,000文字'}</span><span>{draft.text.length} / 5,000</span></div>
+        <div className="explanation-input-meta"><span id="explanation-input-help">{speech.active ? '離した後に修正・チェックできます。' : '10〜1,000文字'}</span><span>{draft.text.length} / {EXPLANATION_MAX_LENGTH.toLocaleString('ja-JP')}</span></div>
         <div className="explanation-submit">{term.definition && <Button type="button" variant="ghost" disabled={speech.active || saving} onClick={reveal}><BookOpen size={15} />説明例を先に見る</Button>}<Button type="submit" disabled={speech.active || saving || Boolean(result) || draft.text.trim().length < 10}>{saving ? <LoaderCircle size={16} className="animate-spin" /> : <Check size={16} />}{saving ? 'チェック中' : result ? 'チェック済み' : 'AIでチェック'}</Button></div>
         {draft.referenceViewed && <p className="reference-viewed-note">説明例を参照済み</p>}{error && <p className="inline-error" role="alert">{error}</p>}
         <p className="speech-privacy">チェック時に説明文をOpenAIへ送信します。履歴はこのブラウザに保存。音声認識はブラウザのサービスを利用し、音声は当サイトに保存しません。</p>

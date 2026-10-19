@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { EXPLANATION_MAX_LENGTH } from './model';
 
 type SpeechResult = { isFinal: boolean; [index: number]: { transcript: string }; length: number };
 type SpeechEvent = { results: ArrayLike<SpeechResult> };
@@ -79,8 +80,11 @@ export function useSpeech(onText: (text: string) => void) {
     active.onstart = () => setPhase(p => p === 'starting' ? 'listening' : p);
     active.onresult = event => {
       const result = transcripts(event.results);
-      setInterim(result.interim);
-      if (result.final) { heard = result.final; const text = mergeTranscript(s.committed, heard); update.current(`${s.base}${s.base.trim() ? '\n' : ''}${text}`.slice(0, 5000)); }
+      if (result.final) heard = result.final;
+      const text = `${s.base}${s.base.trim() ? '\n' : ''}${mergeTranscript(s.committed, heard)}`;
+      setInterim(result.interim.slice(0, Math.max(0, EXPLANATION_MAX_LENGTH - text.length)));
+      if (result.final) update.current(text.slice(0, EXPLANATION_MAX_LENGTH));
+      if (text.length >= EXPLANATION_MAX_LENGTH) stop();
     };
     active.onerror = event => {
       // silence while still holding just ends this round; onend restarts it
@@ -99,6 +103,7 @@ export function useSpeech(onText: (text: string) => void) {
   }
   function start(base: string) {
     if (session.current) return;
+    if (base.length >= EXPLANATION_MAX_LENGTH) { setError('説明は1,000文字までです。文章を短くしてから音声入力してください。'); return; }
     const Constructor = speechConstructor();
     if (!Constructor) { setError('このブラウザは音声入力に対応していません。文字で入力できます。'); return; }
     if (!window.isSecureContext) { setError('音声入力はHTTPSまたはlocalhostで開いて利用してください。文字で入力できます。'); return; }

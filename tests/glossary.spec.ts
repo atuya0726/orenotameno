@@ -159,6 +159,39 @@ test('handles final/interim voice text, prevents checks while listening, and sto
   await expect.poll(() => page.evaluate(() => (window as unknown as { speechAborted: boolean }).speechAborted)).toBe(true);
 });
 
+test('limits voice input to 1000 characters including existing text and stops recognition', async ({ page }) => {
+  await page.addInitScript(() => {
+    class MockSpeech {
+      onstart?: () => void; onend?: () => void; onresult?: (e: unknown) => void;
+      constructor() { (window as unknown as { testSpeech: MockSpeech }).testSpeech = this; }
+      start() { this.onstart?.(); }
+      stop() { this.onend?.(); }
+      abort() {}
+    }
+    Object.defineProperty(window, 'SpeechRecognition', { value: MockSpeech, configurable: true });
+  });
+  await page.goto('/glossary/digital-signature');
+  await expect(textbox(page)).toHaveAttribute('maxlength', '1000');
+  await textbox(page).fill('あ'.repeat(990));
+  await page.getByRole('button', { name: '押しながら話す' }).hover(); await page.mouse.down();
+  await page.evaluate(() => {
+    const speech = (window as unknown as { testSpeech: { onresult: (e: unknown) => void } }).testSpeech;
+    speech.onresult({ results: [{ isFinal: false, 0: { transcript: 'い'.repeat(20) }, length: 1 }] });
+  });
+  await expect(page.locator('.speech-interim p')).toHaveText('い'.repeat(9));
+  await page.evaluate(() => {
+    const speech = (window as unknown as { testSpeech: { onresult: (e: unknown) => void } }).testSpeech;
+    speech.onresult({ results: [{ isFinal: true, 0: { transcript: 'い'.repeat(20) }, length: 1 }] });
+  });
+  await expect(textbox(page)).toHaveValue(`${'あ'.repeat(990)}\n${'い'.repeat(9)}`);
+  await expect(textbox(page)).toBeEditable();
+  await expect(page.locator('.explanation-input-meta')).toContainText('1000 / 1,000');
+  await page.mouse.up();
+  await page.getByRole('button', { name: '押しながら話す' }).click();
+  await expect(page.getByRole('alert')).toContainText('説明は1,000文字までです');
+  await expect(textbox(page)).toHaveValue(`${'あ'.repeat(990)}\n${'い'.repeat(9)}`);
+});
+
 test('backs up and merges history without duplicating paid evaluations', async ({ page }) => {
   await page.route('**/api/glossary/evaluate', route => route.fulfill({ json: evaluation() }));
   await page.goto('/glossary/digital-signature'); await textbox(page).fill(text); await check(page).click();

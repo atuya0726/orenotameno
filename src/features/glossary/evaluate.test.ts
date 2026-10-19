@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { terms, termById } from './terms';
 import { evaluateExplanation } from './evaluate';
 import { parseGlossaryBackup, serializeGlossary } from './db';
-import { glossaryAttemptSchema, type Evaluation } from './model';
+import { explanationInputSchema, glossaryAttemptSchema, type Evaluation } from './model';
 import { transcripts, speechErrorMessage, mergeTranscript } from './useSpeech';
 
 const term = termById.get('digital-signature')!;
@@ -25,7 +25,8 @@ describe('AI評価のクライアント', () => {
   it('rejects invalid input before making a paid request', async () => {
     const fetcher = vi.fn(); vi.stubGlobal('fetch', fetcher);
     await expect(evaluateExplanation(term, '短い')).rejects.toThrow();
-    await expect(evaluateExplanation(term, 'あ'.repeat(5001))).rejects.toThrow();
+    expect(explanationInputSchema.safeParse('あ'.repeat(1000)).success).toBe(true);
+    await expect(evaluateExplanation(term, 'あ'.repeat(1001))).rejects.toThrow('1,000文字以内');
     expect(fetcher).not.toHaveBeenCalled();
   });
   it('shows configuration errors without inventing offline grades or retrying', async () => {
@@ -52,6 +53,8 @@ describe('用語学習のバックアップ', () => {
   it('round-trips explanations and LLM feedback separately from quiz records', () => {
     const attempt = glossaryAttemptSchema.parse({ id: 'test-attempt', termId: term.id, termName: term.name, text, answeredAt: '2026-10-19T03:00:00.000Z', usedVoice: true, referenceViewed: false, evaluation, reference: term.definition });
     expect(parseGlossaryBackup(serializeGlossary({ attempts: [attempt], drafts: [] })).attempts).toEqual([attempt]);
+    const olderAttempt = { ...attempt, text: 'あ'.repeat(5000) };
+    expect(parseGlossaryBackup(serializeGlossary({ attempts: [olderAttempt], drafts: [] })).attempts[0].text).toBe(olderAttempt.text);
     expect(() => parseGlossaryBackup(JSON.stringify({ version: 1, kind: 'quiz', attempts: [] }))).toThrow();
     expect(() => parseGlossaryBackup('{broken')).toThrow();
   });

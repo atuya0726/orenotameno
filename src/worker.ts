@@ -24,13 +24,13 @@ export default {
       const reader = request.body?.getReader();
       if (!reader) return json({ error: '説明を入力してください。' }, 400);
       const chunks: Uint8Array[] = []; let size = 0;
-      while (true) { const { done, value } = await reader.read(); if (done) break; size += value.byteLength; if (size > 32_000) { await reader.cancel(); return json({ error: '説明が長すぎます。5,000文字以内で入力してください。' }, 413); } chunks.push(value); }
+      while (true) { const { done, value } = await reader.read(); if (done) break; size += value.byteLength; if (size > 32_000) { await reader.cancel(); return json({ error: '説明が長すぎます。1,000文字以内で入力してください。' }, 413); } chunks.push(value); }
       const bytes = new Uint8Array(size); let offset = 0;
       for (const chunk of chunks) { bytes.set(chunk, offset); offset += chunk.length; }
       let body: unknown;
       try { body = JSON.parse(new TextDecoder().decode(bytes)); } catch { return json({ error: '入力した説明を読み込めませんでした。' }, 400); }
       const input = inputSchema.safeParse(body);
-      if (!input.success) return json({ error: '用語と10〜5,000文字の説明を送信してください。' }, 400);
+      if (!input.success) return json({ error: '用語と10〜1,000文字の説明を送信してください。' }, 400);
       const extraName = extraTermName(input.data.termId);
       const term = extraName ? extraTerm(extraName) : termById.get(input.data.termId);
       if (!term) return json({ error: '用語が見つかりません。' }, 404);
