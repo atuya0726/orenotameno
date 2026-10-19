@@ -291,7 +291,7 @@ function ReviewActions({ question, attempt, action }: { question: Question; atte
       <ul className="review-term-list" aria-label="この問題の単語">{candidates.map(term => {
         const checked = selected.includes(term);
         return <li key={term}><button type="button" className={cn('review-term', checked && 'review-term-selected')} aria-label={`${term}を復習する`} aria-pressed={checked} aria-busy={pending === term} disabled={pending !== null} onClick={() => void save(term, () => setReviewWord(term, !checked))}>
-          {pending === term ? <LoaderCircle className="animate-spin" size={15} /> : checked ? <Check size={15} /> : <Plus size={15} />}{term}
+          <span className="review-term-icon" aria-hidden="true"><Plus className="review-term-plus" size={15} /><Check className="review-term-check" size={15} /></span>{term}
         </button></li>;
       })}</ul>
     </section>}
