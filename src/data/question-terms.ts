@@ -35,6 +35,8 @@ const sc2025AutumnA1Terms: Record<number, readonly string[]> = {
 };
 
 const termsByQuestion = new Map(Object.entries(sc2025AutumnA1Terms).map(([number, terms]) => [`sc-2025-autumn-a1-${number}`, terms]));
+const knownTerms = new Set(Object.values(sc2025AutumnA1Terms).flat());
+export function isQuestionTerm(term: string): boolean { return knownTerms.has(term); }
 export function getQuestionTerms(question: Pick<Question, 'id'>): readonly string[] {
   return termsByQuestion.get(question.id) ?? [];
 }

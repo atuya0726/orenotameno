@@ -8,7 +8,7 @@ import { scheduleAnswer } from '@/lib/scheduler';
 
 let snapshot: Snapshot;
 vi.mock('@/lib/store', () => ({
-  useLearning: () => ({ snapshot, ready: true, error: '', clearError: vi.fn(), updateDraft: vi.fn(), answer: vi.fn(), setReviewFlag: vi.fn(), setReviewTerms: vi.fn(), toggleBookmark: vi.fn() }),
+  useLearning: () => ({ snapshot, ready: true, error: '', clearError: vi.fn(), updateDraft: vi.fn(), answer: vi.fn(), setReviewFlag: vi.fn(), setReviewWord: vi.fn(), toggleBookmark: vi.fn() }),
   useNow: () => Date.parse('2026-10-19T03:00:00.000Z'),
 }));
 beforeEach(() => { snapshot = emptySnapshot(); });
@@ -33,7 +33,7 @@ describe('answering and recorded results', () => {
     expect(html).not.toContain('迷いあり');
     expect(html).not.toContain('>迷った</');
     expect(html).not.toContain('>復習リストに追加</');
-    expect(html).not.toContain('復習したい単語リスト');
+    expect(html).not.toContain('復習したい単語を選択');
     expect(html).not.toContain('type="radio"');
     expect(html).not.toContain('これも迷った');
     expect(html).not.toContain('pill-green');
@@ -89,6 +89,7 @@ describe('answering and recorded results', () => {
     const input = createQuickAnswer({ questionId: question.id, selected: question.correct, uncertainOptions: [] }, 'high', question);
     const { attempt } = scheduleAnswer(input, question, undefined, new Date('2026-10-19T03:00:00.000Z'));
     snapshot.attempts = [{ ...attempt, reviewTerms: ['ROC曲線'] }];
+    snapshot.reviewWords = ['ROC曲線'];
     const html = render(`/record/${attempt.id}`);
     const buttons = html.match(/<button\b[^>]*>[\s\S]*?<\/button>/g) ?? [];
     expect(buttons.find(button => button.includes('aria-label="ROC曲線を復習する"'))).toContain('aria-pressed="true"');
@@ -98,5 +99,22 @@ describe('answering and recorded results', () => {
     expect(html.indexOf('review-term-picker')).toBeLessThan(html.indexOf('result-actions'));
     expect(html.indexOf('>復習リストに追加</')).toBeLessThan(html.indexOf('もう一度解く'));
     expect(html).not.toContain('ポアソン分布');
+    expect(html).toContain('復習したい単語を選択');
+    expect(html).not.toContain('語選択中');
+    expect(html).not.toContain('意味がよくわからなかった');
+  });
+  it('selects a word registered from another question and lists it once in the review notebook', () => {
+    const question = questions[14];
+    const { attempt } = scheduleAnswer(createQuickAnswer({ questionId: question.id, selected: question.correct, uncertainOptions: [] }, 'high', question), question);
+    snapshot.attempts = [attempt];
+    snapshot.reviewWords = ['デジタル署名'];
+    const html = render(`/record/${attempt.id}`);
+    const button = (html.match(/<button\b[^>]*>[\s\S]*?<\/button>/g) ?? []).find(button => button.includes('aria-label="デジタル署名を復習する"'))!;
+    expect(button).toContain('aria-pressed="true"');
+    const notebook = render('/reviews');
+    expect(notebook).toContain('復習する単語');
+    expect(notebook.match(/<strong>デジタル署名<\/strong>/g)).toHaveLength(1);
+    expect(notebook).toContain('デジタル署名が出てくる科目A1の問13を解く');
+    expect(notebook).toContain('デジタル署名が出てくる科目A1の問15を解く');
   });
 });

@@ -1,4 +1,5 @@
 import { questionById } from '@/data/questions';
+import { getQuestionTerms } from '@/data/question-terms';
 import { answerSchema, attemptSchema, answerConfidence, isConfidentCorrectAnswer, validateAnswerForQuestion, type AnswerInput, type Question, type ReviewCard, type Attempt } from './model';
 
 // The latest answer sets the review weight: unknown/wrong = 3, uncertain = 2,
@@ -18,13 +19,14 @@ function reviewRequirement(answer: AnswerInput & { reviewDoubt?: boolean; review
   return { requiredReviews: 0, remainingReviews: 0, reason: '自信ありで正解したため、復習対象に入れません。' };
 }
 
-export function scheduleAnswer(input: AnswerInput, question: Question, _previous?: ReviewCard, now = new Date()): { attempt: Attempt; card: ReviewCard } {
+export function scheduleAnswer(input: AnswerInput, question: Question, _previous?: ReviewCard, now = new Date(), reviewWords: readonly string[] = []): { attempt: Attempt; card: ReviewCard } {
   const answer = answerSchema.parse(input);
   validateAnswerForQuestion(answer, question);
-  const review = reviewRequirement(answer, question);
+  const reviewTerms = getQuestionTerms(question).filter(term => reviewWords.includes(term));
+  const review = reviewRequirement({ ...answer, reviewTerms }, question);
   const id = crypto.randomUUID();
   const attempt = attemptSchema.parse({
-    ...structuredClone(answer), id, answeredAt: now.toISOString(), correct: answer.selected === question.correct,
+    ...structuredClone(answer), ...(reviewTerms.length > 0 && { reviewTerms }), id, answeredAt: now.toISOString(), correct: answer.selected === question.correct,
     confidence: answerConfidence(answer), reviewMode: 'count', ...review,
   });
   const card: ReviewCard = { questionId: question.id, lastAttemptId: id, updatedAt: attempt.answeredAt, ...review };
@@ -33,14 +35,16 @@ export function scheduleAnswer(input: AnswerInput, question: Question, _previous
 
 // Replay answers rather than trusting stored schedules. This migrates date-based
 // records and ensures stale backup cards cannot restore already completed work.
-export function rebuildReviewHistory(history: Attempt[]): { attempts: Attempt[]; cards: ReviewCard[] } {
+export function rebuildReviewHistory(history: Attempt[], reviewWords?: readonly string[]): { attempts: Attempt[]; cards: ReviewCard[] } {
   const cards = new Map<string, ReviewCard>();
   const attempts = [...history].sort((a, b) => a.answeredAt.localeCompare(b.answeredAt)).map(attempt => {
     const question = questionById.get(attempt.questionId);
     if (!question) throw new Error('収録されていない問題の記録があります。');
     validateAnswerForQuestion(attempt, question);
-    const review = reviewRequirement(attempt, question);
-    const { nextReviewAt, intervalMinutes, ...saved } = attempt;
+    const reviewTerms = reviewWords && getQuestionTerms(question).filter(term => reviewWords.includes(term));
+    const current = reviewTerms && (reviewTerms.length > 0 || attempt.reviewTerms !== undefined) ? { ...attempt, reviewTerms } : attempt;
+    const review = reviewRequirement(current, question);
+    const { nextReviewAt, intervalMinutes, ...saved } = current;
     const converted = attemptSchema.parse({ ...saved, reviewMode: 'count', ...review });
     cards.set(question.id, { questionId: question.id, lastAttemptId: attempt.id, updatedAt: attempt.answeredAt, ...review });
     return converted;

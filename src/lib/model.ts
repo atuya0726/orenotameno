@@ -53,6 +53,8 @@ export type Question = {
 };
 export const reviewTermsSchema = z.array(z.string().min(1).max(100)).max(40)
   .refine(terms => new Set(terms).size === terms.length, '復習する単語が重複しています。');
+export const reviewWordsSchema = z.array(z.string().min(1).max(100)).max(10_000)
+  .refine(terms => new Set(terms).size === terms.length, '復習する単語が重複しています。');
 const attemptFields = {
   id: z.string(), answeredAt: z.string().datetime(), correct: z.boolean(),
   reason: z.string(), reviewMode: z.literal('count').optional(),
@@ -85,8 +87,11 @@ export type ReviewCard = z.infer<typeof reviewCardSchema>;
 export const settingsSchema = z.object({ dailyGoal: z.number().int().min(1).max(100), defaultCourse: courseSchema });
 export type Settings = z.infer<typeof settingsSchema>;
 export const defaultSettings: Settings = { dailyGoal: 5, defaultCourse: 'A1' };
-export type Snapshot = { attempts: Attempt[]; cards: ReviewCard[]; bookmarks: string[]; drafts: Draft[]; settings: Settings };
-export const emptySnapshot = (): Snapshot => ({ attempts: [], cards: [], bookmarks: [], drafts: [], settings: defaultSettings });
+export type Snapshot = { attempts: Attempt[]; cards: ReviewCard[]; bookmarks: string[]; drafts: Draft[]; reviewWords: string[]; settings: Settings };
+export const emptySnapshot = (): Snapshot => ({ attempts: [], cards: [], bookmarks: [], drafts: [], reviewWords: [], settings: defaultSettings });
+export function collectReviewWords(attempts: Pick<Attempt, 'reviewTerms'>[]): string[] {
+  return [...new Set(attempts.flatMap(attempt => attempt.reviewTerms ?? []))];
+}
 
 export function isQuickAnswer(answer: AnswerInput): answer is QuickAnswerInput { return 'inputMode' in answer && answer.inputMode === 'quick'; }
 export function isAnswerComplete(draft: Draft): boolean { return optionIdSchema.safeParse(draft.selected).success; }

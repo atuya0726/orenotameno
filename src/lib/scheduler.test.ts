@@ -311,7 +311,7 @@ describe('vocabulary picked after answering', () => {
   it('round-trips selected terms in backups and rejects duplicates or unrelated terms', () => {
     const { attempt } = scheduleAnswer(answer(), knowledge, undefined, now);
     const result = rebuildReviewHistory([{ ...attempt, reviewTerms: ['偽陽性率'] }]);
-    const restored = parseBackup(exportBackup({ ...emptySnapshot(), ...result }));
+    const restored = parseBackup(exportBackup({ ...emptySnapshot(), ...result, reviewWords: ['偽陽性率'] }));
     expect(restored.attempts[0].reviewTerms).toEqual(['偽陽性率']);
     expect(restored.cards[0].remainingReviews).toBe(2);
     expect(() => rebuildReviewHistory([{ ...attempt, reviewTerms: ['ポアソン分布'] }])).toThrow('この問題に含まれていない単語');
@@ -326,7 +326,7 @@ describe('portable learning records', () => {
     const legacy = scheduleAnswer(legacyAnswer(), knowledge, undefined, now);
     state.attempts = [legacy.attempt, quick.attempt]; state.cards = [quick.card]; state.bookmarks = [knowledge.id];
     const encoded = exportBackup(state);
-    expect(JSON.parse(encoded).version).toBe(3);
+    expect(JSON.parse(encoded).version).toBe(4);
     const decoded = parseBackup(encoded);
     expect(decoded.attempts).toEqual(state.attempts);
     expect(decoded.attempts[1]).not.toHaveProperty('assessments');

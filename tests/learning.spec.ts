@@ -12,7 +12,7 @@ async function answerFirst(page: Page, selected = 'イ', requested = false) {
 }
 async function counts(page: Page) {
   return page.evaluate(async () => {
-    const db = await new Promise<IDBDatabase>((resolve, reject) => { const r = indexedDB.open('orenotameno-sc', 1); r.onsuccess = () => resolve(r.result); r.onerror = () => reject(r.error); });
+    const db = await new Promise<IDBDatabase>((resolve, reject) => { const r = indexedDB.open('orenotameno-sc'); r.onsuccess = () => resolve(r.result); r.onerror = () => reject(r.error); });
     const tx = db.transaction(['attempts', 'cards', 'drafts'], 'readonly');
     const results = await Promise.all(['attempts', 'cards', 'drafts'].map(name => new Promise<number>((resolve, reject) => { const r = tx.objectStore(name).count(); r.onsuccess = () => resolve(r.result); r.onerror = () => reject(r.error); })));
     db.close(); return results;
@@ -20,7 +20,7 @@ async function counts(page: Page) {
 }
 async function storedAttempts(page: Page) {
   return page.evaluate(async () => {
-    const db = await new Promise<IDBDatabase>(resolve => { const r = indexedDB.open('orenotameno-sc', 1); r.onsuccess = () => resolve(r.result); });
+    const db = await new Promise<IDBDatabase>(resolve => { const r = indexedDB.open('orenotameno-sc'); r.onsuccess = () => resolve(r.result); });
     const attempts = await new Promise<Record<string, unknown>[]>(resolve => { const r = db.transaction('attempts').objectStore('attempts').getAll(); r.onsuccess = () => resolve(r.result); });
     db.close(); return attempts;
   });

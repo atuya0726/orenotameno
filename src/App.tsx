@@ -270,11 +270,11 @@ function ResultDetails({ question, attempt, action }: { question: Question; atte
 }
 
 function ReviewActions({ question, attempt, action }: { question: Question; attempt: Attempt; action?: ReactNode }) {
-  const { snapshot, setReviewFlag, setReviewTerms } = useLearning();
+  const { snapshot, setReviewFlag, setReviewWord } = useLearning();
   const current = snapshot.attempts.find(saved => saved.id === attempt.id) ?? attempt;
   const marked = Boolean(current.reviewRequested || current.reviewDoubt);
   const candidates = getQuestionTerms(question);
-  const selected = current.reviewTerms ?? [];
+  const selected = snapshot.reviewWords;
   const [pending, setPending] = useState<string | null>(null);
   const [error, setError] = useState('');
   const savingRef = useRef(false);
@@ -287,11 +287,10 @@ function ReviewActions({ question, attempt, action }: { question: Question; atte
   }
   return <div className="review-actions">
     {candidates.length > 0 && <section className="review-term-picker" aria-labelledby={`review-terms-${attempt.id}`}>
-      <div className="review-term-heading"><h3 id={`review-terms-${attempt.id}`}>復習したい単語リスト</h3><span aria-live="polite">{selected.length}語選択中</span></div>
-      <p>意味がよくわからなかった単語を選んでください。</p>
+      <h3 id={`review-terms-${attempt.id}`}>復習したい単語を選択</h3>
       <ul className="review-term-list" aria-label="この問題の単語">{candidates.map(term => {
         const checked = selected.includes(term);
-        return <li key={term}><button type="button" className={cn('review-term', checked && 'review-term-selected')} aria-label={`${term}を復習する`} aria-pressed={checked} aria-busy={pending === term} disabled={pending !== null} onClick={() => void save(term, () => setReviewTerms(attempt.id, checked ? selected.filter(value => value !== term) : [...selected, term]))}>
+        return <li key={term}><button type="button" className={cn('review-term', checked && 'review-term-selected')} aria-label={`${term}を復習する`} aria-pressed={checked} aria-busy={pending === term} disabled={pending !== null} onClick={() => void save(term, () => setReviewWord(term, !checked))}>
           {pending === term ? <LoaderCircle className="animate-spin" size={15} /> : checked ? <Check size={15} /> : <Plus size={15} />}{term}
         </button></li>;
       })}</ul>
@@ -344,8 +343,31 @@ function ReviewNotebook() {
       <section className="review-summary"><span className="review-summary-icon"><RotateCcw size={25} /></span><div><span>復習する問題</span><strong>{pending.length}<small>問</small></strong></div><p>優先して復習 <strong className="review-total-count">{priorityCount}問</strong></p><div className="review-course-actions">{(['A1', 'A2'] as const).filter(course => pending.some(card => questionById.get(card.questionId)?.course === course)).map(course => <Button key={course} asChild><Link to={`/study/${course}?mode=review`}>{courses[course].name}を復習<ArrowRight size={16} /></Link></Button>)}</div></section>
       <div className="section-heading compact review-list-heading"><h2>復習する問題</h2><span className="muted">{pending.length}問</span></div>
       <div className="question-list">{pending.map(card => <QuestionRow key={card.questionId} question={questionById.get(card.questionId)!} reviewRemaining={card.remainingReviews} />)}</div>
-    </> : <Empty icon={<CheckCheck />} title="復習する問題はありません" description="問題一覧から、次の学習を進めましょう。"><Button asChild><Link to="/questions">問題を選ぶ<ArrowRight size={16} /></Link></Button></Empty>}
+    </> : snapshot.reviewWords.length > 0 ? <p className="muted">復習する問題はありません。</p> : <Empty icon={<CheckCheck />} title="復習する問題はありません" description="問題一覧から、次の学習を進めましょう。"><Button asChild><Link to="/questions">問題を選ぶ<ArrowRight size={16} /></Link></Button></Empty>}
+    <ReviewWordList />
   </>;
+}
+
+function ReviewWordList() {
+  const { snapshot, setReviewWord } = useLearning();
+  const [pending, setPending] = useState<string | null>(null);
+  const [error, setError] = useState('');
+  const saving = useRef(false);
+  async function remove(term: string) {
+    if (saving.current) return;
+    saving.current = true; setPending(term); setError('');
+    try { await setReviewWord(term, false); }
+    catch { setError('保存できませんでした。もう一度お試しください。'); }
+    finally { saving.current = false; setPending(null); }
+  }
+  return <section className="review-words" aria-labelledby="review-words-heading">
+    <h2 id="review-words-heading">復習する単語</h2>
+    {snapshot.reviewWords.length > 0 ? <ul className="review-word-list">{snapshot.reviewWords.map(term => <li key={term}>
+      <div className="review-word-content"><strong>{term}</strong><div className="review-word-questions">{questions.filter(question => getQuestionTerms(question).includes(term)).map(question => <Link key={question.id} to={`/study/${question.course}?question=${question.id}`} aria-label={`${term}が出てくる${courses[question.course].name}の問${question.number}を解く`}>{courses[question.course].name} 問{question.number}<ChevronRight size={14} /></Link>)}</div></div>
+      <button type="button" className="review-word-remove" aria-label={`${term}を復習する単語から外す`} disabled={pending !== null} aria-busy={pending === term} onClick={() => void remove(term)}>{pending === term ? <LoaderCircle className="animate-spin" size={17} /> : <X size={17} />}</button>
+    </li>)}</ul> : <p className="muted">登録した単語はありません。</p>}
+    {error && <p className="inline-error" role="alert">{error}</p>}
+  </section>;
 }
 
 function Records() {

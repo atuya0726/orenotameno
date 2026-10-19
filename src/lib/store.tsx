@@ -1,10 +1,10 @@
 import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from 'react';
-import { loadSnapshot, commitAnswer, saveDraft, saveBookmark, saveSettings, saveReviewFlag, saveReviewTerms, importBackup } from './db';
+import { loadSnapshot, commitAnswer, saveDraft, saveBookmark, saveSettings, saveReviewFlag, saveReviewWord, importBackup } from './db';
 import { emptySnapshot, type Snapshot, type Draft, type Question, type Attempt, type ReviewFlag, type Settings, type QuickAnswerInput } from './model';
 import { scheduleAnswer } from './scheduler';
 import { answerSchema } from './model';
 
-type Store = { snapshot: Snapshot; ready: boolean; error: string; clearError: () => void; updateDraft: (draft: Draft) => void; answer: (question: Question, input: QuickAnswerInput) => Promise<Attempt>; setReviewFlag: (attemptId: string, flag: ReviewFlag, active: boolean) => Promise<void>; setReviewTerms: (attemptId: string, terms: string[]) => Promise<void>; toggleBookmark: (id: string) => Promise<void>; updateSettings: (settings: Settings) => Promise<void>; restore: (text: string) => Promise<void> };
+type Store = { snapshot: Snapshot; ready: boolean; error: string; clearError: () => void; updateDraft: (draft: Draft) => void; answer: (question: Question, input: QuickAnswerInput) => Promise<Attempt>; setReviewFlag: (attemptId: string, flag: ReviewFlag, active: boolean) => Promise<void>; setReviewWord: (term: string, active: boolean) => Promise<void>; toggleBookmark: (id: string) => Promise<void>; updateSettings: (settings: Settings) => Promise<void>; restore: (text: string) => Promise<void> };
 const Context = createContext<Store | undefined>(undefined);
 export function LearningProvider({ children }: { children: ReactNode }) {
   const [snapshot, setSnapshot] = useState<Snapshot>(emptySnapshot);
@@ -32,7 +32,7 @@ export function LearningProvider({ children }: { children: ReactNode }) {
       // The complete answer is persisted atomically below before showing a result.
       await draftWrites.current.catch(() => {});
       const fresh = await loadSnapshot();
-      const { attempt, card } = scheduleAnswer(input, question, fresh.cards.find(c => c.questionId === question.id));
+      const { attempt, card } = scheduleAnswer(input, question, fresh.cards.find(c => c.questionId === question.id), undefined, fresh.reviewWords);
       await commitAnswer(attempt, card);
       await refresh();
       return attempt;
@@ -44,9 +44,9 @@ export function LearningProvider({ children }: { children: ReactNode }) {
     await saveReviewFlag(attemptId, flag, active);
     await refresh();
   }
-  async function setReviewTerms(attemptId: string, terms: string[]) {
+  async function setReviewWord(term: string, active: boolean) {
     await draftWrites.current.catch(() => {});
-    await saveReviewTerms(attemptId, terms);
+    await saveReviewWord(term, active);
     await refresh();
   }
   async function toggleBookmark(id: string) {
@@ -55,7 +55,7 @@ export function LearningProvider({ children }: { children: ReactNode }) {
   }
   async function updateSettings(settings: Settings) { await draftWrites.current; await saveSettings(settings); await refresh(); }
   async function restore(text: string) { await draftWrites.current; await importBackup(text); await refresh(); }
-  return <Context.Provider value={{ snapshot, ready, error, clearError: () => setError(''), updateDraft, answer, setReviewFlag, setReviewTerms, toggleBookmark, updateSettings, restore }}>{children}</Context.Provider>;
+  return <Context.Provider value={{ snapshot, ready, error, clearError: () => setError(''), updateDraft, answer, setReviewFlag, setReviewWord, toggleBookmark, updateSettings, restore }}>{children}</Context.Provider>;
 }
 function message(e: unknown): string { return e instanceof Error ? e.message : '学習記録の保存に失敗しました。'; }
 export function useLearning() { const store = useContext(Context); if (!store) throw new Error('LearningProvider is required'); return store; }

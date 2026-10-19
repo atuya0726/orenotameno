@@ -3,17 +3,17 @@ import { test, expect, type Page } from '@playwright/test';
 async function readRecords(page: Page) {
   return page.evaluate(async () => {
     const db = await new Promise<IDBDatabase>(resolve => {
-      const request = indexedDB.open('orenotameno-sc', 1);
+      const request = indexedDB.open('orenotameno-sc');
       request.onsuccess = () => resolve(request.result);
     });
-    const tx = db.transaction(['attempts', 'cards'], 'readonly');
+    const tx = db.transaction(['attempts', 'cards', 'reviewWords'], 'readonly');
     const read = (name: string) => new Promise<Record<string, unknown>[]>(resolve => {
       const request = tx.objectStore(name).getAll();
       request.onsuccess = () => resolve(request.result);
     });
-    const [attempts, cards] = await Promise.all([read('attempts'), read('cards')]);
+    const [attempts, cards, words] = await Promise.all([read('attempts'), read('cards'), read('reviewWords')]);
     db.close();
-    return { attempts, cards };
+    return { attempts, cards, reviewWords: words.map(word => word.term), version: db.version };
   });
 }
 
@@ -76,7 +76,7 @@ test('shows an earlier doubt flag as a review request that can be cleared', asyn
   const original = (await readRecords(page)).attempts[0];
   await page.evaluate(async id => {
     const db = await new Promise<IDBDatabase>(resolve => {
-      const request = indexedDB.open('orenotameno-sc', 1);
+      const request = indexedDB.open('orenotameno-sc');
       request.onsuccess = () => resolve(request.result);
     });
     const tx = db.transaction('attempts', 'readwrite');
@@ -98,11 +98,12 @@ test('shows an earlier doubt flag as a review request that can be cleared', asyn
 
 test('picks multiple question terms and restores them without adding an attempt', async ({ page }) => {
   await page.goto('/study/A1?question=sc-2025-autumn-a1-2');
-  await expect(page.getByRole('heading', { name: '復習したい単語リスト' })).toHaveCount(0);
+  await expect(page.getByRole('heading', { name: '復習したい単語を選択' })).toHaveCount(0);
   await page.getByRole('button', { name: 'イで回答', exact: true }).click();
-  const picker = page.getByRole('region', { name: '復習したい単語リスト' });
+  const picker = page.getByRole('region', { name: '復習したい単語を選択' });
   await expect(picker).toBeVisible();
   await expect(picker.getByRole('button')).toHaveCount(4);
+  await expect(picker.getByText(/語選択中|意味がよくわからなかった/)).toHaveCount(0);
   const roc = picker.getByRole('button', { name: 'ROC曲線を復習する', exact: true });
   const falsePositive = picker.getByRole('button', { name: '偽陽性率を復習する', exact: true });
   await roc.click();
@@ -154,10 +155,78 @@ test('keeps word picks unchanged on a failed save and allows retrying', async ({
   await expect(page.getByRole('alert')).toContainText('保存できませんでした');
   await expect(term).toHaveAttribute('aria-pressed', 'false');
   expect((await readRecords(page)).cards[0].remainingReviews).toBe(0);
+  expect((await readRecords(page)).reviewWords).toEqual([]);
   await term.click();
   await expect(term).toHaveAttribute('aria-pressed', 'true');
   expect((await readRecords(page)).cards[0].remainingReviews).toBe(2);
+  expect((await readRecords(page)).reviewWords).toEqual(['ROC曲線']);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+});
+
+test('shares a saved word between questions and removes it globally from the review notebook', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/study/A1?question=sc-2025-autumn-a1-13');
+  await page.getByRole('button', { name: 'ウで回答', exact: true }).click();
+  const word = page.getByRole('button', { name: 'デジタル署名を復習する', exact: true });
+  await word.click();
+  await expect(word).toHaveAttribute('aria-pressed', 'true');
+  await page.goto('/study/A1?question=sc-2025-autumn-a1-15');
+  await page.getByRole('button', { name: 'アで回答', exact: true }).click();
+  await expect(word).toHaveAttribute('aria-pressed', 'true');
+  await page.reload();
+  await page.getByRole('button', { name: 'アで回答', exact: true }).click();
+  await expect(word).toHaveAttribute('aria-pressed', 'true');
+  const saved = await readRecords(page);
+  expect(saved.reviewWords).toEqual(['デジタル署名']);
+  expect(saved.cards.every(card => card.remainingReviews === 2)).toBe(true);
+  await page.goto('/reviews');
+  const list = page.getByRole('region', { name: '復習する単語', exact: true });
+  await expect(list.getByRole('listitem')).toHaveCount(1);
+  await expect(list.getByRole('link', { name: 'デジタル署名が出てくる科目A1の問13を解く' })).toBeVisible();
+  await expect(list.getByRole('link', { name: 'デジタル署名が出てくる科目A1の問15を解く' })).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await list.getByRole('button', { name: 'デジタル署名を復習する単語から外す' }).click();
+  await expect(list.getByRole('listitem')).toHaveCount(0);
+  const cleared = await readRecords(page);
+  expect(cleared.reviewWords).toEqual([]);
+  expect(cleared.cards.every(card => card.remainingReviews === 0)).toBe(true);
+  await page.goto(`/record/${saved.attempts[0].id}`);
+  await page.reload();
+  await expect(word).toHaveAttribute('aria-pressed', 'false');
+});
+
+test('upgrades existing per-answer word selections without losing learning records', async ({ page }) => {
+  await page.goto('/study/A1?question=sc-2025-autumn-a1-2');
+  await page.getByRole('button', { name: 'イで回答', exact: true }).click();
+  const word = page.getByRole('button', { name: 'ROC曲線を復習する', exact: true });
+  await word.click();
+  await expect(word).toHaveAttribute('aria-pressed', 'true');
+  const [original] = (await readRecords(page)).attempts;
+  // Recreate the previous database schema with an existing answer as the upgrade fixture.
+  await page.evaluate(async attempt => {
+    await new Promise<void>((resolve, reject) => { const request = indexedDB.deleteDatabase('orenotameno-sc'); request.onsuccess = () => resolve(); request.onerror = () => reject(request.error); });
+    const db = await new Promise<IDBDatabase>((resolve, reject) => {
+      const request = indexedDB.open('orenotameno-sc', 1);
+      request.onupgradeneeded = () => {
+        for (const [name, keyPath] of [['attempts', 'id'], ['cards', 'questionId'], ['bookmarks', 'questionId'], ['drafts', 'questionId'], ['settings', 'name']]) request.result.createObjectStore(name, { keyPath });
+      };
+      request.onsuccess = () => resolve(request.result); request.onerror = () => reject(request.error);
+    });
+    const tx = db.transaction('attempts', 'readwrite');
+    const done = new Promise<void>((resolve, reject) => { tx.oncomplete = () => resolve(); tx.onabort = () => reject(tx.error); });
+    tx.objectStore('attempts').put(attempt);
+    await done; db.close();
+  }, original);
+  await page.goto(`/record/${original.id}`);
+  await expect(word).toHaveAttribute('aria-pressed', 'true');
+  const restored = await readRecords(page);
+  expect(restored.version).toBe(2);
+  expect(restored.reviewWords).toEqual(['ROC曲線']);
+  expect(restored.attempts).toHaveLength(1);
+  expect(restored.attempts[0].id).toBe(original.id);
+  expect(restored.cards[0].remainingReviews).toBe(2);
+  await page.reload();
+  expect((await readRecords(page)).reviewWords).toEqual(['ROC曲線']);
 });
 
 test('keeps the saved state on failure and allows retrying the request', async ({ page }) => {
