@@ -37,6 +37,22 @@ test('practices certificate purposes separately and shows only one B point when 
   await expect(page.locator('.rubric-item')).toHaveCount(1);
 });
 
+test('opens crashing and fast tracking as separate practices with reciprocal related links', async ({ page }) => {
+  for (const [name, id] of [['クラッシング', 'schedule-compression'], ['ファストトラッキング', 'fast-tracking']]) {
+    await page.goto('/glossary');
+    await page.getByRole('textbox', { name: '用語を検索' }).fill(name);
+    await expect(page.locator('.term-card')).toHaveCount(1);
+    await page.getByRole('link', { name: '説明する', exact: true }).click();
+    await expect(page).toHaveURL(new RegExp(`/glossary/${id}$`));
+    await expect(page.getByRole('heading', { name, level: 1, exact: true })).toBeVisible();
+    await expect(page.getByRole('textbox', { name: `${name}についての説明` })).toBeVisible();
+  }
+  await page.getByRole('link', { name: 'クラッシング', exact: true }).click();
+  await expect(page).toHaveURL(/\/glossary\/schedule-compression$/);
+  await page.getByRole('link', { name: 'ファストトラッキング', exact: true }).click();
+  await expect(page).toHaveURL(/\/glossary\/fast-tracking$/);
+});
+
 test('searches terms and persists drafts without exposing the reference first', async ({ page }) => {
   await page.goto('/glossary');
   await page.getByRole('textbox', { name: '用語を検索' }).fill('Digital signature');

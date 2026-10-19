@@ -934,61 +934,49 @@ export const terms: Term[] = [
   },
   {
     "id": "ids-ips",
-    "name": "IDSとIPS",
+    "name": "IDS",
     "aliases": [
-      "IDS",
-      "IPS"
+      "侵入検知システム"
     ],
-    "reading": "Intrusion Detection / Prevention System",
+    "reading": "Intrusion Detection System",
     "category": "ネットワークセキュリティ",
-    "definition": "IDSは不正な通信などを検知して通知する仕組みです。IPSは検知に加えて、通信の遮断などで侵入を防止します。検知と防止の役割を区別します。",
-    "example": "不審な通信を検知して管理者へ警告するのがIDS、通信経路上でそのパケットを遮断するのがIPSの利用例です。",
+    "definition": "通信やホストの動作を監視して、不正アクセスや攻撃の兆候を検知し、管理者に警告する仕組みです。",
+    "example": "不審な通信を検知して管理者に通知します。",
     "related": [
+      "ips",
       "reverse-proxy"
     ],
     "criteria": [
       {
-        "id": "ids",
-        "title": "IDSは不正な通信などを検知する",
-        "hint": "IDSのDは何をする役割ですか？"
-      },
-      {
-        "id": "notify",
-        "title": "IDSは警告や通知を行う",
-        "hint": "検知した結果をどのように扱いますか？"
-      },
-      {
-        "id": "ips",
-        "title": "IPSは遮断などで防止する",
-        "hint": "IPSは検知後にどのような操作ができますか？"
-      },
-      {
-        "id": "detection",
-        "title": "シグネチャ型と異常（アノマリ）型の検知方式",
-        "hint": "不正をどのような方法で見つけますか？"
-      },
-      {
-        "id": "false-positive",
-        "title": "正常な通信を不正と判断する誤検知（フォールスポジティブ）と、不正を見逃す検知漏れ（フォールスネガティブ）",
-        "hint": "検知の誤りには、どんな種類がありますか？",
-        "level": "A"
-      },
-      {
-        "id": "placement",
-        "title": "IPSは通信経路上に置くため誤検知が正常な通信の遮断につながり、IDSはミラーポートなどで監視する",
-        "hint": "IDSとIPSは、ネットワークのどこに置きますか？誤検知の影響はどう違いますか？",
-        "level": "A"
-      },
-      {
-        "id": "encrypted",
-        "title": "暗号化された通信は中身を検査できないため、TLSを復号して検査する仕組みなどが必要になる",
-        "hint": "HTTPSの通信に攻撃が含まれていたら、IDS・IPSはどうなりますか？",
-        "level": "S"
+        "id": "meaning",
+        "title": "不正な通信や動作を検知し、警告・通知する",
+        "hint": "不正を見つけた後、何をしますか？"
       }
     ],
-    "commonMistakes": [
-      "IDSの中心は検知・通知です。通信の遮断による防止はIPSの役割として区別しましょう。"
-    ]
+    "commonMistakes": []
+  },
+  {
+    "id": "ips",
+    "name": "IPS",
+    "aliases": [
+      "侵入防止システム"
+    ],
+    "reading": "Intrusion Prevention System",
+    "category": "ネットワークセキュリティ",
+    "definition": "不正な通信や攻撃を検知し、通信の遮断などによって侵入を防止する仕組みです。",
+    "example": "攻撃と判断したパケットを遮断します。",
+    "related": [
+      "ids-ips",
+      "reverse-proxy"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "不正な通信を検知し、遮断などによって侵入を防止する",
+        "hint": "検知するだけでなく、どのように対処しますか？"
+      }
+    ],
+    "commonMistakes": []
   },
   {
     "id": "pki",
@@ -2803,15 +2791,16 @@ export const terms: Term[] = [
   {
     "id": "critical-path",
     "name": "クリティカルパス",
-    "aliases": [
-      "ダミー作業",
-      "所要日数"
-    ],
     "reading": "Critical path",
     "category": "プロジェクト管理",
     "definition": "作業の順序関係をつないだ経路のうち、所要日数の合計が最も長い経路です。この経路上の作業が遅れると、プロジェクト全体が遅れます。",
     "example": "A→B→Eが28日、A→B→Dが27日なら、A→B→Eがクリティカルパスで、全体の期間は28日です。",
-    "related": [],
+    "related": [
+      "schedule-compression",
+      "fast-tracking",
+      "dummy-activity",
+      "duration"
+    ],
     "criteria": [
       {
         "id": "longest",
@@ -2833,18 +2822,6 @@ export const terms: Term[] = [
         "title": "短縮するとクリティカルパスが別の経路に移り、短縮量が限られることがある",
         "hint": "ある経路を大きく短縮しても、全体がそれほど縮まないのはなぜですか？",
         "level": "A"
-      },
-      {
-        "id": "compress",
-        "title": "資源を追加するクラッシング、作業を並行させるファストトラッキングで短縮する",
-        "hint": "スケジュールを短縮する二つの技法は何ですか？",
-        "level": "A"
-      },
-      {
-        "id": "dummy",
-        "title": "アローダイアグラムのダミー作業は、所要日数0で順序関係だけを表す",
-        "hint": "点線の矢印は何を表しますか？",
-        "level": "S"
       }
     ],
     "commonMistakes": [
@@ -2854,48 +2831,47 @@ export const terms: Term[] = [
   },
   {
     "id": "rto-rpo",
-    "name": "RTOとRPO",
+    "name": "RTO",
     "aliases": [
-      "RTO",
-      "RPO"
+      "復旧目標時間"
     ],
-    "reading": "Recovery Time Objective / Recovery Point Objective",
+    "reading": "Recovery Time Objective",
     "category": "サービス管理",
-    "definition": "RTOは中断からどれだけの時間で復旧するか、RPOはどの時点までのデータを復旧するかの目標です。復旧の水準を表すRLOと合わせて、事業継続計画で定めます。",
-    "example": "「障害から4時間以内に、前日の夜間バックアップ時点のデータで再開する」なら、RTOは4時間、RPOは前日夜間の時点です。",
-    "related": [],
+    "definition": "障害などで業務やサービスが中断してから、復旧するまでに許容する時間の目標です。復旧目標時間とも呼びます。",
+    "example": "障害発生から4時間以内に業務を再開する、と定めます。",
+    "related": [
+      "rpo"
+    ],
     "criteria": [
       {
-        "id": "rto",
-        "title": "RTOは復旧までの目標時間",
-        "hint": "「いつまでに」を表すのはどちらですか？"
-      },
-      {
-        "id": "rpo",
-        "title": "RPOはどの時点のデータまで戻すかの目標",
-        "hint": "「どの時点のデータまで」を表すのはどちらですか？"
-      },
-      {
-        "id": "rlo",
-        "title": "RLOはどの水準（サービスの範囲・品質）まで復旧するかの目標",
-        "hint": "「どこまで」の水準を表す指標は何ですか？"
-      },
-      {
-        "id": "backup",
-        "title": "RPOを短くするにはバックアップやレプリケーションの頻度を上げる",
-        "hint": "失うデータを少なくするには、何をしますか？",
-        "level": "A"
-      },
-      {
-        "id": "bia",
-        "title": "事業影響度分析（BIA）の結果から、業務ごとに目標を決める",
-        "hint": "RTOやRPOの値は、何に基づいて決めますか？",
-        "level": "S"
+        "id": "meaning",
+        "title": "中断から復旧までの目標時間を表す",
+        "hint": "「いつまでに復旧するか」を表す指標は？"
       }
     ],
-    "commonMistakes": [
-      "「中断する1時間前の時点」はRPOです。RTOと取り違えた選択肢がよく出ます。"
-    ]
+    "commonMistakes": []
+  },
+  {
+    "id": "rpo",
+    "name": "RPO",
+    "aliases": [
+      "復旧目標時点"
+    ],
+    "reading": "Recovery Point Objective",
+    "category": "サービス管理",
+    "definition": "障害から復旧するとき、どの時点のデータまで戻せるようにするかの目標です。復旧目標時点とも呼びます。",
+    "example": "障害発生の1時間前の時点までのデータを復旧できるようにします。",
+    "related": [
+      "rto-rpo"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "どの時点のデータまで復旧するかの目標を表す",
+        "hint": "復旧までの時間ではなく、何の時点を表しますか？"
+      }
+    ],
+    "commonMistakes": []
   },
   {
     "id": "application-control",
@@ -3269,50 +3245,43 @@ export const terms: Term[] = [
   },
   {
     "id": "poisson-exponential",
-    "name": "ポアソン分布と指数分布",
-    "aliases": [
-      "ポアソン分布",
-      "指数分布"
-    ],
-    "reading": "Poisson / exponential distribution",
+    "name": "ポアソン分布",
+    "reading": "Poisson distribution",
     "category": "基礎理論",
-    "definition": "単位時間に到着する件数がポアソン分布に従うとき、到着の間隔は指数分布に従います。M/M/1待ち行列の「M」は、到着とサービス時間がこの性質（ランダム）を持つことを表します。",
-    "example": "1時間に平均6人がランダムに来る窓口では、来店数はポアソン分布、来店の間隔は平均10分の指数分布になります。",
+    "definition": "事象が一定の割合で独立して発生するとき、一定時間や一定範囲で発生する回数を表す確率分布です。",
+    "example": "1時間に平均6人がランダムに到着する窓口で、1時間に到着する人数を扱います。",
     "related": [
+      "exponential-distribution",
       "mm1-queue"
     ],
     "criteria": [
       {
-        "id": "count",
-        "title": "ポアソン分布は一定時間内に起きる回数の分布",
-        "hint": "何の「数」を表す分布ですか？"
-      },
-      {
-        "id": "interval",
-        "title": "指数分布は次に起きるまでの間隔の分布",
-        "hint": "到着と到着の「あいだ」はどの分布ですか？"
-      },
-      {
-        "id": "random",
-        "title": "どちらも事象がランダムに独立して起きる前提",
-        "hint": "前の到着が次に影響しますか？"
-      },
-      {
-        "id": "mm1",
-        "title": "M/M/1のMは到着間隔とサービス時間が指数分布（マルコフ性）であることを示す",
-        "hint": "ケンドール記号のMは何を意味しますか？",
-        "level": "A"
-      },
-      {
-        "id": "memoryless",
-        "title": "指数分布は無記憶性を持ち、待った時間が残りの待ち時間に影響しない",
-        "hint": "すでに5分待ったら次の到着は早まりますか？",
-        "level": "S"
+        "id": "meaning",
+        "title": "一定時間や一定範囲に起こる事象の回数を表す分布",
+        "hint": "到着の間隔ではなく、何の分布ですか？"
       }
     ],
-    "commonMistakes": [
-      "到着「数」を指数分布、到着「間隔」をポアソン分布と逆に覚える誤りがあります。"
-    ]
+    "commonMistakes": []
+  },
+  {
+    "id": "exponential-distribution",
+    "name": "指数分布",
+    "reading": "Exponential distribution",
+    "category": "基礎理論",
+    "definition": "事象が一定の割合で独立して発生するとき、次の事象が起きるまでの時間などを表す確率分布です。",
+    "example": "平均10分間隔でランダムに到着する窓口で、次の人が来るまでの時間を扱います。",
+    "related": [
+      "poisson-exponential",
+      "mm1-queue"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "次の事象が起きるまでの時間や間隔を表す分布",
+        "hint": "到着する人数ではなく、何の分布ですか？"
+      }
+    ],
+    "commonMistakes": []
   },
   {
     "id": "roc-curve",
@@ -3569,50 +3538,93 @@ export const terms: Term[] = [
   },
   {
     "id": "search-linear-binary",
-    "name": "線形探索と2分探索",
+    "name": "線形探索",
     "aliases": [
-      "線形探索",
-      "2分探索",
-      "平均比較回数",
-      "昇順"
+      "逐次探索"
     ],
-    "reading": "Linear search / binary search",
+    "reading": "Linear search",
     "category": "基礎理論",
-    "definition": "線形探索は先頭から順に比べる方法で、n件なら平均約n/2回比較します。2分探索は昇順などに整列済みのデータで中央と比べて範囲を半分にしていく方法で、比較回数は約log₂n回です。",
-    "example": "1,000件なら線形探索は平均約500回、2分探索は最大約10回の比較で見つかります。",
-    "related": [],
+    "definition": "データを先頭から順番に調べ、目的の値を探す方法です。データが整列されていなくても使えます。",
+    "example": "名簿を上から1件ずつ確認して名前を探します。",
+    "related": [
+      "binary-search",
+      "average-comparisons",
+      "ascending-order"
+    ],
     "criteria": [
       {
-        "id": "linear",
-        "title": "線形探索は先頭から順に比較し、平均比較回数は約n/2回",
-        "hint": "n件のデータで平均何回比べますか？"
-      },
-      {
-        "id": "binary",
-        "title": "2分探索は中央と比較して範囲を半分ずつ絞り、約log₂n回",
-        "hint": "比較のたびに探索範囲はどうなりますか？"
-      },
-      {
-        "id": "sorted",
-        "title": "2分探索はデータが整列済み（昇順など）である必要がある",
-        "hint": "2分探索の前提条件は？"
-      },
-      {
-        "id": "block",
-        "title": "ブロックに分けて先にブロックを探す方法は、ブロック数と中の件数の比較回数を足して考える",
-        "hint": "2段階で探すときの平均比較回数は？",
-        "level": "A"
-      },
-      {
-        "id": "order",
-        "title": "計算量は線形探索がO(n)、2分探索がO(log n)",
-        "hint": "オーダ表記では？",
-        "level": "S"
+        "id": "meaning",
+        "title": "データを先頭から順に比較して目的の値を探す",
+        "hint": "どの順番でデータを調べますか？"
       }
     ],
-    "commonMistakes": [
-      "2分探索を整列していないデータに使える、とする誤りがあります。"
-    ]
+    "commonMistakes": []
+  },
+  {
+    "id": "binary-search",
+    "name": "2分探索",
+    "aliases": [
+      "二分探索"
+    ],
+    "reading": "Binary search",
+    "category": "基礎理論",
+    "definition": "整列済みのデータの中央と目的の値を比較し、探索範囲を半分ずつに絞って探す方法です。",
+    "example": "昇順の配列で中央の値と比較し、大きければ後半だけを探します。",
+    "related": [
+      "search-linear-binary",
+      "average-comparisons",
+      "ascending-order"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "整列済みのデータで、比較のたびに探索範囲を半分にする",
+        "hint": "データの前提条件と、探索範囲の絞り方は？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "average-comparisons",
+    "name": "平均比較回数",
+    "reading": "Average number of comparisons",
+    "category": "基礎理論",
+    "definition": "探索などの処理で、1回の処理当たりに値を比較する回数の平均です。入力や探索位置ごとの比較回数を、その起こりやすさも考慮して求めます。",
+    "example": "n件から等確率で見つかる線形探索では、平均比較回数は(n＋1)÷2回です。",
+    "related": [
+      "search-linear-binary",
+      "binary-search",
+      "ascending-order"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "処理に必要な比較回数の平均を表す",
+        "hint": "何の回数を平均したものですか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "ascending-order",
+    "name": "昇順",
+    "reading": "Ascending order",
+    "category": "基礎理論",
+    "definition": "値を小さいものから大きいものへ順に並べることです。",
+    "example": "数値の1、3、5、8という並びは昇順です。",
+    "related": [
+      "search-linear-binary",
+      "binary-search",
+      "average-comparisons"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "小さい値から大きい値へ並べる順序",
+        "hint": "値が増える順ですか、減る順ですか？"
+      }
+    ],
+    "commonMistakes": []
   },
   {
     "id": "bisection",
@@ -4516,40 +4528,40 @@ export const terms: Term[] = [
   },
   {
     "id": "dom-sax",
-    "name": "DOMとSAX",
-    "aliases": [
-      "DOM",
-      "SAX"
-    ],
-    "reading": "DOM / SAX",
+    "name": "DOM",
+    "reading": "Document Object Model",
     "category": "マルチメディア",
-    "definition": "XMLやHTMLを扱う方式です。DOMは文書全体を木構造としてメモリに読み込んで自由に参照・変更でき、SAXは先頭から順に読みながらイベントとして処理するためメモリ消費が少なくなります。",
-    "example": "巨大なログXMLを1回読むだけならSAX、Webページの要素を書き換えるならDOMを使います。",
+    "definition": "XMLやHTMLの文書を木構造のオブジェクトとして扱い、要素などをプログラムから参照・変更するための仕組みです。",
+    "example": "JavaScriptから文書中の要素を取得して表示を書き換えます。",
     "related": [
+      "sax",
       "xml"
     ],
     "criteria": [
       {
-        "id": "dom",
-        "title": "DOMは文書全体を木構造として読み込み、任意に参照・変更できる",
-        "hint": "DOMの読み方は？"
-      },
+        "id": "meaning",
+        "title": "文書を木構造のオブジェクトとして参照・変更できる仕組み",
+        "hint": "文書をどのような構造として扱いますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "sax",
+    "name": "SAX",
+    "reading": "Simple API for XML",
+    "category": "マルチメディア",
+    "definition": "XMLを先頭から順番に読み、要素の開始や終了などをイベントとして通知して処理する仕組みです。文書全体を木構造として保持せずに処理できます。",
+    "example": "大量のXMLを読みながら、必要な要素の値を順次集計します。",
+    "related": [
+      "dom-sax",
+      "xml"
+    ],
+    "criteria": [
       {
-        "id": "sax",
-        "title": "SAXは順に読みながらイベントで処理し、メモリ消費が少ない",
-        "hint": "SAXの読み方は？"
-      },
-      {
-        "id": "ajax",
-        "title": "Ajaxでは取得したデータでDOMを書き換えて画面を部分更新する",
-        "hint": "Webで画面を部分更新するには？",
-        "level": "A"
-      },
-      {
-        "id": "random",
-        "title": "SAXは前に戻って参照できない",
-        "hint": "SAXでできないことは？",
-        "level": "S"
+        "id": "meaning",
+        "title": "XMLを順に読み、要素などのイベントに応じて処理する",
+        "hint": "文書全体を保持せず、どのように読み進めますか？"
       }
     ],
     "commonMistakes": []
@@ -4639,45 +4651,60 @@ export const terms: Term[] = [
   },
   {
     "id": "risc-cisc",
-    "name": "RISCとCISC",
-    "aliases": [
-      "RISC",
-      "CISC",
-      "命令セット"
-    ],
-    "reading": "RISC / CISC",
+    "name": "RISC",
+    "reading": "Reduced Instruction Set Computer",
     "category": "コンピュータ構成",
-    "definition": "CPUの命令セットの設計方針です。RISCは単純で長さのそろった命令を少数持ち、パイプラインで高速に実行します。CISCは複雑で多機能な命令を多く持ち、1命令で多くの処理をします。",
-    "example": "スマートフォンのARMはRISC、従来のx86はCISCの代表です。",
-    "related": [],
+    "definition": "単純な命令を中心に構成するCPUの設計方式です。命令の実行をそろえやすく、パイプライン処理などによる高速化に適しています。",
+    "example": "単純なロード命令や演算命令を組み合わせて処理します。",
+    "related": [
+      "cisc",
+      "instruction-set"
+    ],
     "criteria": [
       {
-        "id": "risc",
-        "title": "RISCは単純・固定長の命令を少数持ち、1クロックで実行しやすい",
-        "hint": "RISCの命令の特徴は？"
-      },
+        "id": "meaning",
+        "title": "単純な命令を中心とした命令セットを採用するCPUの方式",
+        "hint": "命令の複雑さにどのような特徴がありますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "cisc",
+    "name": "CISC",
+    "reading": "Complex Instruction Set Computer",
+    "category": "コンピュータ構成",
+    "definition": "複雑で多機能な命令を含む命令セットを採用するCPUの設計方式です。1命令で複数の操作を行える命令などを持ちます。",
+    "example": "メモリのデータを読み出して演算する処理を、一つの命令で指定します。",
+    "related": [
+      "risc-cisc",
+      "instruction-set"
+    ],
+    "criteria": [
       {
-        "id": "cisc",
-        "title": "CISCは複雑で可変長の命令を多く持つ",
-        "hint": "CISCの命令の特徴は？"
-      },
+        "id": "meaning",
+        "title": "複雑で多機能な命令を含む命令セットを採用するCPUの方式",
+        "hint": "1命令で行う処理にどのような特徴がありますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "instruction-set",
+    "name": "命令セット",
+    "reading": "Instruction set",
+    "category": "コンピュータ構成",
+    "definition": "CPUが実行できる機械語命令の集合です。演算やデータ転送、分岐などの命令の種類や形式を定めます。",
+    "example": "CPUごとに、実行できる加算命令や分岐命令の形式が決まっています。",
+    "related": [
+      "risc-cisc",
+      "cisc"
+    ],
+    "criteria": [
       {
-        "id": "pipeline",
-        "title": "RISCは命令がそろっているためパイプライン処理に向く",
-        "hint": "RISCが高速化しやすい理由は？",
-        "level": "A"
-      },
-      {
-        "id": "wired",
-        "title": "RISCはワイヤードロジック、CISCはマイクロプログラムで制御することが多い",
-        "hint": "制御方式の違いは？",
-        "level": "A"
-      },
-      {
-        "id": "modern",
-        "title": "現在のx86は内部でCISC命令をRISC的な命令に分解して実行する",
-        "hint": "今のCPUはどちらか一方ですか？",
-        "level": "S"
+        "id": "meaning",
+        "title": "CPUが実行できる命令の集合",
+        "hint": "何の命令を集めたものですか？"
       }
     ],
     "commonMistakes": []
@@ -4810,40 +4837,66 @@ export const terms: Term[] = [
   },
   {
     "id": "throughput",
-    "name": "スループットと応答時間",
-    "aliases": [
-      "スループット",
-      "応答時間"
-    ],
-    "reading": "Throughput / response time",
+    "name": "スループット",
+    "reading": "Throughput",
     "category": "システム構成",
-    "definition": "スループットは単位時間に処理できる仕事の量、応答時間は要求を出してから最初の応答が返るまでの時間です。どちらもシステムの性能を表す代表的な指標です。",
-    "example": "1秒に500件の注文を処理できればスループットは500件/秒、1件の画面表示に0.3秒かかれば応答時間は0.3秒です。",
+    "definition": "システムが単位時間当たりに処理できる仕事やデータの量を表す性能指標です。",
+    "example": "1秒間に500件の注文を処理するなら、500件/秒です。",
     "related": [
+      "response-time",
+      "turnaround-time",
       "capacity-planning"
     ],
     "criteria": [
       {
-        "id": "throughput",
-        "title": "スループットは単位時間当たりの処理量",
-        "hint": "どれだけ「多く」処理できるかの指標は？"
-      },
+        "id": "meaning",
+        "title": "単位時間当たりの処理量を表す",
+        "hint": "何を時間で割った指標ですか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "response-time",
+    "name": "応答時間",
+    "aliases": [
+      "レスポンスタイム"
+    ],
+    "reading": "Response time",
+    "category": "システム構成",
+    "definition": "要求を出してから、その要求に対する応答が返るまでにかかる時間を表す性能指標です。測定では応答開始や完了などの終点を定めます。",
+    "example": "検索ボタンを押してから結果が返るまでの時間を測ります。",
+    "related": [
+      "throughput",
+      "turnaround-time",
+      "capacity-planning"
+    ],
+    "criteria": [
       {
-        "id": "response",
-        "title": "応答時間は要求から応答開始までの時間",
-        "hint": "どれだけ「早く」返るかの指標は？"
-      },
+        "id": "meaning",
+        "title": "要求を出してから応答が返るまでにかかる時間",
+        "hint": "どの時点からどの時点までの時間ですか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "turnaround-time",
+    "name": "ターンアラウンドタイム",
+    "reading": "Turnaround time",
+    "category": "システム構成",
+    "definition": "ジョブなどを依頼してから、処理が完了して結果をすべて受け取るまでにかかる時間です。",
+    "example": "夜間バッチを依頼してから、出力結果を受け取るまでの時間を測ります。",
+    "related": [
+      "throughput",
+      "response-time",
+      "capacity-planning"
+    ],
+    "criteria": [
       {
-        "id": "turnaround",
-        "title": "ターンアラウンドタイムはジョブを出してから結果をすべて受け取るまでの時間",
-        "hint": "バッチ処理で使う時間の指標は？",
-        "level": "A"
-      },
-      {
-        "id": "tradeoff",
-        "title": "多重度を上げるとスループットは上がっても応答時間は悪化し得る",
-        "hint": "両者は常に両立しますか？",
-        "level": "S"
+        "id": "meaning",
+        "title": "処理を依頼してから結果をすべて受け取るまでの時間",
+        "hint": "処理のどの時点までを測りますか？"
       }
     ],
     "commonMistakes": []
@@ -5027,50 +5080,49 @@ export const terms: Term[] = [
   },
   {
     "id": "mtbf-mttr",
-    "name": "MTBFとMTTR",
+    "name": "MTBF",
     "aliases": [
-      "MTBF",
-      "MTTR"
+      "平均故障間隔"
     ],
-    "reading": "MTBF / MTTR",
+    "reading": "Mean Time Between Failures",
     "category": "システム構成",
-    "definition": "MTBFは故障してから次に故障するまでの平均稼働時間、MTTRは故障から修理完了までの平均時間です。稼働率は MTBF ÷（MTBF＋MTTR）で求めます。",
-    "example": "MTBFが990時間、MTTRが10時間なら、稼働率は990÷1000＝0.99です。",
+    "definition": "修理して使用するシステムなどが、故障と故障の間に正常に稼働する時間の平均です。平均故障間隔とも呼び、信頼性の指標になります。",
+    "example": "合計990時間稼働する間に10回故障したなら、MTBFは99時間です。",
     "related": [
+      "mttr",
       "availability"
     ],
     "criteria": [
       {
-        "id": "mtbf",
-        "title": "MTBFは平均故障間隔（平均して何時間動き続けるか）",
-        "hint": "MTBFは何の平均ですか？"
-      },
-      {
-        "id": "mttr",
-        "title": "MTTRは平均修理時間",
-        "hint": "MTTRは何の平均ですか？"
-      },
-      {
-        "id": "availability",
-        "title": "稼働率＝MTBF÷(MTBF＋MTTR)",
-        "hint": "稼働率はどう求めますか？"
-      },
-      {
-        "id": "improve",
-        "title": "MTBFを延ばす（信頼性）かMTTRを縮める（保守性）と稼働率が上がる",
-        "hint": "稼働率を上げる方法は？",
-        "level": "A"
-      },
-      {
-        "id": "rate",
-        "title": "故障率はMTBFの逆数",
-        "hint": "故障率とMTBFの関係は？",
-        "level": "S"
+        "id": "meaning",
+        "title": "故障と故障の間の正常稼働時間の平均",
+        "hint": "修理している時間ではなく、何の平均ですか？"
       }
     ],
-    "commonMistakes": [
-      "稼働率をMTTR÷MTBFとするなど式を取り違える誤りがあります。"
-    ]
+    "commonMistakes": []
+  },
+  {
+    "id": "mttr",
+    "name": "MTTR",
+    "aliases": [
+      "平均修理時間"
+    ],
+    "reading": "Mean Time To Repair",
+    "category": "システム構成",
+    "definition": "故障したシステムなどの修理にかかる時間の平均です。平均修理時間とも呼び、保守性の指標になります。",
+    "example": "10回の修理に合計20時間かかったなら、MTTRは2時間です。",
+    "related": [
+      "mtbf-mttr",
+      "availability"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "故障から修理完了までにかかる時間の平均",
+        "hint": "稼働時間ではなく、何の平均ですか？"
+      }
+    ],
+    "commonMistakes": []
   },
   {
     "id": "virtual-memory",
@@ -5571,52 +5623,91 @@ export const terms: Term[] = [
   },
   {
     "id": "fail-safe",
-    "name": "フェールセーフとフェールソフト",
-    "aliases": [
-      "フェールセーフ",
-      "フェールソフト",
-      "フールプルーフ"
-    ],
-    "reading": "Fail-safe / fail-soft",
+    "name": "フェールセーフ",
+    "reading": "Fail-safe",
     "category": "システム構成",
-    "definition": "どちらも故障時の考え方です。フェールセーフは故障したら安全側に倒れるようにし、フェールソフトは故障した部分を切り離して機能を縮小しながら動作を続けます。",
-    "example": "故障した信号機を赤点滅にするのはフェールセーフ、エンジンが1基止まっても残りで飛ぶ航空機はフェールソフトです。",
+    "definition": "装置やシステムが故障したとき、安全な状態に移行するように設計する考え方です。",
+    "example": "制御装置が故障したら機械を停止して、事故を防ぐようにします。",
     "related": [
+      "fail-soft",
+      "foolproof",
+      "fail-secure",
       "fault-tolerance"
     ],
     "criteria": [
       {
-        "id": "safe",
-        "title": "フェールセーフは故障時に安全な状態に移行させる",
-        "hint": "故障したらどちらに倒しますか？"
-      },
-      {
-        "id": "soft",
-        "title": "フェールソフトは機能を縮小しても稼働を続ける",
-        "hint": "止めずに続けるのは？"
-      },
-      {
-        "id": "foolproof",
-        "title": "フールプルーフは人の誤操作を防ぐ（誤っても危険にならない）設計",
-        "hint": "人の操作ミスへの対策は？",
-        "level": "A"
-      },
-      {
-        "id": "avoid",
-        "title": "フォールトアボイダンスは故障そのものを起こさないよう高品質部品などを使う",
-        "hint": "故障を起こさない考え方は？",
-        "level": "A"
-      },
-      {
-        "id": "fail-secure",
-        "title": "セキュリティでは故障時に閉じる（拒否する）フェールセキュアが重視される",
-        "hint": "セキュリティ機器が故障したら通すべきですか？",
-        "level": "S"
+        "id": "meaning",
+        "title": "故障したときに安全な状態になるよう設計する",
+        "hint": "故障時にどのような状態へ移しますか？"
       }
     ],
-    "commonMistakes": [
-      "フェールセーフとフェールソフトを取り違える誤りがあります。"
-    ]
+    "commonMistakes": []
+  },
+  {
+    "id": "fail-soft",
+    "name": "フェールソフト",
+    "reading": "Fail-soft",
+    "category": "システム構成",
+    "definition": "システムの一部が故障しても、機能や性能を縮小して動作を継続できるようにする考え方です。",
+    "example": "故障した装置を切り離し、残りの装置でサービスを続けます。",
+    "related": [
+      "fail-safe",
+      "foolproof",
+      "fail-secure",
+      "fault-tolerance"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "故障時に機能や性能を縮小しながら稼働を続ける",
+        "hint": "すべて止める代わりに、どのように動き続けますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "foolproof",
+    "name": "フールプルーフ",
+    "reading": "Foolproof",
+    "category": "システム構成",
+    "definition": "人が誤操作をしにくくし、誤操作をしても危険な状態にならないように設計する考え方です。",
+    "example": "扉が開いている間は機械が動かないようにします。",
+    "related": [
+      "fail-safe",
+      "fail-soft",
+      "fail-secure",
+      "fault-tolerance"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "人の誤操作を防ぎ、誤って操作しても危険にならないよう設計する",
+        "hint": "機器の故障ではなく、誰のミスへの対策ですか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "fail-secure",
+    "name": "フェールセキュア",
+    "reading": "Fail-secure",
+    "category": "システム構成",
+    "definition": "故障などの異常が起きても、アクセスを拒否するなどしてセキュリティを維持する設計の考え方です。",
+    "example": "認証機能が故障したとき、認証できない利用者のアクセスを拒否します。",
+    "related": [
+      "fail-safe",
+      "fail-soft",
+      "foolproof",
+      "fault-tolerance"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "異常時にもアクセス拒否などによってセキュリティを維持する",
+        "hint": "認証できない状態になったらアクセスをどう扱いますか？"
+      }
+    ],
+    "commonMistakes": []
   },
   {
     "id": "pipeline",
@@ -5706,40 +5797,84 @@ export const terms: Term[] = [
   },
   {
     "id": "scaling",
-    "name": "スケールアウトとスケールアップ",
-    "aliases": [
-      "スケールイン",
-      "スケールアウト",
-      "スケールアップ",
-      "スケールダウン"
-    ],
-    "reading": "Scale out / scale up",
+    "name": "スケールアウト",
+    "reading": "Scale out",
     "category": "システム構成",
-    "definition": "処理能力を変える方法です。スケールアウトはサーバの台数を増やし、スケールアップはCPUやメモリなど1台の性能を上げます。逆に台数を減らすのがスケールイン、性能を下げるのがスケールダウンです。",
-    "example": "アクセスが集中する日だけWebサーバを4台から8台に増やすのはスケールアウト、終わったら4台に戻すのはスケールインです。",
-    "related": [],
+    "definition": "サーバーなどの台数を増やして、システム全体の処理能力を高める方法です。",
+    "example": "Webサーバーを4台から8台に増やして負荷を分散します。",
+    "related": [
+      "scale-up",
+      "scale-in",
+      "scale-down"
+    ],
     "criteria": [
       {
-        "id": "out",
-        "title": "スケールアウトは台数を増やし、スケールインは減らす",
-        "hint": "台数を変えるのはどちら？"
-      },
+        "id": "meaning",
+        "title": "サーバーなどの台数を増やして処理能力を高める",
+        "hint": "増やすのは1台の性能ですか、台数ですか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "scale-up",
+    "name": "スケールアップ",
+    "reading": "Scale up",
+    "category": "システム構成",
+    "definition": "CPUやメモリなどを増強し、1台のサーバーなどの処理能力を高める方法です。",
+    "example": "サーバーのメモリを増やして処理能力を高めます。",
+    "related": [
+      "scaling",
+      "scale-in",
+      "scale-down"
+    ],
+    "criteria": [
       {
-        "id": "up",
-        "title": "スケールアップは1台の性能を上げ、スケールダウンは下げる",
-        "hint": "1台の性能を変えるのは？"
-      },
+        "id": "meaning",
+        "title": "1台の機器の性能を上げて処理能力を高める",
+        "hint": "台数ではなく、何を増強しますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "scale-in",
+    "name": "スケールイン",
+    "reading": "Scale in",
+    "category": "システム構成",
+    "definition": "サーバーなどの台数を減らし、必要な規模にシステムを縮小する方法です。",
+    "example": "アクセスが減ったのでWebサーバーを8台から4台に減らします。",
+    "related": [
+      "scaling",
+      "scale-up",
+      "scale-down"
+    ],
+    "criteria": [
       {
-        "id": "fit",
-        "title": "スケールアウトは並列処理しやすいWebサーバ向き、更新の多いDBはスケールアップ向き",
-        "hint": "どちらが向くかはどう決まりますか？",
-        "level": "A"
-      },
+        "id": "meaning",
+        "title": "サーバーなどの台数を減らす",
+        "hint": "減らすのは性能ですか、台数ですか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "scale-down",
+    "name": "スケールダウン",
+    "reading": "Scale down",
+    "category": "システム構成",
+    "definition": "CPUやメモリなどの割当てを減らし、1台のサーバーなどの性能を下げる方法です。",
+    "example": "負荷の小さい仮想サーバーのメモリ割当てを減らします。",
+    "related": [
+      "scaling",
+      "scale-up",
+      "scale-in"
+    ],
+    "criteria": [
       {
-        "id": "auto",
-        "title": "クラウドでは負荷に応じて自動でスケールアウト・インできる（オートスケール）",
-        "hint": "クラウドでの利点は？",
-        "level": "S"
+        "id": "meaning",
+        "title": "1台の機器の性能や資源の割当てを下げる",
+        "hint": "台数ではなく、何を減らしますか？"
       }
     ],
     "commonMistakes": []
@@ -6435,55 +6570,150 @@ export const terms: Term[] = [
   },
   {
     "id": "db-recovery",
-    "name": "障害回復（ロールバックとロールフォワード）",
-    "aliases": [
-      "ロールフォワード",
-      "ロールバック",
-      "チェックポイント",
-      "コミット",
-      "トランザクション"
-    ],
+    "name": "障害回復",
     "reading": "Database recovery",
     "category": "データベース",
-    "definition": "DBMSが障害後にデータを正しい状態に戻す仕組みです。トランザクション障害やシステム障害では、コミット済みの処理を更新後ログでやり直し（ロールフォワード）、未コミットの処理を更新前ログで取り消します（ロールバック）。チェックポイントから処理すれば回復時間を短縮できます。",
-    "example": "チェックポイントの後にコミットしたトランザクションはロールフォワード、障害時に未完了だったものはロールバックします。",
+    "definition": "障害によって失われたり不整合になったりしたデータベースを、バックアップやログなどを用いて正しい状態に戻すことです。",
+    "example": "ディスク障害後、バックアップと更新ログを使ってデータを復元します。",
     "related": [
+      "rollback",
+      "rollforward",
+      "checkpoint",
+      "commit",
+      "transaction",
       "wal",
       "acid"
     ],
     "criteria": [
       {
-        "id": "rollforward",
-        "title": "コミット済みのトランザクションを更新後ログで再実行する（ロールフォワード）",
-        "hint": "確定済みの処理はどうしますか？"
-      },
+        "id": "meaning",
+        "title": "障害後のデータベースをバックアップやログなどで正しい状態に戻す",
+        "hint": "障害の後に、何をどのような状態へ戻しますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "rollback",
+    "name": "ロールバック",
+    "reading": "Rollback",
+    "category": "データベース",
+    "definition": "トランザクションの処理による更新を取り消し、処理前の状態に戻すことです。障害回復では更新前のログなどを使います。",
+    "example": "振込処理の途中で失敗したので、口座残高の更新を取り消します。",
+    "related": [
+      "db-recovery",
+      "rollforward",
+      "checkpoint",
+      "commit",
+      "transaction",
+      "wal",
+      "acid"
+    ],
+    "criteria": [
       {
-        "id": "rollback",
-        "title": "未コミットのトランザクションを更新前ログで取り消す（ロールバック）",
-        "hint": "未完了の処理はどうしますか？"
-      },
+        "id": "meaning",
+        "title": "トランザクションによる更新を取り消して処理前の状態に戻す",
+        "hint": "失敗した処理の更新をどう扱いますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "rollforward",
+    "name": "ロールフォワード",
+    "reading": "Rollforward",
+    "category": "データベース",
+    "definition": "バックアップなどから戻したデータに更新後のログを適用し、確定済みの更新を再現することです。",
+    "example": "前日のバックアップを戻し、その後の確定済みの更新ログを適用します。",
+    "related": [
+      "db-recovery",
+      "rollback",
+      "checkpoint",
+      "commit",
+      "transaction",
+      "wal",
+      "acid"
+    ],
+    "criteria": [
       {
-        "id": "commit",
-        "title": "コミットでトランザクションの結果を確定する",
-        "hint": "コミットとは？"
-      },
+        "id": "meaning",
+        "title": "更新後のログを適用して確定済みの更新を再現する",
+        "hint": "確定済みの更新をログからどう反映しますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "checkpoint",
+    "name": "チェックポイント",
+    "reading": "Checkpoint",
+    "category": "データベース",
+    "definition": "障害回復を効率よく行うために、データベースの更新状況を記録する処理上の区切りです。回復時に確認するログの範囲を絞る基準になります。",
+    "example": "障害回復では、チェックポイントの情報を基に必要なログを確認します。",
+    "related": [
+      "db-recovery",
+      "rollback",
+      "rollforward",
+      "commit",
+      "transaction",
+      "wal",
+      "acid"
+    ],
+    "criteria": [
       {
-        "id": "checkpoint",
-        "title": "チェックポイントでバッファの内容をディスクに書き出し、回復の起点にする",
-        "hint": "回復時間を短くするには？",
-        "level": "A"
-      },
+        "id": "meaning",
+        "title": "障害回復でログを調べる範囲などの基準になる処理上の区切り",
+        "hint": "回復処理の効率化に、どのように役立ちますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "commit",
+    "name": "コミット",
+    "reading": "Commit",
+    "category": "データベース",
+    "definition": "トランザクションの処理結果を確定し、データベースへの更新を正式に反映させることです。",
+    "example": "振込元と振込先の残高更新が両方終わったら、コミットして確定します。",
+    "related": [
+      "db-recovery",
+      "rollback",
+      "rollforward",
+      "checkpoint",
+      "transaction",
+      "wal",
+      "acid"
+    ],
+    "criteria": [
       {
-        "id": "media",
-        "title": "媒体障害ではバックアップを戻してからロールフォワードする",
-        "hint": "ディスクが壊れたときは？",
-        "level": "A"
-      },
+        "id": "meaning",
+        "title": "トランザクションの処理結果を確定する",
+        "hint": "処理結果を取り消すことですか、確定することですか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "transaction",
+    "name": "トランザクション",
+    "reading": "Transaction",
+    "category": "データベース",
+    "definition": "データベースなどで、関連する複数の処理を一まとまりの仕事として扱う単位です。",
+    "example": "振込元の残高減少と振込先の残高増加を、一つの処理単位として扱います。",
+    "related": [
+      "db-recovery",
+      "rollback",
+      "rollforward",
+      "checkpoint",
+      "commit",
+      "wal",
+      "acid"
+    ],
+    "criteria": [
       {
-        "id": "wal",
-        "title": "ログを先に書くログ先行書込みが回復の前提",
-        "hint": "なぜログで回復できるのですか？",
-        "level": "S"
+        "id": "meaning",
+        "title": "関連する処理を一まとまりの仕事として扱う単位",
+        "hint": "複数の処理をどのような単位として扱いますか？"
       }
     ],
     "commonMistakes": []
@@ -8958,35 +9188,42 @@ export const terms: Term[] = [
   },
   {
     "id": "cms-asn1",
-    "name": "CMSとASN.1",
-    "aliases": [
-      "CMS",
-      "ASN.1"
-    ],
-    "reading": "CMS / ASN.1",
+    "name": "CMS",
+    "reading": "Cryptographic Message Syntax",
     "category": "暗号・認証",
-    "definition": "CMS（Cryptographic Message Syntax）は、署名や暗号化をしたデータの形式を定めた規格で、S/MIMEなどの基盤です。データの構造はASN.1という記法で定義されます。同じく署名の形式を定めたXMLデジタル署名は、XMLで記述する点が異なります。",
-    "example": "S/MIMEで署名したメールの添付部分は、ASN.1で定義されたCMSの形式で符号化されています。",
+    "definition": "署名や暗号化を施したメッセージの形式を定める規格です。データ構造をASN.1で定義し、S/MIMEなどで利用されます。",
+    "example": "S/MIMEでメールの署名や暗号化データを格納する形式として使います。",
     "related": [
+      "asn1",
       "xml-signature",
       "smime"
     ],
     "criteria": [
       {
-        "id": "cms",
-        "title": "CMSは署名・暗号化データの形式を定めた規格",
-        "hint": "CMSは何の規格ですか？"
-      },
+        "id": "meaning",
+        "title": "署名・暗号化したメッセージの形式を定める規格",
+        "hint": "何のデータ形式を定める規格ですか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "asn1",
+    "name": "ASN.1",
+    "reading": "Abstract Syntax Notation One",
+    "category": "暗号・認証",
+    "definition": "通信などでやり取りするデータの型や構造を定義するための記法です。デジタル証明書やCMSなどのデータ構造の定義に使います。",
+    "example": "証明書の発行者や有効期間などの項目を、データ構造として定義します。",
+    "related": [
+      "cms-asn1",
+      "xml-signature",
+      "smime"
+    ],
+    "criteria": [
       {
-        "id": "asn1",
-        "title": "ASN.1はデータ構造を定義する記法で、証明書やCMSで使われる",
-        "hint": "ASN.1とは？"
-      },
-      {
-        "id": "vs-xml",
-        "title": "XMLデジタル署名はXMLで記述し、文書の一部だけに署名できる",
-        "hint": "XMLデジタル署名との違いは？",
-        "level": "A"
+        "id": "meaning",
+        "title": "データの型や構造を定義する記法",
+        "hint": "データのどのような性質を定義する記法ですか？"
       }
     ],
     "commonMistakes": []
@@ -9141,44 +9378,123 @@ export const terms: Term[] = [
   },
   {
     "id": "provable-security",
-    "name": "情報理論的安全性と計算量的安全性",
-    "aliases": [
-      "情報理論的安全性",
-      "計算量的安全性",
-      "DH鍵共有",
-      "RSA暗号",
-      "楕円曲線暗号"
-    ],
-    "reading": "Information-theoretic / computational security",
+    "name": "情報理論的安全性",
+    "reading": "Information-theoretic security",
     "category": "暗号・認証",
-    "definition": "暗号の安全性の考え方です。情報理論的安全性は、無限の計算能力を持つ攻撃者にも解読できない安全性で、ワンタイムパッドが代表です。計算量的安全性は、現実的な時間では解読に必要な計算が終わらないことに基づく安全性で、RSA暗号（素因数分解）やDH鍵共有・楕円曲線暗号（離散対数問題）が該当します。",
-    "example": "RSAは計算機が十分速くなれば解読され得ますが、ワンタイムパッドは計算能力によらず解読できません。",
+    "definition": "攻撃者の計算能力に制限を置かなくても、暗号文から元の情報を解読できないという安全性です。正しい条件で使うワンタイムパッドが代表例です。",
+    "example": "計算能力が無限にあっても、暗号文だけから平文を特定できません。",
     "related": [
+      "computational-security",
+      "dh-key-exchange",
+      "rsa",
+      "ecc",
       "one-time-pad",
       "pqc"
     ],
     "criteria": [
       {
-        "id": "it",
-        "title": "情報理論的安全性は無限の計算能力でも解読できない",
-        "hint": "ワンタイムパッドの安全性は？"
-      },
+        "id": "meaning",
+        "title": "攻撃者の計算能力によらず解読できない安全性",
+        "hint": "計算能力が無限でも成り立つ安全性ですか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "computational-security",
+    "name": "計算量的安全性",
+    "reading": "Computational security",
+    "category": "暗号・認証",
+    "definition": "暗号の解読などに必要な計算が、現実的な時間や資源では実行できないことに基づく安全性です。",
+    "example": "解読に必要な計算量が非常に大きく、実用上の時間では終わりません。",
+    "related": [
+      "provable-security",
+      "dh-key-exchange",
+      "rsa",
+      "ecc",
+      "one-time-pad",
+      "pqc"
+    ],
+    "criteria": [
       {
-        "id": "comp",
-        "title": "計算量的安全性は解読に現実的でない計算量が必要なことに基づく",
-        "hint": "RSAの安全性は？"
-      },
+        "id": "meaning",
+        "title": "解読などに現実的でない計算量が必要なことに基づく安全性",
+        "hint": "安全性を何の大きさに基づいて判断しますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "dh-key-exchange",
+    "name": "DH鍵共有",
+    "reading": "Diffie–Hellman key exchange",
+    "category": "暗号・認証",
+    "definition": "通信相手と公開情報を交換し、第三者に秘密を送らずに共通の秘密値を導くための方式です。単独では相手の認証は行いません。",
+    "example": "両者が公開値を交換し、それぞれの秘密値を使って同じ共有秘密を計算します。",
+    "related": [
+      "provable-security",
+      "computational-security",
+      "rsa",
+      "ecc",
+      "one-time-pad",
+      "pqc"
+    ],
+    "criteria": [
       {
-        "id": "problems",
-        "title": "RSAは素因数分解、DH鍵共有と楕円曲線暗号は離散対数問題の難しさに基づく",
-        "hint": "それぞれの基になる問題は？",
-        "level": "A"
-      },
+        "id": "meaning",
+        "title": "公開情報の交換から共通の秘密値を導く鍵共有方式",
+        "hint": "秘密値そのものを送らずに、何を共有しますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "rsa",
+    "name": "RSA暗号",
+    "reading": "RSA",
+    "category": "暗号・認証",
+    "definition": "大きな整数の素因数分解の難しさを安全性の基礎とする公開鍵暗号方式です。公開鍵と秘密鍵を使い分けて暗号化や署名に利用します。",
+    "example": "公開鍵で暗号化したデータを、対応する秘密鍵で復号します。",
+    "related": [
+      "provable-security",
+      "computational-security",
+      "dh-key-exchange",
+      "ecc",
+      "one-time-pad",
+      "pqc"
+    ],
+    "criteria": [
       {
-        "id": "quantum",
-        "title": "計算量的安全性の暗号は量子コンピュータの登場で脅かされる",
-        "hint": "量子コンピュータの影響を受けるのは？",
-        "level": "S"
+        "id": "meaning",
+        "title": "素因数分解の難しさを基礎とする公開鍵暗号方式",
+        "hint": "どの問題の難しさを利用する方式ですか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "ecc",
+    "name": "楕円曲線暗号",
+    "aliases": [
+      "ECC"
+    ],
+    "reading": "Elliptic curve cryptography",
+    "category": "暗号・認証",
+    "definition": "楕円曲線上の離散対数問題の難しさを利用する公開鍵暗号技術です。鍵共有や署名などに使います。",
+    "example": "楕円曲線上の計算を利用して、鍵共有や署名を行います。",
+    "related": [
+      "provable-security",
+      "computational-security",
+      "dh-key-exchange",
+      "rsa",
+      "one-time-pad",
+      "pqc"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "楕円曲線上の離散対数問題の難しさを利用する公開鍵暗号技術",
+        "hint": "どの数学的な問題の難しさを利用しますか？"
       }
     ],
     "commonMistakes": []
@@ -9226,80 +9542,83 @@ export const terms: Term[] = [
   },
   {
     "id": "security-orgs",
-    "name": "NISTとENISA",
+    "name": "NIST",
     "aliases": [
-      "NIST",
-      "ENISA"
+      "米国国立標準技術研究所"
     ],
-    "reading": "NIST / ENISA",
+    "reading": "National Institute of Standards and Technology",
     "category": "セキュリティ運用",
-    "definition": "セキュリティの標準やガイドラインを出す公的機関です。NISTは米国の国立標準技術研究所で、SP 800シリーズやサイバーセキュリティフレームワークを公開しています。ENISAは欧州連合のサイバーセキュリティ機関です。CVEやATT&CKを運営するMITREは米国の非営利組織です。",
-    "example": "NIST SP 800-63は電子的な本人確認の保証レベルを定めたガイドラインです。",
+    "definition": "米国国立標準技術研究所です。標準や技術に関する研究を行い、情報セキュリティ分野でもSP 800シリーズなどの標準・ガイドラインを公開しています。",
+    "example": "情報セキュリティ対策を検討するとき、NISTのガイドラインを参照します。",
     "related": [
+      "enisa",
       "mitre-attack"
     ],
     "criteria": [
       {
-        "id": "nist",
-        "title": "NISTは米国の標準化機関でSP 800シリーズなどを公開する",
-        "hint": "NISTとは？"
-      },
+        "id": "meaning",
+        "title": "米国の国立標準技術研究所で、セキュリティの標準やガイドラインも公開する",
+        "hint": "どの国の、何を扱う機関ですか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "enisa",
+    "name": "ENISA",
+    "reading": "European Union Agency for Cybersecurity",
+    "category": "セキュリティ運用",
+    "definition": "欧州連合（EU）のサイバーセキュリティ機関です。EU域内のサイバーセキュリティの向上に向けた支援や情報提供などを行います。",
+    "example": "EUのサイバーセキュリティに関する調査報告を参照します。",
+    "related": [
+      "security-orgs",
+      "mitre-attack"
+    ],
+    "criteria": [
       {
-        "id": "enisa",
-        "title": "ENISAはEUのサイバーセキュリティ機関",
-        "hint": "ENISAとは？"
-      },
-      {
-        "id": "mitre",
-        "title": "MITREはCVEやATT&CKを運営する米国の非営利組織",
-        "hint": "MITREとの違いは？",
-        "level": "A"
-      },
-      {
-        "id": "csf",
-        "title": "NIST CSFは識別・防御・検知・対応・復旧（2.0で統治を追加）で対策を整理する",
-        "hint": "NISTのフレームワークの構成は？",
-        "level": "S"
+        "id": "meaning",
+        "title": "EUのサイバーセキュリティ機関",
+        "hint": "どの地域の、何を扱う機関ですか？"
       }
     ],
     "commonMistakes": []
   },
   {
     "id": "cnapp-family",
-    "name": "CWPPとCASB",
-    "aliases": [
-      "CWPP",
-      "CASB"
-    ],
-    "reading": "CWPP / CASB",
+    "name": "CWPP",
+    "reading": "Cloud Workload Protection Platform",
     "category": "クラウドセキュリティ",
-    "definition": "クラウドを守る製品の分類です。CWPPはクラウド上の仮想マシンやコンテナなどのワークロードを保護し、CASBは利用者とクラウドサービスの間で利用状況を可視化・制御します。設定の不備を検査するのはCSPMです。",
-    "example": "CASBで社員が無許可で使っているクラウドストレージ（シャドーIT）を見つけます。",
+    "definition": "クラウドなどで稼働する仮想マシンやコンテナといったワークロードを保護するための製品・機能の分類です。",
+    "example": "クラウド上のサーバーやコンテナに対する脅威を検知・防御します。",
     "related": [
+      "casb",
       "cspm"
     ],
     "criteria": [
       {
-        "id": "cwpp",
-        "title": "CWPPはクラウド上のワークロード（サーバ・コンテナ）を保護する",
-        "hint": "CWPPは何を守りますか？"
-      },
+        "id": "meaning",
+        "title": "仮想マシンやコンテナなどのワークロードを保護する",
+        "hint": "クラウド上の何を保護する仕組みですか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "casb",
+    "name": "CASB",
+    "reading": "Cloud Access Security Broker",
+    "category": "クラウドセキュリティ",
+    "definition": "利用者によるクラウドサービスの利用状況を可視化し、組織のセキュリティ方針に従って利用を制御する仕組みです。",
+    "example": "社員が無許可で利用するクラウドサービスを検知し、利用を制御します。",
+    "related": [
+      "cnapp-family",
+      "cspm"
+    ],
+    "criteria": [
       {
-        "id": "casb",
-        "title": "CASBは利用者のクラウドサービス利用を可視化・制御する",
-        "hint": "CASBの役割は？"
-      },
-      {
-        "id": "cspm",
-        "title": "CSPMはクラウドの設定ミスを検知・修正する",
-        "hint": "設定の不備を見つけるのは？",
-        "level": "A"
-      },
-      {
-        "id": "shadow",
-        "title": "CASBはシャドーITの発見や情報持出しの防止に使う",
-        "hint": "CASBの代表的な使い道は？",
-        "level": "S"
+        "id": "meaning",
+        "title": "クラウドサービスの利用を可視化・制御する",
+        "hint": "利用者とクラウドサービスの間で何を管理しますか？"
       }
     ],
     "commonMistakes": []
@@ -9559,47 +9878,110 @@ export const terms: Term[] = [
   },
   {
     "id": "man-month",
-    "name": "人月と工数",
-    "aliases": [
-      "人月",
-      "工数",
-      "生産性",
-      "引継ぎ",
-      "人件費"
-    ],
-    "reading": "Man-month / effort",
+    "name": "人月",
+    "reading": "Person-month",
     "category": "プロジェクト管理",
-    "definition": "工数は作業に必要な人数×期間で表す作業量で、人月は1人が1か月で行う作業量の単位です。要員を追加すると、引継ぎや教育、コミュニケーションの手間が増えるため、人数に比例して生産性は上がりません。",
-    "example": "12人月の作業を3人で行えば4か月、途中で2人追加しても引継ぎの工数がかかります。",
-    "related": [],
+    "definition": "1人が1か月働いたときの作業量を1とする、工数の単位です。期間そのものではなく、人数と期間を掛けた作業量を表します。",
+    "example": "3人が4か月働く作業量は12人月です。",
+    "related": [
+      "effort",
+      "productivity",
+      "handover",
+      "labor-cost"
+    ],
     "criteria": [
       {
-        "id": "unit",
-        "title": "工数は人数×期間で表す作業量、人月はその単位",
-        "hint": "12人月とは？"
-      },
+        "id": "meaning",
+        "title": "1人が1か月で行う作業量を表す工数の単位",
+        "hint": "人数と期間を使って、どのような量を表しますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "effort",
+    "name": "工数",
+    "reading": "Effort",
+    "category": "プロジェクト管理",
+    "definition": "作業に必要な労働量です。人数と作業時間・期間の積で表し、人時・人日・人月などを単位に使います。",
+    "example": "2人で5日かかる作業の工数は10人日です。",
+    "related": [
+      "man-month",
+      "productivity",
+      "handover",
+      "labor-cost"
+    ],
+    "criteria": [
       {
-        "id": "productivity",
-        "title": "生産性は単位工数当たりの成果物の量",
-        "hint": "生産性の意味は？"
-      },
+        "id": "meaning",
+        "title": "人数と時間・期間の積で表す作業量",
+        "hint": "人数と期間からどのように求めますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "productivity",
+    "name": "生産性",
+    "reading": "Productivity",
+    "category": "プロジェクト管理",
+    "definition": "投入した資源や労力に対して、どれだけの成果を生み出したかを表す指標です。開発では単位工数当たりの成果物量などで測ります。",
+    "example": "10人日で20機能を作った場合、生産性は2機能/人日です。",
+    "related": [
+      "man-month",
+      "effort",
+      "handover",
+      "labor-cost"
+    ],
+    "criteria": [
       {
-        "id": "handover",
-        "title": "要員追加では引継ぎや教育の工数が発生し、すぐには生産性が上がらない",
-        "hint": "遅れたプロジェクトに人を足すとどうなりますか？",
-        "level": "A"
-      },
+        "id": "meaning",
+        "title": "投入した資源・労力当たりに得られる成果の量",
+        "hint": "成果を何で割った指標ですか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "handover",
+    "name": "引継ぎ",
+    "reading": "Handover",
+    "category": "プロジェクト管理",
+    "definition": "担当が変わるときに、業務内容や作業状況、必要な知識などを次の担当者に伝えることです。",
+    "example": "途中参加した担当者に、作業手順と未完了の作業を説明します。",
+    "related": [
+      "man-month",
+      "effort",
+      "productivity",
+      "labor-cost"
+    ],
+    "criteria": [
       {
-        "id": "cost",
-        "title": "人件費は工数×単価で見積もる",
-        "hint": "人件費の求め方は？",
-        "level": "A"
-      },
+        "id": "meaning",
+        "title": "次の担当者に業務内容や作業状況などを伝える",
+        "hint": "担当が変わるとき、何を伝えますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "labor-cost",
+    "name": "人件費",
+    "reading": "Labor cost",
+    "category": "プロジェクト管理",
+    "definition": "人の労働に対してかかる費用です。プロジェクトでは、必要な工数に単位工数当たりの単価を掛けるなどして見積もります。",
+    "example": "10人月の作業で単価が80万円/人月なら、人件費は800万円です。",
+    "related": [
+      "man-month",
+      "effort",
+      "productivity",
+      "handover"
+    ],
+    "criteria": [
       {
-        "id": "brooks",
-        "title": "遅れているプロジェクトへの要員追加はさらに遅らせる（ブルックスの法則）",
-        "hint": "有名な経験則は？",
-        "level": "S"
+        "id": "meaning",
+        "title": "人の労働に対する費用で、工数と単価などから見積もる",
+        "hint": "工数と単価からどのように見積もりますか？"
       }
     ],
     "commonMistakes": []
@@ -9688,52 +10070,91 @@ export const terms: Term[] = [
   },
   {
     "id": "incident-problem",
-    "name": "インシデント管理と問題管理",
-    "aliases": [
-      "インシデント",
-      "問題管理",
-      "根本原因"
-    ],
-    "reading": "Incident / problem management",
+    "name": "インシデント管理",
+    "reading": "Incident management",
     "category": "サービス管理",
-    "definition": "インシデント管理は、サービスの中断などをできるだけ早く通常の状態に戻す活動です。問題管理は、インシデントの根本原因を突き止めて再発を防ぐ活動で、恒久的な解決には変更管理を通じて変更を行います。",
-    "example": "サーバの再起動で業務を再開させるのはインシデント管理、メモリリークの原因を調べて修正するのは問題管理です。",
+    "definition": "サービスの中断や品質低下が起きたとき、できるだけ早く通常のサービスを回復させる活動です。",
+    "example": "サーバーの再起動によって業務を早く再開します。",
     "related": [
+      "incident",
+      "problem-management",
+      "root-cause",
       "itsm"
     ],
     "criteria": [
       {
-        "id": "incident",
-        "title": "インシデント管理は迅速なサービスの回復を目指す",
-        "hint": "インシデント管理の目的は？"
-      },
-      {
-        "id": "problem",
-        "title": "問題管理は根本原因を特定し再発を防ぐ",
-        "hint": "問題管理の目的は？"
-      },
-      {
-        "id": "known",
-        "title": "原因と回避策が分かったものを既知の誤りとして記録する",
-        "hint": "既知の誤りとは？",
-        "level": "A"
-      },
-      {
-        "id": "change",
-        "title": "恒久的な解決策は変更管理を通じて適用する",
-        "hint": "原因を直すにはどのプロセスを使いますか？",
-        "level": "A"
-      },
-      {
-        "id": "proactive",
-        "title": "過去の傾向から将来のインシデントを予防するプロアクティブな問題管理もある",
-        "hint": "起きる前の問題管理は？",
-        "level": "S"
+        "id": "meaning",
+        "title": "中断・低下したサービスを迅速に回復させる活動",
+        "hint": "まず何を回復させることを目指しますか？"
       }
     ],
-    "commonMistakes": [
-      "問題管理の目的を「早く復旧すること」とする誤りがあります（それはインシデント管理）。"
-    ]
+    "commonMistakes": []
+  },
+  {
+    "id": "incident",
+    "name": "インシデント",
+    "reading": "Incident",
+    "category": "サービス管理",
+    "definition": "サービスの予期しない中断や品質低下などの事象です。情報セキュリティの文脈では、不正アクセスや情報漏えいなどの事象も指します。",
+    "example": "システム停止によって利用者がサービスを使えなくなります。",
+    "related": [
+      "incident-problem",
+      "problem-management",
+      "root-cause",
+      "itsm"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "サービスの中断や品質低下、セキュリティ上の事故などの事象",
+        "hint": "サービスやセキュリティに、どのようなことが起きた状態ですか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "problem-management",
+    "name": "問題管理",
+    "reading": "Problem management",
+    "category": "サービス管理",
+    "definition": "インシデントの原因を調べ、根本原因の除去や回避策によって再発などを防ぐ活動です。",
+    "example": "繰り返す障害の原因を調べ、メモリリークを修正します。",
+    "related": [
+      "incident-problem",
+      "incident",
+      "root-cause",
+      "itsm"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "インシデントの根本原因を調べ、再発などを防ぐ活動",
+        "hint": "単なる復旧にとどまらず、何を解消しますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "root-cause",
+    "name": "根本原因",
+    "reading": "Root cause",
+    "category": "サービス管理",
+    "definition": "事象や問題を引き起こしている根底の原因です。表面的な症状だけでなく、再発防止のために取り除く対象になります。",
+    "example": "再起動で一時的に直る障害の根本原因として、プログラムのメモリリークを突き止めます。",
+    "related": [
+      "incident-problem",
+      "incident",
+      "problem-management",
+      "itsm"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "問題や事象を引き起こしている根底の原因",
+        "hint": "症状そのものではなく、何を指しますか？"
+      }
+    ],
+    "commonMistakes": []
   },
   {
     "id": "slm",
@@ -9824,35 +10245,42 @@ export const terms: Term[] = [
   },
   {
     "id": "capacity-continuity",
-    "name": "容量・能力管理とサービス継続管理",
-    "aliases": [
-      "容量・能力管理",
-      "サービス継続管理"
-    ],
-    "reading": "Capacity management / service continuity",
+    "name": "容量・能力管理",
+    "reading": "Capacity management",
     "category": "サービス管理",
-    "definition": "容量・能力管理は、現在と将来の需要を満たすように、ITの資源と性能を計画・監視する活動です。サービス継続管理は、災害などの重大な事態でも、合意したレベルでサービスを継続・復旧できるよう計画し、試験する活動です。",
-    "example": "利用者の増加を見込んでサーバを増強するのは容量・能力管理、大地震に備えて別拠点で復旧する訓練をするのはサービス継続管理です。",
+    "definition": "現在と将来の需要を満たせるように、ITサービスの資源や性能を計画し、監視・調整する活動です。",
+    "example": "利用者の増加を予測して、サーバーの資源と性能を計画します。",
     "related": [
+      "service-continuity",
       "slm",
       "capacity-planning"
     ],
     "criteria": [
       {
-        "id": "capacity",
-        "title": "容量・能力管理は需要に見合う資源と性能を計画・監視する",
-        "hint": "容量・能力管理とは？"
-      },
+        "id": "meaning",
+        "title": "需要を満たすためにIT資源や性能を計画・監視する活動",
+        "hint": "現在と将来の何に合わせて資源を管理しますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "service-continuity",
+    "name": "サービス継続管理",
+    "reading": "Service continuity management",
+    "category": "サービス管理",
+    "definition": "災害などの重大な事態でも、合意したレベルでサービスを継続・復旧できるように備える活動です。",
+    "example": "別拠点でサービスを復旧する計画を作り、定期的に訓練します。",
+    "related": [
+      "capacity-continuity",
+      "slm",
+      "capacity-planning"
+    ],
+    "criteria": [
       {
-        "id": "continuity",
-        "title": "サービス継続管理は重大な事態でもサービスを継続・復旧できるようにする",
-        "hint": "サービス継続管理とは？"
-      },
-      {
-        "id": "test",
-        "title": "継続計画は定期的に試験して有効性を確かめる",
-        "hint": "計画を作った後に必要なことは？",
-        "level": "A"
+        "id": "meaning",
+        "title": "重大な事態でも合意したレベルでサービスを継続・復旧するために備える",
+        "hint": "どのような事態に備え、何を維持・復旧しますか？"
       }
     ],
     "commonMistakes": []
@@ -9913,75 +10341,82 @@ export const terms: Term[] = [
   },
   {
     "id": "audit-procedure",
-    "name": "監査手続と監査証拠",
-    "aliases": [
-      "監査手続",
-      "監査証拠"
-    ],
-    "reading": "Audit procedures / evidence",
+    "name": "監査手続",
+    "reading": "Audit procedures",
     "category": "システム監査",
-    "definition": "監査手続は、監査意見の根拠となる監査証拠を入手するために行う手続です。監査証拠は、監査人が監査の結論を導くために入手した情報で、十分かつ適切なものでなければなりません。",
-    "example": "アクセス権の設定が適切かを確かめるため、設定画面を閲覧し、権限一覧と人事データを突き合わせる手続を行います。",
+    "definition": "監査意見の根拠となる監査証拠を入手・評価するために、監査人が実施する具体的な手続です。",
+    "example": "アクセス権一覧と人事情報を突き合わせ、不要な権限がないか確かめます。",
     "related": [
+      "audit-evidence",
       "audit-standards",
       "audit-techniques"
     ],
     "criteria": [
       {
-        "id": "procedure",
-        "title": "監査手続は監査証拠を入手するための手続",
-        "hint": "監査手続の目的は？"
-      },
+        "id": "meaning",
+        "title": "監査証拠を入手・評価するために実施する手続",
+        "hint": "何を入手・評価するための手続ですか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "audit-evidence",
+    "name": "監査証拠",
+    "reading": "Audit evidence",
+    "category": "システム監査",
+    "definition": "監査人が監査の結論や意見の根拠として用いる情報です。結論を支えるために十分かつ適切であることが求められます。",
+    "example": "権限設定の記録や操作ログを、統制が適切か判断する根拠にします。",
+    "related": [
+      "audit-procedure",
+      "audit-standards",
+      "audit-techniques"
+    ],
+    "criteria": [
       {
-        "id": "evidence",
-        "title": "監査証拠は結論の根拠となる情報で、十分かつ適切である必要がある",
-        "hint": "監査証拠に求められることは？"
-      },
-      {
-        "id": "techniques",
-        "title": "閲覧・観察・インタビュー・突合・再実施などの技法を組み合わせる",
-        "hint": "どんな方法で証拠を集めますか？",
-        "level": "A"
-      },
-      {
-        "id": "sampling",
-        "title": "全件ではなく試査（サンプリング）で行うことが多い",
-        "hint": "全件を調べますか？",
-        "level": "S"
+        "id": "meaning",
+        "title": "監査の結論・意見の根拠となる情報",
+        "hint": "監査で集めた情報を、何の根拠にしますか？"
       }
     ],
     "commonMistakes": []
   },
   {
     "id": "preliminary-survey",
-    "name": "予備調査と本調査",
-    "aliases": [
-      "予備調査",
-      "本調査"
-    ],
-    "reading": "Preliminary survey / main survey",
+    "name": "予備調査",
+    "reading": "Preliminary survey",
     "category": "システム監査",
-    "definition": "システム監査の実施の段階です。予備調査では、監査対象の実態を把握するために資料の入手やヒアリングを行い、本調査で行う監査手続を具体的に決めます。本調査では、決めた監査手続を実施して監査証拠を入手し、評価します。",
-    "example": "予備調査で業務マニュアルを読み、アクセス管理が弱そうだと分かったので、本調査ではその点を重点的に確かめます。",
+    "definition": "監査対象の実態を把握し、本調査で行う監査手続を具体化するための調査です。資料の確認やヒアリングなどを行います。",
+    "example": "業務マニュアルを読んで対象の業務を理解し、本調査で確かめる事項を決めます。",
     "related": [
+      "main-survey",
       "audit-procedure"
     ],
     "criteria": [
       {
-        "id": "pre",
-        "title": "予備調査で対象の実態を把握し、本調査の監査手続を決める",
-        "hint": "予備調査の目的は？"
-      },
+        "id": "meaning",
+        "title": "監査対象の実態を把握し、本調査の監査手続を具体化する調査",
+        "hint": "本調査に向けて、何を把握して決めますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "main-survey",
+    "name": "本調査",
+    "reading": "Main survey",
+    "category": "システム監査",
+    "definition": "監査計画などに沿って監査手続を実施し、監査証拠を入手・評価する調査です。",
+    "example": "決めた手続に従って操作ログや権限設定を確認し、統制を評価します。",
+    "related": [
+      "preliminary-survey",
+      "audit-procedure"
+    ],
+    "criteria": [
       {
-        "id": "main",
-        "title": "本調査で監査手続を実施し監査証拠を集めて評価する",
-        "hint": "本調査で行うことは？"
-      },
-      {
-        "id": "plan",
-        "title": "予備調査の結果で監査計画を見直すことがある",
-        "hint": "予備調査の結果は何に反映しますか？",
-        "level": "A"
+        "id": "meaning",
+        "title": "監査手続を実施して監査証拠を入手・評価する調査",
+        "hint": "監査の手続を実施して、何を集めますか？"
       }
     ],
     "commonMistakes": []
@@ -10337,40 +10772,40 @@ export const terms: Term[] = [
   },
   {
     "id": "schedule-compression",
-    "name": "クラッシングとファストトラッキング",
-    "aliases": [
-      "クラッシング",
-      "ファストトラッキング"
-    ],
-    "reading": "Crashing / fast tracking",
+    "name": "クラッシング",
+    "reading": "Crashing",
     "category": "プロジェクト管理",
-    "definition": "スケジュールを短縮する技法です。クラッシングはクリティカルパス上の作業に資源（人員や費用）を追加して期間を縮め、ファストトラッキングは本来順番に行う作業を並行して進めます。クラッシングはコストが増え、ファストトラッキングは手戻りのリスクが増えます。",
-    "example": "設計の完了を待たずに一部の開発を始めるのはファストトラッキング、残業や要員追加でテストを早く終わらせるのはクラッシングです。",
+    "definition": "クリティカルパス上の作業に人員や設備などの資源を追加し、プロジェクトの期間を短縮する技法です。追加費用と短縮できる日数を考えて実施します。",
+    "example": "テスト要員を追加して、完了までの日数を短縮します。",
     "related": [
+      "fast-tracking",
       "critical-path"
     ],
     "criteria": [
       {
-        "id": "crash",
-        "title": "クラッシングは資源を追加して作業期間を短縮する（コスト増）",
-        "hint": "クラッシングとは？"
-      },
+        "id": "meaning",
+        "title": "資源を追加して、クリティカルパス上の作業期間を短縮する",
+        "hint": "期間を短縮するために、何を追加しますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "fast-tracking",
+    "name": "ファストトラッキング",
+    "reading": "Fast tracking",
+    "category": "プロジェクト管理",
+    "definition": "通常は順番に進める作業を、並行又は一部重ねて進めてプロジェクトの期間を短縮する技法です。先行作業の変更によって手戻りが生じるリスクがあります。",
+    "example": "設計がすべて終わる前に、確定した部分から開発を始めます。",
+    "related": [
+      "schedule-compression",
+      "critical-path"
+    ],
+    "criteria": [
       {
-        "id": "fast",
-        "title": "ファストトラッキングは順序のある作業を並行して進める（リスク増）",
-        "hint": "ファストトラッキングとは？"
-      },
-      {
-        "id": "critical",
-        "title": "短縮の対象はクリティカルパス上の作業",
-        "hint": "どの作業を短縮しますか？",
-        "level": "A"
-      },
-      {
-        "id": "cost",
-        "title": "クラッシングでは費用当たりの短縮効果が大きい作業から選ぶ",
-        "hint": "どの作業から短縮しますか？",
-        "level": "S"
+        "id": "meaning",
+        "title": "通常は順番に進める作業を並行させて、期間を短縮する",
+        "hint": "作業の進め方をどう変えて短縮しますか？"
       }
     ],
     "commonMistakes": []
@@ -10789,18 +11224,14 @@ export const terms: Term[] = [
     "definition": "災害などでサービスが止まったとき、どの水準（レベル）まで業務やサービスを復旧させるかの目標です。いつまでに（RTO）、どの時点のデータまで（RPO）と組み合わせて復旧の目標を定めます。",
     "example": "「震災時は3日以内（RTO）に、通常の50%の処理能力（RLO）で受注業務を再開する」と定めます。",
     "related": [
-      "rto-rpo"
+      "rto-rpo",
+      "rpo"
     ],
     "criteria": [
       {
         "id": "level",
         "title": "どの水準まで復旧させるかの目標",
         "hint": "RLOは何を表しますか？"
-      },
-      {
-        "id": "combine",
-        "title": "RTO（時間）、RPO（データの時点）と組み合わせて使う",
-        "hint": "RTO・RPOとの関係は？"
       },
       {
         "id": "bcp",
@@ -10846,32 +11277,44 @@ export const terms: Term[] = [
   },
   {
     "id": "rfi-rfp",
-    "name": "RFIとRFP",
+    "name": "RFI",
     "aliases": [
-      "RFI",
-      "RFP"
+      "情報提供依頼書"
     ],
-    "reading": "RFI / RFP",
+    "reading": "Request for Information",
     "category": "システム戦略",
-    "definition": "システムの調達で発注者が出す文書です。RFI（情報提供依頼書）は、ベンダーから技術動向や製品などの情報を集めるために出し、RFP（提案依頼書）は、システムの要件や条件を示して具体的な提案を求めるために出します。",
-    "example": "まずRFIで各社の製品情報を集め、その結果を踏まえてRFPを作成して提案を募ります。",
-    "related": [],
+    "definition": "システムなどの調達に先立ち、技術動向や製品・サービスに関する情報をベンダーから集めるための依頼書です。",
+    "example": "候補となる製品の機能や提供条件について、各社に情報提供を依頼します。",
+    "related": [
+      "rfp"
+    ],
     "criteria": [
       {
-        "id": "rfi",
-        "title": "RFIはベンダーから情報を集めるための依頼書",
-        "hint": "RFIとは？"
-      },
+        "id": "meaning",
+        "title": "ベンダーから製品や技術などの情報を集めるための依頼書",
+        "hint": "具体的な提案より前に、何を集めますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "rfp",
+    "name": "RFP",
+    "aliases": [
+      "提案依頼書"
+    ],
+    "reading": "Request for Proposal",
+    "category": "システム戦略",
+    "definition": "調達するシステムなどの要件や条件を提示し、ベンダーに具体的な提案を求めるための依頼書です。",
+    "example": "必要な機能や予算・納期を示して、実現方法と見積りの提案を求めます。",
+    "related": [
+      "rfi-rfp"
+    ],
+    "criteria": [
       {
-        "id": "rfp",
-        "title": "RFPは要件を示して具体的な提案を求める依頼書",
-        "hint": "RFPとは？"
-      },
-      {
-        "id": "order",
-        "title": "RFI→RFP→提案書の評価→契約の順に進む",
-        "hint": "調達の流れは？",
-        "level": "A"
+        "id": "meaning",
+        "title": "要件や条件を示して、ベンダーに具体的な提案を求める依頼書",
+        "hint": "ベンダーに何を提示し、何を求めますか？"
       }
     ],
     "commonMistakes": []
@@ -11832,34 +12275,40 @@ export const terms: Term[] = [
   },
   {
     "id": "fabless",
-    "name": "ファブレスとファウンドリー",
-    "aliases": [
-      "ファブレス",
-      "ファウンドリー"
-    ],
-    "reading": "Fabless / foundry",
+    "name": "ファブレス",
+    "reading": "Fabless",
     "category": "経営戦略",
-    "definition": "半導体などでの分業の形です。ファブレスは工場（ファブ）を持たず、設計や企画に特化して製造を外部に委託する企業、ファウンドリーは他社から委託を受けて半導体の製造を専門に行う企業です。",
-    "example": "設計だけを行うファブレス企業が、台湾のファウンドリーにチップの製造を委託します。",
+    "definition": "自社の製造工場を持たず、製品の企画や設計を行い、製造を外部に委託する企業の形態です。",
+    "example": "半導体の設計を自社で行い、製造を外部企業に委託します。",
     "related": [
+      "foundry",
       "ems"
     ],
     "criteria": [
       {
-        "id": "fabless",
-        "title": "ファブレスは工場を持たず設計・企画に特化する",
-        "hint": "ファブレスとは？"
-      },
+        "id": "meaning",
+        "title": "自社工場を持たず、企画・設計を行って製造を外部委託する",
+        "hint": "工場を持ちますか、製造をどう行いますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "foundry",
+    "name": "ファウンドリー",
+    "reading": "Foundry",
+    "category": "経営戦略",
+    "definition": "他社から委託を受けて、半導体などの製造を専門に行う企業です。",
+    "example": "顧客が設計した半導体を、製造設備を使って受託生産します。",
+    "related": [
+      "fabless",
+      "ems"
+    ],
+    "criteria": [
       {
-        "id": "foundry",
-        "title": "ファウンドリーは製造を専門に受託する",
-        "hint": "ファウンドリーとは？"
-      },
-      {
-        "id": "ems",
-        "title": "電子機器の組立てを受託するのはEMS",
-        "hint": "電子機器の製造を受託するのは？",
-        "level": "A"
+        "id": "meaning",
+        "title": "他社から委託を受けて半導体などの製造を行う企業",
+        "hint": "他社から何を受託する企業ですか？"
       }
     ],
     "commonMistakes": []
@@ -12225,6 +12674,44 @@ export const terms: Term[] = [
         "title": "製品に直接結び付くかで直接費と間接費に分ける",
         "hint": "直接費と間接費の違いは？",
         "level": "A"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "dummy-activity",
+    "name": "ダミー作業",
+    "reading": "Dummy activity",
+    "category": "プロジェクト管理",
+    "definition": "アローダイアグラムで、作業間の順序関係だけを表すための所要時間0の作業です。",
+    "example": "実際の作業は発生しないが、先行関係を表すために点線の矢印を置きます。",
+    "related": [
+      "critical-path"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "所要時間0で、作業の順序関係だけを表す",
+        "hint": "実際に時間のかかる作業ですか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "duration",
+    "name": "所要日数",
+    "reading": "Duration",
+    "category": "プロジェクト管理",
+    "definition": "作業や処理が開始してから完了するまでに必要な日数です。人数と日数を掛けた作業量とは区別します。",
+    "example": "3人で作業しても完了まで5日かかるなら、所要日数は5日です。",
+    "related": [
+      "critical-path"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "作業の開始から完了までに必要な日数",
+        "hint": "人数を掛けた作業量ではなく、どの期間ですか？"
       }
     ],
     "commonMistakes": []

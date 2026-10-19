@@ -41,4 +41,21 @@ describe('question vocabulary candidates', () => {
       expect(term?.criteria[0].level ?? 'B').toBe('B');
     }
   });
+  it.each([
+    ['クラッシング', 'ファストトラッキング'], ['IDS', 'IPS'], ['RTO', 'RPO'],
+    ['ポアソン分布', '指数分布'], ['線形探索', '2分探索'], ['DOM', 'SAX'],
+    ['RISC', 'CISC'], ['スループット', '応答時間'], ['MTBF', 'MTTR'],
+    ['フェールセーフ', 'フェールソフト', 'フールプルーフ'],
+    ['スケールアウト', 'スケールアップ', 'スケールイン', 'スケールダウン'],
+    ['ロールバック', 'ロールフォワード', 'コミット', 'チェックポイント', 'トランザクション'],
+    ['CMS', 'ASN.1'], ['情報理論的安全性', '計算量的安全性', 'DH鍵共有', 'RSA暗号', '楕円曲線暗号'],
+    ['NIST', 'ENISA'], ['CWPP', 'CASB'], ['人月', '工数'],
+    ['インシデント管理', '問題管理'], ['容量・能力管理', 'サービス継続管理'],
+    ['監査手続', '監査証拠'], ['予備調査', '本調査'], ['RFI', 'RFP'], ['ファブレス', 'ファウンドリー'],
+  ])('keeps %s and its related concepts independently explainable', (...words) => {
+    const resolved = words.map(word => termForWord(word));
+    expect(resolved.every(Boolean)).toBe(true);
+    expect(new Set(resolved.map(term => term?.id)).size).toBe(words.length);
+    for (const [i, term] of resolved.entries()) expect(term?.name).toBe(words[i]);
+  });
 });

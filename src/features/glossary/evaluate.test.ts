@@ -44,6 +44,7 @@ describe('AI評価のクライアント', () => {
     expect(new Set(terms.map(t => t.id)).size).toBe(terms.length);
     for (const item of terms) {
       expect(item.criteria.length).toBeGreaterThan(0);
+      expect(item.criteria.some(c => !c.level || c.level === 'B'), item.name).toBe(true);
       expect(new Set(item.criteria.map(c => c.id)).size).toBe(item.criteria.length);
       for (const id of item.related) expect(termById.has(id)).toBe(true);
     }

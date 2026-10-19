@@ -64,6 +64,15 @@ describe('LLM評価の検証と集計', () => {
     generated.criteria[0].evidence = '入力にない引用';
     expect(() => parseAssessment(generated, extraTerm('公開鍵基盤'), text, 'gpt-6-luna')).toThrow('引用');
   });
+  it('accepts a crashing explanation without requiring fast tracking or other compression techniques', () => {
+    const crashing = termById.get('schedule-compression')!;
+    const explanation = 'クリティカルパス上の作業に人員などの資源を追加して、期間を短縮することです。';
+    const raw = { ...assessment(), criteria: [{ id: 'meaning', title: '', level: 'B', status: 'covered', evidence: explanation, feedback: '説明できています。' }] };
+    const result = parseAssessment(raw, crashing, explanation, 'gpt-6-luna');
+    expect(result).toMatchObject({ status: 'covered', grade: 'B', covered: 1, total: 1 });
+    expect(result.criteria).toHaveLength(1);
+    expect(result.criteria[0].title).not.toContain('ファストトラッキング');
+  });
   it('rejects invented quotes, empty evidence, unknown and duplicated criteria', () => {
     const invented = assessment(); invented.criteria[0].evidence = '公開鍵で署名を作る';
     expect(() => parseAssessment(invented, term, text, 'gpt-6-luna')).toThrow('引用');

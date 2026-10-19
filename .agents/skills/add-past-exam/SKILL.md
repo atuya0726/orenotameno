@@ -52,6 +52,8 @@ scripts/past-exam/fetch.sh sc 2025 autumn am2   # <試験> <西暦> <autumn|spri
 
 ## 4. 用語集を増やす
 
+追加・修正前に、[用語学習の編集方針](../../../docs/glossary-authoring.md)を読む。1用語につき1概念とし、関連語の定義をまとめて必須にしない。
+
 復習単語の候補は、すべて用語集のいずれかの用語で開けるようにする（`src/data/question-terms.test.ts` が検査する）。用語は名前のほか、かっこ内の表記（`PKI（公開鍵基盤）` なら `PKI` と `公開鍵基盤`）と `aliases` で単語に対応する。対応していない単語は次のコマンドで一覧にする。
 
 ```sh
