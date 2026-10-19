@@ -12,6 +12,7 @@ import { exportBackup } from '@/lib/db';
 import { dayKey, formatDate } from '@/lib/date';
 import { cn } from '@/lib/utils';
 import { Mic } from 'lucide-react';
+import { CalculatorToggle } from '@/components/calculator';
 import GlossaryApp from '@/features/glossary/GlossaryApp';
 
 const menu = [
@@ -199,7 +200,7 @@ function QuestionHeader({ question }: { question: Question }) {
   const { snapshot, toggleBookmark } = useLearning();
   const saved = snapshot.bookmarks.includes(question.id);
   return <section className="question-card">
-    <div className="question-heading"><h2><MathText text={question.prompt} /></h2><button className={cn('bookmark-button', saved && 'bookmarked')} aria-label={saved ? 'あとで見るから外す' : 'あとで見るに追加'} aria-pressed={saved} onClick={() => void toggleBookmark(question.id)}><Bookmark size={19} fill={saved ? 'currentColor' : 'none'} /></button></div>
+    <div className="question-heading"><h2><MathText text={question.prompt} /></h2><button className={cn('bookmark-button', saved && 'bookmarked')} aria-label={saved ? 'あとで見るから外す' : 'あとで見るに追加'} aria-pressed={saved} onClick={() => void toggleBookmark(question.id)}><Bookmark size={19} fill={saved ? 'currentColor' : 'none'} /></button>{question.kind === 'calculation' && <CalculatorToggle key={question.id} questionId={question.id} />}</div>
     {question.details && <div className="question-details">{question.details.title && <h3>〔<MathText text={question.details.title} />〕</h3>}<ul>{question.details.items.map(item => <li key={item}><MathText text={item} /></li>)}</ul></div>}
     {question.table && <div className="question-table-scroll" role="region" aria-label={question.table.caption} tabIndex={0}><table className="question-table"><caption><MathText text={question.table.caption} /></caption><thead><tr>{question.table.headers.map(header => <th key={header} scope="col"><MathText text={header} /></th>)}</tr></thead><tbody>{question.table.rows.map((row, i) => <tr key={i}>{row.map((cell, j) => j === 0 ? <th key={j} scope="row"><MathText text={cell} /></th> : <td key={j}><MathText text={cell} /></td>)}</tr>)}</tbody></table></div>}
   </section>;
