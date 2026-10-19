@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { Link, NavLink, Route, Routes, useLocation, useParams, useSearchParams } from 'react-router';
-import { ArrowDownToLine, ArrowLeft, ArrowRight, ArrowUpFromLine, BarChart3, BookMarked, BookOpen, Bookmark, Check, CheckCheck, ChevronRight, CircleHelp, Database, GraduationCap, LayoutDashboard, LoaderCircle, Plus, RotateCcw, Search, Settings2, ShieldCheck, Target, X } from 'lucide-react';
+import { ArrowDownToLine, ArrowLeft, ArrowRight, ArrowUpFromLine, BarChart3, BookMarked, BookOpen, Bookmark, Check, CheckCheck, ChevronRight, CircleHelp, Database, LayoutDashboard, LoaderCircle, Plus, RotateCcw, Search, Settings2, Target, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { MathText } from '@/components/math-text';
 import { courses, questions, questionById } from '@/data/questions';
@@ -15,6 +15,8 @@ import { cn } from '@/lib/utils';
 import { Mic } from 'lucide-react';
 import { CalculatorToggle } from '@/components/calculator';
 import GlossaryApp from '@/features/glossary/GlossaryApp';
+import { PracticeSetup } from '@/components/practice-setup';
+import { buildPracticeQueue, parsePracticeSearch } from '@/lib/practice';
 
 const menu = [
   { to: '/', label: '学習ホーム', icon: LayoutDashboard, end: true },
@@ -84,10 +86,7 @@ function Home() {
     <PageIntro title="学習ホーム">
       <time className="today-date" dateTime={dayKey(new Date(now))}>{date}</time>
     </PageIntro>
-    <section aria-labelledby="subject-heading">
-      <div className="section-heading subject-heading"><h2 id="subject-heading">科目を選ぶ</h2><Link className="text-link" to="/questions">すべての問題<ArrowRight size={15} /></Link></div>
-      <div className="course-grid">{(['A1', 'A2'] as const).map(course => <CourseCard key={course} course={course} />)}</div>
-    </section>
+    <PracticeSetup />
     <Link to="/glossary" className="glossary-home-entry"><span className="glossary-home-icon"><Mic size={24} /></span><span><strong>用語学習</strong></span><ArrowRight size={20} /></Link>
     <div className="dashboard-grid">
       <section className="daily-card">
@@ -105,19 +104,6 @@ function Home() {
   </>;
 }
 
-function CourseCard({ course }: { course: Course }) {
-  const { snapshot } = useLearning();
-  const list = questions.filter(q => q.course === course);
-  const done = list.filter(q => snapshot.cards.some(c => c.questionId === q.id)).length;
-  return <Link to={list.length ? `/study/${course}` : `/questions?course=${course}`} className={cn('course-card', !list.length && 'course-unavailable')}>
-    <div className="course-card-top"><span className="subject-symbol">{course === 'A1' ? <GraduationCap size={24} strokeWidth={1.6} /> : <ShieldCheck size={24} strokeWidth={1.6} />}</span><span className="pill">{courses[course].legacy}</span></div>
-    <div className="course-title"><h3>{courses[course].name}</h3><span>{course === 'A1' ? '共通知識' : 'セキュリティ専門知識'}</span></div>
-    <p className="course-description">{courses[course].description}</p>
-    <div className="course-card-bottom"><span>収録 {list.length} 問{list.length > 0 && <><span className="meta-divider">·</span>学習済み {done} / {list.length}</>}</span><span className="course-action">{list.length ? <>演習する<ArrowRight size={16} /></> : '未収録'}</span></div>
-    <div className="progress-track"><i style={{ width: `${list.length ? done / list.length * 100 : 0}%` }} /></div>
-  </Link>;
-}
-
 function Study() {
   const { course: courseParam } = useParams();
   const [search] = useSearchParams();
@@ -126,6 +112,8 @@ function Study() {
   const [queue] = useState(() => {
     const list = questions.filter(q => q.course === course);
     if (search.get('question')) return list.filter(q => q.id === search.get('question'));
+    const practice = course && parsePracticeSearch(course, search);
+    if (course && practice) return buildPracticeQueue(course, practice, snapshot);
     const mode = search.get('mode');
     if (mode === 'new') return list.filter(q => !snapshot.cards.some(c => c.questionId === q.id));
     if (mode === 'bookmarks') return list.filter(q => snapshot.bookmarks.includes(q.id));
@@ -165,7 +153,7 @@ function Study() {
   }
   function next() { setResult(null); setIndex(i => i + 1); window.scrollTo({ top: 0, behavior: 'instant' }); }
   return <>
-    <div className="study-breadcrumb"><Link to="/questions"><ArrowLeft size={15} />問題一覧</Link><span>/</span><span>{courses[course].name}</span><span className="study-session-counter"><strong>{index + 1}</strong> / {queue.length}</span></div>
+    <div className="study-breadcrumb">{search.has('by') ? <Link to="/"><ArrowLeft size={15} />学習ホーム</Link> : <Link to="/questions"><ArrowLeft size={15} />問題一覧</Link>}<span>/</span><span>{courses[course].name}</span><span className="study-session-counter"><strong>{index + 1}</strong> / {queue.length}</span></div>
     <div className="study-progress"><i style={{ width: `${(index + (result ? 1 : 0)) / queue.length * 100}%` }} /></div>
     <h1 className="sr-only">問題演習</h1>
     <div className="exercise-layout"><div className="exercise-main">
@@ -329,7 +317,7 @@ function QuestionLibrary() {
   const [search, setSearch] = useState('');
   const list = questions.filter(q => (course === 'all' || q.course === course) && (filter !== 'new' || !snapshot.cards.some(c => c.questionId === q.id)) && (filter !== 'bookmarks' || snapshot.bookmarks.includes(q.id)) && `${q.title} ${q.prompt} ${q.topic}`.includes(search));
   function update(key: string, value: string) { const next = new URLSearchParams(params); next.set(key, value); setParams(next, { replace: true }); }
-  return <><PageIntro title="問題一覧" /><div className="library-toolbar"><div className="course-tabs" aria-label="科目で絞り込み">{[['all', 'すべて'], ['A1', '科目A1'], ['A2', '科目A2']].map(([value, label]) => <button key={value} className={course === value ? 'active' : ''} onClick={() => update('course', value)} aria-pressed={course === value}>{label}</button>)}</div><label className="search-input"><Search size={17} /><input aria-label="問題を検索" placeholder="キーワードで探す" value={search} onChange={e => setSearch(e.target.value)} /></label></div><div className="library-filter-row"><div className="filter-pills">{[['all', 'すべての問題'], ['new', 'まだ解いていない'], ['bookmarks', 'あとで見る']].map(([value, label]) => <button key={value} className={filter === value ? 'active' : ''} onClick={() => update('filter', value)} aria-pressed={filter === value}>{label}</button>)}</div><span>{list.length}問</span></div>{list.length ? <div className="question-list">{list.map(q => <QuestionRow key={q.id} question={q} />)}</div> : <Empty icon={<Search />} title="条件に合う問題はありません" description="キーワードや絞り込み条件を変えてみてください。" />}<div className="prototype-note"><span className="pill">収録情報</span>A1：令和7年度秋期 午前Ⅰ・30問／A2：令和7年度秋期 午前Ⅱ・25問。解説は独自作成。</div></>;
+  return <><PageIntro title="問題一覧" /><div className="library-toolbar"><div className="course-tabs" aria-label="科目で絞り込み">{[['all', 'すべて'], ['A1', '科目A1'], ['A2', '科目A2']].map(([value, label]) => <button key={value} className={course === value ? 'active' : ''} onClick={() => update('course', value)} aria-pressed={course === value}>{label}</button>)}</div><label className="search-input"><Search size={17} /><input aria-label="問題を検索" placeholder="キーワードで探す" value={search} onChange={e => setSearch(e.target.value)} /></label></div><div className="library-filter-row"><div className="filter-pills">{[['all', 'すべての問題'], ['new', 'まだ解いていない'], ['bookmarks', 'あとで見る']].map(([value, label]) => <button key={value} className={filter === value ? 'active' : ''} onClick={() => update('filter', value)} aria-pressed={filter === value}>{label}</button>)}</div><span>{list.length}問</span></div>{list.length ? <div className="question-list">{list.map(q => <QuestionRow key={q.id} question={q} />)}</div> : <Empty icon={<Search />} title="条件に合う問題はありません" description="キーワードや絞り込み条件を変えてみてください。" />}<div className="prototype-note"><span className="pill">収録情報</span>A1：令和5年度春期〜令和7年度秋期 午前Ⅰ・6回180問／A2：令和7年度秋期 午前Ⅱ・25問。解説は独自作成。</div></>;
 }
 
 function QuestionRow({ question, reviewRemaining }: { question: Question; reviewRemaining?: number }) {

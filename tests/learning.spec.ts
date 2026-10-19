@@ -225,9 +225,41 @@ test('works at mobile width without horizontal overflow', async ({ page }) => {
 test('shows the dashboard and subject selection with accurate empty stats', async ({ page }) => {
   await page.goto('/');
   await expect(page.getByRole('heading', { name: '学習ホーム' })).toBeVisible();
-  await expect(page.getByRole('link', { name: /科目A1 共通知識/ })).toBeVisible();
-  await expect(page.getByRole('link', { name: /科目A2 セキュリティ専門知識/ })).toBeVisible();
+  await expect(page.getByRole('button', { name: /科目A1 共通知識/ })).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.getByRole('button', { name: /科目A2 セキュリティ専門知識/ })).toHaveAttribute('aria-pressed', 'false');
+  await expect(page.locator('.practice-count')).toHaveText('出題数 180問');
   await page.screenshot({ path: 'test-results/desktop-home.png', fullPage: true });
+});
+
+test('chooses questions by session, field and options like a past-exam dojo, and remembers the setup', async ({ page }) => {
+  await page.goto('/');
+  const setup = page.getByRole('region', { name: '問題を選ぶ' });
+  await setup.getByRole('button', { name: '試験回の選択をすべて解除' }).click();
+  await expect(setup.locator('.practice-count')).toHaveText('条件に合う問題がありません');
+  await expect(setup.getByRole('button', { name: '出題開始' })).toBeDisabled();
+  await setup.getByRole('checkbox', { name: /令和6年度春期/ }).check();
+  await expect(setup.locator('.practice-count')).toHaveText('出題数 30問');
+  await setup.getByRole('button', { name: '分野を指定' }).click();
+  await setup.getByRole('button', { name: '分野の選択をすべて解除' }).click();
+  await setup.getByRole('checkbox', { name: /^プロジェクトマネジメント/ }).check();
+  await expect(setup.locator('.practice-count')).toHaveText('出題数 14問');
+  await setup.getByRole('checkbox', { name: '試験回でも絞り込む' }).check();
+  await expect(setup.locator('.practice-count')).toHaveText('出題数 3問');
+  await setup.getByText('試験回・番号順', { exact: true }).click();
+  await expect(setup.getByRole('radio', { name: '試験回・番号順' })).toBeChecked();
+  await setup.getByRole('link', { name: '出題開始' }).click();
+  await expect(page).toHaveURL(/by=fields&sets=sc-2024-spring-a1&fields=project&narrow=1&order=number/);
+  await expect(page.locator('.study-session-counter')).toContainText('1 / 3');
+  await expect(page.getByRole('heading', { name: /EVMで管理しているプロジェクト/ })).toBeVisible();
+  await expect(page.getByRole('link', { name: '学習ホーム' }).first()).toBeVisible();
+  await page.goto('/');
+  await expect(setup.getByRole('button', { name: '分野を指定' })).toHaveAttribute('aria-pressed', 'true');
+  await expect(setup.locator('.practice-count')).toHaveText('出題数 3問');
+  await setup.getByRole('button', { name: '模擬試験' }).click();
+  await setup.getByRole('radio', { name: /令和5年度秋期/ }).check();
+  await setup.getByRole('link', { name: '出題開始' }).click();
+  await expect(page.locator('.study-session-counter')).toContainText('1 / 30');
+  await expect(page.getByRole('heading', { name: /逆ポーランド表記法/ })).toBeVisible();
 });
 
 test('offers 180 A1 and 25 A2 questions and renders their tables', async ({ page }) => {
