@@ -58,9 +58,7 @@ test('evaluates once, stores feedback separately from quizzes, and reviews a his
   await page.getByRole('link', { name: '説明の履歴', exact: true }).click();
   await page.reload(); await page.getByRole('link', { name: '見直す', exact: true }).click();
   await expect(page.locator('.saved-explanation')).toContainText(text);
-  await page.getByRole('button', { name: 'もう一度説明する' }).click();
-  await expect(textbox(page)).toHaveValue('');
-  await expect(page.getByText('説明例を参照済み')).toBeVisible();
+  await expect(page.getByRole('link', { name: '次の用語へ' })).toBeVisible();
 });
 
 test('practices a follow-up term the AI suggested outside the built-in list', async ({ page }) => {

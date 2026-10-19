@@ -161,7 +161,6 @@ function TermPractice({ term, referenceInitially, attemptId, review }: { term: T
     finally { setSaving(false); }
   }
   function reveal() { hasSeenReference.current = true; setShowReference(true); change({ referenceViewed: true }); }
-  function retry() { setShowReference(false); change({ text: '', usedVoice: false, referenceViewed: true }); textareaRef.current?.focus(); }
   return <>
     {review ? <div className="review-round-bar"><Link to="/reviews" className="back-link"><ArrowLeft size={15} />復習をやめる</Link><span className="review-round-count">単語の復習 {review.done.length + 1} / {Math.max(reviewWords.length, review.done.length + 1)}</span>{!result && <Link to={nextReviewPath(review)} className="text-link">{reviewLast ? '復習を終える' : 'この単語をとばす'}<ChevronRight size={15} /></Link>}</div> : <Link to="/glossary" className="back-link"><ArrowLeft size={15} />用語一覧へ戻る</Link>}
     <div className="term-practice-heading"><div><span className="pill">{term.category}</span><h1>{term.name}</h1><p>{term.reading}</p></div><span className="term-practice-count"><History size={14} />これまで{history.length}回説明</span></div>
@@ -183,7 +182,7 @@ function TermPractice({ term, referenceInitially, attemptId, review }: { term: T
         {draft.referenceViewed && <p className="reference-viewed-note">説明例を参照済み</p>}{error && <p className="inline-error" role="alert">{error}</p>}
         <p className="speech-privacy">チェック時に説明文をOpenAIへ送信します。履歴はこのブラウザに保存。音声認識はブラウザのサービスを利用し、音声は当サイトに保存しません。</p>
       </form>}
-      {result && <div ref={feedbackRef} tabIndex={-1} className="glossary-feedback-focus"><Feedback attempt={result} /><Reference term={term} definition={result.reference} /><div className="actions glossary-next-actions"><Button variant="outline" onClick={retry}><RotateCcw size={16} />もう一度説明する</Button>{review ? <Button asChild><Link to={nextReviewPath(review)}>{reviewLast ? '復習を終える' : '次の単語へ'}<ArrowRight size={16} /></Link></Button> : <Button asChild><Link to={`/glossary/${nextTerm.id}`}>次の用語へ<ArrowRight size={16} /></Link></Button>}</div></div>}
+      {result && <div ref={feedbackRef} tabIndex={-1} className="glossary-feedback-focus"><Feedback attempt={result} /><Reference term={term} definition={result.reference} /><div className="actions glossary-next-actions">{review ? <Button asChild><Link to={nextReviewPath(review)}>{reviewLast ? '復習を終える' : '次の単語へ'}<ArrowRight size={16} /></Link></Button> : <Button asChild><Link to={`/glossary/${nextTerm.id}`}>次の用語へ<ArrowRight size={16} /></Link></Button>}</div></div>}
       {!result && history.length > 0 && <details className="term-history"><summary><History size={16} />過去の説明を見る（{history.length}件）</summary>{history.slice(0, 5).map(attempt => <Link key={attempt.id} to={termPath(term.id, attempt.id)}><time>{formatDate(attempt.answeredAt, true)}</time><ResultBadge attempt={attempt} /><ChevronRight size={15} /></Link>)}</details>}
     </div>{term.related.length > 0 && <aside className="term-coach"><div className="related-terms"><h3>関連用語</h3>{term.related.map(id => { const related = termById.get(id); return related && <Link key={id} to={`/glossary/${id}`}>{related.name}<ChevronRight size={14} /></Link>; })}</div></aside>}</div>
   </>;
