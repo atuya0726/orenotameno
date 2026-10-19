@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { Link, Route, Routes, useParams, useSearchParams } from 'react-router';
-import { ArrowDownToLine, ArrowLeft, ArrowRight, ArrowUpFromLine, BookOpen, Check, ChevronRight, CircleHelp, Clock3, History, LoaderCircle, Mic, RotateCcw, Search, Square, TriangleAlert, X } from 'lucide-react';
+import { ArrowDownToLine, ArrowLeft, ArrowRight, ArrowUpFromLine, BookOpen, Check, CheckCheck, ChevronRight, CircleHelp, Clock3, History, LoaderCircle, Mic, RotateCcw, Search, Square, TriangleAlert, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { formatDate, dayKey } from '@/lib/date';
@@ -8,6 +8,7 @@ import { GlossaryProvider, useGlossary } from './useGlossary';
 import { terms, termById, termCategories } from './terms';
 import { explanationInputSchema, extraTerm, extraTermName, extraTermNameSchema, levelInfo, levels, type Evaluation, type Grade, type GlossaryAttempt, type GlossaryDraft, type Term } from './model';
 import { serializeGlossary } from './db';
+import { useLearning } from '@/lib/store';
 import { useSpeech } from './useSpeech';
 
 const statusLabels: Record<Evaluation['status'], string> = { covered: '要点を確認', partial: '説明を補おう', review: '要点に誤りあり', unconfirmed: '要点を確認できず' };
@@ -61,13 +62,39 @@ function GlossaryLibrary() {
   const [randomIndex] = useState(() => Math.random());
   const random = pool[Math.min(Math.floor(randomIndex * pool.length), pool.length - 1)];
   function update(key: string, value: string) { const next = new URLSearchParams(params); next.set(key, value); setParams(next, { replace: true }); }
+  const reviewWords = useLearning().snapshot.reviewWords;
   return <>
     <Intro title="用語学習">{random && <Button asChild><Link to={`/glossary/${random.id}`}>おまかせで練習<ArrowRight size={17} /></Link></Button>}</Intro>
     <div className="glossary-metrics"><div><strong>{terms.length}<small>語</small></strong><span>収録用語</span></div><div><strong>{practiced}<small>語</small></strong><span>説明した用語</span></div><div><strong>{needsReview}<small>語</small></strong><span>もう一度説明したい</span></div></div>
     <div className="glossary-toolbar"><label className="search-input"><Search size={17} /><input aria-label="用語を検索" placeholder="用語・英語名で検索" value={search} onChange={e => setSearch(e.target.value)} /></label><label className="glossary-category"><span className="sr-only">用語のカテゴリ</span><select value={category} onChange={e => update('category', e.target.value)}><option value="all">すべてのカテゴリ</option>{termCategories.map(value => <option key={value}>{value}</option>)}</select></label></div>
-    <div className="library-filter-row"><div className="filter-pills">{[['all', 'すべて'], ['new', 'まだ説明していない'], ['review', 'もう一度']].map(([value, label]) => <button key={value} onClick={() => update('filter', value)} className={filter === value ? 'active' : ''} aria-pressed={filter === value}>{label}</button>)}</div><span>{list.length}語</span></div>
-    {list.length ? <div className="glossary-grid">{list.map(term => <article className="term-card" key={term.id}><div className="term-card-top"><span>{term.category}</span><ResultBadge attempt={latest.get(term.id)} /></div><h2><Link to={`/glossary/${term.id}`}>{term.name}</Link></h2><p className="term-reading">{term.reading}</p>{snapshot.drafts.some(d => d.termId === term.id && d.text.trim()) && <span className="term-draft-label">入力途中の説明があります</span>}<div className="term-card-actions"><Button asChild variant="outline"><Link to={`/glossary/${term.id}?reference=1`}>用語を見る<BookOpen size={15} /></Link></Button><Button asChild><Link to={`/glossary/${term.id}`}>説明する<ArrowRight size={15} /></Link></Button></div></article>)}</div> : <div className="empty-state"><Search size={25} /><h2>条件に合う用語がありません</h2><p>検索語や絞り込み条件を変えてみてください。</p></div>}
+    <div className="library-filter-row"><div className="filter-pills">{[['all', 'すべて'], ['new', 'まだ説明していない'], ['review', 'もう一度'], ...(reviewWords.length || filter === 'words' ? [['words', `復習する単語 ${reviewWords.length}`]] : [])].map(([value, label]) => <button key={value} onClick={() => update('filter', value)} className={filter === value ? 'active' : ''} aria-pressed={filter === value}>{label}</button>)}</div>{filter !== 'words' && <span>{list.length}語</span>}</div>
+    {filter === 'words' ? <ReviewWordCards words={reviewWords} search={search} latest={latest} /> : list.length ? <div className="glossary-grid">{list.map(term => <article className="term-card" key={term.id}><div className="term-card-top"><span>{term.category}</span><ResultBadge attempt={latest.get(term.id)} /></div><h2><Link to={`/glossary/${term.id}`}>{term.name}</Link></h2><p className="term-reading">{term.reading}</p>{snapshot.drafts.some(d => d.termId === term.id && d.text.trim()) && <span className="term-draft-label">入力途中の説明があります</span>}<div className="term-card-actions"><Button asChild variant="outline"><Link to={`/glossary/${term.id}?reference=1`}>用語を見る<BookOpen size={15} /></Link></Button><Button asChild><Link to={`/glossary/${term.id}`}>説明する<ArrowRight size={15} /></Link></Button></div></article>)}</div> : <div className="empty-state"><Search size={25} /><h2>条件に合う用語がありません</h2><p>検索語や絞り込み条件を変えてみてください。</p></div>}
 
+  </>;
+}
+
+// Words saved from questions open the matching glossary term, or an AI-checked extra term when none is collected.
+const normalize = (text: string) => text.toLowerCase().replace(/ディジタル/g, 'デジタル').replace(/[\s・]/g, '');
+const termByName = new Map(terms.map(term => [normalize(term.name), term]));
+function ReviewWordCards({ words, search, latest }: { words: string[]; search: string; latest: Map<string, GlossaryAttempt> }) {
+  const { setReviewWord } = useLearning();
+  const [pending, setPending] = useState<string | null>(null);
+  const [error, setError] = useState('');
+  async function remove(word: string) {
+    if (pending) return;
+    setPending(word); setError('');
+    try { await setReviewWord(word, false); }
+    catch { setError('保存できませんでした。もう一度お試しください。'); }
+    finally { setPending(null); }
+  }
+  const shown = words.filter(word => normalize(word).includes(normalize(search)));
+  if (!words.length) return <div className="empty-state"><CheckCheck size={25} /><h2>復習する単語はありません</h2><p>問題の解説で「復習したい単語」を選ぶと、ここに並びます。</p></div>;
+  return <>
+    {error && <p className="inline-error" role="alert">{error}</p>}
+    {shown.length ? <div className="glossary-grid">{shown.map(word => {
+      const term = termByName.get(normalize(word)); const termId = term?.id ?? extraTerm(word).id;
+      return <article className="term-card" key={word}><div className="term-card-top"><span>{term?.category ?? '問題から登録'}</span><ResultBadge attempt={latest.get(termId)} /></div><h2><Link to={termPath(termId)}>{term?.name ?? word}</Link></h2>{term && <p className="term-reading">{term.reading}</p>}<div className="term-card-actions"><Button variant="outline" disabled={pending !== null} aria-busy={pending === word} onClick={() => void remove(word)} aria-label={`${word}を復習する単語から外す`}>{pending === word ? <LoaderCircle className="animate-spin" size={15} /> : <X size={15} />}外す</Button><Button asChild><Link to={termPath(termId)} aria-label={`${word}を説明する`}>説明する<ArrowRight size={15} /></Link></Button></div></article>;
+    })}</div> : <div className="empty-state"><Search size={25} /><h2>条件に合う単語がありません</h2></div>}
   </>;
 }
 

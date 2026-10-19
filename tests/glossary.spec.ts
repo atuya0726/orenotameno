@@ -132,7 +132,7 @@ test('handles final/interim voice text, prevents checks while listening, and sto
   // navigate without moving focus so blur doesn't stop the mic first
   await page.evaluate(() => document.querySelector<HTMLAnchorElement>('a.back-link')!.click());
   await expect(page).toHaveURL(/\/glossary$/);
-  expect(await page.evaluate(() => (window as unknown as { speechAborted: boolean }).speechAborted)).toBe(true);
+  await expect.poll(() => page.evaluate(() => (window as unknown as { speechAborted: boolean }).speechAborted)).toBe(true);
 });
 
 test('backs up and merges history without duplicating paid evaluations', async ({ page }) => {

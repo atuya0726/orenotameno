@@ -113,7 +113,7 @@ describe('answering and recorded results', () => {
     expect(html).not.toContain('語選択中');
     expect(html).not.toContain('意味がよくわからなかった');
   });
-  it('selects a word registered from another question and lists it once in the review notebook', () => {
+  it('selects a word registered from another question and counts it once in the review notebook', () => {
     const question = questions[14];
     const { attempt } = scheduleAnswer(createQuickAnswer({ questionId: question.id, selected: question.correct, uncertainOptions: [] }, 'high', question), question);
     snapshot.attempts = [attempt];
@@ -123,8 +123,7 @@ describe('answering and recorded results', () => {
     expect(button).toContain('aria-pressed="true"');
     const notebook = render('/reviews');
     expect(notebook).toContain('復習する単語');
-    expect(notebook.match(/<strong>デジタル署名<\/strong>/g)).toHaveLength(1);
-    expect(notebook).toContain('デジタル署名が出てくる令和7年度秋期 科目A1の問13を解く');
-    expect(notebook).toContain('デジタル署名が出てくる令和7年度秋期 科目A1の問15を解く');
+    expect(notebook).toContain('<strong>1<small>語</small></strong>');
+    expect(notebook).toContain('href="/glossary?filter=words"');
   });
 });

@@ -333,36 +333,14 @@ function ReviewNotebook() {
   const { snapshot } = useLearning();
   const pending = activeReviews(snapshot.cards);
   const priorityCount = pending.filter(card => card.remainingReviews >= 3).length;
+  const words = snapshot.reviewWords.length;
+  if (!pending.length && !words) return <><PageIntro title="復習ノート" /><Empty icon={<CheckCheck />} title="復習する問題はありません" description="問題一覧から、次の学習を進めましょう。"><Button asChild><Link to="/questions">問題を選ぶ<ArrowRight size={16} /></Link></Button></Empty></>;
   return <><PageIntro title="復習ノート" />
-    {pending.length ? <>
-      <section className="review-summary"><span className="review-summary-icon"><RotateCcw size={25} /></span><div><span>復習する問題</span><strong>{pending.length}<small>問</small></strong></div><p>優先して復習 <strong className="review-total-count">{priorityCount}問</strong></p><div className="review-course-actions">{(['A1', 'A2'] as const).filter(course => pending.some(card => questionById.get(card.questionId)?.course === course)).map(course => <Button key={course} asChild><Link to={`/study/${course}?mode=review`}>{courses[course].name}を復習<ArrowRight size={16} /></Link></Button>)}</div></section>
-      <div className="section-heading compact review-list-heading"><h2>復習する問題</h2><span className="muted">{pending.length}問</span></div>
-      <div className="question-list">{pending.map(card => <QuestionRow key={card.questionId} question={questionById.get(card.questionId)!} reviewRemaining={card.remainingReviews} />)}</div>
-    </> : snapshot.reviewWords.length > 0 ? <p className="muted">復習する問題はありません。</p> : <Empty icon={<CheckCheck />} title="復習する問題はありません" description="問題一覧から、次の学習を進めましょう。"><Button asChild><Link to="/questions">問題を選ぶ<ArrowRight size={16} /></Link></Button></Empty>}
-    <ReviewWordList />
+    <div className="review-summaries">
+      <section className="review-summary" aria-label="復習する問題"><span className="review-summary-icon"><RotateCcw size={25} /></span><div><span>復習する問題</span><strong>{pending.length}<small>問</small></strong></div>{pending.length > 0 ? <><p>優先して復習 <strong className="review-total-count">{priorityCount}問</strong></p><div className="review-course-actions">{(['A1', 'A2'] as const).filter(course => pending.some(card => questionById.get(card.questionId)?.course === course)).map(course => <Button key={course} asChild><Link to={`/study/${course}?mode=review`}>{courses[course].name}を復習<ArrowRight size={16} /></Link></Button>)}</div></> : <p className="muted">復習する問題はありません。</p>}</section>
+      <section className="review-summary" aria-label="復習する単語"><span className="review-summary-icon"><Mic size={25} /></span><div><span>復習する単語</span><strong>{words}<small>語</small></strong></div>{words > 0 ? <><p className="muted">用語学習で、自分の言葉で説明して確かめます。</p><div className="review-course-actions"><Button asChild><Link to="/glossary?filter=words">単語を復習<ArrowRight size={16} /></Link></Button></div></> : <p className="muted">登録した単語はありません。</p>}</section>
+    </div>
   </>;
-}
-
-function ReviewWordList() {
-  const { snapshot, setReviewWord } = useLearning();
-  const [pending, setPending] = useState<string | null>(null);
-  const [error, setError] = useState('');
-  const saving = useRef(false);
-  async function remove(term: string) {
-    if (saving.current) return;
-    saving.current = true; setPending(term); setError('');
-    try { await setReviewWord(term, false); }
-    catch { setError('保存できませんでした。もう一度お試しください。'); }
-    finally { saving.current = false; setPending(null); }
-  }
-  return <section className="review-words" aria-labelledby="review-words-heading">
-    <h2 id="review-words-heading">復習する単語</h2>
-    {snapshot.reviewWords.length > 0 ? <ul className="review-word-list">{snapshot.reviewWords.map(term => <li key={term}>
-      <div className="review-word-content"><strong>{term}</strong><div className="review-word-questions">{questions.filter(question => getQuestionTerms(question).includes(term)).map(question => { const where = `${question.source.kind === 'ipa' ? `${eraLabel(question.source)} ` : ''}${courses[question.course].name}`; return <Link key={question.id} to={`/study/${question.course}?question=${question.id}`} aria-label={`${term}が出てくる${where}の問${question.number}を解く`}>{where} 問{question.number}<ChevronRight size={14} /></Link>; })}</div></div>
-      <button type="button" className="review-word-remove" aria-label={`${term}を復習する単語から外す`} disabled={pending !== null} aria-busy={pending === term} onClick={() => void remove(term)}>{pending === term ? <LoaderCircle className="animate-spin" size={17} /> : <X size={17} />}</button>
-    </li>)}</ul> : <p className="muted">登録した単語はありません。</p>}
-    {error && <p className="inline-error" role="alert">{error}</p>}
-  </section>;
 }
 
 function Records() {

@@ -57,16 +57,18 @@ test('prioritizes unknown answers and clears them after a confident correct revi
   await toggle.click();
   await expect(toggle).toHaveAttribute('aria-pressed', 'true');
   await page.goto('/reviews');
-  await expect(page.locator('.question-row')).toHaveCount(2);
-  await expect(page.locator('.question-row').first()).toContainText('優先して復習');
-  await expect(page.locator('.question-row').last()).toContainText('要復習');
+  const questions = page.getByRole('region', { name: '復習する問題', exact: true });
+  await expect(questions).toContainText('2問');
+  await expect(questions).toContainText('優先して復習 1問');
+  await expect(page.locator('.question-row')).toHaveCount(0);
   await page.getByRole('link', { name: '科目A1を復習', exact: true }).click();
   await expect(page.locator('.question-card h2')).toContainText('伝票処理システム');
   await page.getByRole('button', { name: 'イで回答', exact: true }).click();
   await expect(toggle).toHaveAttribute('aria-pressed', 'false');
   await page.goto('/reviews');
-  await expect(page.locator('.question-row')).toHaveCount(1);
-  await expect(page.locator('.question-row')).toContainText('ROC曲線と偽陽性率');
+  await expect(questions).toContainText('1問');
+  await page.getByRole('link', { name: '科目A1を復習', exact: true }).click();
+  await expect(page.locator('.question-card h2')).toContainText('ROC曲線');
 });
 
 test('shows an earlier doubt flag as a review request that can be cleared', async ({ page }) => {
@@ -180,13 +182,19 @@ test('shares a saved word between questions and removes it globally from the rev
   expect(saved.reviewWords).toEqual(['デジタル署名']);
   expect(saved.cards.every(card => card.remainingReviews === 2)).toBe(true);
   await page.goto('/reviews');
-  const list = page.getByRole('region', { name: '復習する単語', exact: true });
-  await expect(list.getByRole('listitem')).toHaveCount(1);
-  await expect(list.getByRole('link', { name: 'デジタル署名が出てくる令和7年度秋期 科目A1の問13を解く' })).toBeVisible();
-  await expect(list.getByRole('link', { name: 'デジタル署名が出てくる令和7年度秋期 科目A1の問15を解く' })).toBeVisible();
+  await expect(page.locator('.question-row')).toHaveCount(0);
+  const summary = page.getByRole('region', { name: '復習する単語', exact: true });
+  await expect(summary).toContainText('1語');
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-  await list.getByRole('button', { name: 'デジタル署名を復習する単語から外す' }).click();
-  await expect(list.getByRole('listitem')).toHaveCount(0);
+  await summary.getByRole('link', { name: '単語を復習' }).click();
+  await expect(page).toHaveURL(/\/glossary\?filter=words$/);
+  const cards = page.locator('.term-card');
+  await expect(cards).toHaveCount(1);
+  // the question's spelling finds the collected glossary term
+  await expect(cards.getByRole('heading')).toHaveText('ディジタル署名');
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await page.getByRole('button', { name: 'デジタル署名を復習する単語から外す' }).click();
+  await expect(page.getByRole('heading', { name: '復習する単語はありません' })).toBeVisible();
   const cleared = await readRecords(page);
   expect(cleared.reviewWords).toEqual([]);
   expect(cleared.cards.every(card => card.remainingReviews === 0)).toBe(true);
@@ -252,4 +260,16 @@ test('keeps the saved state on failure and allows retrying the request', async (
   await toggle.click();
   await expect(toggle).toHaveAttribute('aria-pressed', 'true');
   expect((await readRecords(page)).cards[0].remainingReviews).toBe(2);
+});
+
+test('opens a saved word that is not in the glossary as an extra term', async ({ page }) => {
+  await page.goto('/study/A1?question=sc-2025-autumn-a1-2');
+  await page.getByRole('button', { name: 'イで回答', exact: true }).click();
+  await page.getByRole('button', { name: 'ROC曲線を復習する', exact: true }).click();
+  await page.goto('/reviews');
+  await page.getByRole('link', { name: '単語を復習' }).click();
+  await expect(page.getByRole('button', { name: '復習する単語 1', exact: true })).toHaveAttribute('aria-pressed', 'true');
+  await page.getByRole('link', { name: 'ROC曲線を説明する' }).click();
+  await expect(page).toHaveURL(/\/glossary\/extra\?name=ROC%E6%9B%B2%E7%B7%9A$/);
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('ROC曲線');
 });

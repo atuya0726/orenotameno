@@ -416,6 +416,7 @@ svg { flex-shrink: 0; }
 .row-confidence { margin-left: var(--space-3); font-size: 11px; }
 .state-correct { color: var(--success); }
 .state-incorrect { color: var(--caution); }
+.review-summaries { display: grid; gap: var(--space-4); }
 .review-summary { display: flex; align-items: center; gap: var(--space-5); padding: var(--space-6); border: 1px solid var(--border); border-radius: var(--radius-card); background: var(--surface-secondary); }
 .review-summary-icon { width: 48px; height: 48px; display: grid; place-items: center; color: var(--success); }
 .review-summary > div > span { font-size: 12px; color: var(--text-secondary); }

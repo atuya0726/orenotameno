@@ -159,7 +159,9 @@ test('queues a requested calculation review and finishes a session', async ({ pa
   await page.getByRole('button', { name: '今回の学習を終える' }).click();
   await expect(page.getByRole('heading', { name: '学習完了' })).toBeVisible();
   await page.getByRole('link', { name: '復習ノートを見る', exact: true }).click();
-  await expect(page.getByRole('link', { name: /M\/M\/1の待ち行列モデル/ }).first()).toBeVisible();
+  await expect(page.getByRole('region', { name: '復習する問題', exact: true })).toContainText('1問');
+  await page.getByRole('link', { name: '科目A1を復習', exact: true }).click();
+  await expect(page.locator('.question-card h2')).toContainText('M/M/1');
 });
 
 test('requires three reviews for a confident mistake and exposes them immediately', async ({ page }) => {
