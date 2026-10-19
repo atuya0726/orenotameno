@@ -9,8 +9,7 @@ import { normalizeTermWord as normalize, termForWord, terms, termById, termCateg
 import { explanationInputSchema, extraTerm, extraTermName, extraTermNameSchema, levelInfo, levels, type Evaluation, type Grade, type GlossaryAttempt, type GlossaryDraft, type Term } from './model';
 import { serializeGlossary } from './db';
 import { useLearning } from '@/lib/store';
-import { useSpeechComparison } from './useSpeechComparison';
-import { SpeechEngineSelector, SpeechComparisonResults } from './SpeechComparison';
+import { useSpeech } from './useSpeech';
 
 const statusLabels: Record<Evaluation['status'], string> = { covered: '要点を確認', partial: '説明を補おう', review: '要点に誤りあり', unconfirmed: '要点を確認できず' };
 const gradeLabels: Record<Grade, string> = { S: '発展の論点まで説明', A: '応用の論点まで説明', B: '頻出の論点を押さえた', C: '頻出の論点が足りない' };
@@ -148,7 +147,7 @@ function TermPractice({ term, referenceInitially, attemptId, review }: { term: T
     const next = { ...draftRef.current, ...patch, referenceViewed: hasSeenReference.current || draftRef.current.referenceViewed || Boolean(patch.referenceViewed), updatedAt: new Date().toISOString() };
     draftRef.current = next; setDraft(next); updateDraft(next); setResult(null); setError('');
   }
-  const speech = useSpeechComparison(text => change({ text, usedVoice: true }));
+  const speech = useSpeech(text => change({ text, usedVoice: true }));
   const history = snapshot.attempts.filter(a => a.termId === term.id).slice().reverse();
   const nextTerm = terms[(terms.findIndex(t => t.id === term.id) + 1) % terms.length];
   useEffect(() => { if (result) { hasSeenReference.current = true; feedbackRef.current?.focus(); } }, [result]);
@@ -169,21 +168,19 @@ function TermPractice({ term, referenceInitially, attemptId, review }: { term: T
       {showReference && !result && <Reference term={term} />}
       {saved && result?.id === saved.id ? <div className="saved-explanation"><span className="eyebrow">{formatDate(saved.answeredAt, true)} の説明</span><p>{saved.text}</p><Button variant="outline" onClick={() => { setResult(null); setShowReference(false); textareaRef.current?.focus(); }}>新しく説明してみる<RotateCcw size={15} /></Button></div> : <form onSubmit={event => void check(event)} className="explanation-form">
         <div className="explanation-form-heading"><h2>仕組みと用途を説明</h2><Button type="button" variant="ghost" size="sm" disabled={!draft.text || speech.active || saving} onClick={() => { change({ text: '', usedVoice: false }); textareaRef.current?.focus(); }}><Trash2 size={15} />全文削除</Button></div>
-        <SpeechEngineSelector speech={speech} disabled={saving} />
-        <div className="speech-controls"><Button type="button" className="speech-hold" variant={speech.active ? 'secondary' : 'outline'} disabled={saving || !speech.canRecord || speech.phase === 'stopping'}
+        <div className="speech-controls"><Button type="button" className="speech-hold" variant={speech.active ? 'secondary' : 'outline'} disabled={saving || !speech.supported || speech.phase === 'stopping'}
           onPointerDown={e => { if (e.button !== 0) return; e.currentTarget.setPointerCapture(e.pointerId); speech.start(draft.text); }}
           onPointerUp={speech.stop} onPointerCancel={speech.stop} onLostPointerCapture={speech.stop}
           onKeyDown={e => { if (e.key !== ' ' && e.key !== 'Enter') return; e.preventDefault(); if (!e.repeat) speech.start(draft.text); }}
           onKeyUp={e => { if (e.key === ' ' || e.key === 'Enter') speech.stop(); }} onBlur={speech.stop} onContextMenu={e => e.preventDefault()}>
-          {speech.active ? <Square size={16} /> : <Mic size={17} />}{speech.phase === 'loading' ? 'モデルの準備中…' : speech.phase === 'starting' ? 'マイクの準備中…' : speech.phase === 'listening' ? '離すと停止' : speech.phase === 'stopping' ? '文字起こしを確定中' : '押しながら話す'}</Button><span className={cn('speech-state', speech.active && 'speech-recording')} role="status">{speech.active ? <><span className="status-dot" />{speech.phase === 'loading' ? 'モデルの準備中' : speech.phase === 'listening' ? '聞き取り中' : speech.phase === 'stopping' ? '確定結果を待っています' : 'マイクの準備中'}</> : !speech.supported ? '音声入力は非対応です' : !speech.canRecord ? '先にモデルを準備してください' : ''}</span></div>
+          {speech.active ? <Square size={16} /> : <Mic size={17} />}{speech.phase === 'starting' ? 'マイクの準備中…' : speech.phase === 'listening' ? '離すと停止' : speech.phase === 'stopping' ? '文字起こしを確定中' : '押しながら話す'}</Button><span className={cn('speech-state', speech.active && 'speech-recording')} role="status">{speech.active ? <><span className="status-dot" />{speech.phase === 'listening' ? '聞き取り中' : speech.phase === 'stopping' ? '確定結果を待っています' : 'マイクの準備中'}</> : speech.supported ? '' : '音声入力は非対応です'}</span></div>
         {speech.error && <p className="inline-error" role="alert">{speech.error}</p>}
         <label className="sr-only" htmlFor="term-explanation">{term.name}についての説明</label><textarea id="term-explanation" ref={textareaRef} value={draft.text} maxLength={5000} readOnly={speech.active || saving} onChange={e => change({ text: e.target.value })} placeholder="説明を入力（音声入力も可）" aria-describedby="explanation-input-help" />
         {speech.interim && <div className="speech-interim" role="status"><span>聞き取り途中</span><p>{speech.interim}</p></div>}
-        <SpeechComparisonResults speech={speech} disabled={saving} onUse={text => change({ text: text.slice(0, 5000), usedVoice: true })} />
         <div className="explanation-input-meta"><span id="explanation-input-help">{speech.active ? '離した後に修正・チェックできます。' : '10〜5,000文字'}</span><span>{draft.text.length} / 5,000</span></div>
         <div className="explanation-submit">{term.definition && <Button type="button" variant="ghost" disabled={speech.active || saving} onClick={reveal}><BookOpen size={15} />説明例を先に見る</Button>}<Button type="submit" disabled={speech.active || saving || Boolean(result) || draft.text.trim().length < 10}>{saving ? <LoaderCircle size={16} className="animate-spin" /> : <Check size={16} />}{saving ? 'チェック中' : result ? 'チェック済み' : 'AIでチェック'}</Button></div>
         {draft.referenceViewed && <p className="reference-viewed-note">説明例を参照済み</p>}{error && <p className="inline-error" role="alert">{error}</p>}
-        <p className="speech-privacy">チェック時に説明文をOpenAIへ送信します。履歴はこのブラウザに保存。Web Speechはブラウザの音声認識サービスを利用します。Whisperはモデルを当サイト経由で取得し、音声を端末内で処理します。Whisperの直前の録音は比較用にこの画面のメモリ内だけに保持し、当サイトのサーバーには送信しません。</p>
+        <p className="speech-privacy">チェック時に説明文をOpenAIへ送信します。履歴はこのブラウザに保存。音声認識はブラウザのサービスを利用し、音声は当サイトに保存しません。</p>
       </form>}
       {result && <div ref={feedbackRef} tabIndex={-1} className="glossary-feedback-focus"><Feedback attempt={result} /><Reference term={term} definition={result.reference} /><div className="actions glossary-next-actions">{review ? <Button asChild><Link to={nextReviewPath(review)}>{reviewLast ? '復習を終える' : '次の単語へ'}<ArrowRight size={16} /></Link></Button> : <Button asChild><Link to={`/glossary/${nextTerm.id}`}>次の用語へ<ArrowRight size={16} /></Link></Button>}</div></div>}
       {!result && history.length > 0 && <details className="term-history"><summary><History size={16} />過去の説明を見る（{history.length}件）</summary>{history.slice(0, 5).map(attempt => <Link key={attempt.id} to={termPath(term.id, attempt.id)}><time>{formatDate(attempt.answeredAt, true)}</time><ResultBadge attempt={attempt} /><ChevronRight size={15} /></Link>)}</details>}

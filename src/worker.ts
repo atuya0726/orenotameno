@@ -2,7 +2,6 @@ import { z } from 'zod';
 import { explanationInputSchema, extraTerm, extraTermName } from './features/glossary/model';
 import { termById } from './features/glossary/terms';
 import { DEFAULT_MODEL, EvaluationError, evaluateWithOpenAI } from './server/glossary-evaluator';
-import { speechModel } from './server/speech-models';
 
 export type Env = {
   OPENAI_API_KEY?: string; OPENAI_MODEL?: string;
@@ -15,7 +14,6 @@ export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
     if (!url.pathname.startsWith('/api/')) return env.ASSETS ? env.ASSETS.fetch(request) : new Response('Not found', { status: 404 });
-    if (url.pathname.startsWith('/api/speech-models/')) return speechModel(request);
     if (url.pathname !== '/api/glossary/evaluate') return json({ error: 'APIが見つかりません。' }, 404);
     if (request.method !== 'POST') return json({ error: 'POSTで送信してください。' }, 405);
     const origin = request.headers.get('Origin');

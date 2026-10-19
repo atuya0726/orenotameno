@@ -16,7 +16,6 @@
     "deploy": "npm run build && wrangler deploy"
   },
   "dependencies": {
-    "@huggingface/transformers": "4.3.1",
     "@radix-ui/react-slot": "1.2.4",
     "class-variance-authority": "0.7.1",
     "clsx": "2.1.1",

@@ -29,11 +29,6 @@ function glossaryApi(env: Record<string, string>): Plugin {
 }
 export default defineConfig(({ mode }) => ({
   plugins: [react(), tailwindcss(), glossaryApi(loadEnv(mode, process.cwd(), ''))],
-  resolve: {
-    // ONNX loads and caches its versioned runtime from the CDN. Keep the >25 MiB
-    // WASM file out of Worker static assets, whose per-file upload limit is 25 MiB.
-    conditions: ['onnxruntime-web-use-extern-wasm', 'module', 'browser', 'development|production'],
-    alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) },
-  },
+  resolve: { alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) } },
   test: { include: ['src/**/*.test.{ts,tsx}'] },
 }));
