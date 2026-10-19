@@ -20,9 +20,9 @@ describe('LLM評価の検証と集計', () => {
   it('grades B as the minimum line and A/S on top of it', () => {
     const grade = (missing: string[]) => { const raw = assessment(); raw.criteria = raw.criteria.map(c => missing.includes(c.id) ? { ...c, status: 'missing', evidence: '' } : c); return parseAssessment(raw, term, text, 'gpt-6-luna').grade; };
     expect(grade([])).toBe('S');
-    expect(grade(['certificate'])).toBe('A');
-    expect(grade(['nonrepudiation'])).toBe('B');
-    expect(grade(['nonrepudiation', 'certificate'])).toBe('B');
+    expect(grade(['timestamp'])).toBe('A');
+    expect(grade(['certificate'])).toBe('B');
+    expect(grade(['certificate', 'timestamp'])).toBe('B');
     expect(grade(['verify'])).toBe('C');
     // S without A still stays at B
     expect(grade(['digest'])).toBe('B');
@@ -77,7 +77,7 @@ describe('OpenAI Responses API', () => {
     expect(init.headers.Authorization).toBe('Bearer test-key');
     expect(body).toMatchObject({ model: 'gpt-6-luna', store: false, max_output_tokens: 3000, text: { format: { type: 'json_schema', strict: true } } });
     expect(body.tools).toBeUndefined();
-    expect(body.instructions).toContain('否定'); expect(body.instructions).toContain('誤字');
+    expect(body.instructions).toContain('否定'); expect(body.instructions).toContain('誤字'); expect(body.instructions).toContain('めったに問われない');
     expect(JSON.parse(body.input[0].content).knownTerms).toContainEqual({ id: 'hash', name: 'ハッシュ関数' });
     expect(JSON.parse(body.input[0].content).learnerExplanation).toBe(text);
     expect(JSON.stringify(body)).not.toContain('test-key');

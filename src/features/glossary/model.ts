@@ -1,8 +1,14 @@
 import { z } from 'zod';
 
-// B is the minimum line every explanation must reach; A and S are deeper points. Criteria without a level are B.
+// Levels are set by how often a point is asked in the exam, not by how hard it is. Criteria without a level are B.
+// The same wording feeds the AI instructions and the feedback screen, so edit it here only.
 export const levels = ['B', 'A', 'S'] as const;
 export type Level = typeof levels[number];
+export const levelInfo: Record<Level, { name: string; description: string }> = {
+  B: { name: '基本', description: '試験で繰り返し問われる性質・論点。最低限ここまでは説明したい' },
+  A: { name: '応用', description: '試験でときどき問われる論点' },
+  S: { name: '発展', description: '試験ではめったに問われないが、知っていると理解の深さが光る論点' },
+};
 export type Criterion = { id: string; title: string; hint: string; level?: Level };
 export type Term = {
   id: string; name: string; reading: string; category: string; definition: string; example: string;

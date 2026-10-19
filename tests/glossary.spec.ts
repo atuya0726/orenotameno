@@ -5,7 +5,7 @@ const term = termById.get('digital-signature')!;
 const text = '署名者の秘密鍵で署名を作り、公開鍵で検証し、改ざんを検知する仕組みです。';
 const textbox = (page: Page) => page.getByRole('textbox', { name: 'ディジタル署名についての説明' });
 const check = (page: Page) => page.getByRole('button', { name: 'AIでチェック' });
-function evaluation(input = text) { return { version: 1, engine: 'openai', model: 'gpt-6-luna', status: 'covered', grade: 'A', covered: 3, total: 3, criteria: term.criteria.map(c => ({ id: c.id, title: c.title, level: c.level ?? 'B', status: c.level === 'S' ? 'missing' : 'covered', evidence: c.level === 'S' ? '' : input, hint: c.level === 'S' ? '証明書で公開鍵の持ち主を保証する点が足りません。' : '鍵の関係を正しく説明できています。' })), summary: '署名と検証の役割を説明できています。', followUp: { name: '公開鍵基盤', reason: '公開鍵が本人のものだと確かめる仕組みが説明にないためです。' } }; }
+function evaluation(input = text) { return { version: 1, engine: 'openai', model: 'gpt-6-luna', status: 'covered', grade: 'A', covered: 3, total: 3, criteria: term.criteria.map(c => ({ id: c.id, title: c.title, level: c.level ?? 'B', status: c.level === 'S' ? 'missing' : 'covered', evidence: c.level === 'S' ? '' : input, hint: c.level === 'S' ? 'タイムスタンプによる長期署名の点が足りません。' : '鍵の関係を正しく説明できています。' })), summary: '署名と検証の役割を説明できています。', followUp: { name: '公開鍵基盤', reason: '公開鍵が本人のものだと確かめる仕組みが説明にないためです。' } }; }
 async function entries(page: Page, name = 'orenotameno-glossary') {
   return page.evaluate(async dbName => {
     const db = await new Promise<IDBDatabase>((resolve, reject) => { const request = indexedDB.open(dbName); request.onsuccess = () => resolve(request.result); request.onerror = () => reject(request.error); });
@@ -39,8 +39,8 @@ test('evaluates once, stores feedback separately from quizzes, and reviews a his
   });
   await page.goto('/glossary/digital-signature'); await textbox(page).fill(text); await check(page).click();
   await expect(page.getByRole('heading', { name: '公開鍵基盤' })).toBeVisible();
-  await expect(page.getByRole('heading', { name: '一歩深い説明' })).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Sに必要な要点' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: '応用の論点まで説明' })).toBeVisible();
+  await expect(page.locator('.rubric-level-heading').filter({ hasText: '発展' })).toContainText('めったに問われない');
   await expect(page.locator('.rubric-missing')).toContainText('まだ触れていません');
   await expect(page.getByText('OpenAI · gpt-6-luna')).toBeVisible();
   expect(calls).toBe(1); expect(await entries(page, 'orenotameno-sc')).toEqual([]);
