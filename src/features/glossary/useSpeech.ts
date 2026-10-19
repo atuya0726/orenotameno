@@ -21,9 +21,19 @@ export function speechErrorMessage(error: string): string {
   };
   return messages[error] ?? '音声認識を続けられませんでした。入力済みの文章を確認してください。';
 }
+// Android Chrome (continuous mode) re-sends earlier text inside later results, so merge instead of blindly concatenating.
+export function mergeTranscript(acc: string, next: string) {
+  const a = acc.replace(/\s+/g, ''); const n = next.replace(/\s+/g, '');
+  if (!n || a.endsWith(n)) return acc;
+  if (!a || n.startsWith(a)) return next.trim();
+  return acc + next.trim();
+}
 export function transcripts(results: ArrayLike<SpeechResult>) {
   let final = ''; let interim = '';
-  for (let i = 0; i < results.length; i++) { const text = results[i][0]?.transcript ?? ''; if (results[i].isFinal) final += text; else interim += text; }
+  for (let i = 0; i < results.length; i++) { const text = results[i][0]?.transcript ?? ''; if (results[i].isFinal) final = mergeTranscript(final, text); else interim = mergeTranscript(interim, text); }
+  const f = final.replace(/\s+/g, ''); const it = interim.replace(/\s+/g, '');
+  if (f && it.startsWith(f)) { let rest = f.length, i = 0; while (rest > 0 && i < interim.length) { if (!/\s/.test(interim[i])) rest--; i++; } interim = interim.slice(i).trim(); }
+  else if (f && f.endsWith(it)) interim = '';
   return { final, interim };
 }
 export function useSpeech(onText: (text: string) => void) {
@@ -31,14 +41,15 @@ export function useSpeech(onText: (text: string) => void) {
   const [interim, setInterim] = useState(''); const [error, setError] = useState('');
   const recognition = useRef<Recognition | null>(null); const update = useRef(onText); update.current = onText;
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const stopping = useRef<Recognition | null>(null);
   function finish(active: Recognition) {
     if (recognition.current !== active) return;
     active.onstart = active.onend = active.onresult = active.onerror = null;
     clearTimeout(timer.current); recognition.current = null; setPhase('idle'); setInterim('');
   }
   function stop() {
-    const active = recognition.current; if (!active) return;
-    setPhase('stopping');
+    const active = recognition.current; if (!active || stopping.current === active) return;
+    stopping.current = active; setPhase('stopping');
     try { active.stop(); } catch { finish(active); try { active.abort(); } catch { /* already ended */ } }
   }
   useEffect(() => {

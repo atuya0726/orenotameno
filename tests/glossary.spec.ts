@@ -71,7 +71,7 @@ test('records whether the explanation example was consulted', async ({ page }) =
 test('falls back to editable text when speech recognition is unavailable', async ({ page }) => {
   await page.addInitScript(() => { Object.defineProperty(window, 'SpeechRecognition', { value: undefined, configurable: true }); Object.defineProperty(window, 'webkitSpeechRecognition', { value: undefined, configurable: true }); });
   await page.goto('/glossary/digital-signature');
-  await expect(page.getByRole('button', { name: '音声で説明する' })).toBeDisabled();
+  await expect(page.getByRole('button', { name: '押しながら話す' })).toBeDisabled();
   await expect(textbox(page)).toBeEditable(); await textbox(page).fill(text); await expect(check(page)).toBeEnabled();
 });
 
@@ -88,7 +88,7 @@ test('handles final/interim voice text, prevents checks while listening, and sto
     }
     Object.defineProperty(window, 'SpeechRecognition', { value: MockSpeech, configurable: true });
   });
-  await page.goto('/glossary/digital-signature'); await page.getByRole('button', { name: '音声で説明する' }).click();
+  await page.goto('/glossary/digital-signature'); await page.getByRole('button', { name: '押しながら話す' }).hover(); await page.mouse.down();
   await expect(textbox(page)).not.toBeEditable(); await expect(check(page)).toBeDisabled();
   await page.evaluate(() => {
     const speech = (window as unknown as { testSpeech: { onresult: (e: unknown) => void } }).testSpeech;
@@ -96,10 +96,12 @@ test('handles final/interim voice text, prevents checks while listening, and sto
   });
   await expect(textbox(page)).toHaveValue('秘密鍵で署名を作ります。');
   await expect(page.locator('.speech-interim')).toContainText('公開鍵で');
-  await page.getByRole('button', { name: '音声入力を停止' }).click();
+  await page.mouse.up();
   await expect(textbox(page)).toBeEditable(); await expect(check(page)).toBeEnabled();
-  await page.getByRole('button', { name: '音声で説明する' }).click();
-  await page.getByRole('link', { name: '用語一覧へ戻る', exact: true }).click();
+  await page.getByRole('button', { name: '押しながら話す' }).hover(); await page.mouse.down();
+  // navigate without moving focus so blur doesn't stop the mic first
+  await page.evaluate(() => document.querySelector<HTMLAnchorElement>('a.back-link')!.click());
+  await expect(page).toHaveURL(/\/glossary$/);
   expect(await page.evaluate(() => (window as unknown as { speechAborted: boolean }).speechAborted)).toBe(true);
 });
 

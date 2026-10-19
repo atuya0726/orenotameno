@@ -60,6 +60,8 @@ describe('音声の文字起こし', () => {
   it('separates final and interim text without duplicating final results', () => {
     expect(transcripts([{ isFinal: true, 0: { transcript: '秘密鍵で署名します。' }, length: 1 }, { isFinal: false, 0: { transcript: '公開鍵で' }, length: 1 }])).toEqual({ final: '秘密鍵で署名します。', interim: '公開鍵で' });
     expect(transcripts([{ isFinal: true, 0: { transcript: '秘密鍵で署名します。' }, length: 1 }, { isFinal: true, 0: { transcript: '公開鍵で検証します。' }, length: 1 }]).final).toBe('秘密鍵で署名します。公開鍵で検証します。');
+    // Android Chrome repeats earlier text inside later results
+    expect(transcripts([{ isFinal: true, 0: { transcript: '秘密鍵で' }, length: 1 }, { isFinal: true, 0: { transcript: '秘密鍵で署名します' }, length: 1 }, { isFinal: true, 0: { transcript: '署名します' }, length: 1 }, { isFinal: false, 0: { transcript: '秘密鍵で署名します 公開鍵' }, length: 1 }])).toEqual({ final: '秘密鍵で署名します', interim: '公開鍵' });
   });
   it('provides actionable messages for microphone denial and network failure', () => {
     expect(speechErrorMessage('not-allowed')).toContain('文字で入力');
