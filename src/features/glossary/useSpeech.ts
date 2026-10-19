@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import type { SpeechMeasurement } from './whisper';
 
 type SpeechResult = { isFinal: boolean; [index: number]: { transcript: string }; length: number };
 type SpeechEvent = { results: ArrayLike<SpeechResult> };
@@ -43,13 +44,14 @@ export function transcripts(results: ArrayLike<SpeechResult>) {
   else if (f && f.endsWith(it)) interim = '';
   return { final, interim };
 }
-type Session = { base: string; committed: string; held: boolean; quickEnds: number };
+type Session = { base: string; committed: string; held: boolean; quickEnds: number; startedAt: number; stoppedAt?: number };
 // Each recognition runs non-continuous (continuous mode duplicates text on Android/iOS) and is restarted while the button is held.
-export function useSpeech(onText: (text: string) => void) {
+export function useSpeech(onText: (text: string) => void, onComplete?: (result: SpeechMeasurement) => void) {
   const [phase, setPhase] = useState<'idle' | 'starting' | 'listening' | 'stopping'>('idle');
   const [interim, setInterim] = useState(''); const [error, setError] = useState('');
   const recognition = useRef<Recognition | null>(null); const session = useRef<Session | null>(null);
   const update = useRef(onText); update.current = onText;
+  const complete = useRef(onComplete); complete.current = onComplete;
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   function detach(active: Recognition) { active.onstart = active.onend = active.onresult = active.onerror = null; }
   function finish() {
@@ -58,7 +60,7 @@ export function useSpeech(onText: (text: string) => void) {
   }
   function stop() {
     const s = session.current; if (!s || !s.held) return;
-    s.held = false; setPhase('stopping');
+    s.held = false; s.stoppedAt = performance.now(); setPhase('stopping');
     const active = recognition.current;
     try { active?.stop(); } catch { finish(); try { active?.abort(); } catch { /* already ended */ } }
   }
@@ -92,7 +94,11 @@ export function useSpeech(onText: (text: string) => void) {
       detach(active); if (heard) s.committed = mergeTranscript(s.committed, heard);
       s.quickEnds = !heard && Date.now() - startedAt < 1000 ? s.quickEnds + 1 : 0;
       if (s.held && session.current === s && s.quickEnds < 3) { setInterim(''); listen(s, Constructor); }
-      else { if (s.quickEnds >= 3) setError('音声認識がすぐに終了してしまいました。マイクの設定を確認してください。'); finish(); }
+      else {
+        if (s.quickEnds >= 3) setError('音声認識がすぐに終了してしまいました。マイクの設定を確認してください。');
+        if (s.committed) complete.current?.({ text: s.committed, durationMs: (s.stoppedAt ?? performance.now()) - s.startedAt, waitMs: s.stoppedAt ? performance.now() - s.stoppedAt : 0 });
+        finish();
+      }
     };
     try { active.start(); }
     catch { finish(); setError('音声入力を開始できませんでした。文字で入力するか、ブラウザのマイク設定を確認してください。'); }
@@ -102,7 +108,7 @@ export function useSpeech(onText: (text: string) => void) {
     const Constructor = speechConstructor();
     if (!Constructor) { setError('このブラウザは音声入力に対応していません。文字で入力できます。'); return; }
     if (!window.isSecureContext) { setError('音声入力はHTTPSまたはlocalhostで開いて利用してください。文字で入力できます。'); return; }
-    session.current = { base, committed: '', held: true, quickEnds: 0 };
+    session.current = { base, committed: '', held: true, quickEnds: 0, startedAt: performance.now() };
     setError(''); setInterim(''); setPhase('starting');
     timer.current = setTimeout(stop, 120_000);
     listen(session.current, Constructor);
