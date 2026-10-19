@@ -56,21 +56,29 @@ test('evaluates once, stores feedback separately from quizzes, and reviews a his
 test('practices a follow-up term the AI suggested outside the built-in list', async ({ page }) => {
   await page.route('**/api/glossary/evaluate', async route => {
     const body = route.request().postDataJSON();
-    if (body.termId === term.id) return route.fulfill({ json: evaluation() });
-    expect(body.termId).toBe('extra:公開鍵基盤');
+    if (body.termId === term.id) return route.fulfill({ json: { ...evaluation(), followUp: { name: 'Kerberos認証', reason: 'チケットで認証する仕組みが説明にないためです。' } } });
+    expect(body.termId).toBe('extra:Kerberos認証');
     await route.fulfill({ json: { ...evaluation(body.text), criteria: [{ id: 'ca', title: '認証局が証明書を発行する', status: 'missing', evidence: '', hint: '誰が証明書を発行するかが足りません。' }], covered: 0, total: 1, status: 'unconfirmed', definition: '公開鍵とその持ち主を認証局が証明書で結び付ける仕組みです。', followUp: { name: '認証局', reason: '証明書の発行者だからです。' } } });
   });
   await page.goto('/glossary/digital-signature'); await textbox(page).fill(text); await check(page).click();
   await page.getByRole('link', { name: 'この用語を説明する' }).click();
-  await expect(page.getByRole('heading', { name: '公開鍵基盤', level: 1 })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Kerberos認証', level: 1 })).toBeVisible();
   await expect(page.getByRole('button', { name: '説明例を先に見る' })).toHaveCount(0);
-  await page.getByRole('textbox', { name: '公開鍵基盤についての説明' }).fill('公開鍵が本人のものか確かめるための仕組みです。');
+  await page.getByRole('textbox', { name: 'Kerberos認証についての説明' }).fill('公開鍵が本人のものか確かめるための仕組みです。');
   await check(page).click();
   await expect(page.getByText('誰が証明書を発行するかが足りません。')).toBeVisible();
   await expect(page.locator('.term-reference')).toContainText('認証局が証明書で結び付ける');
   await page.getByRole('link', { name: '説明の履歴', exact: true }).click();
-  await page.getByRole('link', { name: '公開鍵基盤' }).click();
+  await page.getByRole('link', { name: 'Kerberos認証' }).click();
   await expect(page.locator('.saved-explanation')).toContainText('公開鍵が本人のものか');
+});
+
+test('opens the collected term when the AI names it by another spelling', async ({ page }) => {
+  await page.route('**/api/glossary/evaluate', route => route.fulfill({ json: evaluation() }));
+  await page.goto('/glossary/digital-signature'); await textbox(page).fill(text); await check(page).click();
+  // 公開鍵基盤 is the parenthesized part of 「PKI（公開鍵基盤）」
+  await page.getByRole('link', { name: 'この用語を説明する' }).click();
+  await expect(page).toHaveURL(/\/glossary\/pki$/);
 });
 
 test('keeps text and allows retry after an AI failure, with no fabricated feedback', async ({ page }) => {

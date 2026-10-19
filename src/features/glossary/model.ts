@@ -11,7 +11,8 @@ export const levelInfo: Record<Level, { name: string; description: string }> = {
 };
 export type Criterion = { id: string; title: string; hint: string; level?: Level };
 export type Term = {
-  id: string; name: string; reading: string; category: string; definition: string; example: string;
+  // aliases are other spellings, or narrower words from questions, that open this term.
+  id: string; name: string; aliases?: string[]; reading: string; category: string; definition: string; example: string;
   criteria: Criterion[]; commonMistakes: string[]; related: string[];
 };
 export const criterionResultSchema = z.object({

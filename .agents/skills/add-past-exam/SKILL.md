@@ -47,19 +47,33 @@ scripts/past-exam/fetch.sh sc 2025 autumn am2   # <試験> <西暦> <autumn|spri
 
 ## 4. 用語集を増やす
 
-追加した問題の中心となる用語のうち、用語集にまだないものを1問につき0〜1語選ぶ。既存の用語は次のコマンドで確認する（`terms.ts` 全体は読まない）。
+復習単語の候補は、すべて用語集のいずれかの用語で開けるようにする（`src/data/question-terms.test.ts` が検査する）。用語は名前のほか、かっこ内の表記（`PKI（公開鍵基盤）` なら `PKI` と `公開鍵基盤`）と `aliases` で単語に対応する。対応していない単語は次のコマンドで一覧にする。
+
+```sh
+npx tsx scripts/past-exam/missing-terms.ts sc-2025-autumn-a2   # 引数は問題IDの接頭辞（省略で全問）
+```
+
+既存の用語は次のコマンドで確認する（`terms.ts` 全体は読まない）。
 
 ```sh
 grep -E '^    "(id|name|category)"' src/features/glossary/terms.ts | paste - - -
 ```
 
-新しい用語をJSONの配列で一時ファイルに書き、スクリプトで追加する。IDや名前の重複、存在しない `related`、B段階の要点がないことはスクリプトが拒否する。
+単語ごとに次のどちらかで対応させる。
 
-```sh
-node scripts/past-exam/add-terms.mjs /path/to/new-terms.json
-```
+- **既存の用語の別名にする**：表記ゆれ（`ハッシュ値`→ハッシュ関数）や、その用語の説明に含まれる下位の語（`MTBF`→MTBFとMTTR）。説明しても別の概念になる語は別名にしない（`ディープウェブ`をディープフェイクの別名にしない）。
 
-各用語の形式は `Term`（`src/features/glossary/model.ts`）。`criteria` の `level` は出題頻度で決める。省略するとB（基本）、Aは応用、Sは発展。1語につきBを2〜4個、Aを1〜2個、Sを1個にする。`commonMistakes` には、問題の誤りの選択肢になっていた混同を書く。
+  ```sh
+  node scripts/past-exam/add-aliases.mjs /path/to/aliases.json   # {"<用語ID>": ["別名", ...]}
+  ```
+
+- **新しい用語を作る**：一緒に説明するのが自然な語は1つの用語にまとめ、残りを `aliases` に入れる（`クラッシングとファストトラッキング`）。JSONの配列で一時ファイルに書き、スクリプトで追加する。IDの重複、名前・別名の重複（大文字小文字や全角半角の違いも同じとみなす）、存在しない `related`、B段階の要点がないことはスクリプトが拒否する。
+
+  ```sh
+  node scripts/past-exam/add-terms.mjs /path/to/new-terms.json
+  ```
+
+各用語の形式は `Term`（`src/features/glossary/model.ts`）。`criteria` の `level` は出題頻度で決める。省略するとB（基本）、Aは応用、Sは発展。1語につきBを2〜4個、Aを1〜2個、Sを1個にする。`commonMistakes` には、問題の誤りの選択肢になっていた混同を書く。別名にした語も、説明例や要点で扱う。
 
 ## 5. 検証
 

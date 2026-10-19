@@ -56,6 +56,9 @@ export const terms: Term[] = [
   {
     "id": "hash",
     "name": "ハッシュ関数",
+    "aliases": [
+      "ハッシュ値"
+    ],
     "reading": "Hash function",
     "category": "暗号・認証",
     "definition": "任意長の入力から一定長のハッシュ値を計算する関数です。暗号学的ハッシュは一方向性を持ち、値から元の入力を求めることは計算上困難です。同じ値になる別の入力を見つけることも計算上困難である性質を求めます。",
@@ -227,6 +230,9 @@ export const terms: Term[] = [
   {
     "id": "sql-injection",
     "name": "SQLインジェクション",
+    "aliases": [
+      "プレースホルダ"
+    ],
     "reading": "SQL injection",
     "category": "Webセキュリティ",
     "definition": "入力値などがSQLの命令として解釈され、意図しない問合せやデータ操作を起こす攻撃です。プレースホルダとパラメータバインドでSQLの構造とデータを分離します。",
@@ -283,6 +289,9 @@ export const terms: Term[] = [
   {
     "id": "xss",
     "name": "XSS",
+    "aliases": [
+      "エスケープ"
+    ],
     "reading": "Cross-site scripting",
     "category": "Webセキュリティ",
     "definition": "信頼できない入力などに含まれるスクリプトが、Webページの一部として利用者のブラウザで実行される攻撃です。出力先に応じたエスケープなどでデータをコードとして実行させないようにします。",
@@ -338,6 +347,11 @@ export const terms: Term[] = [
   {
     "id": "csrf",
     "name": "CSRF",
+    "aliases": [
+      "クロスサイトリクエストフォージェリ",
+      "Referer",
+      "トークン"
+    ],
     "reading": "Cross-site request forgery",
     "category": "Webセキュリティ",
     "definition": "ログイン済みの利用者のブラウザを通じて、本人が意図しないリクエストを送らせる攻撃です。CSRFトークンの検証などで対策します。",
@@ -498,6 +512,11 @@ export const terms: Term[] = [
   {
     "id": "dns",
     "name": "DNS",
+    "aliases": [
+      "正引き",
+      "逆引き",
+      "リゾルバ"
+    ],
     "reading": "Domain Name System",
     "category": "ネットワーク",
     "definition": "ドメイン名に対応するIPアドレスなどを調べるための分散した名前解決の仕組みです。A・AAAA・MXなど、用途ごとに異なるレコードを扱います。",
@@ -554,6 +573,9 @@ export const terms: Term[] = [
   {
     "id": "reverse-proxy",
     "name": "リバースプロキシ",
+    "aliases": [
+      "フォワードプロキシ"
+    ],
     "reading": "Reverse proxy",
     "category": "ネットワーク",
     "definition": "公開サーバの代理としてクライアントからの要求を受け付け、内部のサーバへ中継する仕組みです。負荷分散やTLSの終端、キャッシュなどにも利用されます。",
@@ -718,6 +740,11 @@ export const terms: Term[] = [
   {
     "id": "base",
     "name": "BASE特性",
+    "aliases": [
+      "NoSQL",
+      "結果整合性",
+      "BASE"
+    ],
     "reading": "Basically Available / Soft state / Eventually consistent",
     "category": "データベース",
     "definition": "分散システムで可用性を重視し、一時的な状態の不一致を許容しつつ、最終的には更新が行き渡る結果整合性を目指す考え方です。",
@@ -908,6 +935,10 @@ export const terms: Term[] = [
   {
     "id": "ids-ips",
     "name": "IDSとIPS",
+    "aliases": [
+      "IDS",
+      "IPS"
+    ],
     "reading": "Intrusion Detection / Prevention System",
     "category": "ネットワークセキュリティ",
     "definition": "IDSは不正な通信などを検知して通知する仕組みです。IPSは検知に加えて、通信の遮断などで侵入を防止します。検知と防止の役割を区別します。",
@@ -962,6 +993,11 @@ export const terms: Term[] = [
   {
     "id": "pki",
     "name": "PKI（公開鍵基盤）",
+    "aliases": [
+      "CA",
+      "RA",
+      "デジタル証明書"
+    ],
     "reading": "Public Key Infrastructure",
     "category": "暗号・認証",
     "definition": "公開鍵とその持ち主の対応を、認証局（CA）が発行するデジタル証明書で保証する仕組みです。登録局（RA）が本人確認と申請の審査を行い、CAが証明書に署名して発行し、失効した証明書はCRLやOCSPで確認できるようにします。",
@@ -1013,6 +1049,11 @@ export const terms: Term[] = [
   {
     "id": "cryptrec",
     "name": "CRYPTREC暗号リスト",
+    "aliases": [
+      "電子政府推奨暗号リスト",
+      "推奨候補暗号リスト",
+      "運用監視暗号リスト"
+    ],
     "reading": "CRYPTREC Ciphers List",
     "category": "暗号・認証",
     "definition": "電子政府での調達のために参照すべき暗号を示した日本のリストです。電子政府推奨暗号リスト、推奨候補暗号リスト、運用監視暗号リストの三つで構成されます。",
@@ -1156,6 +1197,11 @@ export const terms: Term[] = [
   {
     "id": "xml-signature",
     "name": "XMLデジタル署名",
+    "aliases": [
+      "デタッチ署名",
+      "エンベローピング署名",
+      "エンベロープ署名"
+    ],
     "reading": "XML Signature",
     "category": "暗号・認証",
     "definition": "XML文書に対するデジタル署名の規格です。文書全体だけでなく一部の要素も署名対象にでき、署名の情報もXMLで記述します。署名と対象の位置関係により、エンベロープ署名、エンベローピング署名、デタッチ署名があります。",
@@ -1201,6 +1247,10 @@ export const terms: Term[] = [
   {
     "id": "pass-the-hash",
     "name": "Pass the Hash攻撃",
+    "aliases": [
+      "NTLM認証",
+      "平文パスワード"
+    ],
     "reading": "Pass the Hash",
     "category": "攻撃手法",
     "definition": "パスワードのハッシュ値だけで認証が成立する仕組みを悪用し、盗んだハッシュ値を解読せずにそのまま使ってログインする攻撃です。WindowsのNTLM認証などが狙われます。",
@@ -1246,6 +1296,10 @@ export const terms: Term[] = [
   {
     "id": "syn-flood",
     "name": "SYNフラッド攻撃",
+    "aliases": [
+      "SYN/ACK",
+      "バックスキャッタ"
+    ],
     "reading": "SYN flood",
     "category": "攻撃手法",
     "definition": "TCPの接続開始要求（SYN）を大量に送り、サーバに応答待ちの接続を溜めさせて、正規の接続を受け付けられなくするサービス妨害攻撃です。送信元IPアドレスを偽装することが多く、偽の送信元へサーバのSYN/ACKが返ります。",
@@ -1374,6 +1428,9 @@ export const terms: Term[] = [
   {
     "id": "biometrics",
     "name": "生体認証",
+    "aliases": [
+      "虹彩認証"
+    ],
     "reading": "Biometric authentication",
     "category": "暗号・認証",
     "definition": "指紋、静脈、虹彩、顔などの身体的特徴や、署名などの行動的特徴を使う本人確認です。忘れたり失くしたりしない一方、情報が漏れても変更できず、本人を拒否したり他人を受け入れたりする誤りが起こり得ます。",
@@ -1417,6 +1474,11 @@ export const terms: Term[] = [
   {
     "id": "identity-proofing",
     "name": "身元確認（Identity Proofing）",
+    "aliases": [
+      "当人認証",
+      "本人確認",
+      "NIST SP 800-63-3"
+    ],
     "reading": "Identity proofing",
     "category": "暗号・認証",
     "definition": "利用者を登録するときに、申請者が実在する本人であることを身分証などの証拠で確かめることです。ログインのたびに行う当人認証（Authentication）とは区別します。",
@@ -1461,6 +1523,10 @@ export const terms: Term[] = [
   {
     "id": "mitre-attack",
     "name": "MITRE ATT&CK",
+    "aliases": [
+      "MITRE",
+      "ATT&CK"
+    ],
     "reading": "MITRE ATT&CK",
     "category": "セキュリティ運用",
     "definition": "米国の非営利団体MITREが公開する、実際の攻撃で観測された攻撃者の戦術（Tactics）と技術（Techniques）の知識ベースです。MITREは脆弱性の識別番号CVEの運営も行っています。",
@@ -1554,6 +1620,9 @@ export const terms: Term[] = [
   {
     "id": "ueba",
     "name": "UEBA",
+    "aliases": [
+      "内部不正"
+    ],
     "reading": "User and Entity Behavior Analytics",
     "category": "セキュリティ運用",
     "definition": "ログなどから利用者や端末・サーバの通常の振る舞いを学習し、そこから外れた異常な振る舞いを検知する技術です。内部不正や、窃取されたアカウントの悪用の発見に役立ちます。",
@@ -1598,6 +1667,9 @@ export const terms: Term[] = [
   {
     "id": "cspm",
     "name": "CSPM",
+    "aliases": [
+      "設定ミス"
+    ],
     "reading": "Cloud Security Posture Management",
     "category": "クラウドセキュリティ",
     "definition": "クラウドサービスの設定を継続的に監視し、基準やベストプラクティスと照合して、不適切な設定を検知する仕組みです。設定ミスによる情報漏えいを防ぎます。",
@@ -1642,6 +1714,13 @@ export const terms: Term[] = [
   {
     "id": "ieee8021x",
     "name": "IEEE 802.1X",
+    "aliases": [
+      "EAP",
+      "RADIUS",
+      "サプリカント",
+      "オーセンティケータ",
+      "認証VLAN"
+    ],
     "reading": "IEEE 802.1X",
     "category": "ネットワークセキュリティ",
     "definition": "有線・無線LANで、接続しようとする機器を認証してからネットワークの利用を許可するポート単位のアクセス制御の規格です。端末（サプリカント）、アクセスポイントやスイッチ（オーセンティケータ）、認証サーバがEAPでやり取りします。",
@@ -1687,6 +1766,10 @@ export const terms: Term[] = [
   {
     "id": "wal",
     "name": "ログ先行書込み（WAL）",
+    "aliases": [
+      "ログバッファ",
+      "ログファイル"
+    ],
     "reading": "Write-Ahead Logging",
     "category": "データベース",
     "definition": "データベース本体を更新する前に、更新内容をログへ書き込む方式です。コミット情報が不揮発のログファイルに書き込まれた時点でコミット完了とし、障害時にはログから回復します。",
@@ -1736,6 +1819,9 @@ export const terms: Term[] = [
   {
     "id": "ospf",
     "name": "OSPF",
+    "aliases": [
+      "リンクステート型"
+    ],
     "reading": "Open Shortest Path First",
     "category": "ネットワーク",
     "definition": "リンクステート型のルーティングプロトコルです。各ルータがネットワーク全体のリンク状態のデータベースを持ち、コストを基に最短経路を計算します。変化があったときに更新を送るため、収束が速くなります。",
@@ -1777,6 +1863,12 @@ export const terms: Term[] = [
   {
     "id": "risk-approach",
     "name": "リスク・アプローチ（システム監査）",
+    "aliases": [
+      "監査リスク",
+      "固有リスク",
+      "統制リスク",
+      "発見リスク"
+    ],
     "reading": "Risk-based audit approach",
     "category": "システム監査",
     "definition": "リスクの大きさを評価し、重要なリスクのある監査対象に監査資源を重点的に配分して、監査リスクを合理的に低い水準に抑える監査の考え方です。環境の変化でリスクが変われば、監査計画を見直します。",
@@ -1818,6 +1910,13 @@ export const terms: Term[] = [
   {
     "id": "mm1-queue",
     "name": "M/M/1待ち行列",
+    "aliases": [
+      "M/M/1",
+      "待ち行列",
+      "平均待ち時間",
+      "サービス時間",
+      "利用率"
+    ],
     "reading": "M/M/1 queue",
     "category": "基礎理論",
     "definition": "到着がランダム（ポアソン到着）、サービス時間が指数分布、窓口が1つの待ち行列モデルです。利用率ρから平均待ち時間を求められます。",
@@ -1914,6 +2013,10 @@ export const terms: Term[] = [
   {
     "id": "normalization",
     "name": "正規化",
+    "aliases": [
+      "第3正規形",
+      "第2正規形"
+    ],
     "reading": "Normalization",
     "category": "データベース",
     "definition": "関係データベースの表を、関数従属性に基づいて分解し、データの重複と更新時の矛盾を減らす設計手順です。",
@@ -1960,6 +2063,10 @@ export const terms: Term[] = [
   {
     "id": "deadlock",
     "name": "デッドロック",
+    "aliases": [
+      "プロセス",
+      "資源"
+    ],
     "reading": "Deadlock",
     "category": "ソフトウェア",
     "definition": "複数のプロセスが互いに相手の占有する資源の解放を待ち、どちらも処理を進められなくなる状態です。",
@@ -2001,6 +2108,11 @@ export const terms: Term[] = [
   {
     "id": "hamming-code",
     "name": "ハミング符号",
+    "aliases": [
+      "誤り訂正",
+      "符号語",
+      "情報ビット"
+    ],
     "reading": "Hamming code",
     "category": "基礎理論",
     "definition": "情報ビットに複数の検査ビットを付け、1ビットの誤りの位置を特定して訂正できる誤り訂正符号です。",
@@ -2042,6 +2154,9 @@ export const terms: Term[] = [
   {
     "id": "fault-tolerance",
     "name": "フォールトトレランス",
+    "aliases": [
+      "フォールトアボイダンス"
+    ],
     "reading": "Fault tolerance",
     "category": "システム構成",
     "definition": "構成要素に故障が起きても、冗長化などによってシステム全体の機能を維持する考え方です。故障を起こさないようにするフォールトアボイダンスと対になります。",
@@ -2086,6 +2201,11 @@ export const terms: Term[] = [
   {
     "id": "overfitting",
     "name": "過学習",
+    "aliases": [
+      "汎化性能",
+      "正則化",
+      "データ拡張"
+    ],
     "reading": "Overfitting",
     "category": "AI・機械学習",
     "definition": "機械学習のモデルが訓練データに過剰に適合し、未知のデータに対する予測精度（汎化性能）が下がる状態です。",
@@ -2128,6 +2248,9 @@ export const terms: Term[] = [
   {
     "id": "sbom",
     "name": "SBOM",
+    "aliases": [
+      "コンポーネント"
+    ],
     "reading": "Software Bill of Materials",
     "category": "セキュリティ運用",
     "definition": "ソフトウェアを構成するコンポーネント（OSSなど）とそのバージョン、ライセンス、依存関係を一覧にした部品表です。脆弱性管理やライセンス管理に使います。",
@@ -2171,6 +2294,9 @@ export const terms: Term[] = [
   {
     "id": "os-command-injection",
     "name": "OSコマンドインジェクション",
+    "aliases": [
+      "シェル"
+    ],
     "reading": "OS command injection",
     "category": "Webセキュリティ",
     "definition": "Webアプリケーションに入力した値にOSのコマンドを紛れ込ませ、サーバ上でシェル経由で実行させる攻撃です。",
@@ -2264,6 +2390,10 @@ export const terms: Term[] = [
   {
     "id": "cve",
     "name": "CVE",
+    "aliases": [
+      "JVN",
+      "CCE"
+    ],
     "reading": "Common Vulnerabilities and Exposures",
     "category": "セキュリティ運用",
     "definition": "製品に含まれる個々の脆弱性に付けられる共通の識別子です。「CVE-年-番号」の形式で、異なる情報源でも同じ脆弱性を指していると分かります。",
@@ -2350,6 +2480,9 @@ export const terms: Term[] = [
   {
     "id": "rainbow-table",
     "name": "レインボーテーブル攻撃",
+    "aliases": [
+      "レインボーテーブル"
+    ],
     "reading": "Rainbow table attack",
     "category": "攻撃手法",
     "definition": "平文とハッシュ値の対応をチェーンにして圧縮した表を事前に作っておき、盗んだハッシュ値から元のパスワードを効率よく求める攻撃です。",
@@ -2394,6 +2527,9 @@ export const terms: Term[] = [
   {
     "id": "dmarc",
     "name": "DMARC",
+    "aliases": [
+      "送信ドメイン認証"
+    ],
     "reading": "Domain-based Message Authentication, Reporting and Conformance",
     "category": "メールセキュリティ",
     "definition": "SPFやDKIMの認証結果を基に、認証に失敗したメールの扱い（そのまま・隔離・拒否）を送信ドメイン側がDNSで宣言し、結果の報告を受け取る仕組みです。",
@@ -2438,6 +2574,11 @@ export const terms: Term[] = [
   {
     "id": "submission-port",
     "name": "サブミッションポート",
+    "aliases": [
+      "OP25B",
+      "SMTP-AUTH",
+      "POP before SMTP"
+    ],
     "reading": "Submission port",
     "category": "メールセキュリティ",
     "definition": "メールクライアントからメールサーバへの送信に使うポート587番です。SMTP-AUTHで送信者を認証してからメールを受け付けます。",
@@ -2524,6 +2665,9 @@ export const terms: Term[] = [
   {
     "id": "botnet",
     "name": "ボットネット",
+    "aliases": [
+      "C&Cサーバ"
+    ],
     "reading": "Botnet",
     "category": "攻撃手法",
     "definition": "マルウェア（ボット）に感染した多数の端末が、攻撃者のC&Cサーバからの指令で一斉に動くネットワークです。DDoS攻撃やスパム送信、情報窃取に使われます。",
@@ -2610,6 +2754,14 @@ export const terms: Term[] = [
   {
     "id": "evm",
     "name": "EVM",
+    "aliases": [
+      "SPI",
+      "TCPI",
+      "BAC",
+      "PV",
+      "EV",
+      "AC"
+    ],
     "reading": "Earned Value Management",
     "category": "プロジェクト管理",
     "definition": "計画価値（PV）、出来高（EV）、実コスト（AC）を同じ金額の尺度で比べ、プロジェクトのコストとスケジュールの状況を評価する手法です。",
@@ -2651,6 +2803,10 @@ export const terms: Term[] = [
   {
     "id": "critical-path",
     "name": "クリティカルパス",
+    "aliases": [
+      "ダミー作業",
+      "所要日数"
+    ],
     "reading": "Critical path",
     "category": "プロジェクト管理",
     "definition": "作業の順序関係をつないだ経路のうち、所要日数の合計が最も長い経路です。この経路上の作業が遅れると、プロジェクト全体が遅れます。",
@@ -2699,6 +2855,10 @@ export const terms: Term[] = [
   {
     "id": "rto-rpo",
     "name": "RTOとRPO",
+    "aliases": [
+      "RTO",
+      "RPO"
+    ],
     "reading": "Recovery Time Objective / Recovery Point Objective",
     "category": "サービス管理",
     "definition": "RTOは中断からどれだけの時間で復旧するか、RPOはどの時点までのデータを復旧するかの目標です。復旧の水準を表すRLOと合わせて、事業継続計画で定めます。",
@@ -2740,6 +2900,9 @@ export const terms: Term[] = [
   {
     "id": "application-control",
     "name": "業務処理統制",
+    "aliases": [
+      "全般統制"
+    ],
     "reading": "IT application controls",
     "category": "システム監査",
     "definition": "販売や会計など個々の業務システムに組み込まれ、データが正確・網羅的に処理されることを確保する統制です。その基盤となる運用・開発・アクセス管理などは全般統制です。",
@@ -2783,6 +2946,9 @@ export const terms: Term[] = [
   {
     "id": "soa",
     "name": "SOA",
+    "aliases": [
+      "サービス指向アーキテクチャ"
+    ],
     "reading": "Service Oriented Architecture",
     "category": "システム戦略",
     "definition": "業務の機能をサービスという独立した部品にし、それらを組み合わせてシステムを構築する設計の考え方です。業務プロセスとの対応付けや他システムとの連携がしやすくなります。",
@@ -2824,6 +2990,10 @@ export const terms: Term[] = [
   {
     "id": "ppm",
     "name": "PPM",
+    "aliases": [
+      "市場成長率",
+      "相対的市場シェア"
+    ],
     "reading": "Product Portfolio Management",
     "category": "経営戦略",
     "definition": "市場成長率と相対的市場シェアの二つの軸で事業や製品を四つに分類し、経営資源の配分を考える手法です。",
@@ -2865,6 +3035,15 @@ export const terms: Term[] = [
   {
     "id": "break-even-point",
     "name": "損益分岐点",
+    "aliases": [
+      "損益分岐点売上高",
+      "限界利益",
+      "限界利益率",
+      "固定費",
+      "変動費",
+      "変動費率",
+      "販売単価"
+    ],
     "reading": "Break-even point",
     "category": "経営管理",
     "definition": "売上高と費用が等しくなり、利益がちょうど0になる売上高です。固定費÷(1−変動費率)で求めます。",
@@ -2949,6 +3128,14 @@ export const terms: Term[] = [
   {
     "id": "worker-dispatch",
     "name": "労働者派遣",
+    "aliases": [
+      "労働者派遣法",
+      "派遣先",
+      "派遣元",
+      "指揮命令",
+      "派遣先管理台帳",
+      "派遣先責任者"
+    ],
     "reading": "Worker dispatching",
     "category": "法務",
     "definition": "派遣元が雇用する労働者を、派遣先の指揮命令の下で働かせる形態です。雇用関係は派遣元、指揮命令関係は派遣先にあります。",
@@ -2991,6 +3178,13 @@ export const terms: Term[] = [
   {
     "id": "module-coupling",
     "name": "モジュール結合度",
+    "aliases": [
+      "データ結合",
+      "スタンプ結合",
+      "制御結合",
+      "外部結合",
+      "共通結合"
+    ],
     "reading": "Module coupling",
     "category": "ソフトウェア設計",
     "definition": "モジュール間の結び付きの強さです。結合度が低いほどモジュールの独立性が高く、変更の影響が広がりにくくなります。",
@@ -3032,6 +3226,9 @@ export const terms: Term[] = [
   {
     "id": "edge-computing",
     "name": "エッジコンピューティング",
+    "aliases": [
+      "エッジAI"
+    ],
     "reading": "Edge computing",
     "category": "技術戦略",
     "definition": "データの発生源（端末やセンサー）の近くに処理の資源を置き、そこでデータを処理する方式です。応答の遅延と通信量を抑えられます。",
@@ -3069,8 +3266,8929 @@ export const terms: Term[] = [
     "commonMistakes": [
       "複数のコンピュータを結ぶグリッドコンピューティングや、環境からエネルギーを得るエネルギーハーベスティングと取り違えた選択肢が出ます。"
     ]
+  },
+  {
+    "id": "poisson-exponential",
+    "name": "ポアソン分布と指数分布",
+    "aliases": [
+      "ポアソン分布",
+      "指数分布"
+    ],
+    "reading": "Poisson / exponential distribution",
+    "category": "基礎理論",
+    "definition": "単位時間に到着する件数がポアソン分布に従うとき、到着の間隔は指数分布に従います。M/M/1待ち行列の「M」は、到着とサービス時間がこの性質（ランダム）を持つことを表します。",
+    "example": "1時間に平均6人がランダムに来る窓口では、来店数はポアソン分布、来店の間隔は平均10分の指数分布になります。",
+    "related": [
+      "mm1-queue"
+    ],
+    "criteria": [
+      {
+        "id": "count",
+        "title": "ポアソン分布は一定時間内に起きる回数の分布",
+        "hint": "何の「数」を表す分布ですか？"
+      },
+      {
+        "id": "interval",
+        "title": "指数分布は次に起きるまでの間隔の分布",
+        "hint": "到着と到着の「あいだ」はどの分布ですか？"
+      },
+      {
+        "id": "random",
+        "title": "どちらも事象がランダムに独立して起きる前提",
+        "hint": "前の到着が次に影響しますか？"
+      },
+      {
+        "id": "mm1",
+        "title": "M/M/1のMは到着間隔とサービス時間が指数分布（マルコフ性）であることを示す",
+        "hint": "ケンドール記号のMは何を意味しますか？",
+        "level": "A"
+      },
+      {
+        "id": "memoryless",
+        "title": "指数分布は無記憶性を持ち、待った時間が残りの待ち時間に影響しない",
+        "hint": "すでに5分待ったら次の到着は早まりますか？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": [
+      "到着「数」を指数分布、到着「間隔」をポアソン分布と逆に覚える誤りがあります。"
+    ]
+  },
+  {
+    "id": "roc-curve",
+    "name": "ROC曲線",
+    "aliases": [
+      "偽陽性率",
+      "2クラス分類"
+    ],
+    "reading": "Receiver Operating Characteristic curve",
+    "category": "AI・機械学習",
+    "definition": "2クラス分類器のしきい値を変えながら、横軸に偽陽性率、縦軸に真陽性率をとって描いた曲線です。左上に近いほど性能が良く、曲線下の面積（AUC）で比較します。",
+    "example": "迷惑メール判定のしきい値を下げると、迷惑メールの検出率（真陽性率）は上がるが、普通のメールの誤判定（偽陽性率）も増えます。",
+    "related": [
+      "overfitting"
+    ],
+    "criteria": [
+      {
+        "id": "axes",
+        "title": "横軸が偽陽性率、縦軸が真陽性率",
+        "hint": "縦軸と横軸に何をとりますか？"
+      },
+      {
+        "id": "threshold",
+        "title": "判定のしきい値を変えた点を結んだ曲線",
+        "hint": "曲線の各点は何を変えたときの結果ですか？"
+      },
+      {
+        "id": "upperleft",
+        "title": "左上に近い（AUCが大きい）ほど良い分類器",
+        "hint": "良い分類器の曲線はどこに寄りますか？"
+      },
+      {
+        "id": "fpr",
+        "title": "偽陽性率は陰性のものを誤って陽性と判定した割合（FP÷(FP+TN)）",
+        "hint": "偽陽性率の分母は何ですか？",
+        "level": "A"
+      },
+      {
+        "id": "diagonal",
+        "title": "対角線はランダムな判定と同じ性能（AUC=0.5）を表す",
+        "hint": "原点から右上への直線は何を意味しますか？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": [
+      "縦軸を適合率（Precision）とする誤りがあります。適合率と再現率の曲線はPR曲線です。"
+    ]
+  },
+  {
+    "id": "machine-learning",
+    "name": "機械学習",
+    "aliases": [
+      "教師あり学習",
+      "教師なし学習",
+      "強化学習",
+      "推論"
+    ],
+    "reading": "Machine learning",
+    "category": "AI・機械学習",
+    "definition": "データから規則やパターンを学習し、未知のデータに対して予測や分類を行う手法です。正解付きデータで学ぶ教師あり学習、正解なしで構造を見つける教師なし学習、報酬を最大化する行動を試行錯誤で学ぶ強化学習に分かれます。",
+    "example": "過去のメールと「迷惑かどうか」の正解から判定器を作るのは教師あり学習、顧客を購買傾向でグループ分けするのは教師なし学習です。",
+    "related": [
+      "overfitting"
+    ],
+    "criteria": [
+      {
+        "id": "learn",
+        "title": "データから規則を自動で学習して予測・分類する",
+        "hint": "人がルールを書く代わりに何をしますか？"
+      },
+      {
+        "id": "supervised",
+        "title": "教師あり学習は正解ラベル付きデータで学ぶ（分類・回帰）",
+        "hint": "正解データを使う学習は何ですか？"
+      },
+      {
+        "id": "unsupervised",
+        "title": "教師なし学習は正解なしでデータの構造を見つける（クラスタリングなど）",
+        "hint": "正解がないとき何ができますか？"
+      },
+      {
+        "id": "reinforcement",
+        "title": "強化学習は環境との試行錯誤で報酬が最大になる行動を学ぶ",
+        "hint": "ゲームやロボット制御で使う学習は？",
+        "level": "A"
+      },
+      {
+        "id": "inference",
+        "title": "学習済みモデルで新しいデータを予測することを推論という",
+        "hint": "学習の後、モデルを使う段階を何と呼びますか？",
+        "level": "A"
+      },
+      {
+        "id": "generalize",
+        "title": "目的は訓練データではなく未知データでの性能（汎化性能）",
+        "hint": "訓練データだけで正解率が高ければよいですか？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": [
+      "クラスタリングを教師あり学習とする誤りがあります。"
+    ]
+  },
+  {
+    "id": "deep-learning",
+    "name": "深層学習",
+    "reading": "Deep learning",
+    "category": "AI・機械学習",
+    "definition": "多層のニューラルネットワークを使う機械学習です。特徴量を人が設計しなくても、データから段階的に特徴を学習できる点が特徴で、画像認識や生成AIの基盤になっています。",
+    "example": "大量の顔画像から、輪郭→目鼻→顔全体と特徴を段階的に学び、本人を見分けます。",
+    "related": [
+      "machine-learning"
+    ],
+    "criteria": [
+      {
+        "id": "layers",
+        "title": "多層のニューラルネットワークを用いる",
+        "hint": "何を何層も重ねますか？"
+      },
+      {
+        "id": "features",
+        "title": "特徴量をデータから自動で学習する",
+        "hint": "特徴を人が決める必要がありますか？"
+      },
+      {
+        "id": "data",
+        "title": "大量のデータと計算資源（GPUなど）を必要とする",
+        "hint": "学習に何が多く必要ですか？",
+        "level": "A"
+      },
+      {
+        "id": "backprop",
+        "title": "誤差逆伝播法で各層の重みを調整して学習する",
+        "hint": "重みはどう更新されますか？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": [
+      "機械学習と深層学習を別物とする誤りがあります。深層学習は機械学習の一種です。"
+    ]
+  },
+  {
+    "id": "generative-ai",
+    "name": "生成AI",
+    "reading": "Generative AI",
+    "category": "AI・機械学習",
+    "definition": "学習したデータの傾向をもとに、文章・画像・音声などの新しいコンテンツを生成するAIです。もっともらしい誤り（ハルシネーション）や、著作権・情報漏えいへの配慮が必要です。",
+    "example": "指示文から報告書の下書きを作ったり、説明文から画像を作ったりします。",
+    "related": [
+      "deep-learning"
+    ],
+    "criteria": [
+      {
+        "id": "generate",
+        "title": "学習データの傾向から新しいコンテンツを生成する",
+        "hint": "分類ではなく何をしますか？"
+      },
+      {
+        "id": "hallucination",
+        "title": "事実と異なる内容をもっともらしく出力することがある",
+        "hint": "出力をそのまま信じてよいですか？"
+      },
+      {
+        "id": "copyright",
+        "title": "生成物が既存の著作物に類似し依拠していれば著作権侵害になり得る",
+        "hint": "生成物の利用で注意する法的な点は？",
+        "level": "A"
+      },
+      {
+        "id": "prompt-injection",
+        "title": "入力に仕込まれた指示で動作を乗っ取るプロンプトインジェクションの危険がある",
+        "hint": "生成AI特有の攻撃は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "cross-validation",
+    "name": "交差検証",
+    "reading": "Cross validation",
+    "category": "AI・機械学習",
+    "definition": "データを複数のグループに分け、学習用と検証用を入れ替えながら評価を繰り返し、その平均でモデルの汎化性能を見積もる方法です。k分割交差検証が代表です。",
+    "example": "データを5分割し、4つで学習・1つで検証を5回繰り返して平均の正解率を求めます。",
+    "related": [
+      "overfitting"
+    ],
+    "criteria": [
+      {
+        "id": "split",
+        "title": "データを分割し、学習用と検証用を入れ替えて評価を繰り返す",
+        "hint": "データをどう使い回しますか？"
+      },
+      {
+        "id": "generalization",
+        "title": "未知データへの性能（汎化性能）を見積もる目的",
+        "hint": "何を確かめるための方法ですか？"
+      },
+      {
+        "id": "kfold",
+        "title": "k分割ではk回学習・検証して平均をとる",
+        "hint": "k分割交差検証の手順は？",
+        "level": "A"
+      },
+      {
+        "id": "leakage",
+        "title": "検証用データが学習に混ざると性能を過大評価する（データ漏えい）",
+        "hint": "分け方で注意することは？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": [
+      "複数のモデルを組み合わせるアンサンブル学習と混同する誤りがあります。"
+    ]
+  },
+  {
+    "id": "ensemble-learning",
+    "name": "アンサンブル学習",
+    "aliases": [
+      "マルチタスク学習"
+    ],
+    "reading": "Ensemble learning",
+    "category": "AI・機械学習",
+    "definition": "複数の学習モデルの予測を組み合わせて、単独のモデルより精度や安定性を高める手法です。バギング（ランダムフォレストなど）やブースティングがあります。",
+    "example": "100本の決定木の多数決で分類するランダムフォレストは、アンサンブル学習の例です。",
+    "related": [
+      "machine-learning"
+    ],
+    "criteria": [
+      {
+        "id": "combine",
+        "title": "複数のモデルの予測を組み合わせる（多数決・平均など）",
+        "hint": "何を組み合わせますか？"
+      },
+      {
+        "id": "accuracy",
+        "title": "単独のモデルより精度や安定性を高める",
+        "hint": "何のために組み合わせますか？"
+      },
+      {
+        "id": "bagging",
+        "title": "バギングは並列に、ブースティングは誤りを補うよう逐次に学習する",
+        "hint": "代表的な二つの方式の違いは？",
+        "level": "A"
+      },
+      {
+        "id": "diversity",
+        "title": "効果を出すには個々のモデルの誤りが互いに異なる（多様性）ことが必要",
+        "hint": "同じモデルを並べても効果がありますか？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "search-linear-binary",
+    "name": "線形探索と2分探索",
+    "aliases": [
+      "線形探索",
+      "2分探索",
+      "平均比較回数",
+      "昇順"
+    ],
+    "reading": "Linear search / binary search",
+    "category": "基礎理論",
+    "definition": "線形探索は先頭から順に比べる方法で、n件なら平均約n/2回比較します。2分探索は昇順などに整列済みのデータで中央と比べて範囲を半分にしていく方法で、比較回数は約log₂n回です。",
+    "example": "1,000件なら線形探索は平均約500回、2分探索は最大約10回の比較で見つかります。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "linear",
+        "title": "線形探索は先頭から順に比較し、平均比較回数は約n/2回",
+        "hint": "n件のデータで平均何回比べますか？"
+      },
+      {
+        "id": "binary",
+        "title": "2分探索は中央と比較して範囲を半分ずつ絞り、約log₂n回",
+        "hint": "比較のたびに探索範囲はどうなりますか？"
+      },
+      {
+        "id": "sorted",
+        "title": "2分探索はデータが整列済み（昇順など）である必要がある",
+        "hint": "2分探索の前提条件は？"
+      },
+      {
+        "id": "block",
+        "title": "ブロックに分けて先にブロックを探す方法は、ブロック数と中の件数の比較回数を足して考える",
+        "hint": "2段階で探すときの平均比較回数は？",
+        "level": "A"
+      },
+      {
+        "id": "order",
+        "title": "計算量は線形探索がO(n)、2分探索がO(log n)",
+        "hint": "オーダ表記では？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": [
+      "2分探索を整列していないデータに使える、とする誤りがあります。"
+    ]
+  },
+  {
+    "id": "bisection",
+    "name": "二分法",
+    "aliases": [
+      "近似値"
+    ],
+    "reading": "Bisection method",
+    "category": "基礎理論",
+    "definition": "方程式の解を含む区間を半分ずつ狭めて近似値を求める方法です。区間の両端で関数の符号が異なることを利用し、1回ごとに区間の幅が半分になります。",
+    "example": "幅1の区間から誤差0.001以下まで狭めるには、2¹⁰=1024なので10回繰り返します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "halve",
+        "title": "解を含む区間を毎回半分にして近似値を求める",
+        "hint": "繰り返すたびに区間はどうなりますか？"
+      },
+      {
+        "id": "sign",
+        "title": "区間の両端で関数の符号が異なることを使う",
+        "hint": "解が区間内にあるとどう判断しますか？"
+      },
+      {
+        "id": "count",
+        "title": "必要な回数は「幅÷2ⁿ ≦ 許容誤差」となる最小のn",
+        "hint": "幅を1/1000にするには何回必要ですか？",
+        "level": "A"
+      },
+      {
+        "id": "newton",
+        "title": "ニュートン法より収束は遅いが、確実に収束する",
+        "hint": "他の解法と比べた長所と短所は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "stack",
+    "name": "スタック",
+    "aliases": [
+      "後入れ先出し",
+      "LIFO"
+    ],
+    "reading": "Stack",
+    "category": "基礎理論",
+    "definition": "最後に入れたデータを最初に取り出す後入れ先出し（LIFO）のデータ構造です。入れる操作をプッシュ、取り出す操作をポップと呼び、関数呼出しや逆ポーランド表記法の計算に使います。",
+    "example": "1,2,3の順にプッシュしてからポップすると、3,2,1の順に取り出されます。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "lifo",
+        "title": "後入れ先出し（LIFO）で、最後に入れたものから取り出す",
+        "hint": "どの順に取り出されますか？"
+      },
+      {
+        "id": "pushpop",
+        "title": "プッシュで積み、ポップで取り出す",
+        "hint": "二つの基本操作は？"
+      },
+      {
+        "id": "use",
+        "title": "関数呼出しの戻り先や逆ポーランド表記法の計算に使う",
+        "hint": "どんな処理に使われますか？",
+        "level": "A"
+      },
+      {
+        "id": "overflow",
+        "title": "領域を超えて積むとスタックオーバーフローになる",
+        "hint": "積みすぎると何が起きますか？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": [
+      "先入れ先出し（FIFO）のキューと取り違える誤りがあります。"
+    ]
+  },
+  {
+    "id": "fifo",
+    "name": "FIFO",
+    "aliases": [
+      "先入れ先出し"
+    ],
+    "reading": "First In First Out",
+    "category": "コンピュータ構成",
+    "definition": "最初に入れたものを最初に取り出す先入れ先出しの方式です。データ構造ではキュー、ページやキャッシュの置換では「最も古く読み込んだもの」を追い出す方式を指します。",
+    "example": "ページ置換をFIFOで行うと、よく使うページでも読み込みが最も古ければ追い出されます。",
+    "related": [
+      "lru"
+    ],
+    "criteria": [
+      {
+        "id": "order",
+        "title": "最初に入れた（読み込んだ）ものから取り出す・追い出す",
+        "hint": "どれから出されますか？"
+      },
+      {
+        "id": "queue",
+        "title": "データ構造ではキュー（待ち行列）として使う",
+        "hint": "FIFOのデータ構造は何ですか？"
+      },
+      {
+        "id": "replace",
+        "title": "ページ置換では参照の新しさではなく読み込んだ順で追い出すため、よく使うページも追い出し得る",
+        "hint": "LRUとの違いは何ですか？",
+        "level": "A"
+      },
+      {
+        "id": "belady",
+        "title": "ページ枠を増やすとかえってページフォールトが増えることがある（Beladyの異常）",
+        "hint": "枠を増やしたのにフォールトが増える現象は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": [
+      "最後の参照が古い順に追い出すLRUと混同する誤りがあります。"
+    ]
+  },
+  {
+    "id": "lfu",
+    "name": "LFU",
+    "reading": "Least Frequently Used",
+    "category": "コンピュータ構成",
+    "definition": "キャッシュやページの置換で、参照された回数が最も少ないものを追い出す方式です。最後に参照された時刻で選ぶLRUとは基準が異なります。",
+    "example": "参照回数が10回・3回・7回のデータなら、3回のものを置き換えます。",
+    "related": [
+      "lru",
+      "fifo"
+    ],
+    "criteria": [
+      {
+        "id": "frequency",
+        "title": "参照回数が最も少ないものを追い出す",
+        "hint": "何を基準に選びますか？"
+      },
+      {
+        "id": "vs-lru",
+        "title": "LRUは最後の参照からの経過時間で選ぶ点が違う",
+        "hint": "LRUとの違いは？"
+      },
+      {
+        "id": "old-popular",
+        "title": "過去によく使われたデータが、使われなくなっても残り続けやすい",
+        "hint": "LFUの弱点は？",
+        "level": "A"
+      },
+      {
+        "id": "aging",
+        "title": "回数を定期的に減らすなどの工夫（エージング）で弱点を補う",
+        "hint": "弱点への対策は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "reverse-polish",
+    "name": "逆ポーランド表記法",
+    "aliases": [
+      "後置記法",
+      "前置記法",
+      "中置記法",
+      "オペランド",
+      "演算子"
+    ],
+    "reading": "Reverse Polish notation",
+    "category": "基礎理論",
+    "definition": "演算子をオペランド（演算対象）の後ろに書く後置記法です。かっこが不要で、スタックを使って左から順に計算できます。通常の書き方は中置記法、演算子を前に書くのは前置記法です。",
+    "example": "(A+B)×C は逆ポーランド表記法で AB+C× と書きます。",
+    "related": [
+      "stack"
+    ],
+    "criteria": [
+      {
+        "id": "postfix",
+        "title": "演算子をオペランドの後ろに書く後置記法",
+        "hint": "演算子はどこに置きますか？"
+      },
+      {
+        "id": "noparen",
+        "title": "かっこを使わずに計算順序を表せる",
+        "hint": "かっこは必要ですか？"
+      },
+      {
+        "id": "stack",
+        "title": "スタックにオペランドを積み、演算子でポップして計算する",
+        "hint": "どのデータ構造で評価しますか？",
+        "level": "A"
+      },
+      {
+        "id": "convert",
+        "title": "中置記法から変換するときは優先順位の高い演算から後置にする",
+        "hint": "(A+B)×Cをどう書きますか？",
+        "level": "A"
+      },
+      {
+        "id": "prefix",
+        "title": "演算子を前に置く前置記法（ポーランド表記法）もある",
+        "hint": "演算子を前に書く記法は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "hash-table",
+    "name": "ハッシュ表",
+    "aliases": [
+      "衝突"
+    ],
+    "reading": "Hash table",
+    "category": "基礎理論",
+    "definition": "キーをハッシュ関数で変換した値を格納位置として使う表です。データ量によらずほぼ一定時間で探索できますが、異なるキーが同じ位置になる衝突（シノニム）への対処が必要です。",
+    "example": "キーを13で割った余りを位置とする表で、14と27はどちらも1になり衝突します。",
+    "related": [
+      "hash"
+    ],
+    "criteria": [
+      {
+        "id": "address",
+        "title": "キーのハッシュ値をそのまま格納位置にする",
+        "hint": "格納場所はどう決まりますか？"
+      },
+      {
+        "id": "fast",
+        "title": "衝突が少なければ件数によらずほぼ一定時間で探索できる",
+        "hint": "探索時間はデータ量に比例しますか？"
+      },
+      {
+        "id": "collision",
+        "title": "異なるキーが同じ位置になる衝突（シノニム）が起き得る",
+        "hint": "どんな問題が起きますか？"
+      },
+      {
+        "id": "resolve",
+        "title": "衝突はチェイン法（リスト）やオープンアドレス法で解決する",
+        "hint": "衝突への対処法は？",
+        "level": "A"
+      },
+      {
+        "id": "load",
+        "title": "格納率（負荷率）が高いほど衝突が増えて遅くなる",
+        "hint": "表が埋まってくると何が起きますか？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "binary-tree",
+    "name": "2分木",
+    "aliases": [
+      "ノード",
+      "根"
+    ],
+    "reading": "Binary tree",
+    "category": "基礎理論",
+    "definition": "各ノード（節）が最大二つの子を持つ木構造です。最上位のノードを根と呼びます。左右の部分木をたどる順番（前順・中順・後順）で、出力の並びが変わります。",
+    "example": "中順（左→根→右）でたどると、2分探索木の値は昇順に出力されます。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "two",
+        "title": "各ノードの子が最大二つ",
+        "hint": "子は何個まで持てますか？"
+      },
+      {
+        "id": "root",
+        "title": "最上位のノードを根、子のないノードを葉と呼ぶ",
+        "hint": "木の頂点を何と呼びますか？"
+      },
+      {
+        "id": "traverse",
+        "title": "前順・中順・後順でたどる順序が異なる",
+        "hint": "ノードをたどる順番の種類は？"
+      },
+      {
+        "id": "bst",
+        "title": "2分探索木は左の子＜親＜右の子となるよう並べる",
+        "hint": "探索に使う2分木の条件は？",
+        "level": "A"
+      },
+      {
+        "id": "balance",
+        "title": "偏ると探索が線形探索並みに遅くなるため、平衡木で高さを抑える",
+        "hint": "木が偏ると何が問題ですか？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "recursion",
+    "name": "再帰処理",
+    "reading": "Recursion",
+    "category": "基礎理論",
+    "definition": "関数が自分自身を呼び出して、問題を同じ形の小さな問題に分けて解く処理です。必ず呼出しを止める終了条件が必要で、木構造のたどりや階乗の計算に使います。",
+    "example": "n! を n×(n−1)! と定義し、0! = 1 を終了条件にして計算します。",
+    "related": [
+      "binary-tree",
+      "stack"
+    ],
+    "criteria": [
+      {
+        "id": "self",
+        "title": "関数が自分自身を呼び出す",
+        "hint": "どの関数を呼び出しますか？"
+      },
+      {
+        "id": "base",
+        "title": "終了条件がないと無限に呼び出し続ける",
+        "hint": "必ず必要な条件は？"
+      },
+      {
+        "id": "stack",
+        "title": "呼出しごとに戻り先や変数がスタックに積まれる",
+        "hint": "呼出し情報はどこに保存されますか？",
+        "level": "A"
+      },
+      {
+        "id": "loop",
+        "title": "再帰は繰返し（ループ）に書き換えられる",
+        "hint": "再帰を使わずに書けますか？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "quantum-computer",
+    "name": "量子コンピュータ",
+    "aliases": [
+      "量子ゲート",
+      "量子ビット",
+      "重ね合わせ"
+    ],
+    "reading": "Quantum computer",
+    "category": "基礎理論",
+    "definition": "0と1の重ね合わせ状態を取れる量子ビットを使って計算するコンピュータです。量子ゲート方式では量子ゲートで量子ビットを操作し、素因数分解など特定の問題を高速に解ける可能性があるため、現在の公開鍵暗号を脅かします。",
+    "example": "ショアのアルゴリズムが大規模な量子コンピュータで動けば、RSA暗号の鍵を現実的な時間で求められます。",
+    "related": [
+      "pqc"
+    ],
+    "criteria": [
+      {
+        "id": "qubit",
+        "title": "量子ビットは0と1の重ね合わせ状態をとれる",
+        "hint": "普通のビットとの違いは？"
+      },
+      {
+        "id": "gate",
+        "title": "量子ゲート方式は量子ゲートで量子ビットを操作して計算する",
+        "hint": "ゲート方式は何を使って計算しますか？"
+      },
+      {
+        "id": "crypto",
+        "title": "素因数分解などが高速に解け、RSAなど公開鍵暗号の安全性を脅かす",
+        "hint": "セキュリティへの影響は？",
+        "level": "A"
+      },
+      {
+        "id": "annealing",
+        "title": "組合せ最適化に特化した量子アニーリング方式もある",
+        "hint": "もう一つの方式は？",
+        "level": "A"
+      },
+      {
+        "id": "entangle",
+        "title": "量子もつれも計算に利用する",
+        "hint": "重ね合わせ以外の量子の性質は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": [
+      "量子コンピュータがあらゆる計算を高速化する、とする誤りがあります。"
+    ]
+  },
+  {
+    "id": "quicksort",
+    "name": "クイックソート",
+    "aliases": [
+      "基準値"
+    ],
+    "reading": "Quicksort",
+    "category": "基礎理論",
+    "definition": "基準値（ピボット）を選び、それより小さい要素と大きい要素に分割する操作を再帰的に繰り返して整列する方法です。平均計算量はO(n log n)ですが、基準値の選び方が悪いと最悪O(n²)になります。",
+    "example": "[5,3,8,1,9] で5を基準にすると [3,1] と [8,9] に分け、それぞれをまた分割します。",
+    "related": [
+      "recursion"
+    ],
+    "criteria": [
+      {
+        "id": "pivot",
+        "title": "基準値を選び、小さいグループと大きいグループに分割する",
+        "hint": "最初に何を選びますか？"
+      },
+      {
+        "id": "recursive",
+        "title": "分割を再帰的に繰り返して整列する",
+        "hint": "分割した後はどうしますか？"
+      },
+      {
+        "id": "order",
+        "title": "平均O(n log n)、基準値の選び方が悪いと最悪O(n²)",
+        "hint": "計算量は？",
+        "level": "A"
+      },
+      {
+        "id": "unstable",
+        "title": "同じ値の並びが保たれない（安定ではない）",
+        "hint": "安定な整列ですか？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "sorting",
+    "name": "整列アルゴリズム",
+    "aliases": [
+      "バブルソート",
+      "挿入ソート",
+      "ヒープソート"
+    ],
+    "reading": "Sorting algorithms",
+    "category": "基礎理論",
+    "definition": "データを順番に並べる方法の総称です。隣同士を比べて交換するバブルソート、整列済みの部分に挿入していく挿入ソート、ヒープ（木構造）で最大値を取り出していくヒープソートなどがあり、途中の並び方で区別できます。",
+    "example": "バブルソートは1回の走査で最大値が末尾に移り、挿入ソートは先頭側から整列済みの部分が伸びていきます。",
+    "related": [
+      "quicksort"
+    ],
+    "criteria": [
+      {
+        "id": "bubble",
+        "title": "バブルソートは隣接要素を比べて交換し、1回の走査で最大（最小）値が端に確定する",
+        "hint": "隣同士を交換するのはどれですか？"
+      },
+      {
+        "id": "insertion",
+        "title": "挿入ソートは整列済みの部分に次の要素を適切な位置へ挿入する",
+        "hint": "整列済みの列に1つずつ入れるのは？"
+      },
+      {
+        "id": "heap",
+        "title": "ヒープソートはヒープを作り最大値を取り出して末尾に置く",
+        "hint": "木構造を使う整列は？"
+      },
+      {
+        "id": "order",
+        "title": "バブル・挿入はO(n²)、ヒープ・クイックはO(n log n)",
+        "hint": "計算量の違いは？",
+        "level": "A"
+      },
+      {
+        "id": "stable",
+        "title": "バブル・挿入は安定、ヒープ・クイックは安定ではない",
+        "hint": "同じ値の順序が保たれるのは？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "normal-distribution",
+    "name": "正規分布",
+    "aliases": [
+      "平均",
+      "標準偏差",
+      "変曲点"
+    ],
+    "reading": "Normal distribution",
+    "category": "基礎理論",
+    "definition": "平均を中心に左右対称な釣鐘型の確率分布です。平均±1標準偏差の範囲に約68%、±2標準偏差に約95%が入り、平均±1標準偏差の位置が曲線の変曲点になります。",
+    "example": "平均60点・標準偏差10点の試験では、約68%の人が50〜70点に入ります。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "bell",
+        "title": "平均を中心に左右対称な釣鐘型",
+        "hint": "グラフの形は？"
+      },
+      {
+        "id": "sd",
+        "title": "標準偏差が大きいほど山が低く横に広がる",
+        "hint": "標準偏差でグラフはどう変わりますか？"
+      },
+      {
+        "id": "ratio",
+        "title": "平均±1σに約68%、±2σに約95%が含まれる",
+        "hint": "±1σの範囲に何%入りますか？",
+        "level": "A"
+      },
+      {
+        "id": "inflection",
+        "title": "平均±1σの位置が曲線の変曲点になる",
+        "hint": "曲がり方が変わる点はどこですか？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "bit-error-rate",
+    "name": "ビット誤り率",
+    "aliases": [
+      "期待値"
+    ],
+    "reading": "Bit error rate",
+    "category": "基礎理論",
+    "definition": "送ったビットのうち誤って届くビットの割合です。パケットのビット数と誤り率を掛ければ、1パケットに含まれる誤りの期待値（平均個数）が求まり、誤りを含むパケットの数も見積もれます。",
+    "example": "誤り率10⁻⁶で1パケット1,000ビットなら、1パケット当たりの誤りの期待値は0.001個です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "ratio",
+        "title": "誤って届くビットの割合",
+        "hint": "何の割合ですか？"
+      },
+      {
+        "id": "expected",
+        "title": "ビット数×誤り率で誤りの期待値を求める",
+        "hint": "1パケットの平均の誤り数はどう求めますか？"
+      },
+      {
+        "id": "packet",
+        "title": "誤りを含むパケットの確率は 1−(1−p)^n、pが小さければ約n×p",
+        "hint": "誤りを含むパケットの割合は？",
+        "level": "A"
+      },
+      {
+        "id": "unit",
+        "title": "8ビット＝1バイトの換算を忘れない",
+        "hint": "バイトで与えられたらどうしますか？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "logic-operation",
+    "name": "論理演算",
+    "aliases": [
+      "論理積",
+      "論理和",
+      "排他的論理和",
+      "XOR",
+      "真理値表",
+      "2進数"
+    ],
+    "reading": "Logical operations",
+    "category": "基礎理論",
+    "definition": "ビットごとに真（1）と偽（0）を演算する方法です。論理積（AND）は両方1のとき1、論理和（OR）はどちらか1なら1、排他的論理和（XOR）は異なるとき1になります。真理値表で入力と出力の関係を表します。",
+    "example": "2進数の下位3ビットを取り出すには、00000111との論理積（マスク）をとります。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "and",
+        "title": "論理積は両方1のときだけ1",
+        "hint": "ANDはいつ1になりますか？"
+      },
+      {
+        "id": "or",
+        "title": "論理和はどちらかが1なら1",
+        "hint": "ORはいつ1になりますか？"
+      },
+      {
+        "id": "xor",
+        "title": "排他的論理和は二つが異なるとき1",
+        "hint": "XORはいつ1になりますか？"
+      },
+      {
+        "id": "mask",
+        "title": "論理積で特定のビットを取り出し、論理和で特定のビットを1にする（マスク演算）",
+        "hint": "ビットを取り出すには？",
+        "level": "A"
+      },
+      {
+        "id": "mod",
+        "title": "2のべき乗で割った余りは下位ビットとの論理積で求まる",
+        "hint": "8で割った余りをビット演算で求めるには？",
+        "level": "A"
+      },
+      {
+        "id": "xor-twice",
+        "title": "同じ値で2回XORすると元に戻る性質は暗号やパリティに使われる",
+        "hint": "XORの面白い性質は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "nand",
+    "name": "NAND素子",
+    "aliases": [
+      "NAND",
+      "NOR",
+      "ド・モルガンの法則"
+    ],
+    "reading": "NAND gate",
+    "category": "基礎理論",
+    "definition": "論理積（AND）の結果を反転する論理素子です。NANDだけでNOT・AND・ORなどあらゆる論理回路を作れます（NORも同様）。ド・モルガンの法則を使うと回路を書き換えられます。",
+    "example": "A NAND A は NOT A になり、(A NAND A) NAND (B NAND B) は A OR B になります。",
+    "related": [
+      "logic-operation"
+    ],
+    "criteria": [
+      {
+        "id": "nand",
+        "title": "NANDは論理積の否定で、両方1のときだけ0",
+        "hint": "NANDはいつ0になりますか？"
+      },
+      {
+        "id": "universal",
+        "title": "NAND（またはNOR）だけで任意の論理回路を構成できる",
+        "hint": "NANDだけで何が作れますか？"
+      },
+      {
+        "id": "demorgan",
+        "title": "ド・モルガンの法則：NOT(A AND B)＝(NOT A) OR (NOT B)",
+        "hint": "否定を分配するとどうなりますか？",
+        "level": "A"
+      },
+      {
+        "id": "nor",
+        "title": "NORは論理和の否定で、両方0のときだけ1",
+        "hint": "NORはいつ1になりますか？",
+        "level": "A"
+      },
+      {
+        "id": "cost",
+        "title": "1種類の素子で作れるため回路製造上有利",
+        "hint": "なぜNANDがよく使われますか？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "combinational-circuit",
+    "name": "組合せ回路",
+    "aliases": [
+      "論理回路",
+      "多数決回路",
+      "タイムチャート"
+    ],
+    "reading": "Combinational circuit",
+    "category": "基礎理論",
+    "definition": "出力がその時点の入力だけで決まる論理回路です。過去の状態を記憶する順序回路（フリップフロップなど）と区別します。真理値表やタイムチャートから回路を求められます。",
+    "example": "3入力のうち2つ以上が1なら1を出す多数決回路は AB + BC + CA で作れます。",
+    "related": [
+      "logic-operation",
+      "nand"
+    ],
+    "criteria": [
+      {
+        "id": "input-only",
+        "title": "出力が現在の入力だけで決まる",
+        "hint": "出力は何で決まりますか？"
+      },
+      {
+        "id": "vs-seq",
+        "title": "記憶を持つ順序回路と区別する",
+        "hint": "フリップフロップとの違いは？"
+      },
+      {
+        "id": "majority",
+        "title": "多数決回路は AB+BC+CA（2入力ずつの論理積の論理和）",
+        "hint": "3入力の多数決回路の式は？",
+        "level": "A"
+      },
+      {
+        "id": "timechart",
+        "title": "タイムチャートの各時点の入出力から真理値表を作って回路を判定する",
+        "hint": "タイムチャートからどう回路を選びますか？",
+        "level": "A"
+      },
+      {
+        "id": "adder",
+        "title": "半加算器は和をXOR、桁上がりをANDで作る",
+        "hint": "加算回路の構成は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "parity",
+    "name": "パリティチェック",
+    "aliases": [
+      "パリティビット",
+      "水平垂直パリティ"
+    ],
+    "reading": "Parity check",
+    "category": "基礎理論",
+    "definition": "データに1のビットの数が偶数（または奇数）になるようパリティビットを付けて誤りを検出する方法です。1ビットの誤りは検出できますが訂正はできません。水平垂直パリティでは行と列のパリティから誤りの位置を特定して1ビットを訂正できます。",
+    "example": "1011001の1の数は4なので、偶数パリティならパリティビットは0です。",
+    "related": [
+      "hamming-code"
+    ],
+    "criteria": [
+      {
+        "id": "bit",
+        "title": "1の個数を偶数（奇数）にそろえるパリティビットを付ける",
+        "hint": "パリティビットはどう決めますか？"
+      },
+      {
+        "id": "detect",
+        "title": "単純なパリティは1ビット誤りの検出のみで訂正はできない",
+        "hint": "パリティで訂正できますか？"
+      },
+      {
+        "id": "2d",
+        "title": "水平垂直パリティは行と列の交点で誤り位置を特定し1ビットを訂正できる",
+        "hint": "行と列の両方に付けると何ができますか？",
+        "level": "A"
+      },
+      {
+        "id": "even-errors",
+        "title": "2ビット同時の誤りは単純なパリティでは検出できない",
+        "hint": "誤りが2ビットあるとどうなりますか？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "rendering",
+    "name": "レンダリング",
+    "aliases": [
+      "コンピュータグラフィックス",
+      "ラジオシティ法",
+      "レイトレーシング",
+      "テクスチャマッピング",
+      "メタボール",
+      "隠面消去"
+    ],
+    "reading": "Rendering",
+    "category": "マルチメディア",
+    "definition": "3次元のモデルなどのデータから、表示用の画像を生成する処理です。光線を追跡するレイトレーシング、面同士の光の相互反射を計算するラジオシティ法、表面に画像を貼るテクスチャマッピング、見えない面を消す隠面消去などの技法があります。",
+    "example": "ゲームではテクスチャマッピングで壁に模様を貼り、レイトレーシングで映り込みを表現します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "generate",
+        "title": "3次元などのデータから表示用の画像を生成する",
+        "hint": "何から何を作る処理ですか？"
+      },
+      {
+        "id": "raytrace",
+        "title": "レイトレーシングは視点から光線を追跡して反射・屈折を表現する",
+        "hint": "光の経路をたどる技法は？"
+      },
+      {
+        "id": "radiosity",
+        "title": "ラジオシティ法は面どうしの光の相互反射（拡散光）を計算する",
+        "hint": "間接光をよく表すのは？"
+      },
+      {
+        "id": "texture",
+        "title": "テクスチャマッピングは表面に画像を貼り付けて質感を出す",
+        "hint": "模様を貼る技法は？",
+        "level": "A"
+      },
+      {
+        "id": "hidden",
+        "title": "隠面消去は視点から見えない面を描かない処理（Zバッファ法など）",
+        "hint": "見えない面の扱いは？",
+        "level": "A"
+      },
+      {
+        "id": "metaball",
+        "title": "メタボールは球の集まりで滑らかな曲面の物体を表す",
+        "hint": "液体のような形を表す手法は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "virtual-reality",
+    "name": "バーチャルリアリティ",
+    "reading": "Virtual reality (VR)",
+    "category": "マルチメディア",
+    "definition": "コンピュータが作った仮想空間を、あたかも現実のように体験させる技術です。頭の動きに合わせて映像をすぐ描き直す（低遅延のレンダリング）ことが没入感と酔いの防止に重要です。",
+    "example": "ヘッドマウントディスプレイで、頭を右に向けると右側の景色が表示されます。",
+    "related": [
+      "rendering"
+    ],
+    "criteria": [
+      {
+        "id": "immerse",
+        "title": "仮想空間を現実のように体験させる",
+        "hint": "何を体験させますか？"
+      },
+      {
+        "id": "tracking",
+        "title": "利用者の動きに合わせて映像を即座に描き直す",
+        "hint": "頭を動かすと何が起きますか？"
+      },
+      {
+        "id": "ar",
+        "title": "ARは現実の映像に情報を重ねる点がVRと違う",
+        "hint": "AR（拡張現実）との違いは？",
+        "level": "A"
+      },
+      {
+        "id": "latency",
+        "title": "描画の遅延が大きいとVR酔いの原因になる",
+        "hint": "遅延が大きいと何が問題ですか？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "svg",
+    "name": "SVG",
+    "aliases": [
+      "ベクター形式",
+      "W3C",
+      "ラスタ形式",
+      "PNG",
+      "TIFF"
+    ],
+    "reading": "Scalable Vector Graphics",
+    "category": "マルチメディア",
+    "definition": "W3Cが標準化した、XMLで記述するベクター形式の画像フォーマットです。図形を座標と命令で表すため、拡大しても画質が劣化しません。点（ピクセル）の集まりで表すラスタ形式（PNG・TIFFなど）と対になります。",
+    "example": "ロゴやアイコンをSVGで作ると、スマートフォンでも大画面でもくっきり表示されます。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "vector",
+        "title": "図形を座標と命令で表すベクター形式",
+        "hint": "画像をどう表現しますか？"
+      },
+      {
+        "id": "xml",
+        "title": "XMLで記述され、W3Cが標準化した",
+        "hint": "何の言語で書かれますか？"
+      },
+      {
+        "id": "scale",
+        "title": "拡大しても画質が劣化しない",
+        "hint": "拡大するとどうなりますか？"
+      },
+      {
+        "id": "raster",
+        "title": "PNG・TIFF・JPEGは画素の集まりで表すラスタ形式",
+        "hint": "対になる形式とその例は？",
+        "level": "A"
+      },
+      {
+        "id": "script",
+        "title": "テキストなのでスクリプトを埋め込め、アップロードを許すとXSSの原因になり得る",
+        "hint": "セキュリティ上の注意点は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": [
+      "SVGをラスタ形式とする誤りがあります。"
+    ]
+  },
+  {
+    "id": "xml",
+    "name": "XML",
+    "reading": "Extensible Markup Language",
+    "category": "マルチメディア",
+    "definition": "タグを利用者が定義できるマークアップ言語です。データの構造を表すのに使われ、SVGやXMLデジタル署名、各種設定ファイルの基盤になっています。",
+    "example": "<order><item>ペン</item></order> のように、意味を持つタグでデータを表します。",
+    "related": [
+      "xml-signature",
+      "svg"
+    ],
+    "criteria": [
+      {
+        "id": "tag",
+        "title": "タグを自由に定義してデータの構造を表す",
+        "hint": "HTMLとの違いは？"
+      },
+      {
+        "id": "structured",
+        "title": "データ交換用の構造化テキストとして使われる",
+        "hint": "何に使われますか？"
+      },
+      {
+        "id": "parse",
+        "title": "DOMやSAXで解析する",
+        "hint": "XMLを読み込む方式は？",
+        "level": "A"
+      },
+      {
+        "id": "xxe",
+        "title": "外部実体参照を許すと XXE 攻撃でファイルを読まれる",
+        "hint": "XML特有の脆弱性は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "dom-sax",
+    "name": "DOMとSAX",
+    "aliases": [
+      "DOM",
+      "SAX"
+    ],
+    "reading": "DOM / SAX",
+    "category": "マルチメディア",
+    "definition": "XMLやHTMLを扱う方式です。DOMは文書全体を木構造としてメモリに読み込んで自由に参照・変更でき、SAXは先頭から順に読みながらイベントとして処理するためメモリ消費が少なくなります。",
+    "example": "巨大なログXMLを1回読むだけならSAX、Webページの要素を書き換えるならDOMを使います。",
+    "related": [
+      "xml"
+    ],
+    "criteria": [
+      {
+        "id": "dom",
+        "title": "DOMは文書全体を木構造として読み込み、任意に参照・変更できる",
+        "hint": "DOMの読み方は？"
+      },
+      {
+        "id": "sax",
+        "title": "SAXは順に読みながらイベントで処理し、メモリ消費が少ない",
+        "hint": "SAXの読み方は？"
+      },
+      {
+        "id": "ajax",
+        "title": "Ajaxでは取得したデータでDOMを書き換えて画面を部分更新する",
+        "hint": "Webで画面を部分更新するには？",
+        "level": "A"
+      },
+      {
+        "id": "random",
+        "title": "SAXは前に戻って参照できない",
+        "hint": "SAXでできないことは？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "outline-font",
+    "name": "アウトラインフォント",
+    "aliases": [
+      "ビットマップフォント"
+    ],
+    "reading": "Outline font",
+    "category": "マルチメディア",
+    "definition": "文字の形を輪郭線（座標と曲線）で表すフォントです。拡大・縮小しても滑らかに表示できます。点の集まりで表すビットマップフォントは、拡大するとギザギザになります。",
+    "example": "同じフォントで見出しを72ポイントにしても、アウトラインフォントなら輪郭が滑らかです。",
+    "related": [
+      "svg"
+    ],
+    "criteria": [
+      {
+        "id": "outline",
+        "title": "文字の輪郭を座標と曲線で表す",
+        "hint": "文字の形をどう持ちますか？"
+      },
+      {
+        "id": "scale",
+        "title": "拡大しても滑らか",
+        "hint": "拡大するとどうなりますか？"
+      },
+      {
+        "id": "bitmap",
+        "title": "ビットマップフォントは点の集まりで、拡大するとギザギザになる",
+        "hint": "対になるフォントは？",
+        "level": "A"
+      },
+      {
+        "id": "hinting",
+        "title": "小さいサイズでは画素に合わせて補正（ヒンティング）する",
+        "hint": "小さく表示するときの工夫は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "bandwidth",
+    "name": "帯域幅",
+    "aliases": [
+      "フレーム",
+      "ピクセル"
+    ],
+    "reading": "Bandwidth",
+    "category": "ネットワーク",
+    "definition": "回線が単位時間に送れるデータ量（ビット/秒）です。動画配信では「1フレームのデータ量×1秒当たりのフレーム数」で必要な帯域幅を見積もります。",
+    "example": "1フレーム1Mビットを30フレーム/秒で送るには、30Mビット/秒が必要です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "rate",
+        "title": "単位時間に送れるデータ量（bps）",
+        "hint": "単位は何ですか？"
+      },
+      {
+        "id": "calc",
+        "title": "1フレームのデータ量×フレーム数/秒で必要量を求める",
+        "hint": "動画の必要帯域はどう計算しますか？"
+      },
+      {
+        "id": "compress",
+        "title": "圧縮率や伝送効率を考慮して実際の必要量を求める",
+        "hint": "圧縮されているときは？",
+        "level": "A"
+      },
+      {
+        "id": "pixel",
+        "title": "1フレームのデータ量は画素数×1画素のビット数",
+        "hint": "1フレームのデータ量は？",
+        "level": "A"
+      },
+      {
+        "id": "unit",
+        "title": "バイトとビット（×8）、k・Mの換算を誤らない",
+        "hint": "単位換算で注意することは？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "risc-cisc",
+    "name": "RISCとCISC",
+    "aliases": [
+      "RISC",
+      "CISC",
+      "命令セット"
+    ],
+    "reading": "RISC / CISC",
+    "category": "コンピュータ構成",
+    "definition": "CPUの命令セットの設計方針です。RISCは単純で長さのそろった命令を少数持ち、パイプラインで高速に実行します。CISCは複雑で多機能な命令を多く持ち、1命令で多くの処理をします。",
+    "example": "スマートフォンのARMはRISC、従来のx86はCISCの代表です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "risc",
+        "title": "RISCは単純・固定長の命令を少数持ち、1クロックで実行しやすい",
+        "hint": "RISCの命令の特徴は？"
+      },
+      {
+        "id": "cisc",
+        "title": "CISCは複雑で可変長の命令を多く持つ",
+        "hint": "CISCの命令の特徴は？"
+      },
+      {
+        "id": "pipeline",
+        "title": "RISCは命令がそろっているためパイプライン処理に向く",
+        "hint": "RISCが高速化しやすい理由は？",
+        "level": "A"
+      },
+      {
+        "id": "wired",
+        "title": "RISCはワイヤードロジック、CISCはマイクロプログラムで制御することが多い",
+        "hint": "制御方式の違いは？",
+        "level": "A"
+      },
+      {
+        "id": "modern",
+        "title": "現在のx86は内部でCISC命令をRISC的な命令に分解して実行する",
+        "hint": "今のCPUはどちらか一方ですか？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "vliw",
+    "name": "VLIW",
+    "reading": "Very Long Instruction Word",
+    "category": "コンピュータ構成",
+    "definition": "同時に実行できる複数の命令を、コンパイル時に1つの長い命令語にまとめておき、CPUがそれを並列に実行する方式です。並列化をハードウェアではなくコンパイラが行う点が特徴です。",
+    "example": "加算・乗算・ロードを1つの長い命令に詰め、3つの演算器で同時に実行します。",
+    "related": [
+      "risc-cisc"
+    ],
+    "criteria": [
+      {
+        "id": "pack",
+        "title": "複数の命令を1つの長い命令語にまとめる",
+        "hint": "命令をどうまとめますか？"
+      },
+      {
+        "id": "compiler",
+        "title": "並列に実行できる命令の組合せをコンパイラが決める",
+        "hint": "並列化を決めるのは誰ですか？"
+      },
+      {
+        "id": "vs-superscalar",
+        "title": "スーパースカラは実行時にハードウェアが並列化を判断する点が違う",
+        "hint": "スーパースカラとの違いは？",
+        "level": "A"
+      },
+      {
+        "id": "nop",
+        "title": "並列にできない部分はNOPで埋まり、命令の無駄が出る",
+        "hint": "VLIWの弱点は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": [
+      "実行時にCPUが命令を並べ替える方式（アウトオブオーダー実行）と混同する誤りがあります。"
+    ]
+  },
+  {
+    "id": "flynn",
+    "name": "フリンの分類",
+    "aliases": [
+      "MIMD",
+      "SIMD"
+    ],
+    "reading": "Flynn's taxonomy",
+    "category": "コンピュータ構成",
+    "definition": "命令の流れ（I）とデータの流れ（D）がそれぞれ単一（S）か複数（M）かで並列処理を分類したものです。SISD、SIMD、MISD、MIMDの4種類があります。",
+    "example": "GPUのように1つの命令で多数のデータを処理するのはSIMD、マルチコアCPUが別々の命令を実行するのはMIMDです。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "axes",
+        "title": "命令の流れとデータの流れが単一か複数かで分類する",
+        "hint": "何と何で分類しますか？"
+      },
+      {
+        "id": "simd",
+        "title": "SIMDは1つの命令で複数のデータを同時に処理する",
+        "hint": "画像処理に向くのは？"
+      },
+      {
+        "id": "mimd",
+        "title": "MIMDは複数の命令を複数のデータに対して並列に実行する（マルチプロセッサ）",
+        "hint": "マルチコアはどれに当たりますか？"
+      },
+      {
+        "id": "sisd",
+        "title": "SISDは従来の逐次処理のコンピュータ",
+        "hint": "並列でない普通の方式は？",
+        "level": "A"
+      },
+      {
+        "id": "misd",
+        "title": "MISDは実用例がほとんどない",
+        "hint": "あまり使われない分類は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "capacity-planning",
+    "name": "キャパシティプランニング",
+    "aliases": [
+      "ボトルネック",
+      "チューニング",
+      "リソース"
+    ],
+    "reading": "Capacity planning",
+    "category": "システム構成",
+    "definition": "将来の業務量を予測し、それを処理するために必要なCPU・メモリ・ディスク・回線などのリソースを計画することです。現状の性能を測ってボトルネックを見つけ、増強やチューニングの時期と規模を決めます。",
+    "example": "来年の注文が1.5倍になる予測から、CPU使用率が上限を超える時期を見積もり、サーバを増やします。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "forecast",
+        "title": "将来の業務量を予測して必要なリソースを見積もる",
+        "hint": "何をもとに計画しますか？"
+      },
+      {
+        "id": "bottleneck",
+        "title": "性能を制約しているボトルネックを特定する",
+        "hint": "まず何を見つけますか？"
+      },
+      {
+        "id": "steps",
+        "title": "現状把握→予測→構成の決定→監視と見直しの流れで進める",
+        "hint": "計画の手順は？",
+        "level": "A"
+      },
+      {
+        "id": "tuning",
+        "title": "増強の前に設定やプログラムのチューニングで改善できることもある",
+        "hint": "機器を増やす以外の手は？",
+        "level": "A"
+      },
+      {
+        "id": "margin",
+        "title": "ピーク時の負荷と余裕率を考慮する",
+        "hint": "平均値だけで計画してよいですか？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "throughput",
+    "name": "スループットと応答時間",
+    "aliases": [
+      "スループット",
+      "応答時間"
+    ],
+    "reading": "Throughput / response time",
+    "category": "システム構成",
+    "definition": "スループットは単位時間に処理できる仕事の量、応答時間は要求を出してから最初の応答が返るまでの時間です。どちらもシステムの性能を表す代表的な指標です。",
+    "example": "1秒に500件の注文を処理できればスループットは500件/秒、1件の画面表示に0.3秒かかれば応答時間は0.3秒です。",
+    "related": [
+      "capacity-planning"
+    ],
+    "criteria": [
+      {
+        "id": "throughput",
+        "title": "スループットは単位時間当たりの処理量",
+        "hint": "どれだけ「多く」処理できるかの指標は？"
+      },
+      {
+        "id": "response",
+        "title": "応答時間は要求から応答開始までの時間",
+        "hint": "どれだけ「早く」返るかの指標は？"
+      },
+      {
+        "id": "turnaround",
+        "title": "ターンアラウンドタイムはジョブを出してから結果をすべて受け取るまでの時間",
+        "hint": "バッチ処理で使う時間の指標は？",
+        "level": "A"
+      },
+      {
+        "id": "tradeoff",
+        "title": "多重度を上げるとスループットは上がっても応答時間は悪化し得る",
+        "hint": "両者は常に両立しますか？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "cache-memory",
+    "name": "キャッシュメモリ",
+    "aliases": [
+      "キャッシュ",
+      "主記憶",
+      "ヒット率",
+      "実効メモリアクセス時間"
+    ],
+    "reading": "Cache memory",
+    "category": "コンピュータ構成",
+    "definition": "CPUと主記憶の速度差を埋めるために置く、小容量で高速なメモリです。必要なデータがキャッシュにある割合をヒット率といい、実効メモリアクセス時間は「キャッシュの時間×ヒット率＋主記憶の時間×(1−ヒット率)」で求めます。",
+    "example": "キャッシュ10ns、主記憶60ns、ヒット率90%なら、実効アクセス時間は10×0.9＋60×0.1＝15nsです。",
+    "related": [
+      "lru"
+    ],
+    "criteria": [
+      {
+        "id": "gap",
+        "title": "CPUと主記憶の速度差を埋める高速・小容量のメモリ",
+        "hint": "何のために置きますか？"
+      },
+      {
+        "id": "hit",
+        "title": "ヒット率はデータがキャッシュにある割合",
+        "hint": "ヒット率とは？"
+      },
+      {
+        "id": "effective",
+        "title": "実効アクセス時間＝キャッシュ×ヒット率＋主記憶×(1−ヒット率)",
+        "hint": "平均のアクセス時間はどう求めますか？"
+      },
+      {
+        "id": "write",
+        "title": "書込み方式にはライトスルーとライトバックがある",
+        "hint": "主記憶への書込み方式は？",
+        "level": "A"
+      },
+      {
+        "id": "locality",
+        "title": "参照の局所性があるためキャッシュが効く",
+        "hint": "なぜ小容量でも効果がありますか？",
+        "level": "A"
+      },
+      {
+        "id": "side-channel",
+        "title": "キャッシュのヒット・ミスの時間差がサイドチャネル攻撃に悪用される",
+        "hint": "セキュリティとの関係は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "embedded-system",
+    "name": "組込みシステム",
+    "reading": "Embedded system",
+    "category": "システム構成",
+    "definition": "家電・自動車・産業機器などに組み込まれ、特定の機能を実現するコンピュータシステムです。限られた資源で、決められた時間内に確実に応答するリアルタイム性が求められます。",
+    "example": "炊飯器のマイコンが温度センサーの値を読み、ヒーターを制御します。",
+    "related": [
+      "rtos"
+    ],
+    "criteria": [
+      {
+        "id": "dedicated",
+        "title": "機器に組み込まれ特定の機能を実現する",
+        "hint": "汎用PCとの違いは？"
+      },
+      {
+        "id": "realtime",
+        "title": "決められた時間内に応答するリアルタイム性が求められる",
+        "hint": "どんな性能が求められますか？"
+      },
+      {
+        "id": "resource",
+        "title": "メモリや電力など限られた資源で動作する",
+        "hint": "どんな制約がありますか？",
+        "level": "A"
+      },
+      {
+        "id": "update",
+        "title": "出荷後の更新が難しく、脆弱性が長く残りやすい",
+        "hint": "セキュリティ上の課題は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "chattering",
+    "name": "チャタリング",
+    "reading": "Chattering",
+    "category": "システム構成",
+    "definition": "機械式スイッチを押したり離したりした直後に、接点が細かく振動して信号がON/OFFを短時間に繰り返す現象です。一定時間待ってから状態を読み直す（ソフトウェアでの待ち、またはハードウェアの回路）ことで対策します。",
+    "example": "ボタンを1回押しただけなのに、カウンタが3回増えてしまう原因になります。",
+    "related": [
+      "embedded-system"
+    ],
+    "criteria": [
+      {
+        "id": "bounce",
+        "title": "スイッチの接点が振動しON/OFFが短時間に繰り返される",
+        "hint": "押した直後に信号はどうなりますか？"
+      },
+      {
+        "id": "measure",
+        "title": "一定時間待って状態を再確認するなどで除去する",
+        "hint": "どう対策しますか？"
+      },
+      {
+        "id": "edge",
+        "title": "立上がりを検出するには前回の値が0で今回が1であることを確認する",
+        "hint": "押された瞬間はどう検出しますか？",
+        "level": "A"
+      },
+      {
+        "id": "hardware",
+        "title": "コンデンサやシュミットトリガ回路でハードウェア的にも除去できる",
+        "hint": "回路での対策は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "cpi",
+    "name": "CPI",
+    "aliases": [
+      "クロック周期",
+      "動作周波数",
+      "IPC"
+    ],
+    "reading": "Cycles Per Instruction",
+    "category": "コンピュータ構成",
+    "definition": "1命令の実行に平均何クロックかかるかを表す値です。処理時間は「命令数×CPI×クロック周期」、クロック周期は動作周波数の逆数です。逆数のIPCは1クロックに実行できる命令数です。",
+    "example": "2GHz（周期0.5ns）でCPI=4なら、1命令に2ns、1秒に5億命令を実行します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "def",
+        "title": "1命令当たりの平均クロック数",
+        "hint": "CPIは何を表しますか？"
+      },
+      {
+        "id": "time",
+        "title": "処理時間＝命令数×CPI×クロック周期",
+        "hint": "処理時間はどう求めますか？"
+      },
+      {
+        "id": "period",
+        "title": "クロック周期は動作周波数の逆数",
+        "hint": "2GHzのクロック周期は？"
+      },
+      {
+        "id": "average",
+        "title": "命令の種類ごとのCPIを出現率で加重平均して平均CPIを求める",
+        "hint": "命令ごとに違うときは？",
+        "level": "A"
+      },
+      {
+        "id": "mips",
+        "title": "MIPS＝動作周波数÷CPI÷10⁶",
+        "hint": "MIPS値との関係は？",
+        "level": "A"
+      },
+      {
+        "id": "ipc",
+        "title": "IPCはCPIの逆数で、1クロック当たりの命令数",
+        "hint": "IPCとは？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": [
+      "EVMのCPI（コスト効率指数）と同じ略語なので文脈で区別します。"
+    ]
+  },
+  {
+    "id": "mtbf-mttr",
+    "name": "MTBFとMTTR",
+    "aliases": [
+      "MTBF",
+      "MTTR"
+    ],
+    "reading": "MTBF / MTTR",
+    "category": "システム構成",
+    "definition": "MTBFは故障してから次に故障するまでの平均稼働時間、MTTRは故障から修理完了までの平均時間です。稼働率は MTBF ÷（MTBF＋MTTR）で求めます。",
+    "example": "MTBFが990時間、MTTRが10時間なら、稼働率は990÷1000＝0.99です。",
+    "related": [
+      "availability"
+    ],
+    "criteria": [
+      {
+        "id": "mtbf",
+        "title": "MTBFは平均故障間隔（平均して何時間動き続けるか）",
+        "hint": "MTBFは何の平均ですか？"
+      },
+      {
+        "id": "mttr",
+        "title": "MTTRは平均修理時間",
+        "hint": "MTTRは何の平均ですか？"
+      },
+      {
+        "id": "availability",
+        "title": "稼働率＝MTBF÷(MTBF＋MTTR)",
+        "hint": "稼働率はどう求めますか？"
+      },
+      {
+        "id": "improve",
+        "title": "MTBFを延ばす（信頼性）かMTTRを縮める（保守性）と稼働率が上がる",
+        "hint": "稼働率を上げる方法は？",
+        "level": "A"
+      },
+      {
+        "id": "rate",
+        "title": "故障率はMTBFの逆数",
+        "hint": "故障率とMTBFの関係は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": [
+      "稼働率をMTTR÷MTBFとするなど式を取り違える誤りがあります。"
+    ]
+  },
+  {
+    "id": "virtual-memory",
+    "name": "仮想記憶",
+    "aliases": [
+      "ページ置換え",
+      "ページイン",
+      "ページング方式",
+      "セグメンテーション方式"
+    ],
+    "reading": "Virtual memory",
+    "category": "ソフトウェア",
+    "definition": "主記憶より大きなアドレス空間を、補助記憶を使って仮想的に提供する仕組みです。ページング方式では固定長のページ単位で、セグメンテーション方式では可変長の論理的なまとまり単位で管理し、必要なページを主記憶に読み込み（ページイン）、足りなければページ置換えで追い出します。",
+    "example": "8GBのメモリしかないPCでも、使っていないページをディスクに退避して大きなプログラムを動かせます。",
+    "related": [
+      "lru",
+      "fifo"
+    ],
+    "criteria": [
+      {
+        "id": "larger",
+        "title": "補助記憶を使い主記憶より大きなアドレス空間を提供する",
+        "hint": "何を実現する仕組みですか？"
+      },
+      {
+        "id": "paging",
+        "title": "ページング方式は固定長のページ単位で管理する",
+        "hint": "ページング方式の単位は？"
+      },
+      {
+        "id": "replace",
+        "title": "主記憶が足りないとページ置換えで追い出し、必要なページをページインする",
+        "hint": "空きがないときは？"
+      },
+      {
+        "id": "segment",
+        "title": "セグメンテーション方式は可変長の論理的な単位で、外部断片化が起きやすい",
+        "hint": "ページング方式との違いは？",
+        "level": "A"
+      },
+      {
+        "id": "pagefault",
+        "title": "主記憶にないページを参照するとページフォールトが起きる",
+        "hint": "ないページを参照すると？",
+        "level": "A"
+      },
+      {
+        "id": "thrashing",
+        "title": "ページ置換えが頻発して処理が進まない状態をスラッシングという",
+        "hint": "置換えが多すぎるとどうなりますか？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "fragmentation",
+    "name": "断片化（フラグメンテーション）",
+    "aliases": [
+      "外部断片化",
+      "内部断片化"
+    ],
+    "reading": "Fragmentation",
+    "category": "ソフトウェア",
+    "definition": "メモリの割当てと解放を繰り返すうちに、使えない小さな空きができる現象です。空き領域が細切れになって大きな領域を確保できない外部断片化と、割り当てた領域の内部に使われない余りが出る内部断片化があります。",
+    "example": "固定長4KBのページに1KBのデータを置くと3KBが無駄になる（内部断片化）。",
+    "related": [
+      "virtual-memory"
+    ],
+    "criteria": [
+      {
+        "id": "external",
+        "title": "外部断片化は空きが細切れになり合計は足りても連続領域を確保できない",
+        "hint": "空きの合計は足りているのに確保できないのは？"
+      },
+      {
+        "id": "internal",
+        "title": "内部断片化は割り当てた固定長領域の中に未使用部分が残る",
+        "hint": "割当て単位の中の無駄は？"
+      },
+      {
+        "id": "paging",
+        "title": "ページングは外部断片化が起きないが内部断片化が起き得る",
+        "hint": "ページング方式の長所は？",
+        "level": "A"
+      },
+      {
+        "id": "compaction",
+        "title": "外部断片化はコンパクション（メモリの詰め直し）で解消する",
+        "hint": "外部断片化の解消法は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "iot",
+    "name": "IoT",
+    "aliases": [
+      "センサーノード",
+      "ゲートウェイ"
+    ],
+    "reading": "Internet of Things",
+    "category": "システム構成",
+    "definition": "センサーや機器など様々なモノをネットワークにつなぎ、データを収集・活用したり遠隔から制御したりする仕組みです。センサーノードのデータはゲートウェイを経由してクラウドなどに送られます。",
+    "example": "工場の機械の振動センサーのデータを集め、故障の予兆を検知します。",
+    "related": [
+      "edge-computing"
+    ],
+    "criteria": [
+      {
+        "id": "connect",
+        "title": "モノをネットワークにつないでデータを収集・活用する",
+        "hint": "何をネットワークにつなぎますか？"
+      },
+      {
+        "id": "gateway",
+        "title": "センサーノードのデータはゲートウェイで集約・変換して上位へ送る",
+        "hint": "センサーとクラウドの間に何を置きますか？"
+      },
+      {
+        "id": "constraint",
+        "title": "IoT機器は電力・計算能力が限られ、セキュリティ対策が難しい",
+        "hint": "IoT機器の課題は？",
+        "level": "A"
+      },
+      {
+        "id": "mirai",
+        "title": "初期パスワードのままの機器がボットネットに悪用された（Mirai）",
+        "hint": "実際に起きた被害は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "intermittent",
+    "name": "間欠動作",
+    "aliases": [
+      "平均電流"
+    ],
+    "reading": "Intermittent operation",
+    "category": "システム構成",
+    "definition": "機器を常に動かさず、必要なときだけ動作させて残りは休止（スリープ）させ、消費電力を抑える方法です。平均電流は「動作時の電流×動作時間の割合＋休止時の電流×休止時間の割合」で求めます。",
+    "example": "10秒ごとに1秒だけ20mAで動き、残り9秒は0.1mAなら、平均電流は2.09mAです。",
+    "related": [
+      "iot"
+    ],
+    "criteria": [
+      {
+        "id": "sleep",
+        "title": "必要なときだけ動作し、他は休止して電力を抑える",
+        "hint": "どうやって省電力にしますか？"
+      },
+      {
+        "id": "average",
+        "title": "平均電流は動作と休止の電流を時間の割合で加重平均する",
+        "hint": "平均電流はどう求めますか？"
+      },
+      {
+        "id": "battery",
+        "title": "電池の寿命は容量÷平均電流で見積もる",
+        "hint": "電池が何時間もつか求めるには？",
+        "level": "A"
+      },
+      {
+        "id": "wakeup",
+        "title": "起動直後の突入電流や起動時間も考慮する",
+        "hint": "実際の設計で注意することは？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "poe",
+    "name": "PoE",
+    "aliases": [
+      "無線LAN"
+    ],
+    "reading": "Power over Ethernet",
+    "category": "ネットワーク",
+    "definition": "LANケーブルを通じて、データと一緒に電力を供給する技術です。無線LANのアクセスポイントやネットワークカメラなど、電源を取りにくい場所の機器に使います。",
+    "example": "天井の無線LANアクセスポイントに、PoE対応スイッチからLANケーブル1本で給電します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "power",
+        "title": "LANケーブルでデータと同時に電力を供給する",
+        "hint": "何を一緒に送りますか？"
+      },
+      {
+        "id": "use",
+        "title": "電源工事が難しい場所の無線LANアクセスポイントやカメラに使う",
+        "hint": "どんな機器に使いますか？"
+      },
+      {
+        "id": "budget",
+        "title": "スイッチ全体で供給できる電力の上限に注意する",
+        "hint": "多数の機器をつなぐときの注意は？",
+        "level": "A"
+      },
+      {
+        "id": "standard",
+        "title": "IEEE 802.3af/at/btで供給電力が異なる",
+        "hint": "規格による違いは？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": [
+      "電力線で通信するPLCと混同する誤りがあります。"
+    ]
+  },
+  {
+    "id": "plc",
+    "name": "PLC",
+    "reading": "PLC",
+    "category": "システム構成",
+    "definition": "二つの意味がある略語です。工場などでは機械を制御するプログラマブルロジックコントローラ（Programmable Logic Controller）、ネットワークでは電力線を通信路に使う電力線通信（Power Line Communication）を指します。",
+    "example": "生産ラインのベルトコンベアの動きはPLCが制御し、MESはその上位で作業指示を出します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "controller",
+        "title": "制御用のPLCは機械や設備をシーケンス制御する装置",
+        "hint": "工場でのPLCの役割は？"
+      },
+      {
+        "id": "powerline",
+        "title": "通信のPLCは電力線を使ってデータを送る",
+        "hint": "ネットワークでのPLCは？"
+      },
+      {
+        "id": "layer",
+        "title": "製造業の階層では、PLCは制御層、MESは実行層、ERPは計画層に位置づく",
+        "hint": "製造システムの階層での位置は？",
+        "level": "A"
+      },
+      {
+        "id": "ot",
+        "title": "制御システム（OT）のPLCを狙う攻撃（Stuxnetなど）がある",
+        "hint": "制御システムのセキュリティは？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "ups",
+    "name": "UPS",
+    "reading": "Uninterruptible Power Supply",
+    "category": "システム構成",
+    "definition": "停電や瞬断のときに、内蔵バッテリーから一定時間電力を供給する無停電電源装置です。その間にシステムを安全に停止したり、自家発電に切り替えたりします。",
+    "example": "停電時、UPSが10分間給電している間にサーバを正常にシャットダウンします。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "battery",
+        "title": "停電時にバッテリーから一定時間給電する",
+        "hint": "停電時に何をしますか？"
+      },
+      {
+        "id": "shutdown",
+        "title": "その間に安全な停止や発電機への切替えを行う",
+        "hint": "給電中に何をしますか？"
+      },
+      {
+        "id": "surge",
+        "title": "瞬断や電圧変動からも機器を守る",
+        "hint": "停電以外に防げるものは？",
+        "level": "A"
+      },
+      {
+        "id": "capacity",
+        "title": "接続機器の消費電力と必要時間から容量を決める",
+        "hint": "UPSの容量はどう決めますか？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "cluster",
+    "name": "クラスタ構成",
+    "aliases": [
+      "コールドスタンバイ",
+      "セッション"
+    ],
+    "reading": "Cluster",
+    "category": "システム構成",
+    "definition": "複数のサーバを連携させて1つのシステムとして動かし、可用性や処理能力を高める構成です。待機系の状態により、ホットスタンバイ（すぐ切替え）、ウォームスタンバイ、コールドスタンバイ（停止状態から起動）に分かれます。",
+    "example": "2台のWebサーバでセッション情報を共有しておけば、1台が止まっても利用者は再ログインせずに続けられます。",
+    "related": [
+      "fault-tolerance"
+    ],
+    "criteria": [
+      {
+        "id": "multiple",
+        "title": "複数のサーバを1つのシステムとして運用する",
+        "hint": "クラスタとは？"
+      },
+      {
+        "id": "standby",
+        "title": "コールドスタンバイは待機系を停止状態で用意し、切替えに時間がかかる",
+        "hint": "待機系が止まっている方式は？"
+      },
+      {
+        "id": "session",
+        "title": "切替え後も処理を続けるには、セッション情報を共有する必要がある",
+        "hint": "利用者のログイン状態を保つには？",
+        "level": "A"
+      },
+      {
+        "id": "loadbalance",
+        "title": "負荷分散型は全サーバで処理を分担する",
+        "hint": "現用・待機以外の方式は？",
+        "level": "A"
+      },
+      {
+        "id": "split-brain",
+        "title": "両系が自分を現用と判断するスプリットブレインに注意する",
+        "hint": "両方が動いてしまう問題は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "compiler",
+    "name": "コンパイラ",
+    "aliases": [
+      "コンパイル",
+      "字句解析",
+      "構文解析",
+      "意味解析",
+      "最適化",
+      "コード生成"
+    ],
+    "reading": "Compiler",
+    "category": "ソフトウェア",
+    "definition": "高水準言語のプログラムを機械語などの目的プログラムに一括して翻訳するソフトウェアです。字句解析→構文解析→意味解析→最適化→コード生成の順に処理します。",
+    "example": "C言語のソースをコンパイルして実行ファイルを作り、その後は翻訳なしで実行します。",
+    "related": [
+      "ide"
+    ],
+    "criteria": [
+      {
+        "id": "translate",
+        "title": "ソースプログラムを一括して目的プログラムに翻訳する",
+        "hint": "何をするソフトウェアですか？"
+      },
+      {
+        "id": "order",
+        "title": "字句解析→構文解析→意味解析→最適化→コード生成の順に処理する",
+        "hint": "処理の順序は？"
+      },
+      {
+        "id": "phases",
+        "title": "字句解析は単語に分け、構文解析は文法に従って構文木を作る",
+        "hint": "字句解析と構文解析の違いは？",
+        "level": "A"
+      },
+      {
+        "id": "interpreter",
+        "title": "インタプリタは1文ずつ解釈しながら実行する",
+        "hint": "インタプリタとの違いは？",
+        "level": "A"
+      },
+      {
+        "id": "optimize",
+        "title": "最適化では実行速度やサイズを改善するようコードを変換する",
+        "hint": "最適化で何をしますか？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "ide",
+    "name": "統合開発環境（IDE）",
+    "aliases": [
+      "リンカ",
+      "デバッガ"
+    ],
+    "reading": "Integrated Development Environment",
+    "category": "開発技術",
+    "definition": "エディタ、コンパイラ、リンカ、デバッガなどの開発ツールを1つの画面にまとめたソフトウェアです。編集から実行・デバッグまでを同じ環境で行えます。",
+    "example": "IDEでソースを書き、ボタン一つでビルドし、ブレークポイントで止めて変数を確認します。",
+    "related": [
+      "compiler"
+    ],
+    "criteria": [
+      {
+        "id": "integrate",
+        "title": "エディタ・コンパイラ・デバッガなどを統合した環境",
+        "hint": "何をまとめていますか？"
+      },
+      {
+        "id": "flow",
+        "title": "編集・ビルド・実行・デバッグを1つの環境で行える",
+        "hint": "IDEで何ができますか？"
+      },
+      {
+        "id": "linker",
+        "title": "リンカは複数の目的プログラムやライブラリを結合して実行可能にする",
+        "hint": "リンカの役割は？",
+        "level": "A"
+      },
+      {
+        "id": "debugger",
+        "title": "デバッガはプログラムを止めて変数を調べ不具合を探す",
+        "hint": "デバッガの役割は？",
+        "level": "A"
+      },
+      {
+        "id": "plugin",
+        "title": "拡張機能（プラグイン）経由の悪性コードにも注意する",
+        "hint": "IDEのセキュリティ上の注意は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "actuator",
+    "name": "アクチュエーター",
+    "aliases": [
+      "センサー"
+    ],
+    "reading": "Actuator",
+    "category": "システム構成",
+    "definition": "コンピュータからの電気信号を、回転・移動などの物理的な動きに変換する装置です。モーターや電磁弁が代表です。逆に、温度や光など物理量を電気信号に変えるのがセンサーです。",
+    "example": "エアコンは温度センサーで室温を測り、アクチュエーターのファンや弁を動かして調整します。",
+    "related": [
+      "feedback-control"
+    ],
+    "criteria": [
+      {
+        "id": "motion",
+        "title": "電気信号を物理的な動きに変える",
+        "hint": "何を何に変えますか？"
+      },
+      {
+        "id": "sensor",
+        "title": "センサーは物理量を電気信号に変える（逆方向）",
+        "hint": "センサーとの違いは？"
+      },
+      {
+        "id": "example",
+        "title": "モーター、電磁弁、油圧シリンダなどがある",
+        "hint": "代表例は？",
+        "level": "A"
+      },
+      {
+        "id": "loop",
+        "title": "センサー→制御→アクチュエーターでフィードバック制御を構成する",
+        "hint": "三つの関係は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "feedback-control",
+    "name": "フィードバック制御",
+    "reading": "Feedback control",
+    "category": "システム構成",
+    "definition": "制御した結果をセンサーで測って目標値と比べ、その差をなくすように操作量を調整し続ける制御方式です。外乱があっても目標に近づけられます。",
+    "example": "エアコンが室温を測り、設定温度より高ければ冷房を強めます。",
+    "related": [
+      "actuator"
+    ],
+    "criteria": [
+      {
+        "id": "compare",
+        "title": "結果を測って目標値と比較する",
+        "hint": "何と何を比べますか？"
+      },
+      {
+        "id": "correct",
+        "title": "差（偏差）をなくすよう操作量を調整する",
+        "hint": "差があればどうしますか？"
+      },
+      {
+        "id": "feedforward",
+        "title": "フィードフォワード制御は外乱を予測して前もって操作する",
+        "hint": "結果を見ずに制御する方式は？",
+        "level": "A"
+      },
+      {
+        "id": "pid",
+        "title": "比例・積分・微分を組み合わせたPID制御が代表的",
+        "hint": "代表的な制御則は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "fail-safe",
+    "name": "フェールセーフとフェールソフト",
+    "aliases": [
+      "フェールセーフ",
+      "フェールソフト",
+      "フールプルーフ"
+    ],
+    "reading": "Fail-safe / fail-soft",
+    "category": "システム構成",
+    "definition": "どちらも故障時の考え方です。フェールセーフは故障したら安全側に倒れるようにし、フェールソフトは故障した部分を切り離して機能を縮小しながら動作を続けます。",
+    "example": "故障した信号機を赤点滅にするのはフェールセーフ、エンジンが1基止まっても残りで飛ぶ航空機はフェールソフトです。",
+    "related": [
+      "fault-tolerance"
+    ],
+    "criteria": [
+      {
+        "id": "safe",
+        "title": "フェールセーフは故障時に安全な状態に移行させる",
+        "hint": "故障したらどちらに倒しますか？"
+      },
+      {
+        "id": "soft",
+        "title": "フェールソフトは機能を縮小しても稼働を続ける",
+        "hint": "止めずに続けるのは？"
+      },
+      {
+        "id": "foolproof",
+        "title": "フールプルーフは人の誤操作を防ぐ（誤っても危険にならない）設計",
+        "hint": "人の操作ミスへの対策は？",
+        "level": "A"
+      },
+      {
+        "id": "avoid",
+        "title": "フォールトアボイダンスは故障そのものを起こさないよう高品質部品などを使う",
+        "hint": "故障を起こさない考え方は？",
+        "level": "A"
+      },
+      {
+        "id": "fail-secure",
+        "title": "セキュリティでは故障時に閉じる（拒否する）フェールセキュアが重視される",
+        "hint": "セキュリティ機器が故障したら通すべきですか？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": [
+      "フェールセーフとフェールソフトを取り違える誤りがあります。"
+    ]
+  },
+  {
+    "id": "pipeline",
+    "name": "パイプライン",
+    "aliases": [
+      "分岐予測",
+      "投機実行",
+      "遅延分岐"
+    ],
+    "reading": "Pipeline",
+    "category": "コンピュータ構成",
+    "definition": "命令の実行を取出し・解読・実行などの段階に分け、複数の命令を少しずつずらして並行に処理する方式です。分岐命令などで流れが乱れる（ハザード）と効率が落ちるため、分岐予測や投機実行、遅延分岐で対処します。",
+    "example": "5段のパイプラインでは、理想的には毎クロック1命令ずつ完了します。",
+    "related": [
+      "risc-cisc"
+    ],
+    "criteria": [
+      {
+        "id": "stage",
+        "title": "命令の処理を段階に分け、ずらして並行に実行する",
+        "hint": "どうやって高速化しますか？"
+      },
+      {
+        "id": "hazard",
+        "title": "分岐やデータの依存で流れが乱れる（ハザード）",
+        "hint": "何で効率が落ちますか？"
+      },
+      {
+        "id": "speculative",
+        "title": "分岐予測で先の命令を投機実行し、外れたら結果を捨てる",
+        "hint": "分岐の結果を待たずに進めるには？",
+        "level": "A"
+      },
+      {
+        "id": "delay",
+        "title": "遅延分岐は分岐命令の直後に必ず実行される命令を置く",
+        "hint": "コンパイラ側での対策は？",
+        "level": "A"
+      },
+      {
+        "id": "spectre",
+        "title": "投機実行の痕跡がキャッシュに残る点を突く攻撃（Spectre）がある",
+        "hint": "投機実行に関する脆弱性は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "out-of-order",
+    "name": "アウトオブオーダー実行",
+    "aliases": [
+      "レジスタリネーミング"
+    ],
+    "reading": "Out-of-order execution",
+    "category": "コンピュータ構成",
+    "definition": "命令をプログラムの順序どおりではなく、実行できるものから順に実行してCPUの演算器を有効に使う方式です。レジスタリネーミングで見かけ上の依存をなくし、結果はプログラムの順序で確定させます。",
+    "example": "メモリ読込みを待っている命令を後回しにして、後ろの独立した加算命令を先に実行します。",
+    "related": [
+      "pipeline"
+    ],
+    "criteria": [
+      {
+        "id": "reorder",
+        "title": "実行可能な命令から順序を入れ替えて実行する",
+        "hint": "命令の順序はどう扱われますか？"
+      },
+      {
+        "id": "commit",
+        "title": "結果はプログラム順に確定させ、正しさを保つ",
+        "hint": "結果の反映順序は？"
+      },
+      {
+        "id": "renaming",
+        "title": "レジスタリネーミングで同じレジスタ名の使い回しによる依存を解消する",
+        "hint": "レジスタの見かけ上の依存はどう解消しますか？",
+        "level": "A"
+      },
+      {
+        "id": "meltdown",
+        "title": "実行順序の入替えを悪用した攻撃（Meltdown）がある",
+        "hint": "関連する脆弱性は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "scaling",
+    "name": "スケールアウトとスケールアップ",
+    "aliases": [
+      "スケールイン",
+      "スケールアウト",
+      "スケールアップ",
+      "スケールダウン"
+    ],
+    "reading": "Scale out / scale up",
+    "category": "システム構成",
+    "definition": "処理能力を変える方法です。スケールアウトはサーバの台数を増やし、スケールアップはCPUやメモリなど1台の性能を上げます。逆に台数を減らすのがスケールイン、性能を下げるのがスケールダウンです。",
+    "example": "アクセスが集中する日だけWebサーバを4台から8台に増やすのはスケールアウト、終わったら4台に戻すのはスケールインです。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "out",
+        "title": "スケールアウトは台数を増やし、スケールインは減らす",
+        "hint": "台数を変えるのはどちら？"
+      },
+      {
+        "id": "up",
+        "title": "スケールアップは1台の性能を上げ、スケールダウンは下げる",
+        "hint": "1台の性能を変えるのは？"
+      },
+      {
+        "id": "fit",
+        "title": "スケールアウトは並列処理しやすいWebサーバ向き、更新の多いDBはスケールアップ向き",
+        "hint": "どちらが向くかはどう決まりますか？",
+        "level": "A"
+      },
+      {
+        "id": "auto",
+        "title": "クラウドでは負荷に応じて自動でスケールアウト・インできる（オートスケール）",
+        "hint": "クラウドでの利点は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "grid-computing",
+    "name": "グリッドコンピューティング",
+    "reading": "Grid computing",
+    "category": "システム構成",
+    "definition": "ネットワーク上の多数のコンピュータの計算資源を結び付け、1つの大きな計算機のように使って大規模な計算を行う方式です。",
+    "example": "世界中のPCの空き時間を使って、たんぱく質の構造解析を分担して計算します。",
+    "related": [
+      "edge-computing"
+    ],
+    "criteria": [
+      {
+        "id": "pool",
+        "title": "ネットワーク上の多数のコンピュータの資源を束ねる",
+        "hint": "何を結び付けますか？"
+      },
+      {
+        "id": "large",
+        "title": "大規模な計算を分担して処理する",
+        "hint": "何に使いますか？"
+      },
+      {
+        "id": "vs-edge",
+        "title": "エッジコンピューティングは利用者の近くで処理して遅延を減らす点が違う",
+        "hint": "エッジコンピューティングとの違いは？",
+        "level": "A"
+      },
+      {
+        "id": "heterogeneous",
+        "title": "性能や所有者の異なる機器を組み合わせる点がクラスタと違う",
+        "hint": "クラスタとの違いは？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "energy-harvesting",
+    "name": "エネルギーハーベスティング",
+    "reading": "Energy harvesting",
+    "category": "システム構成",
+    "definition": "周囲の光・振動・熱・電波などのわずかなエネルギーを集めて電力に変える技術です。電池交換や配線が難しいIoTのセンサーなどの電源に使います。",
+    "example": "橋に付けたセンサーが、車の通行による振動で発電して計測データを送ります。",
+    "related": [
+      "iot",
+      "intermittent"
+    ],
+    "criteria": [
+      {
+        "id": "ambient",
+        "title": "周囲の光・振動・熱などから微小な電力を得る",
+        "hint": "何から電力を得ますか？"
+      },
+      {
+        "id": "iot",
+        "title": "電池交換が難しいIoT機器の電源に使う",
+        "hint": "どんな機器に向きますか？"
+      },
+      {
+        "id": "lowpower",
+        "title": "得られる電力は小さいため、間欠動作などの低消費電力設計と組み合わせる",
+        "hint": "電力が小さい点はどう補いますか？",
+        "level": "A"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "wearable",
+    "name": "ウェアラブルデバイス",
+    "reading": "Wearable device",
+    "category": "システム構成",
+    "definition": "腕時計や眼鏡のように身に着けて使うコンピュータ機器です。心拍や歩数などを常時計測し、スマートフォンやクラウドと連携します。",
+    "example": "スマートウォッチが睡眠中の心拍を記録し、アプリで睡眠の質を表示します。",
+    "related": [
+      "iot"
+    ],
+    "criteria": [
+      {
+        "id": "wear",
+        "title": "身に着けて使う機器",
+        "hint": "どう使う機器ですか？"
+      },
+      {
+        "id": "sense",
+        "title": "体の情報を継続的に計測して連携する",
+        "hint": "何を計測しますか？"
+      },
+      {
+        "id": "privacy",
+        "title": "健康情報など機微な個人情報を扱うため保護が重要",
+        "hint": "注意すべき情報は？",
+        "level": "A"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "provisioning",
+    "name": "プロビジョニング",
+    "aliases": [
+      "サーバプロビジョニングツール"
+    ],
+    "reading": "Provisioning",
+    "category": "システム構成",
+    "definition": "利用者や業務の需要に応じて、サーバ・ネットワーク・アカウントなどの資源を準備し、すぐ使える状態に設定することです。サーバプロビジョニングツールを使うと、OSやソフトウェアの設定を自動で行えます。",
+    "example": "クラウドで新しい開発環境を申請すると、数分でサーバとアカウントが用意されます。",
+    "related": [
+      "iac"
+    ],
+    "criteria": [
+      {
+        "id": "prepare",
+        "title": "需要に応じて資源を準備し使える状態にする",
+        "hint": "何をすることですか？"
+      },
+      {
+        "id": "auto",
+        "title": "ツールで設定を自動化し、手作業の誤りや時間を減らす",
+        "hint": "ツールを使う利点は？"
+      },
+      {
+        "id": "account",
+        "title": "アカウントのプロビジョニングでは入社・異動・退職に合わせて権限を付与・削除する",
+        "hint": "IDの管理では？",
+        "level": "A"
+      },
+      {
+        "id": "deprovision",
+        "title": "不要になった資源・権限の削除（デプロビジョニング）も重要",
+        "hint": "終わったときに必要なことは？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "iac",
+    "name": "IaC",
+    "aliases": [
+      "インフラ"
+    ],
+    "reading": "Infrastructure as Code",
+    "category": "システム構成",
+    "definition": "サーバやネットワークなどのインフラの構成をコードとして記述し、そのコードから自動で構築・変更する手法です。手作業による設定のばらつきを防ぎ、同じ環境を何度でも再現できます。",
+    "example": "構成ファイルを実行するだけで、本番と同じ構成の検証環境を作ります。",
+    "related": [
+      "provisioning",
+      "ci"
+    ],
+    "criteria": [
+      {
+        "id": "code",
+        "title": "インフラの構成をコードで記述する",
+        "hint": "構成をどう管理しますか？"
+      },
+      {
+        "id": "reproduce",
+        "title": "同じ環境を自動で何度でも再現でき、手作業の誤りを減らす",
+        "hint": "利点は？"
+      },
+      {
+        "id": "vcs",
+        "title": "コードなのでバージョン管理やレビューができる",
+        "hint": "コード化で何ができるようになりますか？",
+        "level": "A"
+      },
+      {
+        "id": "secret",
+        "title": "コードに秘密情報を書かない、設定ミスを自動検査する",
+        "hint": "セキュリティ上の注意は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "alive-monitoring",
+    "name": "死活監視",
+    "reading": "Alive monitoring",
+    "category": "システム構成",
+    "definition": "サーバや機器、サービスが動いているかどうかを定期的に確認する監視です。pingの応答やポートへの接続、プロセスの有無などで判断し、停止を検知したら通知します。",
+    "example": "1分ごとにWebサーバへアクセスし、3回続けて応答がなければ担当者に通知します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "check",
+        "title": "対象が稼働しているかを定期的に確認する",
+        "hint": "何を確かめますか？"
+      },
+      {
+        "id": "notify",
+        "title": "停止を検知したら通知・対応する",
+        "hint": "停止を見つけたらどうしますか？"
+      },
+      {
+        "id": "method",
+        "title": "pingの応答、ポート接続、プロセスの確認など方法がある",
+        "hint": "どうやって確認しますか？",
+        "level": "A"
+      },
+      {
+        "id": "service",
+        "title": "ping応答があってもサービスが止まっていることがあるため、サービスレベルで監視する",
+        "hint": "pingだけで十分ですか？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "cloud-deployment",
+    "name": "クラウドの配置モデル",
+    "aliases": [
+      "オンプレミス",
+      "コミュニティクラウド"
+    ],
+    "reading": "Cloud deployment models",
+    "category": "システム構成",
+    "definition": "クラウドを誰が使うかによる分類です。不特定多数で共有するパブリッククラウド、1組織専用のプライベートクラウド、共通の目的を持つ複数の組織で共有するコミュニティクラウド、これらとオンプレミスを組み合わせるハイブリッドクラウドがあります。",
+    "example": "複数の自治体が共同で利用する行政システム基盤は、コミュニティクラウドの例です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "public",
+        "title": "パブリックは不特定多数、プライベートは1組織専用",
+        "hint": "利用者の範囲で分けると？"
+      },
+      {
+        "id": "community",
+        "title": "コミュニティクラウドは共通の目的を持つ複数の組織で共有する",
+        "hint": "複数組織で共有するのは？"
+      },
+      {
+        "id": "onprem",
+        "title": "オンプレミスは自社で設備を保有・運用する形態",
+        "hint": "クラウドの対義語は？",
+        "level": "A"
+      },
+      {
+        "id": "service",
+        "title": "配置モデルとは別に、IaaS・PaaS・SaaSというサービスモデルの分類がある",
+        "hint": "もう一つの分類軸は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "system-integration",
+    "name": "システムインテグレーション",
+    "reading": "System integration",
+    "category": "システム戦略",
+    "definition": "顧客の要望に合わせて、システムの企画・設計・開発・構築・運用までを一括して請け負うサービスです。請け負う事業者をSIerと呼びます。",
+    "example": "銀行の新しい勘定系システムを、ハードウェアの選定から運用まで一括で請け負います。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "total",
+        "title": "企画から構築・運用までを一括して請け負う",
+        "hint": "何を提供しますか？"
+      },
+      {
+        "id": "combine",
+        "title": "複数のハードウェアやソフトウェアを組み合わせて1つのシステムにする",
+        "hint": "インテグレーションとは何を統合しますか？"
+      },
+      {
+        "id": "vs-outsourcing",
+        "title": "アウトソーシングは運用業務を外部に委託する点が違う",
+        "hint": "アウトソーシングとの違いは？",
+        "level": "A"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "rtos",
+    "name": "リアルタイムOS",
+    "aliases": [
+      "プリエンプティブ",
+      "優先度",
+      "周期タスク",
+      "スケジューリング"
+    ],
+    "reading": "Real-time OS",
+    "category": "ソフトウェア",
+    "definition": "処理を決められた時間内に確実に終えることを重視したOSです。優先度に基づくプリエンプティブなスケジューリングで、優先度の高いタスクが来たら実行中のタスクを中断して切り替えます。",
+    "example": "エアバッグ制御では、衝突の検知から数ミリ秒以内に展開の処理を必ず実行します。",
+    "related": [
+      "embedded-system"
+    ],
+    "criteria": [
+      {
+        "id": "deadline",
+        "title": "決められた時間内に処理を終えることを保証する",
+        "hint": "何を重視したOSですか？"
+      },
+      {
+        "id": "preemptive",
+        "title": "優先度の高いタスクが来ると実行中のタスクを中断して切り替える（プリエンプティブ）",
+        "hint": "高い優先度のタスクが来たら？"
+      },
+      {
+        "id": "periodic",
+        "title": "周期タスクは決まった周期で起動し、その周期内に終える必要がある",
+        "hint": "周期タスクのスケジューリングで確認することは？",
+        "level": "A"
+      },
+      {
+        "id": "inversion",
+        "title": "低い優先度のタスクが資源を持つと高い優先度のタスクが待たされる（優先度逆転）",
+        "hint": "優先度に関する有名な問題は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "ci",
+    "name": "継続的インテグレーション",
+    "reading": "Continuous Integration (CI)",
+    "category": "開発技術",
+    "definition": "開発者が変更したコードを頻繁に共有のリポジトリに統合し、そのたびに自動でビルドとテストを行う開発手法です。不具合を早く見つけ、統合時の手戻りを減らします。",
+    "example": "コードを登録するたびに自動テストが走り、失敗したらすぐ開発者に通知されます。",
+    "related": [
+      "iac"
+    ],
+    "criteria": [
+      {
+        "id": "frequent",
+        "title": "変更を頻繁に統合する",
+        "hint": "どのくらいの頻度で統合しますか？"
+      },
+      {
+        "id": "auto",
+        "title": "統合のたびに自動でビルド・テストする",
+        "hint": "統合時に何が自動で行われますか？"
+      },
+      {
+        "id": "cd",
+        "title": "継続的デリバリー（CD）はリリース可能な状態まで自動化する",
+        "hint": "CIの先の段階は？",
+        "level": "A"
+      },
+      {
+        "id": "supply",
+        "title": "パイプラインに脆弱性検査やSBOM生成を組み込む（DevSecOps）",
+        "hint": "セキュリティをどう組み込みますか？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "two-phase-commit",
+    "name": "2相コミット",
+    "reading": "Two-phase commit",
+    "category": "データベース",
+    "definition": "分散データベースで、複数のサイトにまたがるトランザクションを全体としてコミットするか、全体として取り消すかをそろえるための手順です。第1相で各サイトにコミット可能かを問い合わせ、全員が可能なら第2相でコミットを指示します。",
+    "example": "支店Aと支店Bの口座を同時に更新するとき、両方が準備完了と答えた場合だけ確定します。",
+    "related": [
+      "acid",
+      "base"
+    ],
+    "criteria": [
+      {
+        "id": "phase1",
+        "title": "第1相で調停者が各サイトにコミット可能か問い合わせる",
+        "hint": "最初に何を確認しますか？"
+      },
+      {
+        "id": "phase2",
+        "title": "全サイトが可能ならコミット、1つでも不可ならロールバックを指示する",
+        "hint": "結果がそろわないときは？"
+      },
+      {
+        "id": "acid",
+        "title": "分散環境でも原子性を守るための方式",
+        "hint": "ACIDのどの性質を守りますか？",
+        "level": "A"
+      },
+      {
+        "id": "block",
+        "title": "調停者が障害で止まると参加者が待ち続ける（ブロッキング）ことがある",
+        "hint": "2相コミットの弱点は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": [
+      "結果整合性を前提とするBASE特性の方式と混同する誤りがあります。"
+    ]
+  },
+  {
+    "id": "primary-key",
+    "name": "主キー",
+    "aliases": [
+      "候補キー",
+      "顧客ID"
+    ],
+    "reading": "Primary key",
+    "category": "データベース",
+    "definition": "表の中で行を一意に識別するために選んだ列（の組合せ）です。値の重複とNULLが許されません。行を一意に識別できる列の候補を候補キーといい、その中から1つを主キーに選びます。",
+    "example": "顧客表では、同姓同名がいても重ならない顧客IDを主キーにします。",
+    "related": [
+      "normalization"
+    ],
+    "criteria": [
+      {
+        "id": "unique",
+        "title": "行を一意に識別する",
+        "hint": "主キーの役割は？"
+      },
+      {
+        "id": "notnull",
+        "title": "重複もNULLも許されない",
+        "hint": "主キーに許されない値は？"
+      },
+      {
+        "id": "candidate",
+        "title": "候補キーは行を一意に識別できる最小の列の組で、その1つを主キーにする",
+        "hint": "候補キーとの関係は？",
+        "level": "A"
+      },
+      {
+        "id": "surrogate",
+        "title": "業務上の値の代わりに連番などの代理キーを使うことがある",
+        "hint": "意味のない番号を主キーにする理由は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "relational-database",
+    "name": "関係データベース",
+    "aliases": [
+      "属性",
+      "DBMS",
+      "データモデル"
+    ],
+    "reading": "Relational database",
+    "category": "データベース",
+    "definition": "データを行と列からなる表（関係）で表し、表どうしを共通の値で関連付けて扱うデータベースです。DBMSがSQLによる検索や更新、整合性の維持、同時実行の制御を行います。",
+    "example": "顧客表と注文表を顧客IDで結び付け、顧客ごとの注文一覧を取り出します。",
+    "related": [
+      "normalization",
+      "primary-key"
+    ],
+    "criteria": [
+      {
+        "id": "table",
+        "title": "データを行と列の表で表し、列を属性と呼ぶ",
+        "hint": "データをどんな形で表しますか？"
+      },
+      {
+        "id": "relate",
+        "title": "表どうしを共通の列の値で関連付ける",
+        "hint": "表どうしをどうつなぎますか？"
+      },
+      {
+        "id": "dbms",
+        "title": "DBMSがSQLによる操作や整合性・同時実行を管理する",
+        "hint": "DBMSの役割は？"
+      },
+      {
+        "id": "model",
+        "title": "E-R図やUMLのクラス図などのデータモデルで設計する",
+        "hint": "設計にどんな図を使いますか？",
+        "level": "A"
+      },
+      {
+        "id": "vs-nosql",
+        "title": "大規模分散では柔軟な構造のNoSQLが使われることもある",
+        "hint": "関係データベース以外の選択肢は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "view",
+    "name": "ビュー",
+    "reading": "View",
+    "category": "データベース",
+    "definition": "1つ以上の表から必要な行や列を取り出して定義した仮想的な表です。実体のデータは持たず、参照するたびに元の表から求めます。利用者に見せる範囲を限定するアクセス制御にも使えます。",
+    "example": "社員表から給与の列を除いたビューを作り、一般社員にはそのビューだけを参照させます。",
+    "related": [
+      "relational-database"
+    ],
+    "criteria": [
+      {
+        "id": "virtual",
+        "title": "元の表から定義した仮想的な表で、データの実体は持たない",
+        "hint": "ビューはデータを保存していますか？"
+      },
+      {
+        "id": "restrict",
+        "title": "見せる行や列を限定してアクセス制御に使える",
+        "hint": "セキュリティ上の使い道は？"
+      },
+      {
+        "id": "update",
+        "title": "結合や集計を含むビューは更新できないことがある",
+        "hint": "ビューはいつでも更新できますか？",
+        "level": "A"
+      },
+      {
+        "id": "materialized",
+        "title": "実体を持つマテリアライズドビューもある",
+        "hint": "結果を保存するビューは？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "relational-algebra",
+    "name": "関係演算",
+    "aliases": [
+      "結合",
+      "和両立",
+      "和集合",
+      "UNION",
+      "WHERE"
+    ],
+    "reading": "Relational algebra",
+    "category": "データベース",
+    "definition": "表に対する演算の体系です。行を選ぶ選択（WHERE）、列を選ぶ射影、表をつなぐ結合のほか、和・差・積の集合演算があります。和集合（UNION）をとるには、二つの表の列の数と型が対応している（和両立）必要があります。",
+    "example": "東京支店の顧客表と大阪支店の顧客表を UNION で1つの一覧にします。",
+    "related": [
+      "relational-database"
+    ],
+    "criteria": [
+      {
+        "id": "select",
+        "title": "選択は条件に合う行を取り出し（WHERE）、射影は列を取り出す",
+        "hint": "行を絞る演算と列を絞る演算は？"
+      },
+      {
+        "id": "join",
+        "title": "結合は共通の列で二つの表をつなぐ",
+        "hint": "二つの表をつなぐ演算は？"
+      },
+      {
+        "id": "union",
+        "title": "和集合（UNION）は二つの表の行を合わせ、重複を除く",
+        "hint": "UNIONの結果は？"
+      },
+      {
+        "id": "compatible",
+        "title": "和・差・積には列の数と型が対応する和両立が必要",
+        "hint": "UNIONできる条件は？",
+        "level": "A"
+      },
+      {
+        "id": "outer",
+        "title": "外部結合は相手に一致する行がなくても残す（NULLで埋める）",
+        "hint": "一致しない行も残す結合は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "functional-dependency",
+    "name": "関数従属性",
+    "aliases": [
+      "推移的関数従属",
+      "部分関数従属"
+    ],
+    "reading": "Functional dependency",
+    "category": "データベース",
+    "definition": "ある列Aの値が決まると列Bの値が1つに決まる関係（A→B）です。主キーの一部だけに従属する部分関数従属を除くと第2正規形、主キー以外の列を介して従属する推移的関数従属を除くと第3正規形になります。",
+    "example": "{受注番号, 商品番号}→数量 のとき、商品番号→商品名 は部分関数従属です。",
+    "related": [
+      "normalization"
+    ],
+    "criteria": [
+      {
+        "id": "def",
+        "title": "Aの値が決まればBの値が一意に決まる関係",
+        "hint": "A→Bとはどういう意味ですか？"
+      },
+      {
+        "id": "partial",
+        "title": "部分関数従属は主キーの一部に従属すること（除くと第2正規形）",
+        "hint": "第2正規形で除くのは？"
+      },
+      {
+        "id": "transitive",
+        "title": "推移的関数従属は非キー列を介して従属すること（除くと第3正規形）",
+        "hint": "第3正規形で除くのは？"
+      },
+      {
+        "id": "anomaly",
+        "title": "従属が残ると更新時異状（更新・挿入・削除の不整合）が起きる",
+        "hint": "正規化しないと何が困りますか？",
+        "level": "A"
+      },
+      {
+        "id": "bcnf",
+        "title": "すべての決定項が候補キーになるようにするとボイスコッド正規形",
+        "hint": "第3正規形の次は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "referential-constraint",
+    "name": "参照制約",
+    "aliases": [
+      "外部キー",
+      "CASCADE",
+      "RESTRICT",
+      "SET NULL"
+    ],
+    "reading": "Referential integrity constraint",
+    "category": "データベース",
+    "definition": "外部キーの値が、参照先の表の主キーに必ず存在するようにする制約です。参照先の行を削除・更新したときの動作として、CASCADE（連動して削除）、RESTRICT（拒否）、SET NULL（NULLにする）を指定できます。",
+    "example": "部署を削除すると、ON DELETE CASCADE なら所属する社員の行も削除されます。",
+    "related": [
+      "primary-key"
+    ],
+    "criteria": [
+      {
+        "id": "fk",
+        "title": "外部キーの値は参照先の主キーに存在しなければならない",
+        "hint": "外部キーに入れられる値は？"
+      },
+      {
+        "id": "cascade",
+        "title": "CASCADEは参照先の削除に連動して参照元も削除する",
+        "hint": "CASCADEの動作は？"
+      },
+      {
+        "id": "restrict",
+        "title": "RESTRICTは参照されている行の削除を拒否し、SET NULLは外部キーをNULLにする",
+        "hint": "他の指定の動作は？",
+        "level": "A"
+      },
+      {
+        "id": "insert",
+        "title": "参照元に存在しない値を挿入しようとしても拒否される",
+        "hint": "挿入時にも働きますか？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "stored-procedure",
+    "name": "ストアドプロシージャ",
+    "aliases": [
+      "実行計画",
+      "通信量"
+    ],
+    "reading": "Stored procedure",
+    "category": "データベース",
+    "definition": "一連のSQL処理をまとめてDBMSに登録しておき、名前を指定して呼び出す仕組みです。クライアントとサーバ間の通信量が減り、構文解析や実行計画の作成を事前に済ませられるため、処理が速くなります。",
+    "example": "「月末締め処理」を登録しておき、アプリからは1回の呼出しで数十のSQLを実行します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "stored",
+        "title": "一連のSQLをDBMSに登録して呼び出す",
+        "hint": "どこに処理を置きますか？"
+      },
+      {
+        "id": "traffic",
+        "title": "1回の呼出しで済み、通信量が減る",
+        "hint": "ネットワーク面の利点は？"
+      },
+      {
+        "id": "plan",
+        "title": "実行計画などを事前に作れるため処理が速い",
+        "hint": "性能面の利点は？",
+        "level": "A"
+      },
+      {
+        "id": "privilege",
+        "title": "表への直接の権限を与えず、プロシージャ経由に限定できる",
+        "hint": "セキュリティ面の利点は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "db-recovery",
+    "name": "障害回復（ロールバックとロールフォワード）",
+    "aliases": [
+      "ロールフォワード",
+      "ロールバック",
+      "チェックポイント",
+      "コミット",
+      "トランザクション"
+    ],
+    "reading": "Database recovery",
+    "category": "データベース",
+    "definition": "DBMSが障害後にデータを正しい状態に戻す仕組みです。トランザクション障害やシステム障害では、コミット済みの処理を更新後ログでやり直し（ロールフォワード）、未コミットの処理を更新前ログで取り消します（ロールバック）。チェックポイントから処理すれば回復時間を短縮できます。",
+    "example": "チェックポイントの後にコミットしたトランザクションはロールフォワード、障害時に未完了だったものはロールバックします。",
+    "related": [
+      "wal",
+      "acid"
+    ],
+    "criteria": [
+      {
+        "id": "rollforward",
+        "title": "コミット済みのトランザクションを更新後ログで再実行する（ロールフォワード）",
+        "hint": "確定済みの処理はどうしますか？"
+      },
+      {
+        "id": "rollback",
+        "title": "未コミットのトランザクションを更新前ログで取り消す（ロールバック）",
+        "hint": "未完了の処理はどうしますか？"
+      },
+      {
+        "id": "commit",
+        "title": "コミットでトランザクションの結果を確定する",
+        "hint": "コミットとは？"
+      },
+      {
+        "id": "checkpoint",
+        "title": "チェックポイントでバッファの内容をディスクに書き出し、回復の起点にする",
+        "hint": "回復時間を短くするには？",
+        "level": "A"
+      },
+      {
+        "id": "media",
+        "title": "媒体障害ではバックアップを戻してからロールフォワードする",
+        "hint": "ディスクが壊れたときは？",
+        "level": "A"
+      },
+      {
+        "id": "wal",
+        "title": "ログを先に書くログ先行書込みが回復の前提",
+        "hint": "なぜログで回復できるのですか？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "packet",
+    "name": "パケット",
+    "aliases": [
+      "ヘッダー",
+      "ビット",
+      "バイト"
+    ],
+    "reading": "Packet",
+    "category": "ネットワーク",
+    "definition": "ネットワークで送るデータを一定の大きさに分割し、宛先などの制御情報（ヘッダー）を付けたものです。送信時間はデータ量（ビット数）を回線速度で割って求め、1バイトは8ビットです。",
+    "example": "1,500バイトのパケットを100Mビット/秒で送ると、1,500×8÷10⁸＝120マイクロ秒かかります。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "split",
+        "title": "データを分割し、宛先などのヘッダーを付けて送る",
+        "hint": "パケットとは？"
+      },
+      {
+        "id": "time",
+        "title": "送信時間＝データ量（ビット）÷伝送速度",
+        "hint": "送るのにかかる時間は？"
+      },
+      {
+        "id": "overhead",
+        "title": "ヘッダーの分だけ実際に送るデータ量が増える",
+        "hint": "ヘッダーは送信時間に影響しますか？",
+        "level": "A"
+      },
+      {
+        "id": "unit",
+        "title": "1バイト＝8ビットで換算する",
+        "hint": "バイトとビットの関係は？",
+        "level": "A"
+      },
+      {
+        "id": "fragment",
+        "title": "経路のMTUを超えるとさらに分割（フラグメント化）される",
+        "hint": "大きすぎるパケットはどうなりますか？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "lan",
+    "name": "LAN",
+    "reading": "Local Area Network",
+    "category": "ネットワーク",
+    "definition": "建物やフロアなど限られた範囲のコンピュータを結ぶネットワークです。有線LANは主にイーサネット、無線LANはIEEE 802.11で構成し、広い範囲を結ぶWANと区別します。",
+    "example": "社内のPCとプリンタをスイッチにつなぎ、ファイルや印刷を共有します。",
+    "related": [
+      "ethernet"
+    ],
+    "criteria": [
+      {
+        "id": "range",
+        "title": "建物内など限られた範囲を結ぶ",
+        "hint": "どの範囲のネットワークですか？"
+      },
+      {
+        "id": "wan",
+        "title": "広域を結ぶWANと区別する",
+        "hint": "WANとの違いは？"
+      },
+      {
+        "id": "ethernet",
+        "title": "有線LANの代表はイーサネット",
+        "hint": "有線LANの代表的な規格は？",
+        "level": "A"
+      },
+      {
+        "id": "segment",
+        "title": "VLANで論理的に分割して影響範囲を限定する",
+        "hint": "セキュリティのための分割は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "web-server",
+    "name": "Webサーバ",
+    "reading": "Web server",
+    "category": "ネットワーク",
+    "definition": "HTTP（HTTPS）でブラウザからの要求を受け、HTMLや画像などのコンテンツを返すサーバです。前段にリバースプロキシや負荷分散装置を置くことがあります。",
+    "example": "ブラウザで社外向けサイトを開くと、Webサーバがトップページを返します。",
+    "related": [
+      "reverse-proxy"
+    ],
+    "criteria": [
+      {
+        "id": "http",
+        "title": "HTTPで要求を受けてコンテンツを返す",
+        "hint": "どんなプロトコルで通信しますか？"
+      },
+      {
+        "id": "dmz",
+        "title": "インターネットに公開するためDMZに置く",
+        "hint": "どのネットワークに置きますか？"
+      },
+      {
+        "id": "proxy",
+        "title": "前段にリバースプロキシを置き、負荷分散やWAFを行う",
+        "hint": "前に置く装置は？",
+        "level": "A"
+      },
+      {
+        "id": "banner",
+        "title": "サーバの種類やバージョン情報を返さないよう設定する",
+        "hint": "設定で気を付けることは？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "vpn",
+    "name": "VPN",
+    "aliases": [
+      "L2TP",
+      "トンネリング"
+    ],
+    "reading": "Virtual Private Network",
+    "category": "ネットワークセキュリティ",
+    "definition": "インターネットなどの共有の回線上に、暗号化や認証を使って仮想的な専用回線を作る技術です。元のパケットを別のパケットで包むトンネリングを使います。IPsecはネットワーク層、L2TPはデータリンク層のフレームを運び、SSL/TLSを使うものもあります。",
+    "example": "在宅勤務のPCからVPNで社内ネットワークにつなぎ、社内システムを使います。",
+    "related": [
+      "ipsec"
+    ],
+    "criteria": [
+      {
+        "id": "virtual",
+        "title": "共有の回線上に仮想的な専用回線を作る",
+        "hint": "VPNとは？"
+      },
+      {
+        "id": "tunnel",
+        "title": "パケットを別のパケットで包んで運ぶトンネリングを使う",
+        "hint": "どうやって専用線のようにしますか？"
+      },
+      {
+        "id": "crypto",
+        "title": "暗号化と認証で盗聴やなりすましを防ぐ",
+        "hint": "安全性はどう確保しますか？"
+      },
+      {
+        "id": "layer",
+        "title": "IPsecは第3層、L2TPは第2層のフレームを運ぶ（暗号化はIPsecと組み合わせる）",
+        "hint": "プロトコルごとの層は？",
+        "level": "A"
+      },
+      {
+        "id": "vuln",
+        "title": "VPN装置の脆弱性はランサムウェアの主な侵入口になっている",
+        "hint": "VPN装置で注意すべきことは？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "osi-model",
+    "name": "OSI基本参照モデル",
+    "aliases": [
+      "ネットワーク層"
+    ],
+    "reading": "OSI reference model",
+    "category": "ネットワーク",
+    "definition": "通信の機能を7つの層に分けたモデルです。下から物理層、データリンク層、ネットワーク層、トランスポート層、セション層、プレゼンテーション層、アプリケーション層です。",
+    "example": "IPはネットワーク層、TCPはトランスポート層、イーサネットはデータリンク層の規約です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "seven",
+        "title": "通信機能を7層に分ける",
+        "hint": "何層ありますか？"
+      },
+      {
+        "id": "layers",
+        "title": "下から物理・データリンク・ネットワーク・トランスポート・セション・プレゼンテーション・アプリケーション",
+        "hint": "各層の順序は？"
+      },
+      {
+        "id": "protocols",
+        "title": "IPは第3層、TCP/UDPは第4層、イーサネットは第2層",
+        "hint": "代表的なプロトコルはどの層ですか？",
+        "level": "A"
+      },
+      {
+        "id": "devices",
+        "title": "ルータは第3層、スイッチは第2層、リピータは第1層で中継する",
+        "hint": "中継装置と層の関係は？",
+        "level": "A"
+      },
+      {
+        "id": "tcpip",
+        "title": "実際のインターネットはTCP/IPの4階層モデルで説明されることが多い",
+        "hint": "実用のモデルは？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "ethernet",
+    "name": "イーサネット",
+    "aliases": [
+      "カプセル化"
+    ],
+    "reading": "Ethernet",
+    "category": "ネットワーク",
+    "definition": "有線LANの代表的な規格（IEEE 802.3）です。データをフレームという単位で送り、宛先はMACアドレスで指定します。上位のIPパケットはフレームの中にカプセル化されます。",
+    "example": "イーサネットフレームの中にIPパケット、その中にTCPセグメントが入っています。",
+    "related": [
+      "mac-address"
+    ],
+    "criteria": [
+      {
+        "id": "frame",
+        "title": "フレーム単位で送り、宛先はMACアドレスで指定する",
+        "hint": "宛先は何で指定しますか？"
+      },
+      {
+        "id": "encap",
+        "title": "上位層のデータはヘッダーを付けて下位層に包まれる（カプセル化）",
+        "hint": "IPパケットはどう運ばれますか？"
+      },
+      {
+        "id": "order",
+        "title": "フレームの中では宛先MAC→（IPヘッダーの）宛先IP→（TCPヘッダーの）宛先ポートの順に現れる",
+        "hint": "宛先情報はどの順に並びますか？",
+        "level": "A"
+      },
+      {
+        "id": "collision",
+        "title": "昔の共有型ではCSMA/CDで衝突を制御していた",
+        "hint": "共有型のアクセス制御は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "mac-address",
+    "name": "MACアドレス",
+    "aliases": [
+      "ARP",
+      "ARPキャッシュ"
+    ],
+    "reading": "MAC address",
+    "category": "ネットワーク",
+    "definition": "ネットワーク機器のインタフェースに割り当てる48ビットの物理アドレスです。同じLAN内での通信に使い、IPアドレスからMACアドレスを調べるのがARPです。調べた結果はARPキャッシュに保存され、arpコマンドで確認できます。",
+    "example": "PCは宛先IPに対応するMACアドレスをARPで問い合わせ、そのMACアドレス宛てにフレームを送ります。",
+    "related": [
+      "ethernet"
+    ],
+    "criteria": [
+      {
+        "id": "physical",
+        "title": "インタフェースごとの48ビットの物理アドレス",
+        "hint": "MACアドレスとは？"
+      },
+      {
+        "id": "arp",
+        "title": "ARPはIPアドレスからMACアドレスを求める",
+        "hint": "IPからMACを調べるプロトコルは？"
+      },
+      {
+        "id": "cache",
+        "title": "ARPの結果はARPキャッシュに保存され、arpコマンドで表示できる",
+        "hint": "調べた結果はどこに残りますか？",
+        "level": "A"
+      },
+      {
+        "id": "spoof",
+        "title": "偽のARP応答でキャッシュを書き換えるARPスプーフィングがある",
+        "hint": "ARPに対する攻撃は？",
+        "level": "S"
+      },
+      {
+        "id": "random",
+        "title": "MACアドレスは偽装できるため認証には使えない",
+        "hint": "MACアドレスで端末を認証してよいですか？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "ip-address",
+    "name": "IPアドレス",
+    "aliases": [
+      "グローバルIPアドレス"
+    ],
+    "reading": "IP address",
+    "category": "ネットワーク",
+    "definition": "ネットワーク層で通信相手を識別するアドレスです。IPv4は32ビットで、ネットワーク部とホスト部に分かれます。インターネットで一意なグローバルIPアドレスと、組織内で使うプライベートIPアドレスがあります。",
+    "example": "192.168.1.10 はプライベートIPアドレスで、インターネットへはNATでグローバルIPアドレスに変換して出ます。",
+    "related": [
+      "subnet-mask"
+    ],
+    "criteria": [
+      {
+        "id": "layer3",
+        "title": "ネットワーク層で通信相手を識別する",
+        "hint": "IPアドレスは何を識別しますか？"
+      },
+      {
+        "id": "parts",
+        "title": "ネットワーク部とホスト部からなる",
+        "hint": "IPアドレスの構成は？"
+      },
+      {
+        "id": "global",
+        "title": "グローバルIPアドレスはインターネットで一意、プライベートは組織内で使う",
+        "hint": "二つの種類の違いは？",
+        "level": "A"
+      },
+      {
+        "id": "ipv6",
+        "title": "IPv6は128ビットでアドレス枯渇を解消した",
+        "hint": "IPv6との違いは？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "subnet-mask",
+    "name": "サブネットマスク",
+    "aliases": [
+      "サブネットワーク",
+      "可変長サブネットマスク"
+    ],
+    "reading": "Subnet mask",
+    "category": "ネットワーク",
+    "definition": "IPアドレスのうち、どこまでがネットワーク（サブネットワーク）部かを示す値です。IPアドレスとの論理積をとるとサブネットワークのアドレスが求まります。サブネットごとに長さを変えるのが可変長サブネットマスクです。",
+    "example": "172.16.35.20 と 255.255.240.0 の論理積をとると、サブネットワークアドレスは 172.16.32.0 です。",
+    "related": [
+      "ip-address"
+    ],
+    "criteria": [
+      {
+        "id": "mask",
+        "title": "ネットワーク部を1、ホスト部を0で示す",
+        "hint": "サブネットマスクの意味は？"
+      },
+      {
+        "id": "and",
+        "title": "IPアドレスとの論理積でサブネットワークアドレスを求める",
+        "hint": "サブネットのアドレスはどう求めますか？"
+      },
+      {
+        "id": "hosts",
+        "title": "ホスト部がnビットなら使えるホスト数は2ⁿ−2",
+        "hint": "接続できる台数は？",
+        "level": "A"
+      },
+      {
+        "id": "vlsm",
+        "title": "可変長サブネットマスクでサブネットごとに大きさを変える",
+        "hint": "サブネットの大きさを変えるには？",
+        "level": "A"
+      },
+      {
+        "id": "cidr",
+        "title": "/20のようにプレフィックス長で表す（CIDR表記）",
+        "hint": "短く表す書き方は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "port-number",
+    "name": "ポート番号",
+    "aliases": [
+      "送信元ポート番号"
+    ],
+    "reading": "Port number",
+    "category": "ネットワーク",
+    "definition": "TCPやUDPで、同じコンピュータ上の通信相手のアプリケーションを識別する番号です。Webは80や443、メール送信は25や587のように、よく使うサービスには決まった番号があります。",
+    "example": "Webブラウザは宛先ポート443でHTTPSサーバにつなぎ、送信元ポートには空いている番号を使います。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "app",
+        "title": "同じホスト上のアプリケーション（サービス）を識別する",
+        "hint": "IPアドレスとの役割の違いは？"
+      },
+      {
+        "id": "wellknown",
+        "title": "よく使うサービスには決まった番号（ウェルノウンポート）がある",
+        "hint": "Web（HTTPS）は何番ですか？"
+      },
+      {
+        "id": "source",
+        "title": "送信元ポート番号はランダムに選ぶことで推測されにくくする（DNSキャッシュポイズニング対策など）",
+        "hint": "送信元ポートをランダムにする理由は？",
+        "level": "A"
+      },
+      {
+        "id": "scan",
+        "title": "ポートスキャンで開いているポートを調べられるため不要なポートを閉じる",
+        "hint": "攻撃者は何を調べますか？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "mobile-network",
+    "name": "ハンドオーバー",
+    "aliases": [
+      "基地局",
+      "ローミング",
+      "テザリング",
+      "フォールバック"
+    ],
+    "reading": "Handover",
+    "category": "ネットワーク",
+    "definition": "移動中の端末が、通信を続けたまま接続する基地局を切り替えることです。移動体通信にはほかに、契約外の事業者の網を使うローミング、スマートフォンを経由して他の機器をネットに接続するテザリング、新しい方式が使えないとき古い方式に切り替えるフォールバックなどがあります。",
+    "example": "電車で移動しながら通話していても、ハンドオーバーで途切れずに話し続けられます。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "switch",
+        "title": "通信を続けたまま接続する基地局を切り替える",
+        "hint": "ハンドオーバーとは？"
+      },
+      {
+        "id": "roaming",
+        "title": "ローミングは契約している事業者以外の網を使って通信する",
+        "hint": "海外で現地の網を使う仕組みは？"
+      },
+      {
+        "id": "tethering",
+        "title": "テザリングはスマートフォンを経由してPCなどをインターネットにつなぐ",
+        "hint": "PCをスマホ経由でつなぐのは？",
+        "level": "A"
+      },
+      {
+        "id": "fallback",
+        "title": "フォールバックは新しい方式が使えないとき古い方式に切り替えて通信を続ける",
+        "hint": "5Gが使えないときに4Gに切り替えるのは？",
+        "level": "A"
+      },
+      {
+        "id": "downgrade",
+        "title": "暗号の弱い方式に落とさせるダウングレード攻撃に注意する",
+        "hint": "フォールバックの危険は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "network-commands",
+    "name": "ネットワーク管理コマンド",
+    "aliases": [
+      "ping",
+      "ipconfig",
+      "netstat"
+    ],
+    "reading": "Network commands",
+    "category": "ネットワーク",
+    "definition": "通信の状態を調べるコマンドです。pingは相手に到達できるかをICMPで確認し、ipconfig（Windows）はIPアドレスなどの設定を表示し、netstatは通信の接続状態や待受けポートを表示し、arpはARPキャッシュを表示・変更します。",
+    "example": "つながらないとき、ipconfigで自分の設定、pingで相手への到達性、netstatで接続状態を順に確認します。",
+    "related": [
+      "mac-address"
+    ],
+    "criteria": [
+      {
+        "id": "ping",
+        "title": "pingはICMPで相手への到達性を確認する",
+        "hint": "相手に届くかを調べるのは？"
+      },
+      {
+        "id": "netstat",
+        "title": "netstatは接続状態や待受けポートを表示する",
+        "hint": "どの通信が張られているかを見るのは？"
+      },
+      {
+        "id": "ipconfig",
+        "title": "ipconfigは自分のIPアドレスなどを表示し、arpはARPキャッシュを表示する",
+        "hint": "自分の設定を見るのは？",
+        "level": "A"
+      },
+      {
+        "id": "traceroute",
+        "title": "tracert/tracerouteは経路上のルータを順に表示する",
+        "hint": "経路を調べるのは？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "csma-cd",
+    "name": "CSMA/CD",
+    "aliases": [
+      "トークンリング",
+      "トークンバス"
+    ],
+    "reading": "Carrier Sense Multiple Access with Collision Detection",
+    "category": "ネットワーク",
+    "definition": "共有型のイーサネットで使われたアクセス制御方式です。送信前に回線が空いているか確認し、送信中に衝突を検知したら、ランダムな時間待って再送します。トークンを持つ端末だけが送信するトークンリング・トークンバスとは方式が異なります。",
+    "example": "2台が同時に送信して衝突すると、それぞれ乱数で決めた時間待ってから再送します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "sense",
+        "title": "送信前に回線の使用状況を確認する",
+        "hint": "送信前に何をしますか？"
+      },
+      {
+        "id": "detect",
+        "title": "衝突を検知したらランダムな時間待って再送する",
+        "hint": "衝突したら？"
+      },
+      {
+        "id": "token",
+        "title": "トークン方式はトークンを持つ端末だけが送信するので衝突しない",
+        "hint": "トークンリングとの違いは？",
+        "level": "A"
+      },
+      {
+        "id": "switch",
+        "title": "全二重のスイッチ接続では衝突が起きずCSMA/CDは使われない",
+        "hint": "今のLANでは使われていますか？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": [
+      "無線LANの方式（CSMA/CA）と取り違える誤りがあります。"
+    ]
+  },
+  {
+    "id": "csma-ca",
+    "name": "CSMA/CA",
+    "reading": "Carrier Sense Multiple Access with Collision Avoidance",
+    "category": "ネットワーク",
+    "definition": "無線LANで使うアクセス制御方式です。無線では送信中に衝突を検知できないため、回線が空いても一定時間とランダムな時間待ってから送信して衝突を避け、受信側からのACKで届いたことを確認します。",
+    "example": "複数のスマートフォンが同じアクセスポイントに送るとき、それぞれ待ち時間をずらして送信します。",
+    "related": [
+      "csma-cd"
+    ],
+    "criteria": [
+      {
+        "id": "avoid",
+        "title": "空いていても待ち時間を置いて衝突を回避する",
+        "hint": "衝突をどう扱いますか？"
+      },
+      {
+        "id": "ack",
+        "title": "受信確認（ACK）で送達を確かめる",
+        "hint": "届いたかどうかはどう分かりますか？"
+      },
+      {
+        "id": "vs-cd",
+        "title": "無線では衝突を検知できないためCDではなくCAを使う",
+        "hint": "なぜCSMA/CDではないのですか？",
+        "level": "A"
+      },
+      {
+        "id": "rtscts",
+        "title": "RTS/CTSで隠れ端末問題を軽減する",
+        "hint": "見えない端末どうしの衝突対策は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "ipv6",
+    "name": "IPv6",
+    "reading": "Internet Protocol version 6",
+    "category": "ネットワーク",
+    "definition": "128ビットのアドレスを使うインターネットプロトコルです。IPv4のアドレス枯渇を解消し、ヘッダーを簡素化しました。IPsecの利用を前提に設計された点も特徴です。",
+    "example": "2001:db8::1 のように16ビットずつ16進数で表し、0の連続は::で省略します。",
+    "related": [
+      "ip-address",
+      "ipsec"
+    ],
+    "criteria": [
+      {
+        "id": "128",
+        "title": "アドレスが128ビットで枯渇問題を解消する",
+        "hint": "IPv4との最大の違いは？"
+      },
+      {
+        "id": "notation",
+        "title": "16ビットずつ16進数で区切り、0の連続は::で省略する",
+        "hint": "どう表記しますか？"
+      },
+      {
+        "id": "ipsec",
+        "title": "IPsecを標準で利用できるよう設計された",
+        "hint": "セキュリティ機能との関係は？",
+        "level": "A"
+      },
+      {
+        "id": "dual",
+        "title": "IPv4との併用（デュアルスタック）では両方のファイアウォール設定が必要",
+        "hint": "移行期の注意は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "ppp",
+    "name": "PPP",
+    "reading": "Point-to-Point Protocol",
+    "category": "ネットワーク",
+    "definition": "2点間を結んでデータを送るデータリンク層のプロトコルです。リンクの確立や認証（PAP・CHAP）、IPアドレスの割当てなどを行い、ダイヤルアップやPPPoEによるインターネット接続で使われました。",
+    "example": "PPPoEでは、イーサネットの上でPPPを使って利用者を認証し、接続します。",
+    "related": [
+      "osi-model"
+    ],
+    "criteria": [
+      {
+        "id": "p2p",
+        "title": "2点間をつなぐデータリンク層のプロトコル",
+        "hint": "どの層のプロトコルですか？"
+      },
+      {
+        "id": "auth",
+        "title": "PAPやCHAPで接続相手を認証できる",
+        "hint": "PPPにはどんな機能がありますか？"
+      },
+      {
+        "id": "chap",
+        "title": "CHAPはチャレンジレスポンスでパスワードを平文で送らない",
+        "hint": "PAPとの違いは？",
+        "level": "A"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "ssh",
+    "name": "SSH",
+    "reading": "Secure Shell",
+    "category": "ネットワークセキュリティ",
+    "definition": "ネットワーク越しにほかのコンピュータへ安全にログインし、コマンドを実行するためのプロトコルです。通信を暗号化し、サーバとの間で公開鍵認証などを行います。アプリケーション層で動作し、ポート22を使います。",
+    "example": "管理者は自分のPCからSSHでサーバに接続し、公開鍵認証でログインして設定を変更します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "remote",
+        "title": "暗号化された通信で遠隔ログインやコマンド実行を行う",
+        "hint": "何のためのプロトコルですか？"
+      },
+      {
+        "id": "auth",
+        "title": "パスワードのほか公開鍵認証が使える",
+        "hint": "どんな認証方式がありますか？"
+      },
+      {
+        "id": "telnet",
+        "title": "telnetは平文で通信するため置き換えられた",
+        "hint": "SSHが置き換えたものは？",
+        "level": "A"
+      },
+      {
+        "id": "hostkey",
+        "title": "初回接続時にサーバの鍵の指紋を確認して中間者攻撃を防ぐ",
+        "hint": "初回接続で確認することは？",
+        "level": "A"
+      },
+      {
+        "id": "forward",
+        "title": "ポートフォワーディングで他の通信を中継できる",
+        "hint": "SSHで他の通信を運ぶには？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": [
+      "SSHをネットワーク層で暗号化するプロトコルとする誤りがあります（それはIPsec）。"
+    ]
+  },
+  {
+    "id": "multicast",
+    "name": "マルチキャスト",
+    "aliases": [
+      "ブロードキャスト",
+      "ユニキャスト"
+    ],
+    "reading": "Multicast",
+    "category": "ネットワーク",
+    "definition": "特定のグループに属する複数の宛先に、1回の送信でデータを届ける通信です。1対1はユニキャスト、ネットワーク内の全員に送るのはブロードキャストです。RIP-2やOSPFは経路情報の交換にマルチキャストを使います。",
+    "example": "社内の会議映像を、視聴を申し込んだPCのグループにだけマルチキャストで配信します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "group",
+        "title": "特定のグループの複数宛先に1回の送信で届ける",
+        "hint": "誰に届けますか？"
+      },
+      {
+        "id": "compare",
+        "title": "ユニキャストは1対1、ブロードキャストは全員宛て",
+        "hint": "他の方式との違いは？"
+      },
+      {
+        "id": "routing",
+        "title": "RIP-2やOSPFはルーティング情報の交換にマルチキャストを使う",
+        "hint": "マルチキャストの使用例は？",
+        "level": "A"
+      },
+      {
+        "id": "address",
+        "title": "IPv4では224.0.0.0〜239.255.255.255（クラスD）を使う",
+        "hint": "マルチキャストのアドレス範囲は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "rip",
+    "name": "RIP",
+    "aliases": [
+      "RIP-2",
+      "ディスタンスベクタ型"
+    ],
+    "reading": "Routing Information Protocol",
+    "category": "ネットワーク",
+    "definition": "ホップ数（経由するルータの数）で経路を選ぶディスタンスベクタ型のルーティングプロトコルです。30秒ごとに経路表を隣接ルータに送ります。RIP-2では可変長サブネットマスクや認証、マルチキャストでの送信に対応しました。",
+    "example": "宛先までのルータが3台の経路と5台の経路があれば、3台の経路を選びます。",
+    "related": [
+      "ospf"
+    ],
+    "criteria": [
+      {
+        "id": "hop",
+        "title": "経路の評価にホップ数を使う",
+        "hint": "経路を何で選びますか？"
+      },
+      {
+        "id": "dv",
+        "title": "ディスタンスベクタ型で、隣接ルータと経路表を定期的に交換する",
+        "hint": "どのタイプのプロトコルですか？"
+      },
+      {
+        "id": "rip2",
+        "title": "RIP-2は可変長サブネットマスク、認証、マルチキャストに対応する",
+        "hint": "RIP-2で何が加わりましたか？",
+        "level": "A"
+      },
+      {
+        "id": "limit",
+        "title": "最大ホップ数は15で大規模網に向かない",
+        "hint": "RIPの制約は？",
+        "level": "A"
+      },
+      {
+        "id": "converge",
+        "title": "経路の変化が伝わるのに時間がかかる（収束が遅い）",
+        "hint": "ディスタンスベクタ型の弱点は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": [
+      "帯域などのコストで選び、トポロジ全体を把握するOSPF（リンクステート型）と混同する誤りがあります。"
+    ]
+  },
+  {
+    "id": "dhcp",
+    "name": "DHCP",
+    "reading": "Dynamic Host Configuration Protocol",
+    "category": "ネットワーク",
+    "definition": "ネットワークに接続した端末に、IPアドレスやデフォルトゲートウェイ、DNSサーバなどの設定を自動で配布するプロトコルです。端末は最初にブロードキャストでDHCPサーバを探します。",
+    "example": "社内LANにPCをつなぐと、DHCPサーバから自動でIPアドレスが割り当てられます。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "auto",
+        "title": "IPアドレスなどの設定を自動で配布する",
+        "hint": "何を自動化しますか？"
+      },
+      {
+        "id": "broadcast",
+        "title": "端末はブロードキャストでDHCPサーバを探す",
+        "hint": "最初はどうやってサーバを見つけますか？"
+      },
+      {
+        "id": "lease",
+        "title": "アドレスは期限付きで貸し出す（リース）",
+        "hint": "割り当ては永久ですか？",
+        "level": "A"
+      },
+      {
+        "id": "rogue",
+        "title": "偽のDHCPサーバで不正なゲートウェイやDNSを配られる攻撃がある",
+        "hint": "DHCPに関する攻撃は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "dns-records",
+    "name": "DNSのリソースレコード",
+    "aliases": [
+      "MXレコード",
+      "NSレコード",
+      "CNAMEレコード"
+    ],
+    "reading": "DNS resource records",
+    "category": "ネットワーク",
+    "definition": "DNSのゾーンに登録する情報の種類です。Aは名前に対応するIPv4アドレス、MXはそのドメインのメールサーバ、NSはゾーンを管理する権威DNSサーバ、CNAMEは別名、PTRはIPアドレスから名前を引く（逆引き）ための情報です。",
+    "example": "example.jp 宛てのメールは、MXレコードに書かれたメールサーバに届けられます。",
+    "related": [
+      "dns"
+    ],
+    "criteria": [
+      {
+        "id": "a",
+        "title": "AレコードはIPアドレス、MXはメールサーバ、NSは権威DNSサーバを示す",
+        "hint": "主なレコードの意味は？"
+      },
+      {
+        "id": "ptr",
+        "title": "PTRレコードはIPアドレスからホスト名を引く逆引きに使う",
+        "hint": "逆引きで使うレコードは？"
+      },
+      {
+        "id": "cname",
+        "title": "CNAMEは別名を正式な名前に対応づける",
+        "hint": "別名を付けるには？",
+        "level": "A"
+      },
+      {
+        "id": "txt",
+        "title": "TXTレコードにSPFやDMARCの設定を書く",
+        "hint": "送信ドメイン認証の設定はどこに書きますか？",
+        "level": "A"
+      },
+      {
+        "id": "dangling",
+        "title": "使わなくなったCNAMEの残骸はサブドメイン乗っ取りの原因になる",
+        "hint": "消し忘れたレコードの危険は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "http-status",
+    "name": "HTTPステータスコード",
+    "aliases": [
+      "HTTP",
+      "ステータスコード",
+      "リダイレクト",
+      "クライアントエラー",
+      "サーバエラー"
+    ],
+    "reading": "HTTP status codes",
+    "category": "Webセキュリティ",
+    "definition": "HTTPのレスポンスで、要求の処理結果を表す3桁の番号です。2xxは成功、3xxはリダイレクト（別のURLへ誘導）、4xxはクライアントエラー、5xxはサーバエラーを表します。",
+    "example": "存在しないページは404 Not Found、ログインが必要なページへは302で誘導、サーバ内部の異常は500になります。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "classes",
+        "title": "2xx成功、3xxリダイレクト、4xxクライアントエラー、5xxサーバエラー",
+        "hint": "百の位はそれぞれ何を表しますか？"
+      },
+      {
+        "id": "redirect",
+        "title": "3xxはLocationヘッダーで別のURLへ誘導する",
+        "hint": "リダイレクトの仕組みは？"
+      },
+      {
+        "id": "codes",
+        "title": "401は認証が必要、403はアクセス禁止、404は存在しない",
+        "hint": "401と403の違いは？",
+        "level": "A"
+      },
+      {
+        "id": "open-redirect",
+        "title": "任意のURLへ転送できるとオープンリダイレクトとしてフィッシングに悪用される",
+        "hint": "リダイレクトの危険は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "ajax",
+    "name": "Ajax",
+    "aliases": [
+      "非同期通信"
+    ],
+    "reading": "Asynchronous JavaScript and XML",
+    "category": "Webセキュリティ",
+    "definition": "ブラウザ上のJavaScriptが、ページ全体を読み直さずにサーバと非同期に通信し、受け取ったデータでDOMを書き換えて画面の一部を更新する技術です。",
+    "example": "地図をドラッグすると、ページを読み直さずに周辺の地図画像だけが読み込まれます。",
+    "related": [
+      "dom-sax"
+    ],
+    "criteria": [
+      {
+        "id": "async",
+        "title": "JavaScriptがサーバと非同期に通信する",
+        "hint": "どのように通信しますか？"
+      },
+      {
+        "id": "partial",
+        "title": "受け取ったデータで画面の一部だけを更新する",
+        "hint": "画面はどう変わりますか？"
+      },
+      {
+        "id": "dom",
+        "title": "取得したデータをDOM操作で反映する",
+        "hint": "画面の更新に使う仕組みは？",
+        "level": "A"
+      },
+      {
+        "id": "cors",
+        "title": "別のオリジンへの通信は同一オリジンポリシーとCORSで制限される",
+        "hint": "他のサイトのAPIを自由に呼べますか？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "css",
+    "name": "CSS",
+    "reading": "Cascading Style Sheets",
+    "category": "Webセキュリティ",
+    "definition": "HTMLで記述した文書の見た目（色・大きさ・配置など）を指定する言語です。文書の構造（HTML）と見た目（CSS）を分けて管理できます。",
+    "example": "h1 { color: navy; } と書くと、見出しがすべて紺色になります。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "style",
+        "title": "HTML文書の見た目を指定する",
+        "hint": "CSSの役割は？"
+      },
+      {
+        "id": "separate",
+        "title": "構造と見た目を分離して管理できる",
+        "hint": "HTMLとどう役割を分けますか？"
+      },
+      {
+        "id": "cascade",
+        "title": "複数の指定が重なるときは詳細度や順序で優先が決まる",
+        "hint": "指定が重なったら？",
+        "level": "A"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "vlan",
+    "name": "VLAN",
+    "aliases": [
+      "スタティックVLAN"
+    ],
+    "reading": "Virtual LAN",
+    "category": "ネットワークセキュリティ",
+    "definition": "物理的な配線とは別に、スイッチの設定で論理的にLANを分割する技術です。ポートごとに固定でVLANを割り当てるのがスタティックVLAN、利用者の認証結果に応じて割り当てるのが認証VLANです。",
+    "example": "同じフロアでも経理部のPCだけを別のVLANにして、他部署から直接通信できないようにします。",
+    "related": [
+      "ieee8021x"
+    ],
+    "criteria": [
+      {
+        "id": "logical",
+        "title": "スイッチの設定で論理的にLANを分割する",
+        "hint": "物理的な配線を変える必要がありますか？"
+      },
+      {
+        "id": "static",
+        "title": "スタティックVLANはポートごとに固定でVLANを割り当てる",
+        "hint": "ポートで決めるVLANは？"
+      },
+      {
+        "id": "auth",
+        "title": "認証VLANは利用者の認証結果に応じてVLANを動的に割り当て、フリーアドレス制でも同じセグメントにつなげる",
+        "hint": "席が自由な職場で使うVLANは？",
+        "level": "A"
+      },
+      {
+        "id": "hopping",
+        "title": "タグを偽ってほかのVLANに入るVLANホッピング攻撃がある",
+        "hint": "VLANに対する攻撃は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "ip-masquerade",
+    "name": "IPマスカレード",
+    "aliases": [
+      "NAPT"
+    ],
+    "reading": "IP masquerade (NAPT)",
+    "category": "ネットワークセキュリティ",
+    "definition": "複数の端末のプライベートIPアドレスとポート番号を、1つのグローバルIPアドレスと別のポート番号に変換してインターネットに接続する技術（NAPT）です。外部から内部の端末に直接アクセスされにくくなります。",
+    "example": "家庭のルータが、スマートフォンとPCの通信を1つのグローバルIPアドレスでまとめて送ります。",
+    "related": [
+      "ip-address"
+    ],
+    "criteria": [
+      {
+        "id": "convert",
+        "title": "IPアドレスとポート番号を合わせて変換する",
+        "hint": "何を変換しますか？"
+      },
+      {
+        "id": "share",
+        "title": "1つのグローバルIPアドレスを複数の端末で共有する",
+        "hint": "何のために使いますか？"
+      },
+      {
+        "id": "nat",
+        "title": "NATはアドレスだけを1対1で変換する点が違う",
+        "hint": "NATとの違いは？",
+        "level": "A"
+      },
+      {
+        "id": "inbound",
+        "title": "外部から始まる通信は変換表がなく届かないため、内部が見えにくくなる",
+        "hint": "セキュリティ上の副次効果は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "free-address",
+    "name": "フリーアドレス制",
+    "reading": "Free address",
+    "category": "経営管理",
+    "definition": "社員の固定席を設けず、出社した人が空いている席を自由に使う働き方です。座席の利用効率が上がり部署を超えた交流が増える一方、どの席からでも所属部署のネットワークに安全につながる仕組み（認証VLANなど）が必要です。",
+    "example": "出社率が6割の部署では、席数を人数より減らしてフリーアドレス制にします。",
+    "related": [
+      "vlan"
+    ],
+    "criteria": [
+      {
+        "id": "free",
+        "title": "固定席を設けず空いた席を使う",
+        "hint": "フリーアドレス制とは？"
+      },
+      {
+        "id": "network",
+        "title": "どの席でも所属に応じたネットワークにつなぐ仕組みが要る",
+        "hint": "ネットワーク面の課題は？"
+      },
+      {
+        "id": "authvlan",
+        "title": "認証VLANなら利用者の認証結果で所属VLANに接続できる",
+        "hint": "どの席でも同じ部署のVLANにつなぐには？",
+        "level": "A"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "domain-name",
+    "name": "ドメイン名",
+    "reading": "Domain name",
+    "category": "ネットワーク",
+    "definition": "インターネット上の組織やサービスを識別する名前です。DNSでIPアドレスなどに対応づけられます。不正な利益を得る目的で他人の商品名などと同一・類似のドメイン名を取得・使用することは、不正競争防止法で禁止されています。",
+    "example": "有名ブランドに似たドメイン名を取って高値で売りつける行為は、不正競争に当たります。",
+    "related": [
+      "dns"
+    ],
+    "criteria": [
+      {
+        "id": "identify",
+        "title": "組織やサービスを識別する名前で、DNSでIPアドレスに対応づける",
+        "hint": "ドメイン名の役割は？"
+      },
+      {
+        "id": "law",
+        "title": "不正な目的で他人の商品等表示と同一・類似のドメイン名を取得・使用するのは不正競争",
+        "hint": "法律上の問題になるのは？"
+      },
+      {
+        "id": "hijack",
+        "title": "登録情報やDNS設定を乗っ取られるとドメイン名ハイジャックになる",
+        "hint": "ドメインに関する攻撃は？",
+        "level": "A"
+      },
+      {
+        "id": "expire",
+        "title": "更新を忘れて失効したドメインを第三者に取得される危険がある",
+        "hint": "期限切れの危険は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "cyber-kill-chain",
+    "name": "サイバーキルチェーン",
+    "aliases": [
+      "偵察",
+      "デリバリ"
+    ],
+    "reading": "Cyber Kill Chain",
+    "category": "セキュリティ運用",
+    "definition": "標的型攻撃の流れを、偵察→武器化→デリバリ（配送）→エクスプロイト（攻撃）→インストール→C&C（遠隔操作）→目的の実行の7段階に分けたモデルです。どこかの段階で連鎖を断ち切れば被害を防げる、という考え方で対策を整理します。",
+    "example": "メールの添付ファイルでマルウェアを送り込む段階がデリバリ、脆弱性を突いて実行させる段階がエクスプロイトです。",
+    "related": [
+      "mitre-attack"
+    ],
+    "criteria": [
+      {
+        "id": "stages",
+        "title": "攻撃を偵察から目的の実行までの段階に分ける",
+        "hint": "どんな段階に分けますか？"
+      },
+      {
+        "id": "break",
+        "title": "途中の段階で連鎖を断てば被害を防げる",
+        "hint": "この考え方で何を整理しますか？"
+      },
+      {
+        "id": "order",
+        "title": "偵察→武器化→デリバリ→エクスプロイト→インストール→C&C→目的の実行",
+        "hint": "段階の順序は？",
+        "level": "A"
+      },
+      {
+        "id": "attack",
+        "title": "より細かい手口の分類にはMITRE ATT&CKを使う",
+        "hint": "より詳細なフレームワークは？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "exploit",
+    "name": "エクスプロイト",
+    "aliases": [
+      "エクスプロイトコード"
+    ],
+    "reading": "Exploit",
+    "category": "攻撃手法",
+    "definition": "ソフトウェアの脆弱性を突いて、攻撃者の意図した動作（任意コードの実行や権限昇格など）を起こさせる攻撃、またはそのためのコード（エクスプロイトコード）です。",
+    "example": "公開された脆弱性のエクスプロイトコードが出回ると、修正プログラムを当てていないサーバが次々に攻撃されます。",
+    "related": [
+      "vulnerability"
+    ],
+    "criteria": [
+      {
+        "id": "use-vuln",
+        "title": "脆弱性を突いて意図しない動作をさせる",
+        "hint": "何を利用しますか？"
+      },
+      {
+        "id": "code",
+        "title": "そのための攻撃コードをエクスプロイトコードという",
+        "hint": "エクスプロイトコードとは？"
+      },
+      {
+        "id": "patch",
+        "title": "公開後すぐに悪用されるため、修正プログラムを早く適用する",
+        "hint": "対策は？",
+        "level": "A"
+      },
+      {
+        "id": "zeroday",
+        "title": "修正前の脆弱性を突くものをゼロデイ攻撃という",
+        "hint": "修正プログラムがない段階の攻撃は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "vulnerability",
+    "name": "脆弱性",
+    "aliases": [
+      "脆弱性管理"
+    ],
+    "reading": "Vulnerability",
+    "category": "セキュリティ運用",
+    "definition": "ソフトウェアの不具合や設定の不備など、攻撃に悪用され得るセキュリティ上の弱点です。発見・公表・修正・適用の流れで管理し、CVEなどの識別子で共有されます。",
+    "example": "Webアプリの入力チェック漏れは、SQLインジェクションの脆弱性になります。",
+    "related": [
+      "cve",
+      "sbom"
+    ],
+    "criteria": [
+      {
+        "id": "weakness",
+        "title": "攻撃に悪用され得るセキュリティ上の弱点",
+        "hint": "脆弱性とは？"
+      },
+      {
+        "id": "fix",
+        "title": "修正プログラムの適用や設定変更で解消する",
+        "hint": "どう対処しますか？"
+      },
+      {
+        "id": "manage",
+        "title": "資産を把握し、情報収集→評価→対応の脆弱性管理を継続する",
+        "hint": "組織としてどう管理しますか？",
+        "level": "A"
+      },
+      {
+        "id": "cvss",
+        "title": "深刻度はCVSSで評価する",
+        "hint": "深刻度は何で表しますか？",
+        "level": "A"
+      },
+      {
+        "id": "threat",
+        "title": "リスクは脅威と脆弱性と資産価値の組合せで決まる",
+        "hint": "リスクとの関係は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "malware",
+    "name": "マルウェア",
+    "reading": "Malware",
+    "category": "攻撃手法",
+    "definition": "ウイルス、ワーム、トロイの木馬、ランサムウェア、スパイウェアなど、悪意を持って作られたソフトウェアの総称です。メールの添付ファイルや不正なWebサイト、脆弱性を通じて感染します。",
+    "example": "請求書を装った添付ファイルを開くと、マルウェアが情報を外部に送信し始めます。",
+    "related": [
+      "ransomware",
+      "botnet"
+    ],
+    "criteria": [
+      {
+        "id": "general",
+        "title": "悪意のあるソフトウェアの総称",
+        "hint": "マルウェアとは？"
+      },
+      {
+        "id": "route",
+        "title": "メール、Web、脆弱性などから感染する",
+        "hint": "どこから入ってきますか？"
+      },
+      {
+        "id": "types",
+        "title": "ワームは自己増殖し、トロイの木馬は有用なソフトを装う",
+        "hint": "種類ごとの違いは？",
+        "level": "A"
+      },
+      {
+        "id": "fileless",
+        "title": "ファイルを残さずメモリ上で動くファイルレスマルウェアは検知しにくい",
+        "hint": "検知しにくい形態は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "ransomware",
+    "name": "ランサムウェア",
+    "reading": "Ransomware",
+    "category": "攻撃手法",
+    "definition": "感染したコンピュータのファイルを暗号化して使えなくし、元に戻すことと引き換えに身代金を要求するマルウェアです。近年は暗号化の前にデータを盗み、公開すると脅す二重恐喝が主流です。",
+    "example": "VPN装置の脆弱性から侵入され、社内のファイルサーバがすべて暗号化されました。",
+    "related": [
+      "malware"
+    ],
+    "criteria": [
+      {
+        "id": "encrypt",
+        "title": "ファイルを暗号化して使えなくし身代金を要求する",
+        "hint": "どんな被害を与えますか？"
+      },
+      {
+        "id": "backup",
+        "title": "オフラインのバックアップを用意して復旧できるようにする",
+        "hint": "最も重要な備えは？"
+      },
+      {
+        "id": "double",
+        "title": "データを盗んで公開すると脅す二重恐喝が多い",
+        "hint": "最近の手口の特徴は？",
+        "level": "A"
+      },
+      {
+        "id": "raas",
+        "title": "攻撃を分業するRaaS（サービスとしてのランサムウェア）が広がっている",
+        "hint": "攻撃者側の仕組みは？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "bec",
+    "name": "ビジネスメール詐欺",
+    "reading": "Business Email Compromise",
+    "category": "攻撃手法",
+    "definition": "取引先や経営者になりすました電子メールで、偽の口座に送金させる詐欺です。マルウェアを使わず、事前に盗み見たメールのやり取りなどを利用するため、技術的な検知が難しいのが特徴です。",
+    "example": "取引先を装って「振込先口座が変わりました」というメールが届き、偽の口座に代金を振り込んでしまいます。",
+    "related": [
+      "deepfake"
+    ],
+    "criteria": [
+      {
+        "id": "impersonate",
+        "title": "取引先や経営者になりすましたメールで送金させる",
+        "hint": "どんな手口ですか？"
+      },
+      {
+        "id": "verify",
+        "title": "口座変更などは電話など別の経路で確認する",
+        "hint": "有効な対策は？"
+      },
+      {
+        "id": "deepfake",
+        "title": "ディープフェイクで経営者の声や映像をまねる手口もある",
+        "hint": "新しい手口は？",
+        "level": "A"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "deep-web",
+    "name": "ディープウェブ",
+    "reading": "Deep web",
+    "category": "攻撃手法",
+    "definition": "検索エンジンでは見つからない、ログインが必要なページなどを含むWeb上の領域です。その一部で、特殊なソフトウェア（Torなど）でしか接続できない匿名性の高い領域をダークウェブといい、盗まれた情報の売買などに使われます。",
+    "example": "会員制サイトのマイページはディープウェブ、Torでしか開けない闇市場はダークウェブです。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "hidden",
+        "title": "検索エンジンに載らない領域",
+        "hint": "ディープウェブとは？"
+      },
+      {
+        "id": "dark",
+        "title": "その一部の匿名性の高い領域がダークウェブ",
+        "hint": "ダークウェブとの関係は？"
+      },
+      {
+        "id": "leak",
+        "title": "漏えいした認証情報がダークウェブで売買されることがある",
+        "hint": "セキュリティとの関係は？",
+        "level": "A"
+      }
+    ],
+    "commonMistakes": [
+      "ディープフェイク（偽の映像・音声）と名前が似ていますが別のものです。"
+    ]
+  },
+  {
+    "id": "certificates",
+    "name": "サーバ証明書とクライアント証明書",
+    "aliases": [
+      "サーバ証明書",
+      "クライアント証明書",
+      "コードサイニング証明書",
+      "EV SSL証明書"
+    ],
+    "reading": "Server / client certificates",
+    "category": "暗号・認証",
+    "definition": "用途ごとのデジタル証明書です。サーバ証明書はWebサイトの正当性を示してTLS通信を実現し、厳格な審査を経たものがEV SSL証明書です。クライアント証明書は利用者や端末を認証し、コードサイニング証明書はソフトウェアの作成者と改ざんのないことを保証します。",
+    "example": "配布するインストーラにコードサイニング証明書で署名し、利用者は発行元と改ざんの有無を確認できます。",
+    "related": [
+      "pki",
+      "digital-signature"
+    ],
+    "criteria": [
+      {
+        "id": "server",
+        "title": "サーバ証明書はサーバの正当性を示しTLSで使う",
+        "hint": "Webサイトで使う証明書は？"
+      },
+      {
+        "id": "client",
+        "title": "クライアント証明書は利用者や端末を認証する",
+        "hint": "利用者側に入れる証明書は？"
+      },
+      {
+        "id": "code",
+        "title": "コードサイニング証明書はプログラムの作成者と完全性を保証する",
+        "hint": "ソフトウェアに署名する証明書は？"
+      },
+      {
+        "id": "ev",
+        "title": "EV SSL証明書は組織の実在性を厳格に審査して発行する",
+        "hint": "審査の厳しいサーバ証明書は？",
+        "level": "A"
+      },
+      {
+        "id": "stolen",
+        "title": "コードサイニングの秘密鍵が盗まれるとマルウェアに正規の署名が付けられる",
+        "hint": "秘密鍵が漏れると？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "security-properties",
+    "name": "情報セキュリティの要素",
+    "aliases": [
+      "機密性",
+      "完全性",
+      "可用性",
+      "真正性",
+      "信頼性",
+      "エンティティ"
+    ],
+    "reading": "Security properties",
+    "category": "セキュリティ運用",
+    "definition": "情報セキュリティで維持すべき性質です。基本は機密性（許可された者だけが見られる）、完全性（正確で改ざんされていない）、可用性（必要なときに使える）の3要素で、さらに真正性（主体が本物である）、責任追跡性、否認防止、信頼性（意図した動作を一貫して行う）を加えます。",
+    "example": "なりすましを防ぐのは真正性、システムが誤動作せず一貫して動くのは信頼性の確保です。",
+    "related": [
+      "availability"
+    ],
+    "criteria": [
+      {
+        "id": "cia",
+        "title": "機密性・完全性・可用性の3要素",
+        "hint": "基本の3要素は？"
+      },
+      {
+        "id": "authenticity",
+        "title": "真正性は利用者や情報などの主体（エンティティ）が名乗ったとおり本物であること",
+        "hint": "真正性とは？"
+      },
+      {
+        "id": "reliability",
+        "title": "信頼性は意図した動作と結果が一貫していること",
+        "hint": "信頼性とは？",
+        "level": "A"
+      },
+      {
+        "id": "accountability",
+        "title": "責任追跡性はエンティティの動作を一意に追跡できること",
+        "hint": "誰が何をしたかを追える性質は？",
+        "level": "A"
+      },
+      {
+        "id": "nonrepudiation",
+        "title": "否認防止は事象や行為が後から否定されないよう証明できること",
+        "hint": "やっていないと言わせない性質は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": [
+      "真正性と信頼性を取り違える誤りがあります。"
+    ]
+  },
+  {
+    "id": "authorization",
+    "name": "認可",
+    "aliases": [
+      "アクセス制御"
+    ],
+    "reading": "Authorization",
+    "category": "アクセス制御",
+    "definition": "認証で本人と確かめた利用者に対して、どの資源にどんな操作を許すかを決めて与えることです。認証（誰か）と認可（何をしてよいか）は区別します。",
+    "example": "ログインした社員（認証）に、自部署のフォルダだけ書込みを許す（認可）。",
+    "related": [
+      "least-privilege"
+    ],
+    "criteria": [
+      {
+        "id": "permission",
+        "title": "どの資源に何をしてよいかを決めて与える",
+        "hint": "認可とは？"
+      },
+      {
+        "id": "vs-authn",
+        "title": "認証は本人確認、認可は権限の付与で別の処理",
+        "hint": "認証との違いは？"
+      },
+      {
+        "id": "access-control",
+        "title": "アクセス制御はこの認可に基づいて操作を許可・拒否する",
+        "hint": "認可とアクセス制御の関係は？",
+        "level": "A"
+      },
+      {
+        "id": "oauth",
+        "title": "OAuthは認可の情報を第三者のアプリに渡す仕組み",
+        "hint": "認可の委譲に使う仕組みは？",
+        "level": "A"
+      },
+      {
+        "id": "rbac",
+        "title": "役割（ロール）に権限をまとめて与えるRBACがある",
+        "hint": "権限を効率よく管理するには？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "smime",
+    "name": "S/MIME",
+    "reading": "Secure/MIME",
+    "category": "メールセキュリティ",
+    "definition": "公開鍵暗号とデジタル証明書を使って、電子メールの本文を暗号化したり、デジタル署名を付けたりする規格です。送信者のなりすましや改ざん、盗聴を防げます。",
+    "example": "取引先の公開鍵（証明書）でメールを暗号化し、自分の秘密鍵で署名して送ります。",
+    "related": [
+      "digital-signature",
+      "dkim"
+    ],
+    "criteria": [
+      {
+        "id": "encrypt",
+        "title": "受信者の公開鍵でメールを暗号化する",
+        "hint": "暗号化に誰の鍵を使いますか？"
+      },
+      {
+        "id": "sign",
+        "title": "送信者の秘密鍵で署名して、なりすましと改ざんを検知する",
+        "hint": "署名に誰の鍵を使いますか？"
+      },
+      {
+        "id": "vs-dkim",
+        "title": "DKIMはドメイン単位でメールサーバが署名し、S/MIMEは個人の証明書で署名する",
+        "hint": "DKIMとの違いは？",
+        "level": "A"
+      },
+      {
+        "id": "e2e",
+        "title": "端末間で暗号化するので経路上のサーバでも中身を読めない",
+        "hint": "どこまで保護されますか？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "oss",
+    "name": "OSS",
+    "reading": "Open Source Software",
+    "category": "セキュリティ運用",
+    "definition": "ソースコードが公開され、利用・改変・再配布が許されたソフトウェアです。ライセンスの条件（著作権表示、ソース公開の義務など）を守る必要があり、使っているOSSの脆弱性を管理するためにSBOMが役立ちます。",
+    "example": "Webサーバに使っているOSSのライブラリに脆弱性が見つかったら、SBOMで影響のある製品をすぐ特定します。",
+    "related": [
+      "sbom"
+    ],
+    "criteria": [
+      {
+        "id": "open",
+        "title": "ソースコードが公開され、利用・改変・再配布ができる",
+        "hint": "OSSとは？"
+      },
+      {
+        "id": "license",
+        "title": "ライセンスの条件を守る必要がある",
+        "hint": "利用時に注意することは？"
+      },
+      {
+        "id": "vuln",
+        "title": "利用しているOSSの脆弱性を把握・更新する必要がある",
+        "hint": "セキュリティ面の注意は？",
+        "level": "A"
+      },
+      {
+        "id": "copyleft",
+        "title": "GPLのように改変物にも同じ条件を求める（コピーレフト）ライセンスがある",
+        "hint": "GPLの特徴は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "directory-traversal",
+    "name": "ディレクトリトラバーサル",
+    "reading": "Directory traversal",
+    "category": "Webセキュリティ",
+    "definition": "ファイル名を受け取るWebアプリに「../」などを含む値を渡して、公開を想定していないディレクトリのファイルを読み出す攻撃です。外部から渡されたファイル名を直接使わない、ファイル名だけを取り出して検証する、といった対策をとります。",
+    "example": "?file=../../etc/passwd を指定され、サーバのパスワードファイルが表示されてしまいます。",
+    "related": [
+      "os-command-injection"
+    ],
+    "criteria": [
+      {
+        "id": "parent",
+        "title": "「../」で上位ディレクトリをたどり想定外のファイルを読む",
+        "hint": "どんな文字列を使いますか？"
+      },
+      {
+        "id": "measure",
+        "title": "外部から渡されたファイル名を直接使わない、ファイル名だけに限定して検証する",
+        "hint": "対策は？"
+      },
+      {
+        "id": "encode",
+        "title": "%2e%2e%2f のような符号化で検査を回避されることがある",
+        "hint": "単純な文字列チェックで十分ですか？",
+        "level": "A"
+      },
+      {
+        "id": "privilege",
+        "title": "アプリの実行権限を最小にして被害を抑える",
+        "hint": "被害を小さくするには？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": [
+      "OSコマンドインジェクションやSQLインジェクションの対策と取り違える誤りがあります。"
+    ]
+  },
+  {
+    "id": "buffer-overflow",
+    "name": "バッファオーバーフロー",
+    "reading": "Buffer overflow",
+    "category": "Webセキュリティ",
+    "definition": "確保した領域（バッファ）の大きさを超えるデータを書き込み、隣のメモリ領域を上書きしてしまう脆弱性です。戻り先アドレスを書き換えられると、攻撃者のコードを実行されます。",
+    "example": "16文字分しか用意していない領域に100文字の入力を書き込み、戻り先アドレスが書き換えられます。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "overwrite",
+        "title": "領域を超えて書き込み、隣のメモリを上書きする",
+        "hint": "何が起きる脆弱性ですか？"
+      },
+      {
+        "id": "code",
+        "title": "戻り先アドレスを書き換えられ任意のコードを実行される",
+        "hint": "何が危険ですか？"
+      },
+      {
+        "id": "measure",
+        "title": "入力長の検査、安全な関数の使用、メモリ安全な言語の採用",
+        "hint": "開発での対策は？",
+        "level": "A"
+      },
+      {
+        "id": "mitigation",
+        "title": "ASLRやスタック保護、DEPで悪用を難しくする",
+        "hint": "OSやコンパイラでの対策は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "ids-signature",
+    "name": "シグネチャ",
+    "reading": "Signature",
+    "category": "ネットワークセキュリティ",
+    "definition": "IDSやウイルス対策ソフトで、既知の攻撃やマルウェアの特徴をパターンとして登録したものです。通信やファイルをシグネチャと照合して検知します。既知の攻撃は正確に検知できますが、未知の攻撃は見逃しやすくなります。",
+    "example": "特定のマルウェアが通信に含む文字列をシグネチャとして登録し、一致したら警告します。",
+    "related": [
+      "ids-ips"
+    ],
+    "criteria": [
+      {
+        "id": "pattern",
+        "title": "既知の攻撃やマルウェアの特徴を登録したパターン",
+        "hint": "シグネチャとは？"
+      },
+      {
+        "id": "match",
+        "title": "通信やファイルと照合して一致したら検知する",
+        "hint": "どうやって検知しますか？"
+      },
+      {
+        "id": "unknown",
+        "title": "未知の攻撃は検知できないため、振る舞い（アノマリ）型と組み合わせる",
+        "hint": "シグネチャ型の弱点は？",
+        "level": "A"
+      },
+      {
+        "id": "update",
+        "title": "定期的にシグネチャを更新する必要がある",
+        "hint": "運用で欠かせないことは？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": [
+      "デジタル署名（signature）と混同する誤りがあります。"
+    ]
+  },
+  {
+    "id": "mac",
+    "name": "メッセージ認証符号",
+    "reading": "Message Authentication Code (MAC)",
+    "category": "暗号・認証",
+    "definition": "メッセージと共通の秘密鍵から計算する短い値です。受信者が同じ鍵で計算し直して一致すれば、メッセージが改ざんされておらず、鍵を持つ相手から送られたことを確認できます。HMACが代表です。",
+    "example": "送信者と受信者が同じ鍵を持ち、受信者はMACが一致することで改ざんがないと判断します。",
+    "related": [
+      "hash",
+      "digital-signature"
+    ],
+    "criteria": [
+      {
+        "id": "key",
+        "title": "メッセージと共通鍵からMAC値を計算する",
+        "hint": "何を使って計算しますか？"
+      },
+      {
+        "id": "integrity",
+        "title": "改ざんの検知と送信者の確認ができる",
+        "hint": "何を確認できますか？"
+      },
+      {
+        "id": "nonrepudiation",
+        "title": "共通鍵なので第三者に対する否認防止はできない（デジタル署名との違い）",
+        "hint": "デジタル署名との違いは？",
+        "level": "A"
+      },
+      {
+        "id": "hmac",
+        "title": "HMACはハッシュ関数と鍵を組み合わせる",
+        "hint": "代表的な方式は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "otp",
+    "name": "ワンタイムパスワード",
+    "reading": "One-time password",
+    "category": "暗号・認証",
+    "definition": "1回限り有効なパスワードです。時刻や回数をもとに認証デバイスやアプリが生成したり、SMSなどで届けたりします。盗聴されても再利用できないため、リプレイ攻撃に強くなります。",
+    "example": "スマートフォンのアプリに30秒ごとに表示される6桁の数字を入力してログインします。",
+    "related": [
+      "mfa"
+    ],
+    "criteria": [
+      {
+        "id": "once",
+        "title": "1回限り（短時間）しか使えない",
+        "hint": "普通のパスワードとの違いは？"
+      },
+      {
+        "id": "replay",
+        "title": "盗まれても再利用できずリプレイ攻撃を防ぐ",
+        "hint": "どんな攻撃に強いですか？"
+      },
+      {
+        "id": "totp",
+        "title": "時刻同期型（TOTP）とカウンタ型（HOTP）がある",
+        "hint": "生成方式は？",
+        "level": "A"
+      },
+      {
+        "id": "phishing",
+        "title": "リアルタイムに中継するフィッシングには弱い",
+        "hint": "ワンタイムパスワードでも防げない攻撃は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "risk-based-auth",
+    "name": "リスクベース認証",
+    "aliases": [
+      "3Dセキュア2.0",
+      "本人認証"
+    ],
+    "reading": "Risk-based authentication",
+    "category": "暗号・認証",
+    "definition": "いつもと違う端末・場所・時間帯からのアクセスなど、リスクが高いと判断したときだけ追加の認証を求める方式です。3Dセキュア2.0では、カード会社が取引のリスクを評価し、低リスクなら追加の本人認証なしで決済します。",
+    "example": "海外のIPアドレスから深夜にログインされたときだけ、ワンタイムパスワードの入力を求めます。",
+    "related": [
+      "mfa"
+    ],
+    "criteria": [
+      {
+        "id": "adaptive",
+        "title": "リスクが高いと判断したときだけ追加の認証を行う",
+        "hint": "いつ追加の認証をしますか？"
+      },
+      {
+        "id": "signals",
+        "title": "端末・場所・時間帯・取引内容などからリスクを評価する",
+        "hint": "何でリスクを判断しますか？"
+      },
+      {
+        "id": "3ds",
+        "title": "3Dセキュア2.0はリスクベース認証でネット決済の本人認証を行う",
+        "hint": "クレジットカード決済での例は？",
+        "level": "A"
+      },
+      {
+        "id": "ux",
+        "title": "普段は追加操作がないため利便性と安全性を両立できる",
+        "hint": "利用者にとっての利点は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "captcha",
+    "name": "CAPTCHA",
+    "reading": "CAPTCHA",
+    "category": "暗号・認証",
+    "definition": "ゆがんだ文字の読取りや画像の選択など、人間には簡単でプログラムには難しい課題を出して、操作しているのが人間かどうかを判定する仕組みです。自動化されたアカウント作成や不正ログインの試行を防ぎます。",
+    "example": "ログインに5回失敗したら、信号機の写っている画像を選ぶ課題を表示します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "human",
+        "title": "人間かプログラムかを判定する",
+        "hint": "何を判定しますか？"
+      },
+      {
+        "id": "bot",
+        "title": "ボットによる自動登録や総当たりを防ぐ",
+        "hint": "何を防ぎますか？"
+      },
+      {
+        "id": "limit",
+        "title": "本人であることは確認しない（認証ではない）",
+        "hint": "CAPTCHAで本人確認ができますか？",
+        "level": "A"
+      },
+      {
+        "id": "solver",
+        "title": "人を雇って解かせるサービスやAIで突破されることがある",
+        "hint": "CAPTCHAの限界は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "public-key-crypto",
+    "name": "公開鍵暗号方式",
+    "aliases": [
+      "共通鍵暗号方式",
+      "公開鍵",
+      "秘密鍵"
+    ],
+    "reading": "Public-key cryptography",
+    "category": "暗号・認証",
+    "definition": "暗号化と復号に異なる鍵を使う方式です。誰でも使える公開鍵で暗号化し、本人だけが持つ秘密鍵で復号します。鍵を事前に安全に共有しなくてよく、n人が互いに通信するのに必要な鍵は2n個で済みます。共通鍵暗号方式は同じ鍵で暗号化・復号し、n(n−1)/2個の鍵が必要です。",
+    "example": "100人が互いに暗号通信するなら、公開鍵暗号方式は200個、共通鍵暗号方式は4,950個の鍵が必要です。",
+    "related": [
+      "pki",
+      "digital-signature"
+    ],
+    "criteria": [
+      {
+        "id": "pair",
+        "title": "暗号化と復号に異なる鍵（公開鍵と秘密鍵）を使う",
+        "hint": "鍵はいくつ使いますか？"
+      },
+      {
+        "id": "encrypt",
+        "title": "受信者の公開鍵で暗号化し、受信者の秘密鍵で復号する",
+        "hint": "誰の鍵で暗号化しますか？"
+      },
+      {
+        "id": "symmetric",
+        "title": "共通鍵暗号方式は同じ鍵で暗号化・復号し、高速だが鍵の配送が課題",
+        "hint": "共通鍵暗号との違いは？"
+      },
+      {
+        "id": "count",
+        "title": "n人の通信で公開鍵方式は2n個、共通鍵方式はn(n−1)/2個の鍵が必要",
+        "hint": "必要な鍵の数は？",
+        "level": "A"
+      },
+      {
+        "id": "hybrid",
+        "title": "実際は公開鍵暗号で共通鍵を共有し、データは共通鍵暗号で暗号化する",
+        "hint": "実際の通信ではどう組み合わせますか？",
+        "level": "A"
+      },
+      {
+        "id": "trust",
+        "title": "公開鍵が本人のものか確かめるためにPKIが必要",
+        "hint": "公開鍵の正しさは誰が保証しますか？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "csirt",
+    "name": "CSIRT",
+    "aliases": [
+      "コーディネーションセンター",
+      "CSIRTガイド",
+      "JPCERTコーディネーションセンター",
+      "JPCERT/CC"
+    ],
+    "reading": "Computer Security Incident Response Team",
+    "category": "セキュリティ運用",
+    "definition": "セキュリティインシデントに対応するための組織（チーム）です。インシデントの受付・分析・対応・再発防止を行います。対象により、組織内CSIRT、国の窓口となるナショナルCSIRT、CSIRT間の調整を行うコーディネーションセンター（日本ではJPCERT/CC）などに分類されます。",
+    "example": "社内でマルウェア感染が見つかると、CSIRTが感染端末の隔離や原因の調査、関係者への連絡を指揮します。",
+    "related": [
+      "psirt"
+    ],
+    "criteria": [
+      {
+        "id": "respond",
+        "title": "インシデントの受付・分析・対応・再発防止を行う組織",
+        "hint": "CSIRTの役割は？"
+      },
+      {
+        "id": "types",
+        "title": "組織内CSIRT、ナショナルCSIRT、コーディネーションセンターなどの種類がある",
+        "hint": "どんな種類がありますか？"
+      },
+      {
+        "id": "jpcert",
+        "title": "JPCERT/CCは国内外のCSIRTと連携して調整を行うコーディネーションセンター",
+        "hint": "日本で調整役を担う組織は？",
+        "level": "A"
+      },
+      {
+        "id": "psirt",
+        "title": "PSIRTは自社製品の脆弱性に対応する",
+        "hint": "製品の脆弱性に対応するチームは？",
+        "level": "A"
+      },
+      {
+        "id": "soc",
+        "title": "SOCは監視して検知し、CSIRTが対応を担うという分担が多い",
+        "hint": "SOCとの違いは？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "soc",
+    "name": "SOC",
+    "reading": "Security Operation Center",
+    "category": "セキュリティ運用",
+    "definition": "ネットワークや機器のログを24時間監視し、サイバー攻撃の兆候を検知・分析して通知する組織です。SIEMなどのツールを使い、検知したインシデントはCSIRTに引き継ぎます。",
+    "example": "SOCが深夜に不審な外部通信を検知し、CSIRTに連絡して調査を依頼します。",
+    "related": [
+      "csirt",
+      "siem"
+    ],
+    "criteria": [
+      {
+        "id": "monitor",
+        "title": "ログや通信を常時監視して攻撃の兆候を検知・分析する",
+        "hint": "SOCの仕事は？"
+      },
+      {
+        "id": "handover",
+        "title": "検知したインシデントをCSIRTなどに通知・連携する",
+        "hint": "検知した後は？"
+      },
+      {
+        "id": "siem",
+        "title": "SIEMで様々なログを集めて相関分析する",
+        "hint": "どんなツールを使いますか？",
+        "level": "A"
+      },
+      {
+        "id": "mssp",
+        "title": "外部の専門事業者に監視を委託することも多い",
+        "hint": "自社で持たない場合は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "siem",
+    "name": "SIEM",
+    "aliases": [
+      "不正アクセス"
+    ],
+    "reading": "Security Information and Event Management",
+    "category": "セキュリティ運用",
+    "definition": "サーバ、ネットワーク機器、セキュリティ製品などのログを一か所に集め、相関分析して不審な事象を検知・通知する仕組みです。不正アクセスの早期発見や、インシデント発生後の調査に使います。",
+    "example": "同じアカウントで短時間に東京と海外からログインされたことを、複数の機器のログを突き合わせて検知します。",
+    "related": [
+      "soc",
+      "digital-forensics"
+    ],
+    "criteria": [
+      {
+        "id": "collect",
+        "title": "多様な機器のログを一元的に収集する",
+        "hint": "何を集めますか？"
+      },
+      {
+        "id": "correlate",
+        "title": "ログを相関分析して不審な事象を検知・通知する",
+        "hint": "集めたログで何をしますか？"
+      },
+      {
+        "id": "forensic",
+        "title": "保存したログはインシデント後の調査（フォレンジック）にも使う",
+        "hint": "検知以外の用途は？",
+        "level": "A"
+      },
+      {
+        "id": "tuning",
+        "title": "誤検知が多いと重要な警告が埋もれるため、検知ルールを調整する",
+        "hint": "運用上の課題は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "whois",
+    "name": "WHOIS",
+    "reading": "WHOIS",
+    "category": "セキュリティ運用",
+    "definition": "ドメイン名やIPアドレスの登録者などの情報を検索できるサービスです。不審な通信先や攻撃元の管理者を調べるときに使います。",
+    "example": "不審なメールの送信元ドメインをWHOISで調べると、数日前に登録されたばかりだと分かりました。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "lookup",
+        "title": "ドメイン名やIPアドレスの登録情報を調べる",
+        "hint": "WHOISで何が分かりますか？"
+      },
+      {
+        "id": "use",
+        "title": "不審な通信先や攻撃元の管理者の調査に使う",
+        "hint": "インシデント対応での使い道は？"
+      },
+      {
+        "id": "privacy",
+        "title": "登録者情報は代理公開などで隠されていることも多い",
+        "hint": "いつも登録者が分かりますか？",
+        "level": "A"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "ddos",
+    "name": "DDoS攻撃",
+    "aliases": [
+      "サービス妨害攻撃"
+    ],
+    "reading": "Distributed Denial of Service attack",
+    "category": "攻撃手法",
+    "definition": "多数のコンピュータ（ボットネットなど）から一斉に大量の通信を送り、サーバや回線を過負荷にしてサービスを提供できなくするサービス妨害攻撃です。送信元が分散しているため、単純に送信元を遮断するだけでは防げません。",
+    "example": "ボットに感染した数万台のIoT機器から一斉にアクセスされ、ECサイトが閲覧できなくなりました。",
+    "related": [
+      "botnet",
+      "syn-flood"
+    ],
+    "criteria": [
+      {
+        "id": "distributed",
+        "title": "多数の機器から一斉に大量の通信を送る",
+        "hint": "DoS攻撃との違いは？"
+      },
+      {
+        "id": "unavailable",
+        "title": "サーバや回線を過負荷にしてサービスを妨害する",
+        "hint": "何を狙う攻撃ですか？"
+      },
+      {
+        "id": "measure",
+        "title": "CDNやDDoS対策サービスで攻撃の通信を吸収・遮断する",
+        "hint": "対策は？",
+        "level": "A"
+      },
+      {
+        "id": "reflection",
+        "title": "送信元を偽ったDNSなどの応答を標的に集中させるリフレクション攻撃もある",
+        "hint": "増幅させる手口は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "password-attacks",
+    "name": "パスワードリスト攻撃",
+    "aliases": [
+      "ブルートフォース攻撃"
+    ],
+    "reading": "Password list attack",
+    "category": "攻撃手法",
+    "definition": "他のサービスから漏えいしたIDとパスワードの組をリストにして、別のサービスにログインを試す攻撃です。パスワードを使い回している利用者が被害に遭います。考えられる文字の組合せをすべて試すのはブルートフォース攻撃（総当たり）です。",
+    "example": "あるショッピングサイトから漏れたIDとパスワードで、銀行のサイトにログインされてしまいます。",
+    "related": [
+      "mfa"
+    ],
+    "criteria": [
+      {
+        "id": "reuse",
+        "title": "漏えいしたIDとパスワードの組を他のサービスで試す",
+        "hint": "どんな手口ですか？"
+      },
+      {
+        "id": "measure",
+        "title": "パスワードを使い回さない、多要素認証を使う",
+        "hint": "有効な対策は？"
+      },
+      {
+        "id": "bruteforce",
+        "title": "ブルートフォース攻撃は全組合せを試し、リバースブルートフォースはパスワードを固定してIDを変える",
+        "hint": "総当たりとの違いは？",
+        "level": "A"
+      },
+      {
+        "id": "lockout",
+        "title": "パスワードリスト攻撃は1アカウント当たりの試行が少なくロックアウトで防ぎにくい",
+        "hint": "アカウントロックで防げますか？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "social-engineering",
+    "name": "ソーシャルエンジニアリング",
+    "reading": "Social engineering",
+    "category": "攻撃手法",
+    "definition": "技術ではなく人の心理的な隙や行動のミスにつけ込んで、パスワードなどの重要な情報を盗み出す手口です。なりすましの電話、肩越しののぞき見（ショルダーハッキング）、ごみ箱あさり（トラッシング）などがあります。",
+    "example": "システム部門を名乗る電話で「障害対応のためにパスワードを教えて」と聞き出します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "human",
+        "title": "人の心理や行動の隙を突く",
+        "hint": "何を利用する手口ですか？"
+      },
+      {
+        "id": "examples",
+        "title": "なりすまし電話、のぞき見、ごみ箱あさりなど",
+        "hint": "具体的な手口は？"
+      },
+      {
+        "id": "training",
+        "title": "教育・訓練と、電話でパスワードを聞かない等のルールで防ぐ",
+        "hint": "対策は？",
+        "level": "A"
+      },
+      {
+        "id": "pretext",
+        "title": "緊急性や権威を装って判断を急がせるのが典型",
+        "hint": "よく使われる心理的なテクニックは？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "open-relay",
+    "name": "第三者中継",
+    "aliases": [
+      "メールサーバ"
+    ],
+    "reading": "Open relay",
+    "category": "メールセキュリティ",
+    "definition": "メールサーバが、自組織と関係のない第三者どうしのメールを中継してしまうことです。迷惑メールの送信に悪用されるため、送信元か宛先のどちらかが自組織のドメインである場合だけ中継するよう設定します。",
+    "example": "社外の送信者から社外の宛先へのメールを受け付けて転送してしまうサーバは、第三者中継を許しています。",
+    "related": [
+      "submission-port"
+    ],
+    "criteria": [
+      {
+        "id": "relay",
+        "title": "自組織と無関係な第三者間のメールを中継してしまう",
+        "hint": "第三者中継とは？"
+      },
+      {
+        "id": "spam",
+        "title": "迷惑メールの送信に悪用される",
+        "hint": "何が問題ですか？"
+      },
+      {
+        "id": "judge",
+        "title": "送信元・宛先とも自組織外なら中継を拒否する",
+        "hint": "中継してよいかはどう判断しますか？",
+        "level": "A"
+      },
+      {
+        "id": "blacklist",
+        "title": "中継を許すとサーバのIPアドレスがブラックリストに載り、自社のメールも届かなくなる",
+        "hint": "自社にとっての不利益は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "crl",
+    "name": "証明書失効リスト",
+    "aliases": [
+      "危殆化",
+      "OCSP"
+    ],
+    "reading": "Certificate Revocation List (CRL)",
+    "category": "暗号・認証",
+    "definition": "有効期限前に失効させたデジタル証明書のシリアル番号を並べ、認証局が署名して公開するリストです。秘密鍵の漏えい（危殆化）などで証明書を使えなくしたときに、利用者はCRLやOCSPで失効していないかを確認します。",
+    "example": "サーバの秘密鍵が漏れたので証明書を失効させると、その証明書のシリアル番号がCRLに載ります。",
+    "related": [
+      "pki"
+    ],
+    "criteria": [
+      {
+        "id": "list",
+        "title": "失効した証明書のシリアル番号を認証局が署名して公開する",
+        "hint": "CRLには何が載りますか？"
+      },
+      {
+        "id": "check",
+        "title": "利用者は証明書を使う前に失効していないか確認する",
+        "hint": "利用者は何をしますか？"
+      },
+      {
+        "id": "ocsp",
+        "title": "OCSPは個々の証明書の失効状態をオンラインで問い合わせる",
+        "hint": "リストを取得しない確認方法は？",
+        "level": "A"
+      },
+      {
+        "id": "compromise",
+        "title": "秘密鍵の危殆化（漏えいなど）が失効の代表的な理由",
+        "hint": "どんなときに失効させますか？",
+        "level": "A"
+      },
+      {
+        "id": "expired",
+        "title": "有効期限が切れた証明書はCRLに載せない（期限で判断できる）",
+        "hint": "期限切れの証明書は載りますか？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "quantum-crypto",
+    "name": "量子暗号",
+    "aliases": [
+      "格子問題",
+      "量子鍵配送"
+    ],
+    "reading": "Quantum cryptography",
+    "category": "暗号・認証",
+    "definition": "量子の性質（観測すると状態が変わる）を利用して、盗聴されると必ず分かる方法で暗号鍵を配送する技術（量子鍵配送）です。量子コンピュータでも解読できない暗号を、量子力学で実現します。量子計算機に耐える数学的な暗号である耐量子計算機暗号（PQC）とは別のものです。",
+    "example": "光子で鍵を送り、途中で盗聴されて状態が乱れていれば、その鍵を捨てます。",
+    "related": [
+      "pqc",
+      "quantum-computer"
+    ],
+    "criteria": [
+      {
+        "id": "qkd",
+        "title": "量子の性質で盗聴を検知できる鍵配送を行う",
+        "hint": "何を実現する技術ですか？"
+      },
+      {
+        "id": "vs-pqc",
+        "title": "PQCは格子問題などの数学的に難しい問題に基づく暗号で、別物",
+        "hint": "PQCとの違いは？"
+      },
+      {
+        "id": "lattice",
+        "title": "PQCの代表は格子問題に基づく暗号",
+        "hint": "PQCが基づく問題は？",
+        "level": "A"
+      },
+      {
+        "id": "distance",
+        "title": "専用の装置と伝送路が必要で、距離に制約がある",
+        "hint": "実用上の課題は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": [
+      "量子コンピュータを使って暗号化する技術、とする誤りがあります。"
+    ]
+  },
+  {
+    "id": "timing-attack",
+    "name": "タイミング攻撃",
+    "reading": "Timing attack",
+    "category": "攻撃手法",
+    "definition": "暗号処理にかかる時間の違いを測定して、秘密鍵などの秘密情報を推測するサイドチャネル攻撃です。処理時間が秘密の値によって変わらない実装（定数時間の処理）で防ぎます。",
+    "example": "パスワードの比較が1文字目から順に不一致で終了する実装だと、時間の差から正しい文字を1文字ずつ推測されます。",
+    "related": [
+      "pqc"
+    ],
+    "criteria": [
+      {
+        "id": "time",
+        "title": "処理時間の差から秘密情報を推測する",
+        "hint": "何を測る攻撃ですか？"
+      },
+      {
+        "id": "side",
+        "title": "実装の物理的な特徴を突くサイドチャネル攻撃の一種",
+        "hint": "どの分類の攻撃ですか？"
+      },
+      {
+        "id": "constant",
+        "title": "秘密の値によらず処理時間を一定にする",
+        "hint": "対策は？",
+        "level": "A"
+      },
+      {
+        "id": "power",
+        "title": "消費電力や電磁波を測る攻撃もある",
+        "hint": "他のサイドチャネル攻撃は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "attribute-certificate",
+    "name": "属性証明書",
+    "reading": "Attribute certificate",
+    "category": "暗号・認証",
+    "definition": "公開鍵証明書の所有者に対して、役職や権限などの属性を結び付けて証明する証明書です。属性認証局が発行し、公開鍵は含まず、公開鍵証明書と組み合わせて使います。",
+    "example": "「医師である」という資格を属性証明書で示し、医療情報システムでの権限付与に使います。",
+    "related": [
+      "pki"
+    ],
+    "criteria": [
+      {
+        "id": "attr",
+        "title": "所有者の役職や権限などの属性を証明する",
+        "hint": "何を証明しますか？"
+      },
+      {
+        "id": "nokey",
+        "title": "公開鍵は含まず、公開鍵証明書と組み合わせて使う",
+        "hint": "公開鍵証明書との違いは？"
+      },
+      {
+        "id": "lifetime",
+        "title": "属性は変わりやすいため有効期間を短くできる",
+        "hint": "属性を分ける利点は？",
+        "level": "A"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "model-extraction",
+    "name": "モデル抽出攻撃",
+    "aliases": [
+      "データポイズニング"
+    ],
+    "reading": "Model extraction attack",
+    "category": "攻撃手法",
+    "definition": "機械学習モデルに大量の入力を与えて出力を集め、その組から元のモデルと同等の機能を持つモデルを複製する攻撃です。学習データを推測するモデルインバージョン攻撃や、学習データに悪意のあるデータを混ぜるデータポイズニングとは目的が異なります。",
+    "example": "APIで公開された画像判定モデルに何万枚も問い合わせ、その結果を学習させて同じ性能のモデルを作ります。",
+    "related": [
+      "model-inversion"
+    ],
+    "criteria": [
+      {
+        "id": "copy",
+        "title": "入力と出力の組から同等のモデルを複製する",
+        "hint": "何を盗む攻撃ですか？"
+      },
+      {
+        "id": "query",
+        "title": "大量の問い合わせを行う",
+        "hint": "どうやって情報を集めますか？"
+      },
+      {
+        "id": "poisoning",
+        "title": "データポイズニングは学習データに不正なデータを混ぜてモデルの判断をゆがめる",
+        "hint": "学習データを汚す攻撃は？",
+        "level": "A"
+      },
+      {
+        "id": "measure",
+        "title": "問い合わせ回数の制限や出力の情報量を減らすことで対策する",
+        "hint": "対策は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "reverse-engineering",
+    "name": "リバースエンジニアリング",
+    "reading": "Reverse engineering",
+    "category": "攻撃手法",
+    "definition": "完成した製品やプログラムを分解・解析して、その構造や仕組み、ソースコードに相当する情報を明らかにすることです。マルウェアの解析や互換製品の開発に使われる一方、ソフトウェアの使用許諾で禁止されていることもあります。",
+    "example": "マルウェアを逆アセンブルして、通信先のC&Cサーバのアドレスを突き止めます。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "analyze",
+        "title": "製品やプログラムを解析して構造や仕組みを明らかにする",
+        "hint": "何をすることですか？"
+      },
+      {
+        "id": "use",
+        "title": "マルウェア解析や互換性の確認に使われる",
+        "hint": "正当な用途は？"
+      },
+      {
+        "id": "license",
+        "title": "使用許諾契約で禁止されていることがある",
+        "hint": "法的な注意点は？",
+        "level": "A"
+      },
+      {
+        "id": "obfuscate",
+        "title": "難読化で解析を困難にする対策がある",
+        "hint": "解析されにくくするには？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "cms-asn1",
+    "name": "CMSとASN.1",
+    "aliases": [
+      "CMS",
+      "ASN.1"
+    ],
+    "reading": "CMS / ASN.1",
+    "category": "暗号・認証",
+    "definition": "CMS（Cryptographic Message Syntax）は、署名や暗号化をしたデータの形式を定めた規格で、S/MIMEなどの基盤です。データの構造はASN.1という記法で定義されます。同じく署名の形式を定めたXMLデジタル署名は、XMLで記述する点が異なります。",
+    "example": "S/MIMEで署名したメールの添付部分は、ASN.1で定義されたCMSの形式で符号化されています。",
+    "related": [
+      "xml-signature",
+      "smime"
+    ],
+    "criteria": [
+      {
+        "id": "cms",
+        "title": "CMSは署名・暗号化データの形式を定めた規格",
+        "hint": "CMSは何の規格ですか？"
+      },
+      {
+        "id": "asn1",
+        "title": "ASN.1はデータ構造を定義する記法で、証明書やCMSで使われる",
+        "hint": "ASN.1とは？"
+      },
+      {
+        "id": "vs-xml",
+        "title": "XMLデジタル署名はXMLで記述し、文書の一部だけに署名できる",
+        "hint": "XMLデジタル署名との違いは？",
+        "level": "A"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "cdn",
+    "name": "CDN",
+    "reading": "Content Delivery Network",
+    "category": "ネットワーク",
+    "definition": "Webコンテンツのコピーを世界各地のサーバ（エッジサーバ）に配置し、利用者に近いサーバから配信する仕組みです。表示を速くし、元のサーバの負荷を減らすほか、DDoS攻撃の緩和にも使われます。",
+    "example": "動画サイトが、日本の利用者には東京のエッジサーバから動画を配信します。",
+    "related": [
+      "domain-fronting",
+      "ddos"
+    ],
+    "criteria": [
+      {
+        "id": "edge",
+        "title": "コンテンツを各地のサーバにキャッシュし、近いサーバから配信する",
+        "hint": "どこから配信しますか？"
+      },
+      {
+        "id": "load",
+        "title": "表示の高速化と元のサーバの負荷軽減",
+        "hint": "利点は？"
+      },
+      {
+        "id": "ddos",
+        "title": "大量の通信を分散して受け止め、DDoS攻撃を緩和する",
+        "hint": "セキュリティ面の効果は？",
+        "level": "A"
+      },
+      {
+        "id": "fronting",
+        "title": "CDNの仕組みを悪用してC&C通信を隠すドメインフロンティングがある",
+        "hint": "CDNを悪用する手口は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "sni",
+    "name": "SNI",
+    "reading": "Server Name Indication",
+    "category": "ネットワークセキュリティ",
+    "definition": "TLSの接続開始時に、クライアントが接続したいサーバのホスト名を伝える拡張です。1つのIPアドレスで複数のドメインのHTTPSサイトを運用でき、サーバは適切な証明書を返せます。",
+    "example": "同じIPアドレスの共用サーバで、SNIに書かれたホスト名を見て a.example と b.example の証明書を使い分けます。",
+    "related": [
+      "tls",
+      "domain-fronting"
+    ],
+    "criteria": [
+      {
+        "id": "hostname",
+        "title": "TLSの開始時に接続先のホスト名を伝える",
+        "hint": "SNIで何を伝えますか？"
+      },
+      {
+        "id": "multi",
+        "title": "1つのIPアドレスで複数ドメインの証明書を使い分けられる",
+        "hint": "何ができるようになりますか？"
+      },
+      {
+        "id": "plain",
+        "title": "SNIは暗号化前に送られるため、経路上で接続先のホスト名が分かる",
+        "hint": "SNIは暗号化されていますか？",
+        "level": "A"
+      },
+      {
+        "id": "fronting",
+        "title": "SNIとHTTPのHostヘッダーを変えるドメインフロンティングに悪用される",
+        "hint": "SNIを悪用する手口は？",
+        "level": "S"
+      },
+      {
+        "id": "ech",
+        "title": "ECH（Encrypted Client Hello）でSNIを暗号化する仕組みが登場している",
+        "hint": "SNIを隠す技術は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "dns-reflection",
+    "name": "DNSリフレクション攻撃",
+    "reading": "DNS reflection attack",
+    "category": "攻撃手法",
+    "definition": "送信元IPアドレスを攻撃対象に偽装して、オープンリゾルバなどのDNSサーバに問合せを送り、大きな応答を攻撃対象に集中させるDDoS攻撃です。小さな問合せで大きな応答を返させるため、通信量が増幅されます（DNSアンプ攻撃）。",
+    "example": "60バイトの問合せで4,000バイトの応答を返させ、攻撃対象の回線をあふれさせます。",
+    "related": [
+      "ddos",
+      "dns"
+    ],
+    "criteria": [
+      {
+        "id": "spoof",
+        "title": "送信元IPアドレスを攻撃対象に偽装して問い合わせる",
+        "hint": "どうやって応答を攻撃対象に向けますか？"
+      },
+      {
+        "id": "amplify",
+        "title": "小さな問合せで大きな応答を返させて通信量を増幅する",
+        "hint": "なぜ効果が大きいのですか？"
+      },
+      {
+        "id": "measure",
+        "title": "DNSサーバをオープンリゾルバにしない、送信元偽装のパケットを出口で遮断する",
+        "hint": "対策は？",
+        "level": "A"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "domain-hijack",
+    "name": "ドメイン名ハイジャック",
+    "reading": "Domain name hijacking",
+    "category": "攻撃手法",
+    "definition": "ドメイン名の登録情報やDNSの設定を不正に書き換えて、正規のドメイン名へのアクセスを攻撃者のサーバに誘導する攻撃です。登録事業者のアカウントの乗っ取りや、権威DNSサーバの改ざんで行われます。",
+    "example": "登録事業者の管理画面に不正ログインされ、ネームサーバの設定を書き換えられて偽サイトに誘導されました。",
+    "related": [
+      "dns-cache-poisoning",
+      "domain-name"
+    ],
+    "criteria": [
+      {
+        "id": "rewrite",
+        "title": "登録情報やDNS設定を不正に書き換える",
+        "hint": "どうやって乗っ取りますか？"
+      },
+      {
+        "id": "redirect",
+        "title": "正規のドメインへのアクセスを攻撃者のサーバへ誘導する",
+        "hint": "何が起きますか？"
+      },
+      {
+        "id": "measure",
+        "title": "登録事業者アカウントの多要素認証とレジストリロックで守る",
+        "hint": "対策は？",
+        "level": "A"
+      },
+      {
+        "id": "vs-poisoning",
+        "title": "DNSキャッシュポイズニングはキャッシュサーバに偽情報を入れる点が違う",
+        "hint": "キャッシュポイズニングとの違いは？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "provable-security",
+    "name": "情報理論的安全性と計算量的安全性",
+    "aliases": [
+      "情報理論的安全性",
+      "計算量的安全性",
+      "DH鍵共有",
+      "RSA暗号",
+      "楕円曲線暗号"
+    ],
+    "reading": "Information-theoretic / computational security",
+    "category": "暗号・認証",
+    "definition": "暗号の安全性の考え方です。情報理論的安全性は、無限の計算能力を持つ攻撃者にも解読できない安全性で、ワンタイムパッドが代表です。計算量的安全性は、現実的な時間では解読に必要な計算が終わらないことに基づく安全性で、RSA暗号（素因数分解）やDH鍵共有・楕円曲線暗号（離散対数問題）が該当します。",
+    "example": "RSAは計算機が十分速くなれば解読され得ますが、ワンタイムパッドは計算能力によらず解読できません。",
+    "related": [
+      "one-time-pad",
+      "pqc"
+    ],
+    "criteria": [
+      {
+        "id": "it",
+        "title": "情報理論的安全性は無限の計算能力でも解読できない",
+        "hint": "ワンタイムパッドの安全性は？"
+      },
+      {
+        "id": "comp",
+        "title": "計算量的安全性は解読に現実的でない計算量が必要なことに基づく",
+        "hint": "RSAの安全性は？"
+      },
+      {
+        "id": "problems",
+        "title": "RSAは素因数分解、DH鍵共有と楕円曲線暗号は離散対数問題の難しさに基づく",
+        "hint": "それぞれの基になる問題は？",
+        "level": "A"
+      },
+      {
+        "id": "quantum",
+        "title": "計算量的安全性の暗号は量子コンピュータの登場で脅かされる",
+        "hint": "量子コンピュータの影響を受けるのは？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "ic-card",
+    "name": "ICカード",
+    "aliases": [
+      "接触型ICカード",
+      "非接触型ICカード",
+      "静電容量方式"
+    ],
+    "reading": "IC card",
+    "category": "暗号・認証",
+    "definition": "ICチップを埋め込んだカードです。端子を読取り機に接触させる接触型と、電波で通信する非接触型があります。ICチップ内で秘密鍵の処理を行えるため、磁気カードより偽造が困難です。",
+    "example": "交通系ICカードは非接触型、クレジットカードのICチップは接触型が一般的です。",
+    "related": [
+      "biometrics"
+    ],
+    "criteria": [
+      {
+        "id": "chip",
+        "title": "ICチップを内蔵し、内部で暗号処理ができる",
+        "hint": "磁気カードとの違いは？"
+      },
+      {
+        "id": "contact",
+        "title": "接触型は端子を接触させ、非接触型は電波で通信する",
+        "hint": "二つの方式の違いは？"
+      },
+      {
+        "id": "tamper",
+        "title": "耐タンパ性があり内部の秘密情報を取り出しにくい",
+        "hint": "偽造しにくい理由は？",
+        "level": "A"
+      },
+      {
+        "id": "touch",
+        "title": "タッチパネルの静電容量方式は指の静電気の変化で位置を検知する（カードとは別の技術）",
+        "hint": "静電容量方式とは？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "security-orgs",
+    "name": "NISTとENISA",
+    "aliases": [
+      "NIST",
+      "ENISA"
+    ],
+    "reading": "NIST / ENISA",
+    "category": "セキュリティ運用",
+    "definition": "セキュリティの標準やガイドラインを出す公的機関です。NISTは米国の国立標準技術研究所で、SP 800シリーズやサイバーセキュリティフレームワークを公開しています。ENISAは欧州連合のサイバーセキュリティ機関です。CVEやATT&CKを運営するMITREは米国の非営利組織です。",
+    "example": "NIST SP 800-63は電子的な本人確認の保証レベルを定めたガイドラインです。",
+    "related": [
+      "mitre-attack"
+    ],
+    "criteria": [
+      {
+        "id": "nist",
+        "title": "NISTは米国の標準化機関でSP 800シリーズなどを公開する",
+        "hint": "NISTとは？"
+      },
+      {
+        "id": "enisa",
+        "title": "ENISAはEUのサイバーセキュリティ機関",
+        "hint": "ENISAとは？"
+      },
+      {
+        "id": "mitre",
+        "title": "MITREはCVEやATT&CKを運営する米国の非営利組織",
+        "hint": "MITREとの違いは？",
+        "level": "A"
+      },
+      {
+        "id": "csf",
+        "title": "NIST CSFは識別・防御・検知・対応・復旧（2.0で統治を追加）で対策を整理する",
+        "hint": "NISTのフレームワークの構成は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "cnapp-family",
+    "name": "CWPPとCASB",
+    "aliases": [
+      "CWPP",
+      "CASB"
+    ],
+    "reading": "CWPP / CASB",
+    "category": "クラウドセキュリティ",
+    "definition": "クラウドを守る製品の分類です。CWPPはクラウド上の仮想マシンやコンテナなどのワークロードを保護し、CASBは利用者とクラウドサービスの間で利用状況を可視化・制御します。設定の不備を検査するのはCSPMです。",
+    "example": "CASBで社員が無許可で使っているクラウドストレージ（シャドーIT）を見つけます。",
+    "related": [
+      "cspm"
+    ],
+    "criteria": [
+      {
+        "id": "cwpp",
+        "title": "CWPPはクラウド上のワークロード（サーバ・コンテナ）を保護する",
+        "hint": "CWPPは何を守りますか？"
+      },
+      {
+        "id": "casb",
+        "title": "CASBは利用者のクラウドサービス利用を可視化・制御する",
+        "hint": "CASBの役割は？"
+      },
+      {
+        "id": "cspm",
+        "title": "CSPMはクラウドの設定ミスを検知・修正する",
+        "hint": "設定の不備を見つけるのは？",
+        "level": "A"
+      },
+      {
+        "id": "shadow",
+        "title": "CASBはシャドーITの発見や情報持出しの防止に使う",
+        "hint": "CASBの代表的な使い道は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "wps",
+    "name": "WPS",
+    "reading": "Wi-Fi Protected Setup",
+    "category": "ネットワークセキュリティ",
+    "definition": "無線LANの接続設定を、ボタンを押すかPINを入力するだけで簡単に行える規格です。PIN方式には総当たりで突破される脆弱性があるため、使わないよう無効にすることが推奨されます。",
+    "example": "ルータのWPSボタンを押してから、プリンタのWPSボタンを押すと自動で接続されます。",
+    "related": [
+      "ieee8021x"
+    ],
+    "criteria": [
+      {
+        "id": "easy",
+        "title": "ボタンやPINで無線LANの設定を簡単に行う",
+        "hint": "WPSとは？"
+      },
+      {
+        "id": "pin",
+        "title": "PIN方式は総当たりで突破されやすい",
+        "hint": "セキュリティ上の問題は？"
+      },
+      {
+        "id": "disable",
+        "title": "使わない場合は無効にする",
+        "hint": "推奨される設定は？",
+        "level": "A"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "physical-security",
+    "name": "入退室管理",
+    "reading": "Physical access control",
+    "category": "セキュリティ運用",
+    "definition": "ICカードや生体認証などで、建物やサーバ室に入る人を確認・記録・制限する物理的な対策です。ITに係る全般統制の一つでもあり、共連れ（認証した人の後ろについて入る）を防ぐ仕組みも重要です。",
+    "example": "サーバ室の扉をICカードで開け、入室と退室の記録が残るようにします。",
+    "related": [
+      "application-control"
+    ],
+    "criteria": [
+      {
+        "id": "control",
+        "title": "建物やサーバ室への入室を確認・制限・記録する",
+        "hint": "入退室管理とは？"
+      },
+      {
+        "id": "tailgate",
+        "title": "共連れを防ぐ仕組み（アンチパスバックなど）が必要",
+        "hint": "よくある抜け道は？"
+      },
+      {
+        "id": "general",
+        "title": "IT全般統制の一つで、個々の業務処理統制ではない",
+        "hint": "統制の分類では？",
+        "level": "A"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "firewall",
+    "name": "ファイアウォール",
+    "reading": "Firewall",
+    "category": "ネットワークセキュリティ",
+    "definition": "ネットワークの境界で、あらかじめ決めたルールに従って通信を許可・遮断する仕組みです。IPアドレスやポート番号で判定するパケットフィルタリング型が基本で、外部と内部の間にDMZを設けて公開サーバを置きます。",
+    "example": "外部からはWebサーバの443番ポートへの通信だけを許可し、他はすべて遮断します。",
+    "related": [
+      "ids-ips"
+    ],
+    "criteria": [
+      {
+        "id": "rule",
+        "title": "ルールに従って通信を許可・遮断する",
+        "hint": "ファイアウォールの働きは？"
+      },
+      {
+        "id": "filter",
+        "title": "IPアドレスやポート番号などで判定する",
+        "hint": "何を見て判断しますか？"
+      },
+      {
+        "id": "stateful",
+        "title": "ステートフルインスペクションは通信の状態を記録して戻りの通信を判断する",
+        "hint": "往復の通信をどう扱いますか？",
+        "level": "A"
+      },
+      {
+        "id": "dmz",
+        "title": "公開サーバは内部LANと分けたDMZに置く",
+        "hint": "公開サーバはどこに置きますか？",
+        "level": "A"
+      },
+      {
+        "id": "waf",
+        "title": "アプリケーション層の攻撃はWAFで防ぐ",
+        "hint": "SQLインジェクションも防げますか？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "uml",
+    "name": "UML",
+    "aliases": [
+      "アクティビティ図",
+      "オブジェクト図",
+      "コンポーネント図",
+      "ユースケース図",
+      "クラス図",
+      "状態マシン図",
+      "多重度"
+    ],
+    "reading": "Unified Modeling Language",
+    "category": "ソフトウェア設計",
+    "definition": "オブジェクト指向の分析・設計で使う図の表記法を統一したものです。構造を表すクラス図・オブジェクト図・コンポーネント図、振る舞いを表すユースケース図・アクティビティ図・状態マシン図・シーケンス図などがあります。",
+    "example": "ある時点の具体的なインスタンス同士の関係を示すにはオブジェクト図、業務の流れを示すにはアクティビティ図を使います。",
+    "related": [
+      "oop"
+    ],
+    "criteria": [
+      {
+        "id": "notation",
+        "title": "オブジェクト指向の設計で使う図の標準的な表記法",
+        "hint": "UMLとは？"
+      },
+      {
+        "id": "structure",
+        "title": "クラス図はクラスの構造と関係、オブジェクト図はある時点のインスタンスの関係を表す",
+        "hint": "構造を表す図は？"
+      },
+      {
+        "id": "behavior",
+        "title": "ユースケース図は利用者から見た機能、アクティビティ図は処理の流れ、状態マシン図は状態の遷移を表す",
+        "hint": "振る舞いを表す図は？"
+      },
+      {
+        "id": "multiplicity",
+        "title": "関連の端に書く多重度（1、0..1、*など）で対応する数を表す",
+        "hint": "「1対多」はどう表しますか？",
+        "level": "A"
+      },
+      {
+        "id": "component",
+        "title": "コンポーネント図はソフトウェア部品とその依存関係を表す",
+        "hint": "部品の構成を表す図は？",
+        "level": "A"
+      },
+      {
+        "id": "sequence",
+        "title": "シーケンス図はオブジェクト間のメッセージのやり取りを時系列で表す",
+        "hint": "やり取りの順序を表す図は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "oop",
+    "name": "オブジェクト指向",
+    "aliases": [
+      "インスタンス",
+      "サブクラス",
+      "スーパークラス",
+      "オーバーライド",
+      "集約",
+      "継承"
+    ],
+    "reading": "Object-oriented",
+    "category": "ソフトウェア設計",
+    "definition": "データとそれを操作する手続をオブジェクトとしてまとめ、オブジェクトの組合せでシステムを作る考え方です。カプセル化、継承（スーパークラスの性質をサブクラスが引き継ぐ）、多態性が特徴で、クラスから作った実体をインスタンスと呼びます。",
+    "example": "「動物」クラスを継承した「犬」クラスで、「鳴く」メソッドをオーバーライドして「ワン」と鳴くようにします。",
+    "related": [
+      "uml"
+    ],
+    "criteria": [
+      {
+        "id": "object",
+        "title": "データと手続をオブジェクトにまとめる（カプセル化）",
+        "hint": "オブジェクトとは？"
+      },
+      {
+        "id": "inherit",
+        "title": "サブクラスはスーパークラスの性質を継承する",
+        "hint": "継承とは？"
+      },
+      {
+        "id": "instance",
+        "title": "クラスから生成した実体をインスタンスという",
+        "hint": "インスタンスとは？"
+      },
+      {
+        "id": "override",
+        "title": "オーバーライドはスーパークラスのメソッドをサブクラスで再定義する",
+        "hint": "オーバーライドとは？",
+        "level": "A"
+      },
+      {
+        "id": "aggregation",
+        "title": "集約は「全体と部分」の関係（is-part-of）、継承は「is-a」の関係",
+        "hint": "集約と継承の違いは？",
+        "level": "A"
+      },
+      {
+        "id": "poly",
+        "title": "多態性（ポリモーフィズム）で同じ呼出しでもオブジェクトごとに異なる動作をする",
+        "hint": "同じメッセージで違う動作をする性質は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "tuckman",
+    "name": "タックマンモデル",
+    "aliases": [
+      "成立期",
+      "動乱期",
+      "安定期",
+      "遂行期"
+    ],
+    "reading": "Tuckman model",
+    "category": "プロジェクト管理",
+    "definition": "チームが成長する過程を、成立期（形成期）→動乱期（混乱期）→安定期（統一期）→遂行期（機能期）の段階で表したモデルです。動乱期にはメンバーの考え方の違いから対立が起き、それを乗り越えると規範ができて成果を出せるようになります。",
+    "example": "新しいプロジェクトで役割分担を巡って意見がぶつかるのは動乱期です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "stages",
+        "title": "成立期→動乱期→安定期→遂行期の順に成長する",
+        "hint": "4つの段階の順序は？"
+      },
+      {
+        "id": "storming",
+        "title": "動乱期は考え方の違いから対立が生じる段階",
+        "hint": "対立が起きるのはどの段階ですか？"
+      },
+      {
+        "id": "norming",
+        "title": "安定期にはチームの規範や役割が確立する",
+        "hint": "共通のルールができるのは？",
+        "level": "A"
+      },
+      {
+        "id": "adjourning",
+        "title": "散会期（終結期）を加えた5段階で表すこともある",
+        "hint": "5段階目は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "man-month",
+    "name": "人月と工数",
+    "aliases": [
+      "人月",
+      "工数",
+      "生産性",
+      "引継ぎ",
+      "人件費"
+    ],
+    "reading": "Man-month / effort",
+    "category": "プロジェクト管理",
+    "definition": "工数は作業に必要な人数×期間で表す作業量で、人月は1人が1か月で行う作業量の単位です。要員を追加すると、引継ぎや教育、コミュニケーションの手間が増えるため、人数に比例して生産性は上がりません。",
+    "example": "12人月の作業を3人で行えば4か月、途中で2人追加しても引継ぎの工数がかかります。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "unit",
+        "title": "工数は人数×期間で表す作業量、人月はその単位",
+        "hint": "12人月とは？"
+      },
+      {
+        "id": "productivity",
+        "title": "生産性は単位工数当たりの成果物の量",
+        "hint": "生産性の意味は？"
+      },
+      {
+        "id": "handover",
+        "title": "要員追加では引継ぎや教育の工数が発生し、すぐには生産性が上がらない",
+        "hint": "遅れたプロジェクトに人を足すとどうなりますか？",
+        "level": "A"
+      },
+      {
+        "id": "cost",
+        "title": "人件費は工数×単価で見積もる",
+        "hint": "人件費の求め方は？",
+        "level": "A"
+      },
+      {
+        "id": "brooks",
+        "title": "遅れているプロジェクトへの要員追加はさらに遅らせる（ブルックスの法則）",
+        "hint": "有名な経験則は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "effort-distribution",
+    "name": "作業配分モデル",
+    "aliases": [
+      "工数比",
+      "期間比"
+    ],
+    "reading": "Effort distribution model",
+    "category": "プロジェクト管理",
+    "definition": "ソフトウェア開発の各工程に、全体の工数と期間をどんな割合で配分するかを示したモデルです。工数比と期間比で表し、完了した工程から残りの工数や日数を見積もるのに使います。",
+    "example": "設計の工数比が0.3、全体の工数が100人月なら、設計に30人月を配分します。",
+    "related": [
+      "man-month"
+    ],
+    "criteria": [
+      {
+        "id": "ratio",
+        "title": "各工程に全体の工数と期間を割合で配分する",
+        "hint": "何を表すモデルですか？"
+      },
+      {
+        "id": "two",
+        "title": "工数比と期間比を別々に持つ",
+        "hint": "どんな比率がありますか？"
+      },
+      {
+        "id": "estimate",
+        "title": "終わった工程の実績から全体や残りの工数・期間を見積もる",
+        "hint": "進捗の見積りにどう使いますか？",
+        "level": "A"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "itsm",
+    "name": "サービスマネジメント",
+    "aliases": [
+      "JIS Q 20000-1",
+      "サービス要求",
+      "変更要求",
+      "リリース"
+    ],
+    "reading": "IT service management",
+    "category": "サービス管理",
+    "definition": "ITサービスを計画・設計・提供・改善して、利用者に価値を届けるための活動の体系です。JIS Q 20000-1（ISO/IEC 20000-1）が要求事項を定め、サービス要求（パスワード再設定など定型的な依頼）や変更要求（変更管理）、リリースの管理などのプロセスを含みます。",
+    "example": "利用者からの「アカウントを作ってほしい」はサービス要求、「システムを改修してほしい」は変更要求として扱います。",
+    "related": [
+      "incident-problem"
+    ],
+    "criteria": [
+      {
+        "id": "value",
+        "title": "ITサービスを計画・提供・改善して価値を届ける活動の体系",
+        "hint": "サービスマネジメントとは？"
+      },
+      {
+        "id": "standard",
+        "title": "JIS Q 20000-1が要求事項を定める",
+        "hint": "規格は？"
+      },
+      {
+        "id": "request",
+        "title": "サービス要求は定型的な依頼、変更要求はサービスや構成を変える依頼で、変更管理で扱う",
+        "hint": "サービス要求と変更要求の違いは？",
+        "level": "A"
+      },
+      {
+        "id": "release",
+        "title": "承認された変更はリリース及び展開管理で本番に反映する",
+        "hint": "変更を本番に反映するのは？",
+        "level": "A"
+      },
+      {
+        "id": "itil",
+        "title": "ITILはサービスマネジメントのベストプラクティス集",
+        "hint": "ITILとの関係は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "incident-problem",
+    "name": "インシデント管理と問題管理",
+    "aliases": [
+      "インシデント",
+      "問題管理",
+      "根本原因"
+    ],
+    "reading": "Incident / problem management",
+    "category": "サービス管理",
+    "definition": "インシデント管理は、サービスの中断などをできるだけ早く通常の状態に戻す活動です。問題管理は、インシデントの根本原因を突き止めて再発を防ぐ活動で、恒久的な解決には変更管理を通じて変更を行います。",
+    "example": "サーバの再起動で業務を再開させるのはインシデント管理、メモリリークの原因を調べて修正するのは問題管理です。",
+    "related": [
+      "itsm"
+    ],
+    "criteria": [
+      {
+        "id": "incident",
+        "title": "インシデント管理は迅速なサービスの回復を目指す",
+        "hint": "インシデント管理の目的は？"
+      },
+      {
+        "id": "problem",
+        "title": "問題管理は根本原因を特定し再発を防ぐ",
+        "hint": "問題管理の目的は？"
+      },
+      {
+        "id": "known",
+        "title": "原因と回避策が分かったものを既知の誤りとして記録する",
+        "hint": "既知の誤りとは？",
+        "level": "A"
+      },
+      {
+        "id": "change",
+        "title": "恒久的な解決策は変更管理を通じて適用する",
+        "hint": "原因を直すにはどのプロセスを使いますか？",
+        "level": "A"
+      },
+      {
+        "id": "proactive",
+        "title": "過去の傾向から将来のインシデントを予防するプロアクティブな問題管理もある",
+        "hint": "起きる前の問題管理は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": [
+      "問題管理の目的を「早く復旧すること」とする誤りがあります（それはインシデント管理）。"
+    ]
+  },
+  {
+    "id": "slm",
+    "name": "サービスレベル管理",
+    "aliases": [
+      "SLA",
+      "サービスレベル目標"
+    ],
+    "reading": "Service level management",
+    "category": "サービス管理",
+    "definition": "サービスの提供者と利用者の間で、提供するサービスの内容と品質の目標（サービスレベル目標）を合意し、SLA（サービスレベル合意書）として文書化して、達成状況を監視・報告・見直す活動です。",
+    "example": "「稼働率99.9%以上、障害の一次回答は30分以内」をSLAで合意し、毎月の実績を報告します。",
+    "related": [
+      "itsm"
+    ],
+    "criteria": [
+      {
+        "id": "agree",
+        "title": "サービスの内容と品質の目標を合意する（SLA）",
+        "hint": "何を合意しますか？"
+      },
+      {
+        "id": "monitor",
+        "title": "達成状況を監視し報告する",
+        "hint": "合意した後は？"
+      },
+      {
+        "id": "review",
+        "title": "JIS Q 20000-1ではサービスレベル目標の達成状況を計画した間隔でレビューする",
+        "hint": "どのくらいの頻度で見直しますか？",
+        "level": "A"
+      },
+      {
+        "id": "slo",
+        "title": "SLOはSLAに含める具体的な目標値",
+        "hint": "SLOとは？",
+        "level": "A"
+      },
+      {
+        "id": "ola",
+        "title": "内部の部門間の合意はOLAという",
+        "hint": "社内の部門間の合意は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "service-availability",
+    "name": "サービス可用性",
+    "aliases": [
+      "サービス提供時間",
+      "計画停止"
+    ],
+    "reading": "Service availability",
+    "category": "サービス管理",
+    "definition": "合意したサービス提供時間のうち、実際にサービスを利用できた時間の割合です。（サービス提供時間－停止時間）÷サービス提供時間で求め、あらかじめ合意した計画停止は停止時間に含めないのが一般的です。",
+    "example": "月の提供時間が600時間で可用性99.5%なら、許容される停止時間は3時間です。",
+    "related": [
+      "slm",
+      "availability"
+    ],
+    "criteria": [
+      {
+        "id": "ratio",
+        "title": "合意したサービス提供時間に対する利用可能時間の割合",
+        "hint": "サービス可用性とは？"
+      },
+      {
+        "id": "calc",
+        "title": "(提供時間－停止時間)÷提供時間で求める",
+        "hint": "どう計算しますか？"
+      },
+      {
+        "id": "planned",
+        "title": "合意した計画停止は停止時間に含めない",
+        "hint": "計画停止は含めますか？",
+        "level": "A"
+      },
+      {
+        "id": "vs-availability",
+        "title": "機器の稼働率（MTBF/MTTR）ではなく利用者から見た可用性",
+        "hint": "機器の稼働率との違いは？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "capacity-continuity",
+    "name": "容量・能力管理とサービス継続管理",
+    "aliases": [
+      "容量・能力管理",
+      "サービス継続管理"
+    ],
+    "reading": "Capacity management / service continuity",
+    "category": "サービス管理",
+    "definition": "容量・能力管理は、現在と将来の需要を満たすように、ITの資源と性能を計画・監視する活動です。サービス継続管理は、災害などの重大な事態でも、合意したレベルでサービスを継続・復旧できるよう計画し、試験する活動です。",
+    "example": "利用者の増加を見込んでサーバを増強するのは容量・能力管理、大地震に備えて別拠点で復旧する訓練をするのはサービス継続管理です。",
+    "related": [
+      "slm",
+      "capacity-planning"
+    ],
+    "criteria": [
+      {
+        "id": "capacity",
+        "title": "容量・能力管理は需要に見合う資源と性能を計画・監視する",
+        "hint": "容量・能力管理とは？"
+      },
+      {
+        "id": "continuity",
+        "title": "サービス継続管理は重大な事態でもサービスを継続・復旧できるようにする",
+        "hint": "サービス継続管理とは？"
+      },
+      {
+        "id": "test",
+        "title": "継続計画は定期的に試験して有効性を確かめる",
+        "hint": "計画を作った後に必要なことは？",
+        "level": "A"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "audit-standards",
+    "name": "システム監査基準",
+    "aliases": [
+      "所見",
+      "正当な懐疑心",
+      "正当な注意",
+      "独立性",
+      "再現性"
+    ],
+    "reading": "System audit standards",
+    "category": "システム監査",
+    "definition": "経済産業省が定める、システム監査の実施に関する規範です。監査人の独立性・客観性、専門職としての正当な注意と正当な懐疑心、監査計画、監査手続と監査証拠、監査調書、報告とフォローアップなどを定めています。",
+    "example": "監査人は、被監査部門の説明をうのみにせず、正当な懐疑心を持って証拠を確かめます。",
+    "related": [
+      "risk-approach"
+    ],
+    "criteria": [
+      {
+        "id": "norm",
+        "title": "システム監査の実施に関する規範",
+        "hint": "システム監査基準とは？"
+      },
+      {
+        "id": "independence",
+        "title": "監査人は監査対象から独立し、客観的な立場を保つ",
+        "hint": "監査人に求められる立場は？"
+      },
+      {
+        "id": "skepticism",
+        "title": "正当な注意と正当な懐疑心を持って監査する",
+        "hint": "監査人の心構えは？"
+      },
+      {
+        "id": "finding",
+        "title": "監査証拠から得た事実に基づく評価を所見（監査意見の根拠）とする",
+        "hint": "所見とは？",
+        "level": "A"
+      },
+      {
+        "id": "management",
+        "title": "システム管理基準は監査の判断の尺度となる",
+        "hint": "システム管理基準との関係は？",
+        "level": "A"
+      },
+      {
+        "id": "reproducible",
+        "title": "第三者が同じ結論に至れるよう監査調書に記録する",
+        "hint": "なぜ調書を残すのですか？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "audit-procedure",
+    "name": "監査手続と監査証拠",
+    "aliases": [
+      "監査手続",
+      "監査証拠"
+    ],
+    "reading": "Audit procedures / evidence",
+    "category": "システム監査",
+    "definition": "監査手続は、監査意見の根拠となる監査証拠を入手するために行う手続です。監査証拠は、監査人が監査の結論を導くために入手した情報で、十分かつ適切なものでなければなりません。",
+    "example": "アクセス権の設定が適切かを確かめるため、設定画面を閲覧し、権限一覧と人事データを突き合わせる手続を行います。",
+    "related": [
+      "audit-standards",
+      "audit-techniques"
+    ],
+    "criteria": [
+      {
+        "id": "procedure",
+        "title": "監査手続は監査証拠を入手するための手続",
+        "hint": "監査手続の目的は？"
+      },
+      {
+        "id": "evidence",
+        "title": "監査証拠は結論の根拠となる情報で、十分かつ適切である必要がある",
+        "hint": "監査証拠に求められることは？"
+      },
+      {
+        "id": "techniques",
+        "title": "閲覧・観察・インタビュー・突合・再実施などの技法を組み合わせる",
+        "hint": "どんな方法で証拠を集めますか？",
+        "level": "A"
+      },
+      {
+        "id": "sampling",
+        "title": "全件ではなく試査（サンプリング）で行うことが多い",
+        "hint": "全件を調べますか？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "preliminary-survey",
+    "name": "予備調査と本調査",
+    "aliases": [
+      "予備調査",
+      "本調査"
+    ],
+    "reading": "Preliminary survey / main survey",
+    "category": "システム監査",
+    "definition": "システム監査の実施の段階です。予備調査では、監査対象の実態を把握するために資料の入手やヒアリングを行い、本調査で行う監査手続を具体的に決めます。本調査では、決めた監査手続を実施して監査証拠を入手し、評価します。",
+    "example": "予備調査で業務マニュアルを読み、アクセス管理が弱そうだと分かったので、本調査ではその点を重点的に確かめます。",
+    "related": [
+      "audit-procedure"
+    ],
+    "criteria": [
+      {
+        "id": "pre",
+        "title": "予備調査で対象の実態を把握し、本調査の監査手続を決める",
+        "hint": "予備調査の目的は？"
+      },
+      {
+        "id": "main",
+        "title": "本調査で監査手続を実施し監査証拠を集めて評価する",
+        "hint": "本調査で行うことは？"
+      },
+      {
+        "id": "plan",
+        "title": "予備調査の結果で監査計画を見直すことがある",
+        "hint": "予備調査の結果は何に反映しますか？",
+        "level": "A"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "audit-techniques",
+    "name": "監査技法",
+    "aliases": [
+      "ウォークスルー法",
+      "ドキュメントレビュー法",
+      "インタビュー法",
+      "テストデータ法",
+      "チェックリスト法",
+      "突合・照合法",
+      "現地調査法",
+      "コンピュータ支援監査技法",
+      "並行シミュレーション法"
+    ],
+    "reading": "Audit techniques",
+    "category": "システム監査",
+    "definition": "監査証拠を集める具体的な方法です。ドキュメントレビュー法（文書を確かめる）、インタビュー法（聞き取る）、チェックリスト法、ウォークスルー法（データの流れを順に追う）、突合・照合法（記録どうしを突き合わせる）、現地調査法、テストデータ法（テスト用データで処理を確かめる）、並行シミュレーション法（監査人のプログラムと結果を比べる）、コンピュータ支援監査技法（CAAT）などがあります。",
+    "example": "受注伝票から入力・処理・出力までのデータの流れを追い、統制が働いているかを確かめるのはウォークスルー法です。",
+    "related": [
+      "audit-procedure"
+    ],
+    "criteria": [
+      {
+        "id": "document",
+        "title": "ドキュメントレビュー法は文書を、インタビュー法は聞き取りで確かめる",
+        "hint": "文書や聞き取りによる技法は？"
+      },
+      {
+        "id": "walkthrough",
+        "title": "ウォークスルー法はデータの生成から入力・処理・出力までを追跡する",
+        "hint": "処理の流れを追う技法は？"
+      },
+      {
+        "id": "testdata",
+        "title": "テストデータ法はテスト用データを処理させて結果を予想と比べる",
+        "hint": "プログラムの処理を確かめる技法は？"
+      },
+      {
+        "id": "parallel",
+        "title": "並行シミュレーション法は監査人が用意したプログラムで同じデータを処理し結果を比べる",
+        "hint": "監査人のプログラムを使う技法は？",
+        "level": "A"
+      },
+      {
+        "id": "caat",
+        "title": "CAATはコンピュータを使って大量データを分析・検証する",
+        "hint": "コンピュータを使う監査技法は？",
+        "level": "A"
+      },
+      {
+        "id": "match",
+        "title": "突合・照合法は関連する記録を突き合わせて正確性を確かめる",
+        "hint": "記録同士を比べる技法は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "proof-list",
+    "name": "プルーフリスト",
+    "aliases": [
+      "網羅性"
+    ],
+    "reading": "Proof list",
+    "category": "システム監査",
+    "definition": "データを入力したあとに、入力した内容を一覧で出力したものです。元の伝票と突き合わせて、入力漏れや重複、誤りがないこと（網羅性・正確性）を確認するのに使います。",
+    "example": "1日の受注伝票とプルーフリストの件数・合計金額を照合し、入力漏れがないことを確かめます。",
+    "related": [
+      "application-control"
+    ],
+    "criteria": [
+      {
+        "id": "list",
+        "title": "入力したデータを一覧にして出力したもの",
+        "hint": "プルーフリストとは？"
+      },
+      {
+        "id": "match",
+        "title": "元の伝票と突き合わせ入力の漏れ・重複・誤りを確かめる",
+        "hint": "何に使いますか？"
+      },
+      {
+        "id": "completeness",
+        "title": "網羅性はデータが漏れなく重複なく処理されること",
+        "hint": "網羅性とは？",
+        "level": "A"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "audit-follow-up",
+    "name": "フォローアップ",
+    "aliases": [
+      "改善提案"
+    ],
+    "reading": "Follow-up",
+    "category": "システム監査",
+    "definition": "システム監査で、監査報告書に記載した改善提案に対して、被監査部門が改善を実施しているかを確認する活動です。改善を実施するのは被監査部門で、監査人は状況を確認して評価します。",
+    "example": "前回の監査で指摘したパスワード管理の改善が、半年後に実施されているかを確認します。",
+    "related": [
+      "audit-standards"
+    ],
+    "criteria": [
+      {
+        "id": "confirm",
+        "title": "改善提案に対する改善の実施状況を確認する",
+        "hint": "フォローアップで何をしますか？"
+      },
+      {
+        "id": "who",
+        "title": "改善を実施するのは監査人ではなく被監査部門",
+        "hint": "誰が改善しますか？"
+      },
+      {
+        "id": "recommend",
+        "title": "改善提案は監査報告書に記載し、指摘事項と改善の方向を示す",
+        "hint": "改善提案はどこに書きますか？",
+        "level": "A"
+      }
+    ],
+    "commonMistakes": [
+      "監査人が自ら改善を実施する、とする誤りがあります（独立性を損ないます）。"
+    ]
+  },
+  {
+    "id": "it-governance",
+    "name": "ITガバナンス",
+    "aliases": [
+      "ガバナンス",
+      "マネジメント",
+      "コントロール",
+      "IT投資",
+      "PDCAサイクル"
+    ],
+    "reading": "IT governance",
+    "category": "システム戦略",
+    "definition": "経営陣が、ITの活用について方針を示し、IT投資や利用が組織の目標に沿っているかを評価・指示・モニタリングする仕組みです。ガバナンスは経営陣による方向付け、マネジメントはその方針に沿った計画と実行、コントロールは目標どおりに進むよう管理する仕組みを指します。",
+    "example": "経営会議がIT投資の優先順位を決め、その効果を定期的に評価するのはITガバナンスの活動です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "edm",
+        "title": "経営陣が評価・指示・モニタリング（EDM）を行う",
+        "hint": "ITガバナンスで経営陣は何をしますか？"
+      },
+      {
+        "id": "levels",
+        "title": "ガバナンスは方向付け、マネジメントは計画・実行、コントロールは管理の仕組み",
+        "hint": "三つの違いは？"
+      },
+      {
+        "id": "investment",
+        "title": "IT投資が経営目標に貢献しているかを評価する",
+        "hint": "IT投資との関係は？",
+        "level": "A"
+      },
+      {
+        "id": "pdca",
+        "title": "マネジメントはPDCAサイクルで継続的に改善する",
+        "hint": "マネジメントの進め方は？",
+        "level": "A"
+      },
+      {
+        "id": "iso38500",
+        "title": "ISO/IEC 38500（JIS Q 38500）がITガバナンスの原則を定める",
+        "hint": "規格は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "program-management",
+    "name": "プログラムマネジメント",
+    "aliases": [
+      "プロジェクトマネジメント",
+      "相乗効果",
+      "経営資源"
+    ],
+    "reading": "Program management",
+    "category": "プロジェクト管理",
+    "definition": "互いに関連する複数のプロジェクトをまとめて管理し、個々のプロジェクトでは得られない相乗効果（シナジー）で戦略的な目標を達成することです。個々のプロジェクトを計画どおり完了させるのはプロジェクトマネジメントです。",
+    "example": "新物流センターの建設、システム刷新、組織再編の3つのプロジェクトを、物流改革という1つのプログラムとして管理します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "multi",
+        "title": "関連する複数のプロジェクトをまとめて管理する",
+        "hint": "何を管理しますか？"
+      },
+      {
+        "id": "synergy",
+        "title": "相乗効果により戦略目標を達成する",
+        "hint": "何を目指しますか？"
+      },
+      {
+        "id": "resource",
+        "title": "プロジェクト間で経営資源（人・もの・金・情報）を配分・調整する",
+        "hint": "プロジェクト間で調整するものは？",
+        "level": "A"
+      },
+      {
+        "id": "portfolio",
+        "title": "ポートフォリオマネジメントは投資の選択と優先順位付けを行う",
+        "hint": "さらに上位の管理は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "pmbok",
+    "name": "PMBOK",
+    "aliases": [
+      "コストの管理"
+    ],
+    "reading": "Project Management Body of Knowledge",
+    "category": "プロジェクト管理",
+    "definition": "米国PMIがまとめたプロジェクトマネジメントの知識体系です。スコープ、スケジュール、コスト、品質、資源、コミュニケーション、リスク、調達、ステークホルダーなどの知識エリアで、必要な管理を整理しています。",
+    "example": "コストの管理では、EVMで予算と実績の差を監視し、必要なら是正処置をとります。",
+    "related": [
+      "evm"
+    ],
+    "criteria": [
+      {
+        "id": "body",
+        "title": "プロジェクトマネジメントの知識体系",
+        "hint": "PMBOKとは？"
+      },
+      {
+        "id": "areas",
+        "title": "スコープ・スケジュール・コスト・品質・リスクなどの知識エリアで整理する",
+        "hint": "どんな分野に分かれますか？"
+      },
+      {
+        "id": "cost",
+        "title": "コストの管理では予算と実績を比べ、変更を管理する",
+        "hint": "コストの管理で行うことは？",
+        "level": "A"
+      },
+      {
+        "id": "principle",
+        "title": "第7版では原則と成果を重視するパフォーマンス領域の構成に変わった",
+        "hint": "最新版の特徴は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "project-charter",
+    "name": "プロジェクト憲章",
+    "aliases": [
+      "プロジェクトマネジメント計画書"
+    ],
+    "reading": "Project charter",
+    "category": "プロジェクト管理",
+    "definition": "プロジェクトを正式に認可し、プロジェクトマネージャーに組織の資源を使う権限を与える文書です。目的、概要、主要な成果物、マイルストーン、予算の概略などを記します。詳細な進め方は、その後に作るプロジェクトマネジメント計画書にまとめます。",
+    "example": "スポンサーが憲章に署名して初めて、プロジェクトマネージャーは要員を集め始められます。",
+    "related": [
+      "pmbok",
+      "scope-statement"
+    ],
+    "criteria": [
+      {
+        "id": "authorize",
+        "title": "プロジェクトを正式に認可し、PMに権限を与える",
+        "hint": "何のための文書ですか？"
+      },
+      {
+        "id": "content",
+        "title": "目的や主要な成果物、マイルストーン、予算の概略を記す",
+        "hint": "何を書きますか？"
+      },
+      {
+        "id": "plan",
+        "title": "詳細な実行方法はプロジェクトマネジメント計画書にまとめる",
+        "hint": "憲章の後に作る計画書は？",
+        "level": "A"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "scope-statement",
+    "name": "プロジェクト・スコープ記述書",
+    "aliases": [
+      "スコープ",
+      "除外事項"
+    ],
+    "reading": "Project scope statement",
+    "category": "プロジェクト管理",
+    "definition": "プロジェクトで作る成果物と、そのための作業（スコープ）を記述した文書です。成果物、受入れ基準、除外事項（スコープに含めないもの）、制約条件、前提条件などを明確にし、スコープの膨張を防ぎます。",
+    "example": "「データ移行は含むが、旧システムの撤去は除外事項とする」と記述します。",
+    "related": [
+      "wbs"
+    ],
+    "criteria": [
+      {
+        "id": "scope",
+        "title": "プロジェクトの成果物と作業範囲を記述する",
+        "hint": "何を記述しますか？"
+      },
+      {
+        "id": "exclusion",
+        "title": "含めないもの（除外事項）を明記する",
+        "hint": "範囲外のことはどう扱いますか？"
+      },
+      {
+        "id": "wbs",
+        "title": "スコープ記述書を基にWBSを作成する",
+        "hint": "この文書の後に作るものは？",
+        "level": "A"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "wbs",
+    "name": "WBS",
+    "reading": "Work Breakdown Structure",
+    "category": "プロジェクト管理",
+    "definition": "プロジェクトの成果物と作業を、管理しやすい大きさ（ワークパッケージ）まで階層的に分解したものです。スケジュール作成、見積り、担当の割当ての基礎になります。",
+    "example": "「新システム構築」を「設計」「開発」「テスト」に、さらに「画面設計」「帳票設計」…と分解します。",
+    "related": [
+      "scope-statement"
+    ],
+    "criteria": [
+      {
+        "id": "decompose",
+        "title": "成果物と作業を階層的に分解する",
+        "hint": "WBSとは？"
+      },
+      {
+        "id": "package",
+        "title": "最下位はワークパッケージで、見積りや割当ての単位になる",
+        "hint": "どこまで分解しますか？"
+      },
+      {
+        "id": "100",
+        "title": "すべての作業を漏れなく含める（100%ルール）",
+        "hint": "分解のルールは？",
+        "level": "A"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "schedule-compression",
+    "name": "クラッシングとファストトラッキング",
+    "aliases": [
+      "クラッシング",
+      "ファストトラッキング"
+    ],
+    "reading": "Crashing / fast tracking",
+    "category": "プロジェクト管理",
+    "definition": "スケジュールを短縮する技法です。クラッシングはクリティカルパス上の作業に資源（人員や費用）を追加して期間を縮め、ファストトラッキングは本来順番に行う作業を並行して進めます。クラッシングはコストが増え、ファストトラッキングは手戻りのリスクが増えます。",
+    "example": "設計の完了を待たずに一部の開発を始めるのはファストトラッキング、残業や要員追加でテストを早く終わらせるのはクラッシングです。",
+    "related": [
+      "critical-path"
+    ],
+    "criteria": [
+      {
+        "id": "crash",
+        "title": "クラッシングは資源を追加して作業期間を短縮する（コスト増）",
+        "hint": "クラッシングとは？"
+      },
+      {
+        "id": "fast",
+        "title": "ファストトラッキングは順序のある作業を並行して進める（リスク増）",
+        "hint": "ファストトラッキングとは？"
+      },
+      {
+        "id": "critical",
+        "title": "短縮の対象はクリティカルパス上の作業",
+        "hint": "どの作業を短縮しますか？",
+        "level": "A"
+      },
+      {
+        "id": "cost",
+        "title": "クラッシングでは費用当たりの短縮効果が大きい作業から選ぶ",
+        "hint": "どの作業から短縮しますか？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "emv",
+    "name": "期待金額価値",
+    "aliases": [
+      "投資額"
+    ],
+    "reading": "Expected Monetary Value (EMV)",
+    "category": "プロジェクト管理",
+    "definition": "不確実な結果について、それぞれの金額に発生確率を掛けて合計した値です。デシジョンツリーで複数の案を比べるとき、投資額を差し引いた期待金額価値の大きい案を選びます。",
+    "example": "成功確率60%で1,000万円、失敗で200万円の案は、0.6×1,000＋0.4×200＝680万円です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "calc",
+        "title": "金額×発生確率の合計で求める",
+        "hint": "どう計算しますか？"
+      },
+      {
+        "id": "choose",
+        "title": "期待金額価値が大きい案を選ぶ",
+        "hint": "どう使いますか？"
+      },
+      {
+        "id": "tree",
+        "title": "デシジョンツリーで分岐ごとに計算し、投資額を差し引いて比較する",
+        "hint": "案ごとの比較の仕方は？",
+        "level": "A"
+      },
+      {
+        "id": "risk",
+        "title": "リスクの定量的分析で使う",
+        "hint": "どんな場面で使いますか？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "contingency-plan",
+    "name": "コンティンジェンシープラン",
+    "aliases": [
+      "コンティンジェンシー予備費",
+      "リスク",
+      "外注先"
+    ],
+    "reading": "Contingency plan",
+    "category": "プロジェクト管理",
+    "definition": "リスクが実際に起きたときに備えて、あらかじめ用意しておく対応計画です。プロジェクトでは、特定したリスクに対するコンティンジェンシー予備費（予算）や予備期間を確保します。リスクへの対応には回避・転嫁・軽減・受容があります。",
+    "example": "外注先が倒産した場合に備えて、別の外注先候補と移行手順を決めておきます。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "prepare",
+        "title": "リスクが顕在化したときの対応をあらかじめ決めておく",
+        "hint": "コンティンジェンシープランとは？"
+      },
+      {
+        "id": "reserve",
+        "title": "特定したリスクに備えてコンティンジェンシー予備費を確保する",
+        "hint": "予算面の備えは？"
+      },
+      {
+        "id": "response",
+        "title": "リスク対応は回避・転嫁・軽減・受容に分かれる",
+        "hint": "リスク対応の種類は？",
+        "level": "A"
+      },
+      {
+        "id": "management",
+        "title": "未知のリスクにはマネジメント予備（予備費）を別に確保する",
+        "hint": "特定できないリスクへの備えは？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "design-review",
+    "name": "デザインレビュー",
+    "aliases": [
+      "品質保証",
+      "出荷判定"
+    ],
+    "reading": "Design review",
+    "category": "開発技術",
+    "definition": "設計の各段階で、関係者が設計書を評価し、誤りや問題点を早く見つけるための会議や活動です。後工程での手戻りを減らし、品質を確保します。製品の出荷可否を判断する出荷判定とは目的が異なります。",
+    "example": "基本設計が終わった時点で、業務部門と開発者が設計書を確認し、要件の漏れを見つけます。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "early",
+        "title": "設計段階で誤りを早期に発見する",
+        "hint": "デザインレビューの目的は？"
+      },
+      {
+        "id": "rework",
+        "title": "後工程での手戻りを減らす",
+        "hint": "早く見つけるとどんな利点がありますか？"
+      },
+      {
+        "id": "qa",
+        "title": "品質保証の活動の一つで、工程ごとに実施する",
+        "hint": "どの活動に位置づきますか？",
+        "level": "A"
+      },
+      {
+        "id": "inspection",
+        "title": "インスペクションは役割を決めた公式なレビュー、ウォークスルーは作成者主導のレビュー",
+        "hint": "レビュー方法の種類は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "scrum",
+    "name": "スクラム",
+    "aliases": [
+      "スプリントレビュー",
+      "スプリントプランニング",
+      "デイリースクラム",
+      "レトロスペクティブ",
+      "ステークホルダ"
+    ],
+    "reading": "Scrum",
+    "category": "開発技術",
+    "definition": "アジャイル開発の代表的な手法です。スプリントという短い期間を繰り返し、スプリントプランニングで作業を決め、毎日デイリースクラムで状況を共有し、スプリントレビューで成果物をステークホルダーに見せてフィードバックを受け、レトロスペクティブで進め方を振り返ります。",
+    "example": "2週間のスプリントの最後に、動くソフトウェアを利用部門に見せて意見をもらいます。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "sprint",
+        "title": "短い期間（スプリント）を繰り返して開発する",
+        "hint": "開発をどう区切りますか？"
+      },
+      {
+        "id": "review",
+        "title": "スプリントレビューで成果物を確認しフィードバックを受ける",
+        "hint": "成果物を見せるイベントは？"
+      },
+      {
+        "id": "retro",
+        "title": "レトロスペクティブでプロセスを振り返り改善する",
+        "hint": "進め方を改善するイベントは？"
+      },
+      {
+        "id": "roles",
+        "title": "プロダクトオーナー、スクラムマスター、開発者の3つの役割がある",
+        "hint": "スクラムの役割は？",
+        "level": "A"
+      },
+      {
+        "id": "planning",
+        "title": "スプリントプランニングで何をするかを決め、デイリースクラムで毎日同期する",
+        "hint": "スプリントの始めと毎日のイベントは？",
+        "level": "A"
+      },
+      {
+        "id": "backlog",
+        "title": "プロダクトバックログを優先順位順に並べ、上から取り組む",
+        "hint": "作業の管理方法は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": [
+      "スプリントレビューを進め方の振り返りとする誤りがあります（それはレトロスペクティブ）。"
+    ]
+  },
+  {
+    "id": "quality-characteristics",
+    "name": "品質特性",
+    "aliases": [
+      "使用性",
+      "保守性",
+      "機能適合性"
+    ],
+    "reading": "Software quality characteristics",
+    "category": "開発技術",
+    "definition": "ソフトウェアの品質を評価する観点です。JIS X 25010では、機能適合性、性能効率性、互換性、使用性、信頼性、セキュリティ、保守性、移植性の8つを定めています。",
+    "example": "初めての利用者が迷わず操作できるかは使用性、修正のしやすさは保守性の観点です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "eight",
+        "title": "機能適合性・性能効率性・互換性・使用性・信頼性・セキュリティ・保守性・移植性",
+        "hint": "主な品質特性は？"
+      },
+      {
+        "id": "usability",
+        "title": "使用性は利用者が効果的・効率的・満足して使えるか",
+        "hint": "使用性とは？"
+      },
+      {
+        "id": "maintain",
+        "title": "保守性は修正のしやすさ、機能適合性は必要な機能を正しく提供すること",
+        "hint": "保守性と機能適合性の意味は？",
+        "level": "A"
+      },
+      {
+        "id": "measure",
+        "title": "品質特性ごとに測定量（メトリクス）を決めて評価する",
+        "hint": "どうやって評価しますか？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "reliability-growth",
+    "name": "ソフトウェア信頼度成長モデル",
+    "aliases": [
+      "ゴンペルツ曲線",
+      "累積誤り検出数"
+    ],
+    "reading": "Software reliability growth model",
+    "category": "開発技術",
+    "definition": "テストの進み具合と、見つかった誤りの累積数の関係を表すモデルです。累積誤り検出数はゴンペルツ曲線やロジスティック曲線のようなS字を描き、曲線が飽和に近づけば残っている誤りが少ないと判断できます。",
+    "example": "テスト工数を増やしても累積誤り検出数がほぼ増えなくなったので、品質が安定してきたと判断します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "cumulative",
+        "title": "テストの進み具合と累積誤り検出数の関係を表す",
+        "hint": "何と何の関係ですか？"
+      },
+      {
+        "id": "scurve",
+        "title": "ゴンペルツ曲線などのS字曲線を描く",
+        "hint": "曲線の形は？"
+      },
+      {
+        "id": "saturate",
+        "title": "曲線が飽和に近づけば残存誤りが少ないと判断できる",
+        "hint": "テストの終わりをどう判断しますか？",
+        "level": "A"
+      },
+      {
+        "id": "early",
+        "title": "初期に増えないのは誤りが少ないのではなくテストが進んでいないこともある",
+        "hint": "初期の傾きが小さいとき注意することは？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "low-code",
+    "name": "ローコード開発",
+    "aliases": [
+      "ノーコード開発"
+    ],
+    "reading": "Low-code development",
+    "category": "開発技術",
+    "definition": "プログラムをほとんど書かず、画面上で部品を組み合わせたり設定したりしてアプリケーションを作る開発手法です。コードを全く書かないものはノーコード開発といいます。開発が速く、業務部門でも作れる一方、複雑な処理には向きません。",
+    "example": "業務部門が、画面の部品を並べて申請フォームと承認フローを1日で作ります。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "gui",
+        "title": "画面上の部品の組合せや設定で開発し、コードをほとんど書かない",
+        "hint": "どうやって開発しますか？"
+      },
+      {
+        "id": "speed",
+        "title": "開発が速く、専門家でなくても作れる",
+        "hint": "利点は？"
+      },
+      {
+        "id": "limit",
+        "title": "複雑な処理や大規模なシステムには向かず、プラットフォームへの依存が生じる",
+        "hint": "欠点は？",
+        "level": "A"
+      },
+      {
+        "id": "shadow",
+        "title": "業務部門が管理外で作ると、統制や情報漏えいの問題が生じる",
+        "hint": "統制面の課題は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "prototyping",
+    "name": "プロトタイピング",
+    "reading": "Prototyping",
+    "category": "開発技術",
+    "definition": "開発の早い段階で試作品（プロトタイプ）を作って利用者に見せ、意見をもとに要求を明確にしたり設計を改良したりする開発手法です。利用者の要求があいまいなときに有効です。",
+    "example": "画面だけの試作品を見せたら、「この項目は一覧で見たい」という要望が出てきました。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "prototype",
+        "title": "早い段階で試作品を作り利用者に評価してもらう",
+        "hint": "どう進めますか？"
+      },
+      {
+        "id": "clarify",
+        "title": "要求を明確にでき、認識のずれを減らせる",
+        "hint": "どんなときに有効ですか？"
+      },
+      {
+        "id": "throwaway",
+        "title": "試作品を捨てる使い捨て型と、育てて本番にする進化型がある",
+        "hint": "試作品はその後どうしますか？",
+        "level": "A"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "integration-test",
+    "name": "結合テスト",
+    "aliases": [
+      "トップダウンテスト",
+      "ボトムアップテスト",
+      "サンドイッチテスト",
+      "ビッグバンテスト",
+      "スタブ",
+      "ドライバ"
+    ],
+    "reading": "Integration test",
+    "category": "開発技術",
+    "definition": "単体テストを終えたモジュールを組み合わせて、モジュール間のインタフェースが正しく動くかを確かめるテストです。上位から進めるトップダウンテストでは下位の代わりにスタブを、下位から進めるボトムアップテストでは上位の代わりにドライバを使います。両方を組み合わせるのがサンドイッチテスト、一度に全部を結合するのがビッグバンテストです。",
+    "example": "トップダウンテストで、まだできていない下位の「在庫照会」モジュールの代わりに、決まった値を返すスタブを使います。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "interface",
+        "title": "モジュール間のインタフェースを確かめる",
+        "hint": "何を確かめるテストですか？"
+      },
+      {
+        "id": "topdown",
+        "title": "トップダウンテストは上位から結合し、未完成の下位の代わりにスタブを使う",
+        "hint": "トップダウンテストで使う仮のモジュールは？"
+      },
+      {
+        "id": "bottomup",
+        "title": "ボトムアップテストは下位から結合し、上位の代わりにドライバを使う",
+        "hint": "ボトムアップテストで使う仮のモジュールは？"
+      },
+      {
+        "id": "sandwich",
+        "title": "サンドイッチテストは上位と下位から同時に進める",
+        "hint": "両方から進める方法は？",
+        "level": "A"
+      },
+      {
+        "id": "bigbang",
+        "title": "ビッグバンテストは一度に全部を結合するため、不具合の場所を特定しにくい",
+        "hint": "一度に結合する方法の欠点は？",
+        "level": "A"
+      },
+      {
+        "id": "early",
+        "title": "トップダウンは早い段階で全体の流れを確認できる",
+        "hint": "トップダウンテストの利点は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": [
+      "スタブとドライバを取り違える誤りがあります。"
+    ]
+  },
+  {
+    "id": "backup",
+    "name": "バックアップ方式",
+    "aliases": [
+      "フルバックアップ",
+      "差分バックアップ",
+      "復旧"
+    ],
+    "reading": "Backup methods",
+    "category": "サービス管理",
+    "definition": "データを復旧できるよう複製を取る方法です。フルバックアップは全データを、差分バックアップは直近のフルバックアップからの変更分を、増分バックアップは直前のバックアップ（種類を問わない）からの変更分を取得します。復旧は、差分ならフル＋最新の差分、増分ならフル＋すべての増分を順に戻します。",
+    "example": "日曜にフル、平日に差分を取っていれば、木曜の障害では日曜のフルと水曜の差分を戻せば復旧できます。",
+    "related": [
+      "rto-rpo"
+    ],
+    "criteria": [
+      {
+        "id": "full",
+        "title": "フルバックアップは全データを取得し、復旧はそれだけで済む",
+        "hint": "フルバックアップの特徴は？"
+      },
+      {
+        "id": "diff",
+        "title": "差分バックアップはフル以降の変更分を取得し、復旧はフル＋最新の差分",
+        "hint": "差分バックアップからの復旧手順は？"
+      },
+      {
+        "id": "incremental",
+        "title": "増分バックアップは前回のバックアップ以降の変更分で、復旧にはすべての増分が必要",
+        "hint": "増分との違いは？",
+        "level": "A"
+      },
+      {
+        "id": "offline",
+        "title": "ランサムウェアに備えてネットワークから切り離した世代を残す（3-2-1ルール）",
+        "hint": "最近重視される備えは？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "rlo",
+    "name": "RLO",
+    "reading": "Recovery Level Objective",
+    "category": "サービス管理",
+    "definition": "災害などでサービスが止まったとき、どの水準（レベル）まで業務やサービスを復旧させるかの目標です。いつまでに（RTO）、どの時点のデータまで（RPO）と組み合わせて復旧の目標を定めます。",
+    "example": "「震災時は3日以内（RTO）に、通常の50%の処理能力（RLO）で受注業務を再開する」と定めます。",
+    "related": [
+      "rto-rpo"
+    ],
+    "criteria": [
+      {
+        "id": "level",
+        "title": "どの水準まで復旧させるかの目標",
+        "hint": "RLOは何を表しますか？"
+      },
+      {
+        "id": "combine",
+        "title": "RTO（時間）、RPO（データの時点）と組み合わせて使う",
+        "hint": "RTO・RPOとの関係は？"
+      },
+      {
+        "id": "bcp",
+        "title": "事業継続計画（BCP）で、優先業務ごとに目標を決める",
+        "hint": "どの計画で定めますか？",
+        "level": "A"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "traceability",
+    "name": "トレーサビリティ",
+    "aliases": [
+      "システム要件定義",
+      "利害関係者",
+      "要件定義"
+    ],
+    "reading": "Traceability",
+    "category": "開発技術",
+    "definition": "要件定義から設計・プログラム・テストまで、成果物どうしの対応関係を追跡できることです。どの要件がどの設計とテストで実現・確認されたかが分かり、漏れの発見や変更の影響範囲の特定に役立ちます。",
+    "example": "要件番号R-12に対応する設計書と試験項目を一覧表で追えるようにし、変更時の影響範囲を調べます。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "trace",
+        "title": "要件から設計・実装・テストまでの対応関係を追跡できる",
+        "hint": "何を追跡できますか？"
+      },
+      {
+        "id": "benefit",
+        "title": "漏れの発見や変更の影響範囲の特定に役立つ",
+        "hint": "利点は？"
+      },
+      {
+        "id": "stakeholder",
+        "title": "システム要件定義では利害関係者の要求との対応も確かめる",
+        "hint": "要件と利害関係者の要求の関係は？",
+        "level": "A"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "rfi-rfp",
+    "name": "RFIとRFP",
+    "aliases": [
+      "RFI",
+      "RFP"
+    ],
+    "reading": "RFI / RFP",
+    "category": "システム戦略",
+    "definition": "システムの調達で発注者が出す文書です。RFI（情報提供依頼書）は、ベンダーから技術動向や製品などの情報を集めるために出し、RFP（提案依頼書）は、システムの要件や条件を示して具体的な提案を求めるために出します。",
+    "example": "まずRFIで各社の製品情報を集め、その結果を踏まえてRFPを作成して提案を募ります。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "rfi",
+        "title": "RFIはベンダーから情報を集めるための依頼書",
+        "hint": "RFIとは？"
+      },
+      {
+        "id": "rfp",
+        "title": "RFPは要件を示して具体的な提案を求める依頼書",
+        "hint": "RFPとは？"
+      },
+      {
+        "id": "order",
+        "title": "RFI→RFP→提案書の評価→契約の順に進む",
+        "hint": "調達の流れは？",
+        "level": "A"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "model-contract",
+    "name": "モデル契約",
+    "aliases": [
+      "準委任型",
+      "請負型",
+      "請負",
+      "運用テスト"
+    ],
+    "reading": "Model contract",
+    "category": "法務",
+    "definition": "経済産業省やIPAが示した、情報システム開発の契約書のひな形です。要件定義や運用テストなど発注者の関与が大きく成果の完成を約束しにくい工程は準委任型、設計・開発など成果物の完成を約束できる工程は請負型を推奨しています。",
+    "example": "要件定義は準委任で、詳細設計からシステムテストまでは請負で契約します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "quasi",
+        "title": "準委任型は作業の遂行に責任を持ち、成果物の完成は約束しない",
+        "hint": "準委任型の特徴は？"
+      },
+      {
+        "id": "contract",
+        "title": "請負型は成果物の完成に責任を持つ",
+        "hint": "請負型の特徴は？"
+      },
+      {
+        "id": "phase",
+        "title": "要件定義・運用テストは準委任、設計〜システムテストは請負が推奨される",
+        "hint": "工程ごとの推奨は？",
+        "level": "A"
+      },
+      {
+        "id": "defect",
+        "title": "請負では成果物の不具合に契約不適合責任を負う",
+        "hint": "請負の責任は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "copyright",
+    "name": "著作権",
+    "aliases": [
+      "著作者人格権",
+      "同一性保持権",
+      "職務著作",
+      "類似性",
+      "依拠性",
+      "アルゴリズム",
+      "通信プロトコル"
+    ],
+    "reading": "Copyright",
+    "category": "法務",
+    "definition": "思想や感情を創作的に表現した著作物を保護する権利です。登録しなくても創作した時点で発生します。財産的な権利（著作権）のほか、譲渡できない著作者人格権（公表権・氏名表示権・同一性保持権）があります。プログラムは保護されますが、アルゴリズム（解法）やプログラム言語、通信プロトコル（規約）は保護されません。",
+    "example": "請負で開発したプログラムの著作権は、契約で定めなければ開発した受注者に帰属します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "auto",
+        "title": "創作した時点で発生し、登録は不要",
+        "hint": "権利はいつ発生しますか？"
+      },
+      {
+        "id": "moral",
+        "title": "著作者人格権（同一性保持権など）は譲渡できない",
+        "hint": "譲渡できない権利は？"
+      },
+      {
+        "id": "scope",
+        "title": "アルゴリズムやプロトコルなどのアイデアは保護されない",
+        "hint": "プログラムのどの部分が保護されませんか？"
+      },
+      {
+        "id": "work",
+        "title": "職務著作では、法人の発意で従業員が職務上作成し法人名義で公表するものは法人が著作者になる",
+        "hint": "社員が業務で作ったプログラムの著作者は？",
+        "level": "A"
+      },
+      {
+        "id": "contract",
+        "title": "請負開発の著作権は、契約に定めがなければ受注者に帰属する",
+        "hint": "外注したソフトの著作権は？",
+        "level": "A"
+      },
+      {
+        "id": "ai",
+        "title": "生成AIの出力が既存の著作物に類似し、かつ依拠していれば侵害になり得る",
+        "hint": "AI生成物の侵害の判断基準は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": [
+      "同一性保持権を譲渡できるとする誤りがあります。契約では「著作者人格権を行使しない」と定めます。"
+    ]
+  },
+  {
+    "id": "design-act",
+    "name": "意匠法",
+    "aliases": [
+      "GUI"
+    ],
+    "reading": "Design Act",
+    "category": "法務",
+    "definition": "物品や建築物、画像のデザイン（形状・模様・色彩など）を保護する法律です。登録によって権利が発生します。2020年の改正で、物品に表示されない画像（操作画面などのGUI）も保護対象になりました。",
+    "example": "新しいスマートフォンアプリの操作画面のデザインを、意匠登録して模倣を防ぎます。",
+    "related": [
+      "copyright"
+    ],
+    "criteria": [
+      {
+        "id": "design",
+        "title": "物品などの外観のデザインを保護する",
+        "hint": "何を保護する法律ですか？"
+      },
+      {
+        "id": "register",
+        "title": "権利の発生には登録が必要",
+        "hint": "著作権との違いは？"
+      },
+      {
+        "id": "gui",
+        "title": "操作画面などの画像（GUI）も保護対象になった",
+        "hint": "画面デザインは保護されますか？",
+        "level": "A"
+      },
+      {
+        "id": "vs-patent",
+        "title": "技術的なアイデアは特許、外観のデザインは意匠で保護する",
+        "hint": "特許との違いは？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "patent",
+    "name": "特許権",
+    "aliases": [
+      "ビジネスモデル"
+    ],
+    "reading": "Patent right",
+    "category": "法務",
+    "definition": "自然法則を利用した技術的なアイデア（発明）を、出願・審査・登録を経て一定期間独占的に利用できる権利です。ITを使った新しい事業の仕組みも、技術的な特徴があればビジネスモデル特許として認められることがあります。",
+    "example": "ネット通販の「ワンクリック注文」の仕組みは、ビジネスモデル特許として知られています。",
+    "related": [
+      "copyright"
+    ],
+    "criteria": [
+      {
+        "id": "invention",
+        "title": "自然法則を利用した技術的な発明を保護する",
+        "hint": "何を保護しますか？"
+      },
+      {
+        "id": "register",
+        "title": "出願・審査・登録が必要で、存続期間は出願から20年",
+        "hint": "権利の発生と期間は？"
+      },
+      {
+        "id": "business",
+        "title": "技術的な特徴を伴えばビジネスモデルも特許になり得る",
+        "hint": "ビジネスの仕組みは特許になりますか？",
+        "level": "A"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "unfair-competition",
+    "name": "不正競争防止法",
+    "aliases": [
+      "商品等表示"
+    ],
+    "reading": "Unfair Competition Prevention Act",
+    "category": "法務",
+    "definition": "事業者間の公正な競争を守るための法律です。営業秘密の不正取得・使用、周知・著名な商品等表示（商品名や営業表示）の混同を招く使用、不正な目的でのドメイン名の取得、限定提供データの不正取得などを不正競争として規制します。",
+    "example": "他社の有名ブランド名に似たドメイン名を取り、転売目的で保有するのは不正競争です。",
+    "related": [
+      "domain-name"
+    ],
+    "criteria": [
+      {
+        "id": "secret",
+        "title": "営業秘密（秘密管理性・有用性・非公知性）の不正取得・使用を規制する",
+        "hint": "営業秘密の3要件は？"
+      },
+      {
+        "id": "domain",
+        "title": "不正な目的で他人の商品等表示と同一・類似のドメイン名を取得・使用することを規制する",
+        "hint": "ドメイン名に関する規制は？"
+      },
+      {
+        "id": "display",
+        "title": "周知な商品等表示と混同させる行為や著名表示の冒用を規制する",
+        "hint": "商品名に関する規制は？",
+        "level": "A"
+      },
+      {
+        "id": "data",
+        "title": "限定提供データ（ビッグデータなど）の不正取得も規制する",
+        "hint": "データに関する規制は？",
+        "level": "A"
+      },
+      {
+        "id": "trademark",
+        "title": "商標権は登録が必要だが、不正競争防止法は未登録の周知表示も守る",
+        "hint": "商標権との違いは？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "trademark",
+    "name": "商標権",
+    "reading": "Trademark right",
+    "category": "法務",
+    "definition": "商品やサービスに使う文字・図形・記号などのマーク（商標）を、登録によって独占的に使用できる権利です。存続期間は登録から10年で、更新を繰り返せます。",
+    "example": "自社の新製品の名前とロゴを商標登録し、他社が似た名前で販売するのを防ぎます。",
+    "related": [
+      "unfair-competition"
+    ],
+    "criteria": [
+      {
+        "id": "mark",
+        "title": "商品・サービスに使うマークを保護する",
+        "hint": "何を保護しますか？"
+      },
+      {
+        "id": "register",
+        "title": "登録が必要で、10年ごとに更新できる",
+        "hint": "権利の期間は？"
+      },
+      {
+        "id": "vs-ucpa",
+        "title": "未登録でも周知な表示は不正競争防止法で保護され得る",
+        "hint": "登録していない商品名は守られませんか？",
+        "level": "A"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "anonymized-info",
+    "name": "匿名加工情報",
+    "aliases": [
+      "個人情報保護法",
+      "第三者提供",
+      "個人情報保護委員会"
+    ],
+    "reading": "Anonymized information",
+    "category": "法務",
+    "definition": "特定の個人を識別できないように個人情報を加工し、元に戻せないようにした情報です。個人情報保護法の定める基準に従って加工し、作成したことや第三者提供する項目を公表すれば、本人の同意なしに第三者提供できます。所管は個人情報保護委員会です。",
+    "example": "購買履歴から氏名や会員番号を削除し、生年月日を年代に丸めて、商品開発のために他社へ提供します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "irreversible",
+        "title": "特定の個人を識別できず、復元できないよう加工する",
+        "hint": "どんな加工をしますか？"
+      },
+      {
+        "id": "consent",
+        "title": "公表などの手続をすれば本人の同意なく第三者提供できる",
+        "hint": "第三者提供に同意は要りますか？"
+      },
+      {
+        "id": "publish",
+        "title": "提供時に提供する情報の項目と方法を公表し、相手に匿名加工情報であることを明示する",
+        "hint": "提供時の義務は？",
+        "level": "A"
+      },
+      {
+        "id": "pseudonym",
+        "title": "仮名加工情報は他の情報と照合しないと識別できない加工で、原則第三者提供できない",
+        "hint": "仮名加工情報との違いは？",
+        "level": "A"
+      },
+      {
+        "id": "ppc",
+        "title": "個人情報保護委員会が監督する",
+        "hint": "所管する機関は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "erp",
+    "name": "ERP",
+    "aliases": [
+      "業務プロセス",
+      "フィット＆ギャップ分析"
+    ],
+    "reading": "Enterprise Resource Planning",
+    "category": "システム戦略",
+    "definition": "販売・生産・会計・人事など企業の基幹業務を統合し、経営資源を一元的に管理して有効に活用する考え方、またはそのためのパッケージソフトウェア（ERPパッケージ）です。導入時はフィット＆ギャップ分析で、パッケージの機能と自社の業務プロセスの合う点・合わない点を洗い出します。",
+    "example": "受注を入力すると、在庫・生産計画・会計に自動で反映されます。",
+    "related": [
+      "soa",
+      "bpr"
+    ],
+    "criteria": [
+      {
+        "id": "integrate",
+        "title": "基幹業務を統合して経営資源を一元管理する",
+        "hint": "ERPとは？"
+      },
+      {
+        "id": "package",
+        "title": "ERPパッケージとして導入されることが多い",
+        "hint": "どう導入しますか？"
+      },
+      {
+        "id": "fitgap",
+        "title": "フィット＆ギャップ分析でパッケージ機能と業務の差異を洗い出す",
+        "hint": "導入前に行う分析は？",
+        "level": "A"
+      },
+      {
+        "id": "adapt",
+        "title": "差異は業務をパッケージに合わせるか、追加開発で埋める",
+        "hint": "合わない部分はどうしますか？",
+        "level": "A"
+      },
+      {
+        "id": "addon",
+        "title": "追加開発が多いとバージョンアップが難しくなる",
+        "hint": "カスタマイズしすぎの問題は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "bpr",
+    "name": "BPR",
+    "aliases": [
+      "BPM",
+      "外部委託"
+    ],
+    "reading": "Business Process Reengineering",
+    "category": "システム戦略",
+    "definition": "業務の目的に立ち返って、既存の業務プロセスを抜本的に再設計し、コスト・品質・スピードなどを劇的に改善することです。ITの活用や外部委託を組み合わせます。継続的に業務プロセスを改善していくのはBPM（ビジネスプロセスマネジメント）です。",
+    "example": "紙の申請と三段階の押印による承認を廃止し、ワークフローシステムで即日承認に変えます。",
+    "related": [
+      "erp"
+    ],
+    "criteria": [
+      {
+        "id": "radical",
+        "title": "業務プロセスを抜本的に再設計する",
+        "hint": "BPRとは？"
+      },
+      {
+        "id": "effect",
+        "title": "コスト・品質・スピードを劇的に改善する",
+        "hint": "何を目指しますか？"
+      },
+      {
+        "id": "bpm",
+        "title": "BPMは業務プロセスをPDCAで継続的に改善する",
+        "hint": "BPMとの違いは？",
+        "level": "A"
+      },
+      {
+        "id": "money",
+        "title": "効果は人件費や外部委託費の削減などで金額として評価する",
+        "hint": "効果をどう評価しますか？",
+        "level": "A"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "investment-evaluation",
+    "name": "投資評価手法",
+    "aliases": [
+      "ROI",
+      "NPV",
+      "PBP法",
+      "NPV法",
+      "IRR法",
+      "キャッシュフロー",
+      "割引率",
+      "回収期間"
+    ],
+    "reading": "Investment appraisal",
+    "category": "経営管理",
+    "definition": "IT投資などの採算を評価する方法です。ROIは投資額に対する利益の割合、PBP法は累積のキャッシュフローで投資額を回収するまでの期間（回収期間）、NPV法は将来のキャッシュフローを割引率で現在価値にして投資額を差し引いた値、IRR法はNPVが0になる割引率で評価します。",
+    "example": "投資額1,000万円で毎年400万円の効果があれば、回収期間は2.5年です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "roi",
+        "title": "ROIは投資額に対する利益の割合",
+        "hint": "ROIとは？"
+      },
+      {
+        "id": "pbp",
+        "title": "PBP法は投資を回収するまでの期間で評価する",
+        "hint": "回収期間法とは？"
+      },
+      {
+        "id": "npv",
+        "title": "NPV法は将来のキャッシュフローの現在価値から投資額を引いた値で評価する",
+        "hint": "NPV法とは？"
+      },
+      {
+        "id": "irr",
+        "title": "IRR法はNPVが0になる割引率（内部収益率）で評価する",
+        "hint": "IRR法とは？",
+        "level": "A"
+      },
+      {
+        "id": "discount",
+        "title": "PBP法は貨幣の時間価値を考慮しないが、NPV法・IRR法は考慮する",
+        "hint": "時間価値を考慮するのは？",
+        "level": "A"
+      },
+      {
+        "id": "choose",
+        "title": "NPVが正なら投資する価値があると判断する",
+        "hint": "NPVでの判断基準は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "balanced-scorecard",
+    "name": "バランススコアカード",
+    "aliases": [
+      "BSC",
+      "戦略マップ",
+      "内部ビジネスプロセス",
+      "学習と成長"
+    ],
+    "reading": "Balanced Scorecard (BSC)",
+    "category": "経営戦略",
+    "definition": "企業の戦略を、財務・顧客・内部ビジネスプロセス・学習と成長の4つの視点で目標と指標に落とし込み、バランスよく管理する手法です。視点間の因果関係（学習と成長→業務プロセス→顧客→財務）を図にしたのが戦略マップです。",
+    "example": "社員教育（学習と成長）→作業ミスの減少（業務プロセス）→顧客満足度（顧客）→売上（財務）という因果を戦略マップで示します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "four",
+        "title": "財務・顧客・内部ビジネスプロセス・学習と成長の4つの視点",
+        "hint": "4つの視点は？"
+      },
+      {
+        "id": "kpi",
+        "title": "視点ごとに目標と評価指標を設定する",
+        "hint": "視点ごとに何を決めますか？"
+      },
+      {
+        "id": "map",
+        "title": "戦略マップは4つの視点の目標の因果関係を図示する",
+        "hint": "戦略マップとは？",
+        "level": "A"
+      },
+      {
+        "id": "balance",
+        "title": "財務指標だけに偏らない管理をする",
+        "hint": "なぜ「バランス」なのですか？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "ansoff",
+    "name": "アンゾフの成長マトリクス",
+    "aliases": [
+      "市場浸透戦略",
+      "新製品開発戦略",
+      "新市場開拓戦略",
+      "多角化戦略"
+    ],
+    "reading": "Ansoff matrix",
+    "category": "経営戦略",
+    "definition": "製品（既存・新規）と市場（既存・新規）の組合せで、企業の成長戦略を4つに分類したものです。既存製品×既存市場は市場浸透戦略、新製品×既存市場は新製品開発戦略、既存製品×新市場は新市場開拓戦略、新製品×新市場は多角化戦略です。",
+    "example": "既存の顧客に既存の商品をもっと買ってもらうための値引きキャンペーンは市場浸透戦略です。",
+    "related": [
+      "ppm"
+    ],
+    "criteria": [
+      {
+        "id": "axes",
+        "title": "製品と市場をそれぞれ既存・新規に分けた4分類",
+        "hint": "どの2軸で分けますか？"
+      },
+      {
+        "id": "penetration",
+        "title": "既存製品×既存市場は市場浸透戦略",
+        "hint": "既存の顧客に既存の商品を売るのは？"
+      },
+      {
+        "id": "others",
+        "title": "新製品開発・新市場開拓・多角化の各戦略",
+        "hint": "残りの3つの戦略は？",
+        "level": "A"
+      },
+      {
+        "id": "risk",
+        "title": "多角化は製品も市場も新しいためリスクが最も高い",
+        "hint": "最もリスクの高い戦略は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "mes",
+    "name": "MES",
+    "aliases": [
+      "生産計画",
+      "工程管理",
+      "製造管理",
+      "計画層",
+      "実行層",
+      "制御層"
+    ],
+    "reading": "Manufacturing Execution System",
+    "category": "技術戦略",
+    "definition": "工場の生産現場で、生産計画に基づく作業指示、工程管理、品質や実績の収集などを行う製造実行システムです。企業全体の計画を立てるERPなどの計画層と、機械を直接動かすPLCなどの制御層の間の実行層に位置します。",
+    "example": "ERPの生産計画をもとに、MESが今日の作業指示をラインに出し、実績を集めてERPに返します。",
+    "related": [
+      "plc",
+      "erp"
+    ],
+    "criteria": [
+      {
+        "id": "execute",
+        "title": "生産現場の作業指示・工程管理・実績収集を行う",
+        "hint": "MESの役割は？"
+      },
+      {
+        "id": "layer",
+        "title": "計画層（ERP）と制御層（PLC）の間の実行層に位置する",
+        "hint": "どの層に位置しますか？"
+      },
+      {
+        "id": "flow",
+        "title": "計画層の生産計画を作業指示に落とし、実績を計画層に返す",
+        "hint": "上下の層とどう連携しますか？",
+        "level": "A"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "dx-certification",
+    "name": "DX認定制度",
+    "aliases": [
+      "DX戦略",
+      "デジタルガバナンス・コード",
+      "経営ビジョン"
+    ],
+    "reading": "DX certification",
+    "category": "システム戦略",
+    "definition": "経済産業省が、デジタルガバナンス・コードに沿って、DXに取り組む準備ができている（DX-Ready）事業者を認定する制度です。経営ビジョンやDX戦略の策定・公表、推進体制、成果指標、経営者のメッセージ、課題の把握などが基準になっています。",
+    "example": "経営ビジョンとDX戦略を取締役会で承認して公表し、認定を申請します。",
+    "related": [
+      "dx-index"
+    ],
+    "criteria": [
+      {
+        "id": "ready",
+        "title": "DXの準備ができている事業者を国が認定する",
+        "hint": "何を認定する制度ですか？"
+      },
+      {
+        "id": "code",
+        "title": "デジタルガバナンス・コードに沿った基準で審査する",
+        "hint": "基準は何に基づきますか？"
+      },
+      {
+        "id": "criteria",
+        "title": "経営ビジョン・DX戦略の策定と公表、推進体制、成果指標などが求められる",
+        "hint": "主な認定基準は？",
+        "level": "A"
+      },
+      {
+        "id": "index",
+        "title": "自己診断にはDX推進指標を使う",
+        "hint": "自社の現状を測る道具は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "dx-index",
+    "name": "DX推進指標",
+    "aliases": [
+      "スピード・アジリティ",
+      "全社最適",
+      "個別最適"
+    ],
+    "reading": "DX promotion index",
+    "category": "システム戦略",
+    "definition": "経済産業省が示した、企業がDXの取組み状況を自己診断するための指標です。経営のあり方・仕組みと、ITシステムの構築の2つの枠組みで構成されます。ITシステムには、データを活用できること、変化に迅速に対応できること（スピード・アジリティ）、部門ごとの個別最適ではなく全社最適であることなどが求められます。",
+    "example": "各部門が別々に作ったシステムを、全社でデータを共有できる構成に見直します。",
+    "related": [
+      "dx-certification"
+    ],
+    "criteria": [
+      {
+        "id": "self",
+        "title": "企業がDXの取組み状況を自己診断する指標",
+        "hint": "何のための指標ですか？"
+      },
+      {
+        "id": "two",
+        "title": "経営の仕組みとITシステムの構築の2つで構成する",
+        "hint": "どんな枠組みですか？"
+      },
+      {
+        "id": "it",
+        "title": "ITシステムにはデータ活用、スピード・アジリティ、全社最適が求められる",
+        "hint": "ITシステムに求められる要素は？",
+        "level": "A"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "environment-analysis",
+    "name": "環境分析のフレームワーク",
+    "aliases": [
+      "3C",
+      "SWOT",
+      "PEST分析",
+      "VRIO分析",
+      "バリューチェーン分析"
+    ],
+    "reading": "Strategic analysis frameworks",
+    "category": "経営戦略",
+    "definition": "経営戦略を立てるために、企業を取り巻く環境を整理する手法です。3Cは顧客・競合・自社、SWOTは内部の強み・弱みと外部の機会・脅威、PEST分析は政治・経済・社会・技術のマクロ環境、VRIO分析は経済価値・希少性・模倣困難性・組織で自社の経営資源の強さを、バリューチェーン分析は事業活動のどこで価値が生まれるかを分析します。",
+    "example": "新事業の検討で、法規制や景気動向（PEST）を整理し、自社の強みと市場の機会をSWOTで組み合わせます。",
+    "related": [
+      "five-forces",
+      "ppm"
+    ],
+    "criteria": [
+      {
+        "id": "swot",
+        "title": "SWOTは内部の強み・弱みと外部の機会・脅威を整理する",
+        "hint": "SWOTの4要素は？"
+      },
+      {
+        "id": "3c",
+        "title": "3Cは顧客・競合・自社の視点で分析する",
+        "hint": "3Cとは？"
+      },
+      {
+        "id": "pest",
+        "title": "PEST分析は政治・経済・社会・技術のマクロ環境を分析する",
+        "hint": "PEST分析で見るものは？"
+      },
+      {
+        "id": "vrio",
+        "title": "VRIO分析は経営資源を経済価値・希少性・模倣困難性・組織で評価する",
+        "hint": "自社の経営資源の強さを評価するのは？",
+        "level": "A"
+      },
+      {
+        "id": "value",
+        "title": "バリューチェーン分析は主活動と支援活動のどこで価値が生まれるかを分析する",
+        "hint": "事業活動ごとの価値を見るのは？",
+        "level": "A"
+      },
+      {
+        "id": "five",
+        "title": "業界の競争要因はファイブフォース分析で見る",
+        "hint": "業界の収益性を見る手法は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "smart-factory",
+    "name": "スマートファクトリー",
+    "aliases": [
+      "マシンビジョン",
+      "目視検査",
+      "需要予測"
+    ],
+    "reading": "Smart factory",
+    "category": "技術戦略",
+    "definition": "工場の機器や設備をIoTでつなぎ、収集したデータをAIなどで分析して、生産の効率化や品質の向上を図る工場です。カメラ画像で製品の外観を自動検査するマシンビジョンや、AIによる需要予測に基づく生産計画などが例です。",
+    "example": "人が行っていた目視検査を、カメラとAIのマシンビジョンに置き換えて、不良品を自動で判定します。",
+    "related": [
+      "iot",
+      "mes"
+    ],
+    "criteria": [
+      {
+        "id": "data",
+        "title": "設備をIoTでつなぎ、データを分析して生産を最適化する",
+        "hint": "スマートファクトリーとは？"
+      },
+      {
+        "id": "vision",
+        "title": "マシンビジョンはカメラ画像を解析して検査や判別を自動で行う",
+        "hint": "マシンビジョンとは？"
+      },
+      {
+        "id": "forecast",
+        "title": "需要予測に基づいて生産計画を最適化する",
+        "hint": "データを生産計画にどう生かしますか？",
+        "level": "A"
+      },
+      {
+        "id": "ot",
+        "title": "工場の制御システム（OT）がネットワークにつながり、サイバー攻撃の対象になる",
+        "hint": "セキュリティ上の課題は？",
+        "level": "S"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "open-innovation",
+    "name": "オープンイノベーション",
+    "aliases": [
+      "クローズドイノベーション",
+      "自前主義"
+    ],
+    "reading": "Open innovation",
+    "category": "技術戦略",
+    "definition": "自社の中だけで研究開発を完結させる（クローズドイノベーション、自前主義）のではなく、大学や他社など外部の技術やアイデアを積極的に取り入れ、また自社の技術を外部に提供して、新しい価値を生み出す考え方です。",
+    "example": "自社の研究所だけでなく、スタートアップと共同で新製品を開発します。",
+    "related": [
+      "co-creation"
+    ],
+    "criteria": [
+      {
+        "id": "external",
+        "title": "外部の技術やアイデアを取り入れて革新を起こす",
+        "hint": "オープンイノベーションとは？"
+      },
+      {
+        "id": "closed",
+        "title": "自社だけで完結させるのはクローズドイノベーション（自前主義）",
+        "hint": "対になる考え方は？"
+      },
+      {
+        "id": "outbound",
+        "title": "自社の技術を外部に提供（ライセンスなど）することも含む",
+        "hint": "外に出す方向もありますか？",
+        "level": "A"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "co-creation",
+    "name": "コ・クリエーション",
+    "aliases": [
+      "M&A"
+    ],
+    "reading": "Co-creation",
+    "category": "経営戦略",
+    "definition": "企業が顧客や取引先などと協働して、新しい製品・サービスや価値を共に創り出す戦略です。自社だけで作り込む自前主義や、他社を買収して取り込むM&Aとは異なります。",
+    "example": "利用者の投稿したアイデアを製品化し、開発段階から利用者と意見を交わします。",
+    "related": [
+      "open-innovation"
+    ],
+    "criteria": [
+      {
+        "id": "together",
+        "title": "顧客や取引先と協働して価値を共に創る",
+        "hint": "コ・クリエーションとは？"
+      },
+      {
+        "id": "vs",
+        "title": "M&A（合併・買収）や自前主義とは異なる",
+        "hint": "他の戦略との違いは？"
+      },
+      {
+        "id": "ma",
+        "title": "M&Aは他社を合併・買収して経営資源を取り込む",
+        "hint": "M&Aとは？",
+        "level": "A"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "darwin-sea",
+    "name": "ダーウィンの海",
+    "aliases": [
+      "死の谷",
+      "魔の川"
+    ],
+    "reading": "Darwinian sea",
+    "category": "技術戦略",
+    "definition": "技術開発から事業化までの障壁を表す言葉の一つで、製品化した後、市場で他の製品との競争に勝ち残って事業として成功するまでの障壁を指します。研究から製品開発に進むまでの障壁を魔の川、製品開発から事業化までの資金などの障壁を死の谷と呼びます。",
+    "example": "製品を発売したが、競合製品との価格競争に勝てず撤退するのは、ダーウィンの海を越えられなかった例です。",
+    "related": [
+      "chasm"
+    ],
+    "criteria": [
+      {
+        "id": "order",
+        "title": "魔の川（研究→開発）、死の谷（開発→事業化）、ダーウィンの海（事業化→産業化）の順",
+        "hint": "3つの障壁の順序は？"
+      },
+      {
+        "id": "darwin",
+        "title": "ダーウィンの海は市場での競争に勝ち残る障壁",
+        "hint": "ダーウィンの海とは？"
+      },
+      {
+        "id": "valley",
+        "title": "死の谷は開発した製品を事業化するまでの資金や体制の障壁",
+        "hint": "死の谷とは？",
+        "level": "A"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "chasm",
+    "name": "キャズム",
+    "reading": "Chasm",
+    "category": "経営戦略",
+    "definition": "新しい製品が普及していく過程で、新しいもの好きの初期採用者（アーリーアダプター）から、実利を重視する前期多数派（アーリーマジョリティ）へ広がる間にある深い溝のことです。この溝を越えられないと、製品は主流の市場に普及しません。",
+    "example": "一部の愛好家には売れたが、一般の会社員には広まらず販売が伸び悩むのは、キャズムを越えられない状態です。",
+    "related": [
+      "darwin-sea"
+    ],
+    "criteria": [
+      {
+        "id": "gap",
+        "title": "初期採用者と前期多数派の間の溝",
+        "hint": "キャズムとはどこにある溝ですか？"
+      },
+      {
+        "id": "mainstream",
+        "title": "越えないと主流の市場に普及しない",
+        "hint": "越えられないとどうなりますか？"
+      },
+      {
+        "id": "rogers",
+        "title": "ロジャーズの普及理論の採用者区分を基にしている",
+        "hint": "元になった理論は？",
+        "level": "A"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "mrp",
+    "name": "MRP（資材所要量計画）",
+    "aliases": [
+      "構成表",
+      "正味所要量",
+      "総所要量",
+      "在庫"
+    ],
+    "reading": "Material Requirements Planning",
+    "category": "経営管理",
+    "definition": "生産計画と部品の構成表から、必要な部品や資材の量と時期を計算する手法です。製品に必要な総所要量から、手持ちの在庫や発注済みの量を差し引いて正味所要量を求めます。",
+    "example": "製品Aを10個作るのに部品Bが2個ずつ必要なら総所要量は20個、在庫が5個あれば正味所要量は15個です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "bom",
+        "title": "生産計画と構成表から必要な部品の量と時期を計算する",
+        "hint": "何から計算しますか？"
+      },
+      {
+        "id": "net",
+        "title": "正味所要量＝総所要量－引当可能在庫（－発注残）",
+        "hint": "正味所要量の求め方は？"
+      },
+      {
+        "id": "level",
+        "title": "構成表を上位から順に展開し、下位部品の所要量を求める",
+        "hint": "多段階の部品はどう計算しますか？",
+        "level": "A"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "corporate-philosophy",
+    "name": "経営理念",
+    "aliases": [
+      "経営戦略",
+      "事業戦略"
+    ],
+    "reading": "Corporate philosophy",
+    "category": "経営戦略",
+    "definition": "企業が存在する目的や大切にする価値観を示したものです。経営理念に基づいて全社の方向性を示す経営戦略を立て、それを事業ごとに具体化したものが事業戦略です。",
+    "example": "「食で人々を健康にする」という経営理念のもとで、健康食品事業を伸ばす経営戦略を立て、事業部が販売チャネルの戦略を決めます。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "purpose",
+        "title": "企業の存在目的や価値観を示す",
+        "hint": "経営理念とは？"
+      },
+      {
+        "id": "hierarchy",
+        "title": "経営理念→経営戦略→事業戦略の順に具体化する",
+        "hint": "三つの関係は？"
+      },
+      {
+        "id": "functional",
+        "title": "事業戦略の下に、機能別（販売・生産など）の戦略がある",
+        "hint": "事業戦略の下には？",
+        "level": "A"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "ems",
+    "name": "EMS",
+    "aliases": [
+      "相手先ブランド"
+    ],
+    "reading": "Electronics Manufacturing Service",
+    "category": "経営戦略",
+    "definition": "他社ブランドの電子機器の製造を請け負うサービス、またはその事業者です。設計から製造までを受託することもあります。委託側は工場を持たずに製品を提供できます。相手先ブランドで製品を製造するのはOEMと呼ばれます。",
+    "example": "スマートフォンメーカーが、組立てをEMS事業者に委託します。",
+    "related": [
+      "fabless"
+    ],
+    "criteria": [
+      {
+        "id": "contract",
+        "title": "他社の電子機器の製造を受託する",
+        "hint": "EMSとは？"
+      },
+      {
+        "id": "brand",
+        "title": "製品は委託元（相手先）のブランドで販売される",
+        "hint": "どのブランドで売られますか？"
+      },
+      {
+        "id": "oem",
+        "title": "相手先ブランドで製造すること（OEM）と近い考え方",
+        "hint": "OEMとの関係は？",
+        "level": "A"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "fabless",
+    "name": "ファブレスとファウンドリー",
+    "aliases": [
+      "ファブレス",
+      "ファウンドリー"
+    ],
+    "reading": "Fabless / foundry",
+    "category": "経営戦略",
+    "definition": "半導体などでの分業の形です。ファブレスは工場（ファブ）を持たず、設計や企画に特化して製造を外部に委託する企業、ファウンドリーは他社から委託を受けて半導体の製造を専門に行う企業です。",
+    "example": "設計だけを行うファブレス企業が、台湾のファウンドリーにチップの製造を委託します。",
+    "related": [
+      "ems"
+    ],
+    "criteria": [
+      {
+        "id": "fabless",
+        "title": "ファブレスは工場を持たず設計・企画に特化する",
+        "hint": "ファブレスとは？"
+      },
+      {
+        "id": "foundry",
+        "title": "ファウンドリーは製造を専門に受託する",
+        "hint": "ファウンドリーとは？"
+      },
+      {
+        "id": "ems",
+        "title": "電子機器の組立てを受託するのはEMS",
+        "hint": "電子機器の製造を受託するのは？",
+        "level": "A"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "franchise",
+    "name": "フランチャイズ",
+    "reading": "Franchise",
+    "category": "経営戦略",
+    "definition": "本部（フランチャイザー）が加盟店（フランチャイジー）に、商標やノウハウを使って営業する権利を与え、その対価としてロイヤルティを受け取る事業形態です。",
+    "example": "コンビニエンスストアの多くは、本部のブランドと仕組みを使って加盟店のオーナーが経営しています。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "right",
+        "title": "本部が加盟店に商標やノウハウを使う権利を与える",
+        "hint": "フランチャイズとは？"
+      },
+      {
+        "id": "royalty",
+        "title": "加盟店は対価としてロイヤルティを支払う",
+        "hint": "加盟店が支払うものは？"
+      },
+      {
+        "id": "benefit",
+        "title": "本部は少ない資本で店舗網を広げられる",
+        "hint": "本部にとっての利点は？",
+        "level": "A"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "segmentation",
+    "name": "市場セグメンテーション",
+    "aliases": [
+      "人口統計的変数",
+      "地理的変数",
+      "心理的変数",
+      "行動的変数",
+      "セグメント",
+      "ポジショニングマップ"
+    ],
+    "reading": "Market segmentation",
+    "category": "経営戦略",
+    "definition": "市場を、共通の特徴を持つ顧客の集まり（セグメント）に分けることです。分ける基準には、年齢・性別・所得などの人口統計的変数、地域などの地理的変数、価値観やライフスタイルなどの心理的変数、購買頻度などの行動的変数があります。",
+    "example": "「30代の共働き世帯」で区切るのは人口統計的変数、「健康志向の人」で区切るのは心理的変数です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "divide",
+        "title": "市場を共通の特徴を持つ顧客群（セグメント）に分ける",
+        "hint": "セグメンテーションとは？"
+      },
+      {
+        "id": "variables",
+        "title": "人口統計的・地理的・心理的・行動的変数で分ける",
+        "hint": "分ける基準は？"
+      },
+      {
+        "id": "stp",
+        "title": "セグメンテーション→ターゲティング→ポジショニングの順に進める（STP）",
+        "hint": "その後に行うことは？",
+        "level": "A"
+      },
+      {
+        "id": "map",
+        "title": "ポジショニングマップで競合との位置関係を2軸で示す",
+        "hint": "自社の位置付けを示す図は？",
+        "level": "A"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "qc-tools",
+    "name": "QC七つ道具",
+    "aliases": [
+      "パレート図",
+      "特性要因図",
+      "マトリックス図",
+      "連関図"
+    ],
+    "reading": "QC tools",
+    "category": "経営管理",
+    "definition": "品質管理で使う分析の手法です。パレート図は項目を件数の多い順に並べた棒グラフと累積比率の折れ線で重点を見つけ、特性要因図は結果と原因の関係を魚の骨の形で整理します。新QC七つ道具には、要因の絡み合いを矢印でつなぐ連関図や、行と列の要素の関係を表で整理するマトリックス図などがあります。",
+    "example": "クレームを種類別にパレート図にすると、上位2種類で全体の7割を占めることが分かります。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "pareto",
+        "title": "パレート図は多い順の棒グラフと累積比率で重点項目を見つける",
+        "hint": "パレート図で分かることは？"
+      },
+      {
+        "id": "fishbone",
+        "title": "特性要因図は結果と原因の関係を体系的に整理する",
+        "hint": "原因を整理する図は？"
+      },
+      {
+        "id": "new",
+        "title": "連関図は原因と結果が複雑に絡む関係を、マトリックス図は2つの要素の関連を整理する",
+        "hint": "新QC七つ道具の連関図とマトリックス図は？",
+        "level": "A"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "backcasting",
+    "name": "バックキャスティング",
+    "aliases": [
+      "フォアキャスティング"
+    ],
+    "reading": "Backcasting",
+    "category": "経営戦略",
+    "definition": "目指す将来の姿を先に描き、そこから現在に向かってさかのぼって、今何をすべきかを考える方法です。現在の延長線上で将来を予測して計画するのはフォアキャスティングです。",
+    "example": "「2050年に温室効果ガス排出ゼロ」から逆算して、2030年までに必要な対策を決めます。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "future",
+        "title": "望ましい将来像から逆算して今の行動を決める",
+        "hint": "バックキャスティングとは？"
+      },
+      {
+        "id": "fore",
+        "title": "フォアキャスティングは現在から将来を予測して積み上げる",
+        "hint": "対になる方法は？"
+      },
+      {
+        "id": "use",
+        "title": "現状の延長では届かない大きな目標に向く",
+        "hint": "どんなときに向きますか？",
+        "level": "A"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "feasibility-study",
+    "name": "フィージビリティスタディ",
+    "reading": "Feasibility study",
+    "category": "技術戦略",
+    "definition": "新しい事業や計画について、技術・経済性・運用などの面から実現可能性を調べることです。本格的に投資する前に、実行するかどうかを判断する材料にします。",
+    "example": "新システムの導入前に、技術的に実現できるか、費用に見合う効果があるかを調査します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "feasible",
+        "title": "計画の実現可能性を多面的に調べる",
+        "hint": "フィージビリティスタディとは？"
+      },
+      {
+        "id": "decide",
+        "title": "本格的な投資の前に実行の可否を判断する",
+        "hint": "何に使いますか？"
+      },
+      {
+        "id": "poc",
+        "title": "PoC（概念実証）で技術的に実現できるかを確かめることもある",
+        "hint": "技術面の確認方法は？",
+        "level": "A"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "delphi",
+    "name": "デルファイ法",
+    "aliases": [
+      "ブレーンストーミング"
+    ],
+    "reading": "Delphi method",
+    "category": "技術戦略",
+    "definition": "複数の専門家に匿名でアンケートを行い、その結果を示して再びアンケートを行うことを繰り返し、意見を収束させて将来を予測する方法です。ブレーンストーミングのように集まって自由に発言し、批判せずに多くのアイデアを出す方法とは異なります。",
+    "example": "10年後の技術動向について専門家に3回アンケートを繰り返し、予測をまとめます。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "repeat",
+        "title": "専門家への匿名アンケートを繰り返して意見を収束させる",
+        "hint": "デルファイ法の手順は？"
+      },
+      {
+        "id": "forecast",
+        "title": "主に将来予測に使う",
+        "hint": "何に使いますか？"
+      },
+      {
+        "id": "brainstorm",
+        "title": "ブレーンストーミングは批判禁止・自由奔放・質より量・結合改善でアイデアを出す",
+        "hint": "ブレーンストーミングのルールは？",
+        "level": "A"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "product-lifecycle",
+    "name": "プロダクトライフサイクル",
+    "reading": "Product life cycle",
+    "category": "経営戦略",
+    "definition": "製品が市場に出てから消えるまでを、導入期・成長期・成熟期・衰退期の4段階で表したものです。段階ごとに売上や利益、競合の状況が変わるため、とるべき戦略も変わります。",
+    "example": "成熟期には売上の伸びが止まり競合が増えるため、差別化や新しい用途の開拓を図ります。",
+    "related": [
+      "ppm"
+    ],
+    "criteria": [
+      {
+        "id": "stages",
+        "title": "導入期・成長期・成熟期・衰退期の4段階",
+        "hint": "4つの段階は？"
+      },
+      {
+        "id": "strategy",
+        "title": "段階ごとに適した戦略が異なる",
+        "hint": "段階によって何が変わりますか？"
+      },
+      {
+        "id": "mature",
+        "title": "成熟期は売上の伸びが鈍化し競争が激しくなる",
+        "hint": "成熟期の特徴は？",
+        "level": "A"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "benchmarking",
+    "name": "ベンチマーキング",
+    "reading": "Benchmarking",
+    "category": "経営戦略",
+    "definition": "業界内外の優れた企業のやり方（ベストプラクティス）と自社を比べて、差を分析し、業務の改善目標を立てる手法です。",
+    "example": "物流で定評のある他業界の企業の出荷手順と比べ、自社の出荷時間を半分にする目標を立てます。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "compare",
+        "title": "優れた企業のベストプラクティスと自社を比較する",
+        "hint": "ベンチマーキングとは？"
+      },
+      {
+        "id": "improve",
+        "title": "差を分析して改善目標を立てる",
+        "hint": "比較の後に何をしますか？"
+      },
+      {
+        "id": "other",
+        "title": "同業他社だけでなく他業界も比較対象になる",
+        "hint": "比べる相手は同業者だけですか？",
+        "level": "A"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "aggregation-service",
+    "name": "アグリゲーションサービス",
+    "reading": "Aggregation service",
+    "category": "経営戦略",
+    "definition": "複数の企業やサービスが提供する情報や商品を集約し、1つの窓口でまとめて利用できるようにするサービスです。",
+    "example": "複数の銀行やクレジットカードの明細を1つのアプリでまとめて見られる家計簿サービスです。",
+    "related": [
+      "omni-channel"
+    ],
+    "criteria": [
+      {
+        "id": "collect",
+        "title": "複数のサービスの情報を集約して1つの窓口で提供する",
+        "hint": "アグリゲーションサービスとは？"
+      },
+      {
+        "id": "example",
+        "title": "複数の口座をまとめて見られる家計簿アプリなど",
+        "hint": "具体例は？"
+      },
+      {
+        "id": "api",
+        "title": "金融ではAPI連携で口座情報を取得する",
+        "hint": "情報はどうやって集めますか？",
+        "level": "A"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "omni-channel",
+    "name": "オムニチャネル",
+    "reading": "Omni-channel",
+    "category": "経営戦略",
+    "definition": "実店舗、通販サイト、アプリなどすべての販売チャネルを統合し、顧客がどのチャネルでも同じように買い物できるようにする戦略です。",
+    "example": "アプリで注文した商品を近くの店舗で受け取り、ポイントも共通で貯まります。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "integrate",
+        "title": "実店舗とネットなどすべての販売チャネルを統合する",
+        "hint": "オムニチャネルとは？"
+      },
+      {
+        "id": "seamless",
+        "title": "顧客はどのチャネルでも同じように購入・受取りができる",
+        "hint": "顧客にとっての利点は？"
+      },
+      {
+        "id": "multi",
+        "title": "マルチチャネルは複数のチャネルがあっても連携していない点が違う",
+        "hint": "マルチチャネルとの違いは？",
+        "level": "A"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "escrow",
+    "name": "エスクローサービス",
+    "reading": "Escrow service",
+    "category": "経営戦略",
+    "definition": "商取引で、第三者が買い手からの代金をいったん預かり、商品が届いたことを確認してから売り手に支払う仲介サービスです。ネットオークションなど、互いに信頼関係のない取引の安全性を高めます。",
+    "example": "フリマアプリで、購入者が「受取り完了」を押すまで、運営会社が代金を預かります。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "hold",
+        "title": "第三者が代金を預かり、取引の完了を確認してから支払う",
+        "hint": "エスクローサービスとは？"
+      },
+      {
+        "id": "trust",
+        "title": "信頼関係のない取引の安全性を高める",
+        "hint": "何のためのサービスですか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "cost-accounting",
+    "name": "原価計算基準",
+    "aliases": [
+      "製造原価",
+      "経費",
+      "支払利息"
+    ],
+    "reading": "Cost accounting standards",
+    "category": "経営管理",
+    "definition": "製品の原価を計算するための基準です。製造原価は材料費・労務費・経費からなり、製造に関係する費用だけを含めます。支払利息のような財務上の費用や、販売・一般管理に関する費用は製造原価に含めません。",
+    "example": "工場の電気代や機械の減価償却費は製造原価の経費ですが、借入金の支払利息は含めません。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "three",
+        "title": "製造原価は材料費・労務費・経費からなる",
+        "hint": "製造原価の構成は？"
+      },
+      {
+        "id": "exclude",
+        "title": "支払利息などの財務費用は製造原価に入れない",
+        "hint": "製造原価に含めない費用は？"
+      },
+      {
+        "id": "direct",
+        "title": "製品に直接結び付くかで直接費と間接費に分ける",
+        "hint": "直接費と間接費の違いは？",
+        "level": "A"
+      }
+    ],
+    "commonMistakes": []
   }
 ];
 
 export const termById = new Map(terms.map(term => [term.id, term]));
+// Question words find their term by name, by a part of the name in parentheses (PKI（公開鍵基盤）), or by an alias.
+export const normalizeTermWord = (text: string) => text.normalize('NFKC').toLowerCase().replace(/ディジタル/g, 'デジタル').replace(/[\s・]/g, '');
+const spellings = (term: Term) => [term.name, ...term.name.split(/[（）()]/).filter(Boolean), ...(term.aliases ?? [])];
+const termByWord = new Map(terms.flatMap(term => spellings(term).map(word => [normalizeTermWord(word), term] as const)).reverse());
+export function termForWord(word: string): Term | undefined { return termByWord.get(normalizeTermWord(word)); }
 export const termCategories = [...new Set(terms.map(term => term.category))];

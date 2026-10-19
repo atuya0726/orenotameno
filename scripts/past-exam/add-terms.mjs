@@ -9,14 +9,19 @@ const file = fileURLToPath(new URL('../../src/features/glossary/terms.ts', impor
 const source = readFileSync(file, 'utf8');
 const incoming = JSON.parse(readFileSync(process.argv[2] ?? process.exit(console.error('usage: add-terms.mjs <terms.json>') ?? 1), 'utf8'));
 
-const existing = [...source.matchAll(/^ {4}"id": "([^"]+)",\n {4}"name": "([^"]+)"/gm)].map(m => ({ id: m[1], name: m[2] }));
+const existing = [...source.matchAll(/^ {4}"id": "([^"]+)",\n {4}"name": "([^"]+)",(?:\n {4}"aliases": (\[[^\]]*\]),)?/gm)].map(m => ({ id: m[1], name: m[2], aliases: m[3] ? JSON.parse(m[3]) : [] }));
 const ids = new Set(existing.map(t => t.id));
-const names = new Set(existing.map(t => t.name));
+// Names and aliases share one namespace, compared the way the app matches question words.
+const normalize = text => text.normalize('NFKC').toLowerCase().replace(/ディジタル/g, 'デジタル').replace(/[\s・]/g, '');
+const names = new Set(existing.flatMap(t => [t.name, ...t.aliases]).map(normalize));
 const errors = [];
 for (const term of incoming) {
   if (ids.has(term.id)) errors.push(`duplicate id: ${term.id}`);
-  if (names.has(term.name)) errors.push(`duplicate name: ${term.name}`);
-  ids.add(term.id); names.add(term.name);
+  for (const word of [term.name, ...(term.aliases ?? [])]) {
+    if (names.has(normalize(word))) errors.push(`duplicate name or alias: ${word} (${term.id})`);
+    names.add(normalize(word));
+  }
+  ids.add(term.id);
 }
 for (const term of incoming) {
   for (const key of ['id', 'name', 'reading', 'category', 'definition', 'example']) if (!term[key]) errors.push(`${term.id}: missing ${key}`);
@@ -33,6 +38,6 @@ if (errors.length) {
 
 const marker = '\n];\n\nexport const termById';
 if (!source.includes(marker)) throw new Error('terms.ts layout changed; update add-terms.mjs');
-const body = incoming.map(term => JSON.stringify({ ...term, commonMistakes: term.commonMistakes ?? [], related: term.related ?? [] }, ['id', 'name', 'reading', 'category', 'definition', 'example', 'related', 'criteria', 'title', 'hint', 'level', 'commonMistakes'], 2).replace(/^/gm, '  ')).join(',\n');
+const body = incoming.map(term => JSON.stringify({ ...term, aliases: term.aliases?.length ? term.aliases : undefined, commonMistakes: term.commonMistakes ?? [], related: term.related ?? [] }, ['id', 'name', 'aliases', 'reading', 'category', 'definition', 'example', 'related', 'criteria', 'title', 'hint', 'level', 'commonMistakes'], 2).replace(/^/gm, '  ')).join(',\n');
 writeFileSync(file, source.replace(marker, `,\n${body}${marker}`));
 console.log(`added ${incoming.length} terms (${existing.length + incoming.length} total)`);

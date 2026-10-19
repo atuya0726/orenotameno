@@ -273,16 +273,16 @@ test('reviews saved words one after another in random order from the review note
   await expect(page.getByRole('button', { name: '偽陽性率を復習する', exact: true })).toHaveAttribute('aria-pressed', 'true');
   await page.goto('/reviews');
   await page.getByRole('link', { name: '単語を復習' }).click();
-  // the first word is picked at random and opens its explanation page directly
-  await expect(page).toHaveURL(/\/glossary\/extra\?name=.+&review=/);
+  // the first word is picked at random and opens its glossary term directly; both words open the ROC曲線 term
+  await expect(page).toHaveURL(/\/glossary\/roc-curve\?review=/);
   await expect(page.getByText('単語の復習 1 / 2')).toBeVisible();
-  const first = await page.getByRole('heading', { level: 1 }).textContent();
-  expect(['ROC曲線', '偽陽性率']).toContain(first);
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('ROC曲線');
+  const first = new URL(page.url()).searchParams.get('review');
   await page.getByRole('link', { name: 'この単語をとばす' }).click();
   await expect(page.getByText('単語の復習 2 / 2')).toBeVisible();
-  const second = await page.getByRole('heading', { level: 1 }).textContent();
+  const second = new URL(page.url()).searchParams.get('review');
   expect([first, second].sort()).toEqual(['ROC曲線', '偽陽性率'].sort());
-  await page.getByRole('textbox', { name: `${second}についての説明` }).fill('誤って陽性と判定した割合を表す指標です。');
+  await page.getByRole('textbox', { name: 'ROC曲線についての説明' }).fill('しきい値を変えたときの偽陽性率と真陽性率の関係を表す曲線です。');
   await page.getByRole('button', { name: 'AIでチェック' }).click();
   await page.getByRole('link', { name: '復習を終える' }).click();
   await expect(page.getByRole('heading', { name: '単語の復習が終わりました' })).toBeVisible();

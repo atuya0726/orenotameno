@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { questions } from './questions';
 import { getQuestionTerms } from './question-terms';
+import { normalizeTermWord, termForWord, terms } from '@/features/glossary/terms';
 
 describe('question vocabulary candidates', () => {
   it('covers every question with unique terms that actually occur in its content', () => {
@@ -19,5 +20,14 @@ describe('question vocabulary candidates', () => {
     expect(getQuestionTerms(questions[0])).toContain('ポアソン分布');
     expect(getQuestionTerms(questions[1])).not.toContain('ポアソン分布');
     expect(getQuestionTerms({ id: 'not-included' })).toEqual([]);
+  });
+  it('opens a glossary term for every question word, with no spelling shared by two terms', () => {
+    const missing = questions.flatMap(question => getQuestionTerms(question).filter(word => !termForWord(word)).map(word => `${question.id}: ${word}`));
+    expect(missing, 'add terms or aliases (npx tsx scripts/past-exam/missing-terms.ts)').toEqual([]);
+    const owners = new Map<string, string>();
+    for (const term of terms) for (const word of new Set([term.name, ...(term.aliases ?? [])].map(normalizeTermWord))) {
+      expect(owners.get(word), `${word} names both ${owners.get(word)} and ${term.id}`).toBeUndefined();
+      owners.set(word, term.id);
+    }
   });
 });

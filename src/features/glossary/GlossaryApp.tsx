@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { formatDate, dayKey } from '@/lib/date';
 import { GlossaryProvider, useGlossary } from './useGlossary';
-import { terms, termById, termCategories } from './terms';
+import { normalizeTermWord as normalize, termForWord, terms, termById, termCategories } from './terms';
 import { explanationInputSchema, extraTerm, extraTermName, extraTermNameSchema, levelInfo, levels, type Evaluation, type Grade, type GlossaryAttempt, type GlossaryDraft, type Term } from './model';
 import { serializeGlossary } from './db';
 import { useLearning } from '@/lib/store';
@@ -55,7 +55,7 @@ function GlossaryLibrary() {
   const [params, setParams] = useSearchParams(); const [search, setSearch] = useState('');
   const category = params.get('category') ?? 'all'; const filter = params.get('filter') ?? 'all';
   const latest = latestByTerm(snapshot.attempts);
-  const list = terms.filter(term => (category === 'all' || term.category === category) && (filter !== 'new' || !latest.has(term.id)) && (filter !== 'review' || (latest.has(term.id) && latest.get(term.id)!.evaluation.status !== 'covered')) && `${term.name} ${term.reading} ${term.category}`.toLowerCase().includes(search.toLowerCase().trim()));
+  const list = terms.filter(term => (category === 'all' || term.category === category) && (filter !== 'new' || !latest.has(term.id)) && (filter !== 'review' || (latest.has(term.id) && latest.get(term.id)!.evaluation.status !== 'covered')) && `${term.name} ${term.aliases?.join(' ') ?? ''} ${term.reading} ${term.category}`.toLowerCase().includes(search.toLowerCase().trim()));
   const practiced = terms.filter(t => latest.has(t.id)).length;
   const needsReview = terms.filter(t => latest.has(t.id) && latest.get(t.id)!.evaluation.status !== 'covered').length;
   const candidates = list.filter(t => !latest.has(t.id) || latest.get(t.id)!.evaluation.status !== 'covered');
@@ -75,8 +75,6 @@ function GlossaryLibrary() {
 }
 
 // Words saved from questions open the matching glossary term, or an AI-checked extra term when none is collected.
-const normalize = (text: string) => text.toLowerCase().replace(/ディジタル/g, 'デジタル').replace(/[\s・]/g, '');
-const termByName = new Map(terms.map(term => [normalize(term.name), term]));
 function ReviewWordCards({ words, search, latest }: { words: string[]; search: string; latest: Map<string, GlossaryAttempt> }) {
   const { setReviewWord } = useLearning();
   const [pending, setPending] = useState<string | null>(null);
@@ -93,7 +91,7 @@ function ReviewWordCards({ words, search, latest }: { words: string[]; search: s
   return <>
     {error && <p className="inline-error" role="alert">{error}</p>}
     {shown.length ? <div className="glossary-grid">{shown.map(word => {
-      const term = termByName.get(normalize(word)); const termId = term?.id ?? extraTerm(word).id;
+      const term = termForWord(word); const termId = term?.id ?? extraTerm(word).id;
       return <article className="term-card" key={word}><div className="term-card-top"><span>{term?.category ?? '問題から登録'}</span><ResultBadge attempt={latest.get(termId)} /></div><h2><Link to={termPath(termId)}>{term?.name ?? word}</Link></h2>{term && <p className="term-reading">{term.reading}</p>}<div className="term-card-actions"><Button variant="outline" disabled={pending !== null} aria-busy={pending === word} onClick={() => void remove(word)} aria-label={`${word}を復習する単語から外す`}>{pending === word ? <LoaderCircle className="animate-spin" size={15} /> : <X size={15} />}外す</Button><Button asChild><Link to={termPath(termId)} aria-label={`${word}を説明する`}>説明する<ArrowRight size={15} /></Link></Button></div></article>;
     })}</div> : <div className="empty-state"><Search size={25} /><h2>条件に合う単語がありません</h2></div>}
   </>;
@@ -117,7 +115,7 @@ function reviewSession(params: URLSearchParams): ReviewSession | undefined {
 }
 function reviewQuery(done: string[]) { const params = new URLSearchParams(); done.forEach(word => params.append('done', word)); return params; }
 function reviewWordPath(word: string, done: string[]) {
-  const term = termByName.get(normalize(word)); const params = reviewQuery(done);
+  const term = termForWord(word); const params = reviewQuery(done);
   if (!term) params.set('name', word);
   params.set('review', word);
   return `/glossary/${term ? term.id : 'extra'}?${params}`;
@@ -204,7 +202,9 @@ function Feedback({ attempt }: { attempt: GlossaryAttempt }) {
 }
 function FollowUp({ attempt, followUp }: { attempt: GlossaryAttempt; followUp: NonNullable<Evaluation['followUp']> }) {
   const name = extraTermNameSchema.safeParse(followUp.name);
-  const to = followUp.termId && termById.has(followUp.termId) ? termPath(followUp.termId) : name.success ? termPath(`extra:${name.data}`, undefined, extraTermName(attempt.termId) ? undefined : attempt.termId) : undefined;
+  // The AI may name a collected term by another spelling without its id, so look the name up too.
+  const known = (followUp.termId && termById.get(followUp.termId)) || termForWord(followUp.name);
+  const to = known && known.id !== attempt.termId ? termPath(known.id) : name.success ? termPath(`extra:${name.data}`, undefined, extraTermName(attempt.termId) ? undefined : attempt.termId) : undefined;
   return <div className="glossary-follow-up"><span className="eyebrow">次に説明してみよう</span><h3>{followUp.name}</h3><p>{followUp.reason}</p>{to && <Button asChild variant="outline"><Link to={to}>この用語を説明する<ArrowRight size={15} /></Link></Button>}</div>;
 }
 function GlossaryHistory() {
