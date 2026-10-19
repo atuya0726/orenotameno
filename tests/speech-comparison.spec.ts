@@ -2,8 +2,8 @@ import { expect, test, type Page } from '@playwright/test';
 
 async function mockWhisper(page: Page) {
   await page.addInitScript(() => {
-    const w = window as unknown as { speechTest: { requests: { type: string; model: string; audio?: Float32Array }[]; stopped: number; terminated: number; fail: boolean; delayPermission: boolean; grant?: () => void } };
-    w.speechTest = { requests: [], stopped: 0, terminated: 0, fail: false, delayPermission: false };
+    const w = window as unknown as { speechTest: { requests: { type: string; model: string; audio?: Float32Array; device?: string }[]; stopped: number; terminated: number; fail: boolean; loadFailure: 'none' | 'gpu' | 'all'; delayPermission: boolean; grant?: () => void } };
+    w.speechTest = { requests: [], stopped: 0, terminated: 0, fail: false, loadFailure: 'none', delayPermission: false };
     const stream = { getTracks: () => [{ stop: () => w.speechTest.stopped++ }] };
     Object.defineProperty(navigator.mediaDevices, 'getUserMedia', { value: () => w.speechTest.delayPermission ? new Promise(resolve => { w.speechTest.grant = () => resolve(stream); }) : Promise.resolve(stream) });
     // A real decodable 0.5-second WAV exercises downmix/resampling, without a physical microphone.
@@ -19,9 +19,15 @@ async function mockWhisper(page: Page) {
     const NativeWorker = window.Worker;
     class MockWorker {
       onmessage?: (e: { data: unknown }) => void;
-      postMessage(request: { id: number; type: string; model: string; audio?: Float32Array }) {
+      poisoned = false;
+      postMessage(request: { id: number; type: string; model: string; device?: string; audio?: Float32Array }) {
         w.speechTest.requests.push(request);
         if (request.type === 'load') {
+          if (this.poisoned || w.speechTest.loadFailure === 'all' || (w.speechTest.loadFailure === 'gpu' && request.device !== 'wasm')) {
+            this.poisoned = true;
+            setTimeout(() => this.onmessage?.({ data: { id: request.id, type: 'error', message: 'Whisperの準備中に失敗しました。', details: `${request.model} / ${request.device}\nModel fetch failed: HTTP 403`, retryWithWasm: request.device !== 'wasm' } }), 5);
+            return;
+          }
           this.onmessage?.({ data: { id: request.id, type: 'progress', file: 'encoder.onnx', loaded: 20_000_000, total: 40_000_000 } });
           setTimeout(() => this.onmessage?.({ data: { id: request.id, type: 'ready', device: 'wasm', loadMs: 12 } }), 30);
         } else setTimeout(() => this.onmessage?.({ data: w.speechTest.fail ? { id: request.id, type: 'error', message: '文字起こしに失敗しました。録音を残しているので、もう一度お試しください。' } : { id: request.id, type: 'result', text: request.model === 'tiny' ? '秘密鍵で署名を作ります。' : '秘密鍵で署名を作り、公開鍵で検証します。', inferenceMs: 15 } }), 30);
@@ -94,4 +100,32 @@ test('releases late microphone permission and cleans up on navigation', async ({
   await expect(page).toHaveURL(/\/glossary$/);
   await expect.poll(() => page.evaluate(() => (window as any).speechTest.terminated)).toBe(1);
   expect(await page.evaluate(() => (window as any).speechTest.requests.filter((r: any) => r.type === 'transcribe'))).toHaveLength(0);
+});
+
+test('recreates a poisoned GPU worker before retrying preparation on CPU', async ({ page }) => {
+  await mockWhisper(page); await page.goto('/glossary/digital-signature');
+  await page.evaluate(() => { (window as any).speechTest.loadFailure = 'gpu'; });
+  await prepare(page, 'tiny');
+  expect(await page.evaluate(() => (window as any).speechTest.requests.map((request: any) => request.device))).toEqual(['auto', 'wasm']);
+  expect(await page.evaluate(() => (window as any).speechTest.terminated)).toBe(1);
+  await expect(page.getByRole('alert')).toHaveCount(0);
+  await expect(page.getByRole('button', { name: '押しながら話す' })).toBeEnabled();
+});
+
+test('shows the actual load failure and supports a fresh CPU retry while keeping the draft', async ({ page }) => {
+  await mockWhisper(page); await page.goto('/glossary/digital-signature');
+  await textbox(page).fill('入力した説明は残す。');
+  await page.evaluate(() => { (window as any).speechTest.loadFailure = 'all'; });
+  await selector(page).selectOption('tiny');
+  await page.getByRole('button', { name: 'Whisper tinyを準備する', exact: true }).click();
+  await expect(page.getByRole('alert')).toContainText('準備中に失敗');
+  await page.getByText('エラーの詳細', { exact: true }).click();
+  await expect(page.locator('.speech-error-details')).toContainText('HTTP 403');
+  await expect(textbox(page)).toHaveValue('入力した説明は残す。');
+  await page.evaluate(() => { (window as any).speechTest.loadFailure = 'none'; });
+  await page.getByRole('button', { name: 'CPUで準備し直す' }).click();
+  await expect(page.getByText(/準備完了 · WASM/)).toBeVisible();
+  await expect(page.getByRole('alert')).toHaveCount(0);
+  await expect(page.getByText('エラーの詳細', { exact: true })).toHaveCount(0);
+  await expect(textbox(page)).toHaveValue('入力した説明は残す。');
 });

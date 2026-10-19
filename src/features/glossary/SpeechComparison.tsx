@@ -15,7 +15,9 @@ export function SpeechEngineSelector({ speech, disabled }: { speech: Speech; dis
     {model && <>
       <p className="speech-engine-help">初回にモデル本体を約{model === 'tiny' ? '41' : '77'}MBダウンロードします。音声はこの端末内で処理し、モデルはブラウザにキャッシュします。</p>
       {!ready && <Button type="button" variant="outline" size="sm" disabled={disabled || speech.active || !speech.supported} onClick={() => void speech.whisper.prepare(model)}>{speech.phase === 'loading' ? '準備中…' : `${speechLabels[model]}を準備する`}</Button>}
-      {speech.phase === 'loading' && <div className="speech-load" role="status"><span>{loaded ? `${(loaded / 1_000_000).toFixed(1)}MB取得済み` : 'ライブラリを読み込み中…'} · 取得後にモデルを初期化します</span><progress aria-label="Whisperのダウンロード" value={total ? loaded : undefined} max={total || undefined} /></div>}
+      {speech.phase === 'loading' && <div className="speech-load" role="status"><span>{speech.whisper.stage}{loaded > 0 && ` · ${(loaded / 1_000_000).toFixed(1)}MB取得済み`}</span><progress aria-label="Whisperのダウンロード" value={total ? loaded : undefined} max={total || undefined} /></div>}
+      {speech.whisper.error && <Button type="button" variant="outline" size="sm" disabled={disabled || speech.active || !speech.supported} onClick={() => void speech.whisper.prepare(model, true)}>CPUで準備し直す</Button>}
+      {speech.whisper.errorDetails && <details className="speech-error-details"><summary>エラーの詳細</summary><pre>{speech.whisper.errorDetails}</pre></details>}
       {ready && <p className="speech-engine-help" role="status">準備完了 · {speech.whisper.ready!.device === 'webgpu' ? 'WebGPU' : 'WASM（CPU）'} · 準備 {seconds(speech.whisper.ready!.loadMs)}</p>}
       {speech.whisper.hasRecording && <Button type="button" variant="ghost" size="sm" disabled={disabled || speech.active || !ready} onClick={() => void speech.whisper.retry(model)}>直前の録音を{speechLabels[model]}で比較</Button>}
     </>}

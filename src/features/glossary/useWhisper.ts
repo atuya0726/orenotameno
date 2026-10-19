@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import type { SpeechMeasurement, WhisperModel, WhisperCommand, WhisperResponse } from './whisper';
+import { WhisperError } from './whisper';
 
 type Phase = 'idle' | 'loading' | 'starting' | 'listening' | 'stopping';
 type Recording = { held: boolean; base: string; stream?: MediaStream; recorder?: MediaRecorder; chunks: Blob[]; timer?: ReturnType<typeof setTimeout>; stoppedAt?: number };
@@ -20,6 +21,8 @@ async function decode(blob: Blob): Promise<RecordingAudio> {
 export function useWhisper(onText: (text: string) => void, onComplete: (result: Completed) => void) {
   const [phase, setPhase] = useState<Phase>('idle');
   const [error, setError] = useState('');
+  const [errorDetails, setErrorDetails] = useState('');
+  const [stage, setStage] = useState('');
   const [progress, setProgress] = useState({ loaded: 0, total: 0 });
   const [ready, setReady] = useState<{ model: WhisperModel; device: string; loadMs: number } | null>(null);
   const [hasRecording, setHasRecording] = useState(false);
@@ -27,30 +30,37 @@ export function useWhisper(onText: (text: string) => void, onComplete: (result: 
   const pending = useRef<{ id: number; resolve: (result: WhisperResponse) => void; reject: (error: Error) => void } | null>(null);
   const recording = useRef<Recording | null>(null); const audio = useRef<RecordingAudio | null>(null);
   const alive = useRef(true); const busy = useRef(false);
+  const preferCpu = useRef(false);
   const update = useRef(onText); update.current = onText;
   const complete = useRef(onComplete); complete.current = onComplete;
 
   function release(s: Recording) { clearTimeout(s.timer); s.stream?.getTracks().forEach(track => track.stop()); }
-  function terminate(message = '処理を中止しました。') {
+  function terminate(reason: string | Error = '処理を中止しました。') {
     worker.current?.terminate(); worker.current = null;
-    pending.current?.reject(new Error(message)); pending.current = null;
+    pending.current?.reject(reason instanceof Error ? reason : new Error(reason)); pending.current = null;
   }
   function request(message: WhisperCommand): Promise<WhisperResponse> {
     if (!worker.current) {
       const active = new Worker(new URL('./whisper.worker.ts', import.meta.url), { type: 'module' }); worker.current = active;
       const files = new Map<string, { loaded: number; total: number }>();
       active.onmessage = (event: MessageEvent<WhisperResponse>) => {
+        if (worker.current !== active) return;
         const result = event.data; const current = pending.current;
         if (!current || result.id !== current.id) return;
-        if (result.type === 'progress') {
+        if (result.type === 'status') { setStage(result.stage); }
+        else if (result.type === 'progress') {
           files.set(result.file, result); const values = [...files.values()];
           setProgress({ loaded: values.reduce((sum, file) => sum + file.loaded, 0), total: values.reduce((sum, file) => sum + file.total, 0) });
         } else {
           pending.current = null; files.clear();
-          if (result.type === 'error') current.reject(new Error(result.message)); else current.resolve(result);
+          if (result.type === 'error') current.reject(new WhisperError(result.message, result.details, result.retryWithWasm)); else current.resolve(result);
         }
       };
-      active.onerror = () => { terminate('Whisperを実行できませんでした。通信やブラウザの空きメモリを確認し、もう一度準備してください。'); if (alive.current) setReady(null); };
+      active.onerror = event => {
+        if (worker.current !== active) return;
+        terminate(new WhisperError('Whisperの実行ファイルを読み込めませんでした。ページを再読み込みして、もう一度お試しください。', `実行ファイルの読み込み\n${event.message || 'ブラウザが実行を停止しました。'}`));
+        if (alive.current) setReady(null);
+      };
     }
     const id = ++sequence.current;
     return new Promise((resolve, reject) => { pending.current = { id, resolve, reject }; worker.current!.postMessage({ ...message, id }); });
@@ -63,14 +73,29 @@ export function useWhisper(onText: (text: string) => void, onComplete: (result: 
       terminate(); audio.current = null;
     };
   }, []);
-  async function prepare(model: WhisperModel) {
+  function showError(error: unknown) {
+    if (!alive.current) return;
+    setError(error instanceof Error ? error.message : 'Whisperを実行できませんでした。');
+    setErrorDetails(error instanceof WhisperError ? error.details : '');
+  }
+  async function prepare(model: WhisperModel, cpu = false) {
     if (busy.current) return;
-    busy.current = true; setPhase('loading'); setError(''); setReady(null); setProgress({ loaded: 0, total: 0 });
+    if (cpu) preferCpu.current = true;
+    busy.current = true; setPhase('loading'); setError(''); setErrorDetails(''); setStage('ライブラリを読み込み中'); setReady(null); setProgress({ loaded: 0, total: 0 });
+    // Initialization failures are cached inside ONNX. Each preparation starts a
+    // fresh Worker so retrying does not inherit a failed GPU/WASM runtime.
+    terminate();
     const started = performance.now();
     try {
-      const result = await request({ type: 'load', model });
+      let result: WhisperResponse;
+      try { result = await request({ type: 'load', model, device: cpu || preferCpu.current ? 'wasm' : 'auto' }); }
+      catch (error) {
+        if (!alive.current || !(error instanceof WhisperError) || !error.retryWithWasm || cpu || preferCpu.current) throw error;
+        terminate(); preferCpu.current = true; setStage('GPUを利用できないためCPUで準備中');
+        result = await request({ type: 'load', model, device: 'wasm' });
+      }
       if (alive.current && result.type === 'ready') setReady({ model, device: result.device, loadMs: performance.now() - started });
-    } catch (e) { if (alive.current) setError(e instanceof Error ? e.message : 'Whisperを準備できませんでした。'); }
+    } catch (e) { showError(e); terminate(); }
     finally { if (alive.current) { busy.current = false; setPhase('idle'); } }
   }
   async function transcribe(model: WhisperModel, input: RecordingAudio, base?: string, started = performance.now()) {
@@ -90,7 +115,7 @@ export function useWhisper(onText: (text: string) => void, onComplete: (result: 
       if (input.durationMs < 300) throw new Error('録音が短すぎます。もう少し長く話してください。');
       audio.current = input; setHasRecording(true);
       await transcribe(model, input, s.base, started);
-    } catch (e) { if (alive.current) setError(e instanceof Error ? e.message : '録音を読み込めませんでした。もう一度録音してください。'); }
+    } catch (e) { showError(e); }
     finally { if (alive.current) { recording.current = null; busy.current = false; setPhase('idle'); } }
   }
   function stop() {
@@ -108,7 +133,7 @@ export function useWhisper(onText: (text: string) => void, onComplete: (result: 
   async function start(model: WhisperModel, base: string) {
     if (busy.current || ready?.model !== model) return;
     const s: Recording = { held: true, base, chunks: [] }; recording.current = s; busy.current = true;
-    setPhase('starting'); setError('');
+    setPhase('starting'); setError(''); setErrorDetails('');
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: { channelCount: 1, echoCancellation: true, noiseSuppression: true } });
       s.stream = stream;
@@ -130,11 +155,11 @@ export function useWhisper(onText: (text: string) => void, onComplete: (result: 
   }
   async function retry(model: WhisperModel) {
     if (busy.current || ready?.model !== model || !audio.current) return;
-    busy.current = true; setPhase('stopping'); setError('');
+    busy.current = true; setPhase('stopping'); setError(''); setErrorDetails('');
     try { await transcribe(model, audio.current); }
-    catch (e) { if (alive.current) setError(e instanceof Error ? e.message : '文字起こしに失敗しました。'); }
+    catch (e) { showError(e); }
     finally { if (alive.current) { busy.current = false; setPhase('idle'); } }
   }
-  return { phase, error, progress, ready, hasRecording, start, stop, prepare, retry,
+  return { phase, error, errorDetails, stage, progress, ready, hasRecording, start, stop, prepare, retry,
     supported: typeof window !== 'undefined' && window.isSecureContext && Boolean(navigator.mediaDevices?.getUserMedia) && typeof MediaRecorder !== 'undefined' && typeof AudioContext !== 'undefined' && typeof OfflineAudioContext !== 'undefined' };
 }
