@@ -6,7 +6,7 @@ import { MathText } from '@/components/math-text';
 import { courses, questions, questionById } from '@/data/questions';
 import { getQuestionTerms } from '@/data/question-terms';
 import { useLearning, useNow } from '@/lib/store';
-import { responseConfidenceLabels, attemptConfidenceLabel, createQuickAnswer, isQuickAnswer, optionLabels, selectAnswer, type Attempt, type Course, type Draft, type OptionId, type Question, type QuickAnswerInput, type ResponseConfidence } from '@/lib/model';
+import { responseConfidenceLabels, attemptConfidenceLabel, createQuickAnswer, cycleOptionMark, isQuickAnswer, optionLabels, optionMarkLabels, optionMarkSymbols, selectAnswer, type Attempt, type Course, type Draft, type OptionId, type Question, type QuickAnswerInput, type ResponseConfidence } from '@/lib/model';
 import { activeReviews, reviewPriorityLabel } from '@/lib/scheduler';
 import { exportBackup } from '@/lib/db';
 import { dayKey, formatDate } from '@/lib/date';
@@ -204,8 +204,11 @@ function QuestionHeader({ question }: { question: Question }) {
     <h2><MathText text={question.prompt} /></h2>
     {question.details && <div className="question-details">{question.details.title && <h3>〔<MathText text={question.details.title} />〕</h3>}<ul>{question.details.items.map(item => <li key={item}><MathText text={item} /></li>)}</ul></div>}
     {question.table && <div className="question-table-scroll" role="region" aria-label={question.table.caption} tabIndex={0}><table className="question-table"><caption><MathText text={question.table.caption} /></caption><thead><tr>{question.table.headers.map(header => <th key={header} scope="col"><MathText text={header} /></th>)}</tr></thead><tbody>{question.table.rows.map((row, i) => <tr key={i}>{row.map((cell, j) => j === 0 ? <th key={j} scope="row"><MathText text={cell} /></th> : <td key={j}><MathText text={cell} /></td>)}</tr>)}</tbody></table></div>}
-    <details className="question-source"><summary>出典</summary><p>{question.source.label}</p>{question.source.kind === 'ipa' && <a href={question.source.questionUrl} target="_blank" rel="noreferrer">IPA公式の問題PDF ↗</a>}</details>
   </section>;
+}
+
+function QuestionSource({ question }: { question: Question }) {
+  return <details className="question-source"><summary>出典</summary><p>{question.source.label}</p>{question.source.kind === 'ipa' && <a href={question.source.questionUrl} target="_blank" rel="noreferrer">IPA公式の問題PDF ↗</a>}</details>;
 }
 
 function AnswerForm({ question, saving, result, submitError, onSubmit }: { question: Question; saving: boolean; result: Attempt | null; submitError: string; onSubmit: (input: QuickAnswerInput) => Promise<void> }) {
@@ -214,6 +217,12 @@ function AnswerForm({ question, saving, result, submitError, onSubmit }: { quest
   // Keep the submitted selection visible after saving removes the persisted draft.
   const [draft, setDraft] = useState<Draft>(() => snapshot.drafts.find(d => d.questionId === question.id) ?? { questionId: question.id, uncertainOptions: [] });
   const locked = saving || Boolean(result);
+  function changeMark(id: OptionId) {
+    if (locked || submitting.current) return;
+    const next = cycleOptionMark(draft, id);
+    setDraft(next);
+    updateDraft(next);
+  }
   async function submit(confidence: ResponseConfidence, selected?: OptionId) {
     if (locked || submitting.current) return;
     submitting.current = true;
@@ -225,18 +234,21 @@ function AnswerForm({ question, saving, result, submitError, onSubmit }: { quest
     } finally { submitting.current = false; }
   }
   return <form onSubmit={e => e.preventDefault()} aria-label="問題の回答" className={result ? 'answer-submitted' : undefined} aria-busy={saving}>
-    <div className="answer-controls">
-      <span className="answer-save-status" role="status">{saving && <><LoaderCircle className="animate-spin" size={15} />保存中</>}</span>
-      <Button type="button" variant="ghost" className="unknown-response" disabled={locked} onClick={() => void submit('unknown')}>わからない</Button>
-    </div>
     <div className="choices">{question.options.map(option => {
       const checked = result ? result.selected === option.id : draft.selected === option.id;
+      const mark = draft.optionMarks?.[option.id] ?? 'unknown';
       return <div key={option.id} className={cn('choice-card', checked && 'choice-selected')}>
         <button type="button" className="answer-selector" disabled={locked} data-testid={`option-${option.id}`} aria-label={`${optionLabels[option.id]}で回答`} aria-describedby={`choice-text-${option.id}`} onClick={() => void submit('high', option.id)}>
-          <span className="choice-letter">{optionLabels[option.id]}</span><span id={`choice-text-${option.id}`} className="choice-text"><MathText text={option.text} /></span><span className="choice-indicator" aria-hidden="true">{checked ? <Check size={18} /> : <ArrowRight size={16} />}</span>
+          <span className="choice-letter">{optionLabels[option.id]}</span><span id={`choice-text-${option.id}`} className="choice-text"><MathText text={option.text} /></span>
         </button>
+        <button type="button" className="choice-mark-toggle" data-mark={mark} disabled={locked} aria-label={`${optionLabels[option.id]}の印：${optionMarkLabels[mark]}`} title="初めは ?、押すと ○ → × → △ → ○ の順に切り替え" onClick={() => changeMark(option.id)}><span aria-hidden="true">{optionMarkSymbols[mark]}</span></button>
       </div>;
     })}</div>
+    <div className="answer-controls">
+      <QuestionSource question={question} />
+      <Button type="button" variant="ghost" className="unknown-response" disabled={locked} onClick={() => void submit('unknown')}>わからない</Button>
+    </div>
+    <span className="sr-only" role="status">{saving ? '保存中' : ''}</span>
     {submitError && <p className="inline-error" role="alert">{submitError}</p>}
   </form>;
 }
@@ -299,7 +311,7 @@ function SavedResult() {
   const attempt = snapshot.attempts.find(a => a.id === attemptId);
   const question = attempt && questionById.get(attempt.questionId);
   if (!attempt || !question) return <Empty icon={<BookOpen />} title="回答の記録が見つかりません" description="記録は回答したブラウザで確認できます。"><Button asChild><Link to="/records">学習記録へ</Link></Button></Empty>;
-  return <><Link to="/records" className="back-link"><ArrowLeft size={15} />学習記録へ</Link><PageIntro title="回答の記録" description={formatDate(attempt.answeredAt, true)} /><div className="saved-result"><QuestionHeader question={question} /><ResultDetails question={question} attempt={attempt} /><div className="actions"><Button asChild><Link to={`/study/${question.course}?question=${question.id}`}>もう一度解く<RotateCcw size={16} /></Link></Button></div></div></>;
+  return <><Link to="/records" className="back-link"><ArrowLeft size={15} />学習記録へ</Link><PageIntro title="回答の記録" description={formatDate(attempt.answeredAt, true)} /><div className="saved-result"><QuestionHeader question={question} /><ResultDetails question={question} attempt={attempt} /><QuestionSource question={question} /><div className="actions"><Button asChild><Link to={`/study/${question.course}?question=${question.id}`}>もう一度解く<RotateCcw size={16} /></Link></Button></div></div></>;
 }
 
 function QuestionLibrary() {

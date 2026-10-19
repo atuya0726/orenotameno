@@ -9,6 +9,11 @@ export const optionIds: OptionId[] = ['a', 'b', 'c', 'd'];
 export const optionLabels: Record<OptionId, string> = { a: 'ア', b: 'イ', c: 'ウ', d: 'エ' };
 export const markSchema = z.enum(['candidate', 'exclude', 'unsure']);
 export type Mark = z.infer<typeof markSchema>;
+export const optionMarkSchema = z.enum(['unknown', 'candidate', 'exclude', 'unsure']);
+export type OptionMark = z.infer<typeof optionMarkSchema>;
+const optionMarksSchema = z.object({ a: optionMarkSchema.optional(), b: optionMarkSchema.optional(), c: optionMarkSchema.optional(), d: optionMarkSchema.optional() });
+export const optionMarkSymbols: Record<OptionMark, string> = { unknown: '?', candidate: '○', exclude: '×', unsure: '△' };
+export const optionMarkLabels: Record<OptionMark, string> = { unknown: 'はてな', candidate: 'まる', exclude: 'ばつ', unsure: '三角' };
 export const confidenceSchema = z.enum(['low', 'medium', 'high']);
 export type Confidence = z.infer<typeof confidenceSchema>;
 export const confidenceLabels: Record<Confidence, string> = { low: '低', medium: '中', high: '高' };
@@ -24,7 +29,7 @@ export const responseConfidenceLabels: Record<ResponseConfidence, string> = { lo
 const uncertainOptionsSchema = z.array(optionIdSchema).max(4).refine(ids => new Set(ids).size === ids.length, '迷った選択肢が重複しています。');
 const quickAnswerBase = z.object({
   inputMode: z.literal('quick'), questionId: z.string(), selected: optionIdSchema.nullable(),
-  confidence: responseConfidenceSchema, uncertainOptions: uncertainOptionsSchema,
+  confidence: responseConfidenceSchema, uncertainOptions: uncertainOptionsSchema, optionMarks: optionMarksSchema.optional(),
 });
 function validQuickAnswer(answer: { selected: OptionId | null; uncertainOptions: OptionId[]; confidence: ResponseConfidence }) {
   return answer.confidence === 'unknown' ? answer.selected === null : answer.selected !== null && !answer.uncertainOptions.includes(answer.selected);
@@ -33,7 +38,7 @@ export const quickAnswerSchema = quickAnswerBase.refine(validQuickAnswer, '自�
 export type QuickAnswerInput = z.infer<typeof quickAnswerSchema>;
 export const answerSchema = z.union([quickAnswerSchema, legacyAnswerSchema]);
 export type AnswerInput = z.infer<typeof answerSchema>;
-export type Draft = { questionId: string; selected?: OptionId; uncertainOptions: OptionId[] };
+export type Draft = { questionId: string; selected?: OptionId; uncertainOptions: OptionId[]; optionMarks?: z.infer<typeof optionMarksSchema> };
 export type Question = {
   id: string; examId: string; course: Course; number: number; topic: string; title: string;
   kind: 'knowledge' | 'calculation';
@@ -105,6 +110,11 @@ export function validateAnswerForQuestion(answer: AnswerInput & { reviewTerms?: 
 export function selectAnswer(draft: Draft, selected: OptionId): Draft {
   return { ...draft, selected, uncertainOptions: draft.uncertainOptions.filter(id => id !== selected) };
 }
+export function cycleOptionMark(draft: Draft, id: OptionId): Draft {
+  const current = draft.optionMarks?.[id] ?? 'unknown';
+  const next = current === 'candidate' ? 'exclude' : current === 'exclude' ? 'unsure' : 'candidate';
+  return { ...draft, optionMarks: { ...draft.optionMarks, [id]: next } };
+}
 export function toggleUncertainOption(draft: Draft, id: OptionId): Draft {
   if (id === draft.selected) return draft;
   return { ...draft, uncertainOptions: draft.uncertainOptions.includes(id) ? draft.uncertainOptions.filter(value => value !== id) : [...draft.uncertainOptions, id] };
@@ -114,6 +124,7 @@ export function createQuickAnswer(draft: Draft, confidence: ResponseConfidence, 
 }
 const storedDraftSchema = z.object({
   questionId: z.string(), selected: optionIdSchema.optional(),
+  optionMarks: optionMarksSchema.optional(),
   uncertainOptions: z.array(optionIdSchema).max(4).refine(ids => new Set(ids).size === ids.length).optional(),
   assessments: z.object({ a: assessmentSchema.partial().optional(), b: assessmentSchema.partial().optional(), c: assessmentSchema.partial().optional(), d: assessmentSchema.partial().optional() }).optional(),
 });
@@ -123,7 +134,7 @@ export function restoreDraft(value: unknown, question: Question): Draft {
     const assessment = draft.assessments?.[id];
     return assessment?.mark === 'unsure' || assessment?.mark === 'candidate' || (assessment?.confidence !== undefined && assessment.confidence !== 'high');
   });
-  return { questionId: draft.questionId, selected: draft.selected, uncertainOptions: question.kind === 'calculation' ? [] : uncertain.filter(id => id !== draft.selected) };
+  return { questionId: draft.questionId, selected: draft.selected, uncertainOptions: question.kind === 'calculation' ? [] : uncertain.filter(id => id !== draft.selected), ...(draft.optionMarks && { optionMarks: draft.optionMarks }) };
 }
 export function attemptConfidenceLabel(attempt: Attempt): string {
   return isQuickAnswer(attempt) ? responseConfidenceLabels[attempt.confidence] : `確信度 ${confidenceLabels[attempt.confidence]}`;

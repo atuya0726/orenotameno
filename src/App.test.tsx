@@ -24,6 +24,11 @@ describe('answering and recorded results', () => {
     const unknown = buttons.find(button => button.includes('>わからない</'))!;
     expect(unknown).toBeDefined();
     expect(unknown).not.toContain('disabled');
+    const marks = buttons.filter(button => /aria-label="[アイウエ]の印：はてな"/.test(button));
+    expect(marks).toHaveLength(4);
+    expect(marks.every(button => button.includes('data-mark="unknown"') && !button.includes('disabled'))).toBe(true);
+    expect(html.indexOf('question-source')).toBeGreaterThan(html.indexOf('choice-text-d'));
+    expect(html.indexOf('>わからない</')).toBeGreaterThan(html.indexOf('choice-text-d'));
     expect(html).not.toContain('自信あり');
     expect(html).not.toContain('迷いあり');
     expect(html).not.toContain('>迷った</');
@@ -39,6 +44,15 @@ describe('answering and recorded results', () => {
     expect(html).toContain('choice-selected');
     expect(html).not.toContain('これも迷った');
     expect(html).not.toContain('choice-uncertain');
+  });
+  it('restores each option mark without selecting or submitting an answer', () => {
+    snapshot.drafts = [{ questionId: questions[0].id, uncertainOptions: [], optionMarks: { a: 'exclude', c: 'unsure' } }];
+    const html = render(`/study/A1?question=${questions[0].id}`);
+    expect(html).toContain('aria-label="アの印：ばつ"');
+    expect(html).toContain('aria-label="イの印：はてな"');
+    expect(html).toContain('aria-label="ウの印：三角"');
+    expect(html).not.toContain('choice-selected');
+    expect(html).not.toContain('解答結果と解説');
   });
   it('renders an unanswered saved result without inventing an answer or assessments', () => {
     const question = questions[0];

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { questions } from '@/data/questions';
-import { answerSchema, attemptSchema, createQuickAnswer, emptySnapshot, hasAnswerUncertainty, isAnswerComplete, isQuickAnswer, legacyAnswerSchema, overallConfidence, restoreDraft, selectAnswer, toggleUncertainOption, type Draft, type QuickAnswerInput, type ResponseConfidence } from './model';
+import { answerSchema, attemptSchema, createQuickAnswer, cycleOptionMark, emptySnapshot, hasAnswerUncertainty, isAnswerComplete, isQuickAnswer, legacyAnswerSchema, overallConfidence, restoreDraft, selectAnswer, toggleUncertainOption, type Draft, type QuickAnswerInput, type ResponseConfidence } from './model';
 import { activeReviews, rebuildReviewHistory, scheduleAnswer } from './scheduler';
 import { exportBackup, parseBackup } from './db';
 
@@ -18,6 +18,33 @@ function legacyAnswer() {
 }
 
 describe('quick answers and optional uncertainty', () => {
+  it('uses unknown only initially and never returns to it when cycling an option note', () => {
+    let draft: Draft = { questionId: knowledge.id, uncertainOptions: [], optionMarks: { c: 'exclude' } };
+    expect(draft.optionMarks?.a).toBeUndefined();
+    for (const expected of ['candidate', 'exclude', 'unsure', 'candidate', 'exclude', 'unsure', 'candidate']) {
+      draft = cycleOptionMark(draft, 'a');
+      expect(draft.optionMarks).toEqual({ a: expected, c: 'exclude' });
+      expect(draft.selected).toBeUndefined();
+    }
+    expect(cycleOptionMark({ ...draft, optionMarks: { a: 'unknown' } }, 'a').optionMarks?.a).toBe('candidate');
+  });
+  it('restores option notes in drafts and backups without changing the actual answer or review weight', () => {
+    for (const question of [calculation, knowledge]) {
+      const original: Draft = { questionId: question.id, uncertainOptions: [] };
+      const marked = cycleOptionMark(cycleOptionMark(original, 'a'), 'a');
+      expect(marked.selected).toBeUndefined();
+      expect(original.optionMarks).toBeUndefined();
+      const restored = restoreDraft(JSON.parse(JSON.stringify(marked)), question);
+      expect(restored.optionMarks).toEqual({ a: 'exclude' });
+      const { attempt, card } = scheduleAnswer(createQuickAnswer(selectAnswer(restored, question.correct), 'high', question), question, undefined, now);
+      expect(attempt).toMatchObject({ selected: question.correct, correct: true, optionMarks: { a: 'exclude' } });
+      expect(card.remainingReviews).toBe(0);
+      const backup = parseBackup(exportBackup({ ...emptySnapshot(), attempts: [attempt], cards: [card] }));
+      expect(backup.attempts[0]).toEqual(attempt);
+      const unknown = createQuickAnswer(restored, 'unknown', question);
+      expect(unknown).toMatchObject({ selected: null, confidence: 'unknown', optionMarks: { a: 'exclude' } });
+    }
+  });
   it('requires only a selected answer in the draft, and an explicit confidence when submitted', () => {
     const draft: Draft = { questionId: knowledge.id, uncertainOptions: [] };
     expect(isAnswerComplete(draft)).toBe(false);
