@@ -21,64 +21,91 @@ export function speechErrorMessage(error: string): string {
   };
   return messages[error] ?? '音声認識を続けられませんでした。入力済みの文章を確認してください。';
 }
-// Android Chrome (continuous mode) re-sends earlier text inside later results, so merge instead of blindly concatenating.
+const squash = (text: string) => text.replace(/\s+/g, '');
+// Drop the first `count` non-whitespace characters of text.
+function dropLeading(text: string, count: number) {
+  let i = 0; while (count > 0 && i < text.length) { if (!/\s/.test(text[i])) count--; i++; }
+  return text.slice(i).trim();
+}
+// Mobile engines re-send earlier text inside later results, so merge on overlap instead of blindly concatenating.
 export function mergeTranscript(acc: string, next: string) {
-  const a = acc.replace(/\s+/g, ''); const n = next.replace(/\s+/g, '');
+  const a = squash(acc); const n = squash(next);
   if (!n || a.endsWith(n)) return acc;
   if (!a || n.startsWith(a)) return next.trim();
+  for (let k = Math.min(a.length, n.length) - 1; k >= 2; k--) if (a.endsWith(n.slice(0, k))) return acc + dropLeading(next, k);
   return acc + next.trim();
 }
 export function transcripts(results: ArrayLike<SpeechResult>) {
   let final = ''; let interim = '';
   for (let i = 0; i < results.length; i++) { const text = results[i][0]?.transcript ?? ''; if (results[i].isFinal) final = mergeTranscript(final, text); else interim = mergeTranscript(interim, text); }
-  const f = final.replace(/\s+/g, ''); const it = interim.replace(/\s+/g, '');
-  if (f && it.startsWith(f)) { let rest = f.length, i = 0; while (rest > 0 && i < interim.length) { if (!/\s/.test(interim[i])) rest--; i++; } interim = interim.slice(i).trim(); }
+  const f = squash(final); const it = squash(interim);
+  if (f && it.startsWith(f)) interim = dropLeading(interim, f.length);
   else if (f && f.endsWith(it)) interim = '';
   return { final, interim };
 }
+type Session = { base: string; committed: string; held: boolean; quickEnds: number };
+// Each recognition runs non-continuous (continuous mode duplicates text on Android/iOS) and is restarted while the button is held.
 export function useSpeech(onText: (text: string) => void) {
   const [phase, setPhase] = useState<'idle' | 'starting' | 'listening' | 'stopping'>('idle');
   const [interim, setInterim] = useState(''); const [error, setError] = useState('');
-  const recognition = useRef<Recognition | null>(null); const update = useRef(onText); update.current = onText;
+  const recognition = useRef<Recognition | null>(null); const session = useRef<Session | null>(null);
+  const update = useRef(onText); update.current = onText;
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
-  const stopping = useRef<Recognition | null>(null);
-  function finish(active: Recognition) {
-    if (recognition.current !== active) return;
-    active.onstart = active.onend = active.onresult = active.onerror = null;
-    clearTimeout(timer.current); recognition.current = null; setPhase('idle'); setInterim('');
+  function detach(active: Recognition) { active.onstart = active.onend = active.onresult = active.onerror = null; }
+  function finish() {
+    const active = recognition.current; if (active) detach(active);
+    clearTimeout(timer.current); recognition.current = null; session.current = null; setPhase('idle'); setInterim('');
   }
   function stop() {
-    const active = recognition.current; if (!active || stopping.current === active) return;
-    stopping.current = active; setPhase('stopping');
-    try { active.stop(); } catch { finish(active); try { active.abort(); } catch { /* already ended */ } }
+    const s = session.current; if (!s || !s.held) return;
+    s.held = false; setPhase('stopping');
+    const active = recognition.current;
+    try { active?.stop(); } catch { finish(); try { active?.abort(); } catch { /* already ended */ } }
   }
+  const stopRef = useRef(stop); stopRef.current = stop;
   useEffect(() => {
-    const hide = () => { if (document.hidden) { try { recognition.current?.stop(); } catch { /* already stopped */ } } };
+    const hide = () => { if (document.hidden) stopRef.current(); };
     document.addEventListener('visibilitychange', hide);
     return () => {
       document.removeEventListener('visibilitychange', hide); clearTimeout(timer.current);
-      const active = recognition.current; recognition.current = null;
-      if (active) { active.onstart = active.onend = active.onresult = active.onerror = null; try { active.abort(); } catch { /* already ended */ } }
+      const active = recognition.current; recognition.current = null; session.current = null;
+      if (active) { detach(active); try { active.abort(); } catch { /* already ended */ } }
     };
   }, []);
-  function start(base: string) {
-    if (recognition.current) return;
-    const Constructor = speechConstructor();
-    if (!Constructor) { setError('このブラウザは音声入力に対応していません。文字で入力できます。'); return; }
-    if (!window.isSecureContext) { setError('音声入力はHTTPSまたはlocalhostで開いて利用してください。文字で入力できます。'); return; }
+  function listen(s: Session, Constructor: new () => Recognition) {
     const active = new Constructor(); recognition.current = active;
-    active.lang = 'ja-JP'; active.continuous = true; active.interimResults = true;
-    setError(''); setInterim(''); setPhase('starting');
-    active.onstart = () => setPhase('listening');
+    active.lang = 'ja-JP'; active.continuous = false; active.interimResults = true;
+    const startedAt = Date.now(); let heard = '';
+    active.onstart = () => setPhase(p => p === 'starting' ? 'listening' : p);
     active.onresult = event => {
       const result = transcripts(event.results);
       setInterim(result.interim);
-      if (result.final) update.current(`${base}${base.trim() ? '\n' : ''}${result.final}`.slice(0, 5000));
+      if (result.final) { heard = result.final; const text = mergeTranscript(s.committed, heard); update.current(`${s.base}${s.base.trim() ? '\n' : ''}${text}`.slice(0, 5000)); }
     };
-    active.onerror = event => { if (event.error !== 'aborted') setError(speechErrorMessage(event.error)); finish(active); try { active.abort(); } catch { /* already ended */ } };
-    active.onend = () => finish(active);
-    try { active.start(); timer.current = setTimeout(stop, 120_000); }
-    catch { finish(active); setError('音声入力を開始できませんでした。文字で入力するか、ブラウザのマイク設定を確認してください。'); }
+    active.onerror = event => {
+      // silence while still holding just ends this round; onend restarts it
+      if (event.error === 'aborted' || (event.error === 'no-speech' && s.held)) return;
+      setError(speechErrorMessage(event.error)); finish(); try { active.abort(); } catch { /* already ended */ }
+    };
+    active.onend = () => {
+      if (recognition.current !== active) return;
+      detach(active); if (heard) s.committed = mergeTranscript(s.committed, heard);
+      s.quickEnds = !heard && Date.now() - startedAt < 1000 ? s.quickEnds + 1 : 0;
+      if (s.held && session.current === s && s.quickEnds < 3) { setInterim(''); listen(s, Constructor); }
+      else { if (s.quickEnds >= 3) setError('音声認識がすぐに終了してしまいました。マイクの設定を確認してください。'); finish(); }
+    };
+    try { active.start(); }
+    catch { finish(); setError('音声入力を開始できませんでした。文字で入力するか、ブラウザのマイク設定を確認してください。'); }
+  }
+  function start(base: string) {
+    if (session.current) return;
+    const Constructor = speechConstructor();
+    if (!Constructor) { setError('このブラウザは音声入力に対応していません。文字で入力できます。'); return; }
+    if (!window.isSecureContext) { setError('音声入力はHTTPSまたはlocalhostで開いて利用してください。文字で入力できます。'); return; }
+    session.current = { base, committed: '', held: true, quickEnds: 0 };
+    setError(''); setInterim(''); setPhase('starting');
+    timer.current = setTimeout(stop, 120_000);
+    listen(session.current, Constructor);
   }
   return { phase, interim, error, supported: Boolean(speechConstructor()), active: phase !== 'idle', start, stop };
 }

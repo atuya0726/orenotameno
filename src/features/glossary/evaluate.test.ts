@@ -3,7 +3,7 @@ import { terms, termById } from './terms';
 import { evaluateExplanation } from './evaluate';
 import { parseGlossaryBackup, serializeGlossary } from './db';
 import { glossaryAttemptSchema, type Evaluation } from './model';
-import { transcripts, speechErrorMessage } from './useSpeech';
+import { transcripts, speechErrorMessage, mergeTranscript } from './useSpeech';
 
 const term = termById.get('digital-signature')!;
 const text = '署名者の秘密鍵で署名を作り、公開鍵で検証し、データの改ざんを検知します。';
@@ -61,6 +61,8 @@ describe('音声の文字起こし', () => {
     expect(transcripts([{ isFinal: true, 0: { transcript: '秘密鍵で署名します。' }, length: 1 }, { isFinal: false, 0: { transcript: '公開鍵で' }, length: 1 }])).toEqual({ final: '秘密鍵で署名します。', interim: '公開鍵で' });
     expect(transcripts([{ isFinal: true, 0: { transcript: '秘密鍵で署名します。' }, length: 1 }, { isFinal: true, 0: { transcript: '公開鍵で検証します。' }, length: 1 }]).final).toBe('秘密鍵で署名します。公開鍵で検証します。');
     // Android Chrome repeats earlier text inside later results
+    expect(mergeTranscript('秘密鍵で署名', '署名を作ります')).toBe('秘密鍵で署名を作ります');
+    expect(mergeTranscript('秘密鍵で署名します。', '公開鍵で検証します。')).toBe('秘密鍵で署名します。公開鍵で検証します。');
     expect(transcripts([{ isFinal: true, 0: { transcript: '秘密鍵で' }, length: 1 }, { isFinal: true, 0: { transcript: '秘密鍵で署名します' }, length: 1 }, { isFinal: true, 0: { transcript: '署名します' }, length: 1 }, { isFinal: false, 0: { transcript: '秘密鍵で署名します 公開鍵' }, length: 1 }])).toEqual({ final: '秘密鍵で署名します', interim: '公開鍵' });
   });
   it('provides actionable messages for microphone denial and network failure', () => {

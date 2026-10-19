@@ -96,6 +96,13 @@ test('handles final/interim voice text, prevents checks while listening, and sto
   });
   await expect(textbox(page)).toHaveValue('秘密鍵で署名を作ります。');
   await expect(page.locator('.speech-interim')).toContainText('公開鍵で');
+  // the engine ends a round on a pause; while held it restarts and keeps the earlier text without repeating it
+  await page.evaluate(() => {
+    const w = window as unknown as { testSpeech: { onend: () => void; onresult: (e: unknown) => void } };
+    w.testSpeech.onend();
+    w.testSpeech.onresult({ results: [{ isFinal: true, 0: { transcript: '署名を作ります。公開鍵で検証します。' }, length: 1 }] });
+  });
+  await expect(textbox(page)).toHaveValue('秘密鍵で署名を作ります。公開鍵で検証します。');
   await page.mouse.up();
   await expect(textbox(page)).toBeEditable(); await expect(check(page)).toBeEnabled();
   await page.getByRole('button', { name: '押しながら話す' }).hover(); await page.mouse.down();
