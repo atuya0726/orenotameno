@@ -12,7 +12,7 @@ export function eraLabel(set: Pick<IpaQuestionSet, 'year' | 'season'>): string {
   return `令和${set.year - 2018}年度${seasonNames[set.season]}`;
 }
 
-export function ipaQuestion(set: IpaQuestionSet, number: number, topic: string, title: string, prompt: string, choices: [string, string][], explanation: string, extra: Pick<Question, 'details' | 'table' | 'code'> = {}): Question {
+export function ipaQuestion(set: IpaQuestionSet, number: number, topic: string, title: string, prompt: string, choices: [string, string][], explanation: string, extra: Pick<Question, 'details' | 'table' | 'code' | 'figure'> = {}): Question {
   return {
     id: `${set.idPrefix}-${number}`, examId: set.examId, course: set.course, number, topic, title, prompt,
     // 数値や式を求める問題。表の有無やキーワードでは判定しない。

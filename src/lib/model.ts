@@ -47,6 +47,8 @@ export type Question = {
   details?: { title?: string; items: string[] };
   code?: { title: string; text: string };
   table?: { caption: string; headers: string[]; rows: string[][] };
+  // Inline SVG markup drawn with currentColor. Static data from this repository only.
+  figure?: { caption: string; svg: string };
   source: { kind: 'original'; label: string } | {
     kind: 'ipa'; label: string; year: number; season: 'autumn' | 'spring'; section: string;
     questionNumber: number; questionUrl: string; answerUrl: string; listingUrl: string; adaptationNote: string;

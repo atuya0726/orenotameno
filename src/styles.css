@@ -635,6 +635,9 @@ svg { flex-shrink: 0; }
 .question-table th, .question-table td { border: 1px solid var(--border); padding: var(--space-3); text-align: center; min-width: 70px; }
 .question-table thead th { background: var(--surface-secondary); font-weight: 600; }
 .question-table tbody th { font-weight: 600; white-space: nowrap; }
+.question-figure { margin: var(--space-5) 0 0; }
+.question-figure figcaption { font-size: 13px; font-weight: 600; padding-bottom: var(--space-3); }
+.question-figure-body svg { display: block; width: 100%; max-width: 560px; height: auto; }
 .question-source a, .official-answer-link { display: inline-block; text-decoration: underline; text-underline-offset: 3px; font-size: 12px; line-height: 1.8; margin-top: var(--space-2); }
 @media (max-width: 560px) {
   .question-details { font-size: 13px; }

@@ -1,5 +1,6 @@
 import type { Question } from '@/lib/model';
 import { ipaQuestion, type IpaQuestionSet } from './ipa';
+import { intermittentCurrentFigure } from './figures/intermittent-current';
 
 // IPA公式解答例の問1〜30。解説はこのサイトの独自作成。
 const set: IpaQuestionSet = {
@@ -55,7 +56,7 @@ export const sc2025SpringA1: Question[] = [
     ['11.1秒', String.raw`平均電流は約\(\frac{100+1.1}{11.11}\fallingdotseq 9.1\)μAで、まだ1μAを上回ります。`],
     ['111.1秒', String.raw`\(\frac{100+0.1\times 111.1}{0.01+111.1}\fallingdotseq 1\)μAとなり、条件を満たす最短の待機時間です。`],
     ['1111.1秒', '平均電流は1μAを下回りますが、最も短い待機時間ではありません。'],
-  ], String.raw`1周期の電荷量を周期の長さで割ったものが平均電流です。動作中の電荷量は\(10\text{mA}\times 0.01\text{秒}=100\)μA・秒です。待機時間を\(T\)秒とすると、次の式が成り立ちます。\[\frac{100+0.1T}{0.01+T}\leq 1\]整理すると\(0.9T\geq 99.99\)より、\(T\geq 111.1\)秒です。`, { details: { title: '図の内容', items: ['動作時間（10ミリ秒）は10mA，待機時間は0.1μAの電流が流れる。', '動作と待機を交互に繰り返す。'] } }),
+  ], String.raw`1周期の電荷量を周期の長さで割ったものが平均電流です。動作中の電荷量は\(10\text{mA}\times 0.01\text{秒}=100\)μA・秒です。待機時間を\(T\)秒とすると、次の式が成り立ちます。\[\frac{100+0.1T}{0.01+T}\leq 1\]整理すると\(0.9T\geq 99.99\)より、\(T\geq 111.1\)秒です。`, { figure: { caption: '間欠動作の電流', svg: intermittentCurrentFigure } }),
   q(8, 'Web技術', 'SVG', 'W3Cで仕様が定義され，矩形や円，直線，文字列などの図形オブジェクトをXML形式で記述し，Webページでの図形描画にも使うことができる画像フォーマットはどれか。', [
     ['OpenGL', '3次元を含むグラフィックス描画のためのAPIです。画像フォーマットではありません。'],
     ['PNG', '画素の集まりを可逆圧縮で保存するラスタ形式です。XMLで図形を記述しません。'],

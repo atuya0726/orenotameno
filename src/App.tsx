@@ -197,6 +197,7 @@ function QuestionHeader({ question }: { question: Question }) {
     {question.details && <div className="question-details">{question.details.title && <h3>〔<MathText text={question.details.title} />〕</h3>}<ul>{question.details.items.map(item => <li key={item}><MathText text={item} /></li>)}</ul></div>}
     {question.code && <div className="question-code"><h3>〔{question.code.title}〕</h3><pre tabIndex={0} aria-label={question.code.title}><code>{question.code.text}</code></pre></div>}
     {question.table && <div className="question-table-scroll" role="region" aria-label={question.table.caption} tabIndex={0}><table className="question-table"><caption><MathText text={question.table.caption} /></caption><thead><tr>{question.table.headers.map(header => <th key={header} scope="col"><MathText text={header} /></th>)}</tr></thead><tbody>{question.table.rows.map((row, i) => <tr key={i}>{row.map((cell, j) => j === 0 ? <th key={j} scope="row"><MathText text={cell} /></th> : <td key={j}><MathText text={cell} /></td>)}</tr>)}</tbody></table></div>}
+    {question.figure && <figure className="question-figure"><figcaption><MathText text={question.figure.caption} /></figcaption><div className="question-figure-body" dangerouslySetInnerHTML={{ __html: question.figure.svg }} /></figure>}
   </section>;
 }
 
