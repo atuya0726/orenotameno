@@ -53,6 +53,28 @@ test('opens crashing and fast tracking as separate practices with reciprocal rel
   await expect(page).toHaveURL(/\/glossary\/fast-tracking$/);
 });
 
+test('practices authenticity separately and checks the CIA overview with only one basic point', async ({ page }) => {
+  await page.goto('/glossary');
+  await page.getByRole('textbox', { name: '用語を検索' }).fill('真正性');
+  await expect(page.locator('.term-card')).toHaveCount(1);
+  await page.getByRole('link', { name: '説明する', exact: true }).click();
+  await expect(page).toHaveURL(/\/glossary\/authenticity$/);
+  await expect(page.getByRole('heading', { name: '真正性', level: 1, exact: true })).toBeVisible();
+  const overview = termById.get('security-properties')!;
+  const explanation = '情報セキュリティの基本の3要素は、機密性・完全性・可用性です。';
+  await page.route('**/api/glossary/evaluate', route => route.fulfill({ json: {
+    ...evaluation(explanation), grade: 'B', covered: 1, total: 1,
+    summary: '基本の3要素を挙げられています。',
+    criteria: overview.criteria.map(c => ({ ...c, level: 'B', status: 'covered', evidence: explanation })),
+  } }));
+  await page.goto('/glossary/security-properties');
+  await page.getByRole('textbox', { name: `${overview.name}についての説明` }).fill(explanation);
+  await check(page).click();
+  await expect(page.getByLabel('評価 B', { exact: true })).toBeVisible();
+  await expect(page.locator('.rubric-item')).toHaveCount(1);
+  await expect(page.locator('.rubric-results')).not.toContainText('真正性');
+});
+
 test('searches terms and persists drafts without exposing the reference first', async ({ page }) => {
   await page.goto('/glossary');
   await page.getByRole('textbox', { name: '用語を検索' }).fill('Digital signature');

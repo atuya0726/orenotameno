@@ -42,6 +42,7 @@ describe('question vocabulary candidates', () => {
     }
   });
   it.each([
+    ['機密性', '完全性', '可用性', '真正性', '信頼性', '責任追跡性', '否認防止', 'エンティティ'],
     ['クラッシング', 'ファストトラッキング'], ['IDS', 'IPS'], ['RTO', 'RPO'],
     ['ポアソン分布', '指数分布'], ['線形探索', '2分探索'], ['DOM', 'SAX'],
     ['RISC', 'CISC'], ['スループット', '応答時間'], ['MTBF', 'MTTR'],
@@ -57,5 +58,13 @@ describe('question vocabulary candidates', () => {
     expect(resolved.every(Boolean)).toBe(true);
     expect(new Set(resolved.map(term => term?.id)).size).toBe(words.length);
     for (const [i, term] of resolved.entries()) expect(term?.name).toBe(words[i]);
+  });
+  it('keeps individual security properties separate from the CIA overview and system uptime', () => {
+    const overview = termForWord('情報セキュリティの要素');
+    expect(overview?.name).toBe('情報セキュリティの3要素');
+    expect(termForWord('CIA')).toBe(overview);
+    expect(termForWord('真正性')).not.toBe(overview);
+    expect(termForWord('可用性')?.name).toBe('可用性');
+    expect(termForWord('可用性')?.id).not.toBe('availability');
   });
 });

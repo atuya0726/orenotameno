@@ -8175,55 +8175,195 @@ export const terms: Term[] = [
   },
   {
     "id": "security-properties",
-    "name": "情報セキュリティの要素",
+    "name": "情報セキュリティの3要素",
     "aliases": [
-      "機密性",
-      "完全性",
-      "可用性",
-      "真正性",
-      "信頼性",
-      "エンティティ"
+      "情報セキュリティの要素",
+      "CIA",
+      "CIAトライアド"
     ],
-    "reading": "Security properties",
+    "reading": "Confidentiality, Integrity, Availability",
     "category": "セキュリティ運用",
-    "definition": "情報セキュリティで維持すべき性質です。基本は機密性（許可された者だけが見られる）、完全性（正確で改ざんされていない）、可用性（必要なときに使える）の3要素で、さらに真正性（主体が本物である）、責任追跡性、否認防止、信頼性（意図した動作を一貫して行う）を加えます。",
-    "example": "なりすましを防ぐのは真正性、システムが誤動作せず一貫して動くのは信頼性の確保です。",
+    "definition": "情報を守るための基本的な3つの性質である、機密性・完全性・可用性の総称です。英語の頭文字からCIAとも呼びます。",
+    "example": "情報を秘密に保つこと、正確な状態を守ること、必要なときに利用できることの3つを考えます。",
     "related": [
-      "availability"
+      "confidentiality",
+      "integrity",
+      "information-availability",
+      "authenticity",
+      "reliability",
+      "accountability",
+      "non-repudiation",
+      "entity"
     ],
     "criteria": [
       {
         "id": "cia",
-        "title": "機密性・完全性・可用性の3要素",
-        "hint": "基本の3要素は？"
-      },
-      {
-        "id": "authenticity",
-        "title": "真正性は利用者や情報などの主体（エンティティ）が名乗ったとおり本物であること",
-        "hint": "真正性とは？"
-      },
-      {
-        "id": "reliability",
-        "title": "信頼性は意図した動作と結果が一貫していること",
-        "hint": "信頼性とは？",
-        "level": "A"
-      },
-      {
-        "id": "accountability",
-        "title": "責任追跡性はエンティティの動作を一意に追跡できること",
-        "hint": "誰が何をしたかを追える性質は？",
-        "level": "A"
-      },
-      {
-        "id": "nonrepudiation",
-        "title": "否認防止は事象や行為が後から否定されないよう証明できること",
-        "hint": "やっていないと言わせない性質は？",
-        "level": "S"
+        "title": "情報セキュリティの基本の3要素は機密性・完全性・可用性",
+        "hint": "基本の3要素を挙げてください。"
       }
     ],
-    "commonMistakes": [
-      "真正性と信頼性を取り違える誤りがあります。"
-    ]
+    "commonMistakes": []
+  },
+  {
+    "id": "confidentiality",
+    "name": "機密性",
+    "reading": "Confidentiality",
+    "category": "セキュリティ運用",
+    "definition": "許可されていない人や組織、処理などに、情報を使わせたり開示したりしない性質です。",
+    "example": "顧客情報を閲覧できる担当者を限定します。",
+    "related": [
+      "security-properties",
+      "least-privilege"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "認可されていない者に情報を使用・開示させない性質",
+        "hint": "許可されていない相手に、情報をどう扱わせない性質ですか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "integrity",
+    "name": "完全性",
+    "reading": "Integrity",
+    "category": "セキュリティ運用",
+    "definition": "情報が正確で欠落のない状態に保たれる性質です。不正な変更や破壊などによって、情報が損なわれるのを防ぎます。",
+    "example": "売上データが不正に書き換えられたり、一部欠けたりしないようにします。",
+    "related": [
+      "security-properties",
+      "hash",
+      "digital-signature"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "情報の正確さと欠落のない状態を保つ性質",
+        "hint": "情報がどのような状態に保たれることですか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "information-availability",
+    "name": "可用性",
+    "reading": "Availability",
+    "category": "セキュリティ運用",
+    "definition": "認可された利用者などが、必要なときに情報やシステムへアクセスし、利用できる性質です。",
+    "example": "必要な業務時間にシステムを使えるように備えます。",
+    "related": [
+      "security-properties",
+      "availability"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "認可された者が必要なときに情報やシステムを利用できる性質",
+        "hint": "必要なとき、誰が何をできる性質ですか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "authenticity",
+    "name": "真正性",
+    "reading": "Authenticity",
+    "category": "セキュリティ運用",
+    "definition": "人や機器、情報などが、それ自身の主張するとおりのものであるという性質です。名乗っている主体が本物であることなどを指します。",
+    "example": "利用者が他人を名乗っているのではなく、本人であることを確かめます。",
+    "related": [
+      "entity",
+      "reliability",
+      "identity-proofing"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "主体や情報などが主張するとおりのものである性質",
+        "hint": "名乗っているものと実体の関係がどうなっていることですか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "reliability",
+    "name": "信頼性",
+    "reading": "Reliability",
+    "category": "セキュリティ運用",
+    "definition": "意図した行動と結果が一貫しているという性質です。ここでは、情報セキュリティの用語としての信頼性を扱います。",
+    "example": "同じ条件で処理すると、意図した動作と結果が一貫して得られます。",
+    "related": [
+      "authenticity"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "意図した行動と結果が一貫している性質",
+        "hint": "行動と結果にどのような一貫性がありますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "accountability",
+    "name": "責任追跡性",
+    "reading": "Accountability",
+    "category": "セキュリティ運用",
+    "definition": "ある主体が行った動作を、その主体に一意にたどれる性質です。誰がどの操作をしたかを特定できるようにします。",
+    "example": "利用者IDと操作内容をログに記録し、実行した利用者を特定できるようにします。",
+    "related": [
+      "entity",
+      "non-repudiation"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "行われた動作を、その動作を行った主体に一意に追跡できる性質",
+        "hint": "誰の動作だったかを特定できる性質は何ですか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "non-repudiation",
+    "name": "否認防止",
+    "reading": "Non-repudiation",
+    "category": "セキュリティ運用",
+    "definition": "ある事象や行為が実際に起きたことと、その主体を後から証明できるようにする性質です。実行した主体が、その行為をしていないと否定することを防ぎます。",
+    "example": "送信者が後から送っていないと否定できないように、署名などの証拠を残します。",
+    "related": [
+      "digital-signature",
+      "accountability"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "事象や行為とその主体を後から証明でき、否定されることを防ぐ性質",
+        "hint": "後から行為を否定されないために、何を証明できるようにしますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "entity",
+    "name": "エンティティ",
+    "reading": "Entity",
+    "category": "セキュリティ運用",
+    "definition": "ここでは、人・組織・機器・プロセスなど、認証やアクセス制御などの対象として識別する実体を指します。",
+    "example": "システムにログインする利用者や、通信相手の端末を識別します。",
+    "related": [
+      "authenticity",
+      "authorization"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "人・組織・機器・プロセスなど、識別の対象となる実体",
+        "hint": "情報セキュリティの文脈では、どのような実体を指しますか？"
+      }
+    ],
+    "commonMistakes": []
   },
   {
     "id": "authorization",

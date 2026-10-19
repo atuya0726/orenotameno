@@ -73,6 +73,15 @@ describe('LLM評価の検証と集計', () => {
     expect(result.criteria).toHaveLength(1);
     expect(result.criteria[0].title).not.toContain('ファストトラッキング');
   });
+  it('accepts the CIA overview without requiring definitions of authenticity or other properties', () => {
+    const overview = termById.get('security-properties')!;
+    const explanation = '情報セキュリティの基本の3要素は、機密性・完全性・可用性です。';
+    const raw = { ...assessment(), criteria: [{ id: 'cia', title: '', level: 'B', status: 'covered', evidence: explanation, feedback: '基本の3要素を挙げられています。' }] };
+    const result = parseAssessment(raw, overview, explanation, 'gpt-6-luna');
+    expect(result).toMatchObject({ status: 'covered', grade: 'B', covered: 1, total: 1 });
+    expect(result.criteria).toHaveLength(1);
+    expect(result.criteria[0].title).not.toContain('真正性');
+  });
   it('rejects invented quotes, empty evidence, unknown and duplicated criteria', () => {
     const invented = assessment(); invented.criteria[0].evidence = '公開鍵で署名を作る';
     expect(() => parseAssessment(invented, term, text, 'gpt-6-luna')).toThrow('引用');
