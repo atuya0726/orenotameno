@@ -41,8 +41,8 @@ describe('LLM評価の検証と集計', () => {
     expect(parseAssessment(assessment(), term, text, 'gpt-6-luna').followUp).toEqual({ name: 'ハッシュ関数', reason: '署名の前に使われるため。', termId: 'hash' });
     const self = assessment(); self.followUp.termId = term.id;
     expect(parseAssessment(self, term, text, 'gpt-6-luna').followUp?.termId).toBeUndefined();
-    const unknown = assessment(); unknown.followUp = { name: '公開鍵基盤', reason: '証明書の役割が説明にないため。', termId: 'pki' };
-    expect(parseAssessment(unknown, term, text, 'gpt-6-luna').followUp).toEqual({ name: '公開鍵基盤', reason: '証明書の役割が説明にないため。', termId: undefined });
+    const unknown = assessment(); unknown.followUp = { name: 'Kerberos認証', reason: 'チケットの役割が説明にないため。', termId: 'kerberos' };
+    expect(parseAssessment(unknown, term, text, 'gpt-6-luna').followUp).toEqual({ name: 'Kerberos認証', reason: 'チケットの役割が説明にないため。', termId: undefined });
   });
   it('lets the AI write criteria and a definition for a suggested term outside the list', () => {
     const extra = extraTerm('公開鍵基盤');

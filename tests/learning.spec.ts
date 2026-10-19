@@ -230,7 +230,7 @@ test('shows the dashboard and subject selection with accurate empty stats', asyn
   await page.screenshot({ path: 'test-results/desktop-home.png', fullPage: true });
 });
 
-test('offers 30 A1 questions, renders their tables, and marks A2 as unavailable', async ({ page }) => {
+test('offers 30 A1 and 25 A2 questions and renders their tables', async ({ page }) => {
   await page.goto('/questions?course=A1');
   await expect(page.locator('.question-row')).toHaveCount(30);
   await expect(page.getByText('2進数と情報量', { exact: true })).toHaveCount(0);
@@ -242,8 +242,12 @@ test('offers 30 A1 questions, renders their tables, and marks A2 as unavailable'
   await expect(page.getByRole('link', { name: 'IPA公式の問題PDF ↗' })).toBeVisible();
   await expect(page.getByRole('link', { name: 'IPA公式の問題PDF ↗' })).toHaveAttribute('href', /2025r07a_koudo_am1_qs.pdf/);
   await expect(page.getByRole('link', { name: 'IPA公式の解答例 ↗' })).toHaveCount(0);
+  await page.goto('/questions?course=A2');
+  await expect(page.locator('.question-row')).toHaveCount(25);
+  await page.goto('/study/A2?question=sc-2025-autumn-a2-24');
+  await expect(page.getByRole('table', { name: 'サービス停止状況' })).toBeVisible();
+  await page.locator('.question-source summary').click();
+  await expect(page.getByRole('link', { name: 'IPA公式の問題PDF ↗' })).toHaveAttribute('href', /2025r07a_sc_am2_qs.pdf/);
   await page.goto('/study/A2');
-  await expect(page.getByRole('heading', { name: '科目A2の実問題は未収録です' })).toBeVisible();
-  await page.getByRole('link', { name: '科目A1を解く' }).click();
-  await expect(page.locator('.study-session-counter')).toContainText('30');
+  await expect(page.locator('.study-session-counter')).toContainText('25');
 });

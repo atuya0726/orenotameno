@@ -1,6 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { questions } from './questions';
-import { sc2025AutumnA1 } from './sc-2025-autumn-a1';
+import { sc2025AutumnA1 as questions } from './sc-2025-autumn-a1';
 import { optionLabels } from '@/lib/model';
 
 describe('令和7年度秋期 午前Ⅰの収録データ', () => {
@@ -13,7 +12,7 @@ describe('令和7年度秋期 午前Ⅰの収録データ', () => {
   it('matches the official answer sheet in original question order', () => {
     // IPA「2025r07a_koudo_am1_ans.pdf」の問1〜30を独立に転記。
     const expected = ['イ', 'イ', 'イ', 'エ', 'イ', 'エ', 'ア', 'イ', 'ア', 'ウ', 'ア', 'イ', 'ウ', 'ア', 'ア', 'イ', 'エ', 'エ', 'ウ', 'ア', 'エ', 'イ', 'ア', 'エ', 'ウ', 'イ', 'イ', 'イ', 'イ', 'ア'];
-    expect(sc2025AutumnA1.map(q => optionLabels[q.correct])).toEqual(expected);
+    expect(questions.map(q => optionLabels[q.correct])).toEqual(expected);
     for (const q of questions) {
       expect(q.options.map(o => o.id)).toEqual(['a', 'b', 'c', 'd']);
       expect(q.options.every(o => o.text.length > 0 && o.explanation.length > 0)).toBe(true);

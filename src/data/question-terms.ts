@@ -34,8 +34,37 @@ const sc2025AutumnA1Terms: Record<number, readonly string[]> = {
   30: ['意匠法', 'GUI', 'アルゴリズム', '通信プロトコル', 'ビジネスモデル'],
 };
 
-const termsByQuestion = new Map(Object.entries(sc2025AutumnA1Terms).map(([number, terms]) => [`sc-2025-autumn-a1-${number}`, terms]));
-const knownTerms = new Set(Object.values(sc2025AutumnA1Terms).flat());
+const sc2025AutumnA2Terms: Record<number, readonly string[]> = {
+  1: ['CRYPTREC暗号リスト', '電子政府推奨暗号リスト', '推奨候補暗号リスト', '運用監視暗号リスト', '証明書失効リスト', '危殆化'],
+  2: ['Pass the Hash攻撃', 'ハッシュ値', 'NTLM認証', '平文パスワード'],
+  3: ['PQC', '耐量子計算機暗号', '量子コンピュータ', '格子問題', '量子暗号', 'タイミング攻撃'],
+  4: ['PKI', 'RA', 'CA', 'デジタル証明書', '属性証明書', '本人確認'],
+  5: ['モデルインバージョン攻撃', 'モデル抽出攻撃', 'データポイズニング', 'リバースエンジニアリング'],
+  6: ['XMLデジタル署名', 'CMS', 'デタッチ署名', 'エンベローピング署名', 'エンベロープ署名', 'ASN.1'],
+  7: ['SYN/ACK', 'SYNフラッド攻撃', 'バックスキャッタ', 'サービス妨害攻撃', 'パスワードリスト攻撃'],
+  8: ['ドメインフロンティング', 'CDN', 'SNI', 'DNSキャッシュポイズニング', 'DNSリフレクション攻撃', 'ドメイン名ハイジャック'],
+  9: ['情報理論的安全性', '計算量的安全性', 'ワンタイムパッド', 'DH鍵共有', 'RSA暗号', '楕円曲線暗号'],
+  10: ['虹彩認証', '静電容量方式', '接触型ICカード', '非接触型ICカード', 'MACアドレス'],
+  11: ['Identity Proofing', '身元確認', '当人認証', 'NIST SP 800-63-3'],
+  12: ['MITRE', 'CVE', 'ATT&CK', 'NIST', 'ENISA', 'JPCERT/CC'],
+  13: ['PSIRT', 'CSIRT', 'SOC', 'WHOIS', '脆弱性'],
+  14: ['UEBA', '生体認証', 'アクセス制御', '内部不正'],
+  15: ['CSPM', 'CWPP', 'CASB', '設定ミス'],
+  16: ['クロスサイトリクエストフォージェリ', 'CSRF', 'Referer', 'トークン', 'XSS', 'エスケープ'],
+  17: ['IEEE 802.1X', 'EAP', 'RADIUS', 'WPS', 'CSMA/CD', 'CSMA/CA', 'サプリカント', 'オーセンティケータ'],
+  18: ['Ajax', '非同期通信', 'CSS', 'DOM', 'SAX'],
+  19: ['RIP-2', 'OSPF', 'リンクステート型', 'ディスタンスベクタ型', '可変長サブネットマスク', 'マルチキャスト'],
+  20: ['HTTP', 'ステータスコード', 'リダイレクト', 'クライアントエラー', 'サーバエラー'],
+  21: ['DBMS', 'コミット', 'チェックポイント', 'ログバッファ', 'ログファイル', 'ログ先行書込み', 'ACID特性'],
+  22: ['結合テスト', 'トップダウンテスト', 'ボトムアップテスト', 'サンドイッチテスト', 'ビッグバンテスト', 'スタブ', 'ドライバ'],
+  23: ['著作権', '請負', '職務著作'],
+  24: ['サービス可用性', 'サービス提供時間'],
+  25: ['システム監査基準', 'リスク・アプローチ', '監査リスク', '固有リスク', '統制リスク', '発見リスク'],
+};
+
+const sets: [string, Record<number, readonly string[]>][] = [['sc-2025-autumn-a1', sc2025AutumnA1Terms], ['sc-2025-autumn-a2', sc2025AutumnA2Terms]];
+const termsByQuestion = new Map<string, readonly string[]>(sets.flatMap(([prefix, terms]) => Object.entries(terms).map(([number, list]) => [`${prefix}-${number}`, list] as const)));
+const knownTerms = new Set(sets.flatMap(([, terms]) => Object.values(terms).flat()));
 export function isQuestionTerm(term: string): boolean { return knownTerms.has(term); }
 export function getQuestionTerms(question: Pick<Question, 'id'>): readonly string[] {
   return termsByQuestion.get(question.id) ?? [];

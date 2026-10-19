@@ -1,4 +1,5 @@
-import type { Question, OptionId } from '@/lib/model';
+import type { OptionId, Question } from '@/lib/model';
+import { ipaQuestion, type IpaQuestionSet } from './ipa';
 
 export const officialA1Source = {
   questionUrl: 'https://www.ipa.go.jp/shiken/mondai-kaiotu/nl10bi0000009lh8-att/2025r07a_koudo_am1_qs.pdf',
@@ -11,20 +12,12 @@ export const officialA1Answers: OptionId[] = [
   'a', 'b', 'c', 'a', 'a', 'b', 'd', 'd', 'c', 'a',
   'd', 'b', 'a', 'd', 'c', 'b', 'b', 'b', 'b', 'a',
 ];
-function q(number: number, topic: string, title: string, prompt: string, choices: [string, string][], explanation: string, extra: Pick<Question, 'details' | 'table'> = {}): Question {
-  return {
-    id: `sc-2025-autumn-a1-${number}`, examId: 'sc', course: 'A1', number, topic, title, prompt,
-    // 数値や式を求める問題。表の有無やキーワードでは判定しない。
-    kind: [1, 3, 10, 19, 29].includes(number) ? 'calculation' : 'knowledge',
-    options: choices.map(([text, explanation], i) => ({ id: (['a', 'b', 'c', 'd'] as const)[i], text, explanation })),
-    correct: officialA1Answers[number - 1], explanation, ...extra,
-    source: {
-      kind: 'ipa', label: `出典：令和7年度 秋期 高度試験・情報処理安全確保支援士試験 午前Ⅰ 問${number}`,
-      year: 2025, season: 'autumn', section: '午前Ⅰ', questionNumber: number, ...officialA1Source,
-      adaptationNote: '空白・句読点・数式の表記を整え、図表をHTMLで再構成しています。解説は当サイト独自のものです。',
-    },
-  };
-}
+const set: IpaQuestionSet = {
+  idPrefix: 'sc-2025-autumn-a1', examId: 'sc', course: 'A1', year: 2025, season: 'autumn',
+  section: '午前Ⅰ', examName: '高度試験・情報処理安全確保支援士試験', ...officialA1Source,
+  answers: officialA1Answers, calculation: [1, 3, 10, 19, 29],
+};
+const q = ipaQuestion.bind(null, set);
 
 export const sc2025AutumnA1: Question[] = [
   q(1, '基礎理論', 'M/M/1の待ち行列モデル', String.raw`コンピュータによる伝票処理システムがある。このシステムは，伝票データをためる待ち行列をもち，\(M/M/1\)の待ち行列モデルが適用できるものとする。平均待ち時間が\(T\)秒以上となるのは，システムの利用率が少なくとも何％以上となったときか。ここで，伝票データをためる待ち行列の特徴は次のとおりである。`, [

@@ -25,9 +25,11 @@ npm run dev
 - 回答履歴、確信度別の正答率、日々の目標
 - IndexedDBへの保存、途中入力の復元、JSONバックアップの書き出し・統合
 
-収録内容は**令和7年度秋期・高度試験／情報処理安全確保支援士試験の午前Ⅰ（科目A1相当）全30問**です。2026年10月19日のIPA公開一覧で確認できた最新公開分です。試作用オリジナル問題は削除しました。科目A2は現在未収録です。
+収録内容は**令和7年度秋期・高度試験／情報処理安全確保支援士試験の午前Ⅰ（科目A1相当）全30問**と、**同・情報処理安全確保支援士試験の午前Ⅱ（科目A2相当）全25問**です。2026年10月19日のIPA公開一覧で確認できた最新公開分です。試作用オリジナル問題は削除しました。収録の詳細は `docs/sources/` にあります。
 
-問題はIPAの公表問題に基づき、正答は[公式解答例](https://www.ipa.go.jp/shiken/mondai-kaiotu/nl10bi0000009lh8-att/2025r07a_koudo_am1_ans.pdf)と照合しています。空白・句読点・数式を表示用に整え、問6・27・29の表・図はHTMLの表に再構成しました。各選択肢の解説は当サイト独自のものです。各問に出典、表記変更の説明、公式問題PDFへのリンクを付けています。問題の自動取り込み機能はまだありません。
+問題はIPAの公表問題に基づき、正答は[公式解答例](https://www.ipa.go.jp/shiken/mondai-kaiotu/nl10bi0000009lh8-att/2025r07a_koudo_am1_ans.pdf)と照合しています。空白・句読点・数式を表示用に整え、問6・27・29の表・図はHTMLの表に再構成しました。各選択肢の解説は当サイト独自のものです。各問に出典、表記変更の説明、公式問題PDFへのリンクを付けています。A2も同じ方針で、正答は[公式解答例](https://www.ipa.go.jp/shiken/mondai-kaiotu/nl10bi0000009lh8-att/2025r07a_sc_am2_ans.pdf)と照合し、問22の図と問24の表をHTMLの表に再構成しました。
+
+過去問の追加手順は `.agents/skills/add-past-exam/SKILL.md`（Claude Code・Codex共通のスキル）にまとめています。`scripts/past-exam/fetch.sh <試験> <西暦> <autumn|spring> <am1|am2>` で公式PDFの取得・正答の抽出・ページ画像の作成・データの雛形作成までを自動で行います。
 
 ローカルURLは http://127.0.0.1:5173/ 、A1の演習は http://127.0.0.1:5173/study/A1 です。`npm run dev` を実行している間に開けます。公開済みURLはまだありません。
 
@@ -64,7 +66,7 @@ npm run dev
 
 ## 用語トレーニング
 
-`/glossary` に過去問とは別の学習システムを追加しました。署名、ハッシュ、TLS、SQLインジェクション、XSS、CSRF、MFA、DNS、SPF、DKIM、ACIDなど18語から始められます。
+`/glossary` に過去問とは別の学習システムを追加しました。署名、ハッシュ、TLS、SQLインジェクション、XSS、CSRF、MFA、DNS、SPF、DKIM、ACIDに加え、科目A2で出題されたPKI、PQC、Pass the Hash、ドメインフロンティング、UEBA、CSPM、IEEE 802.1Xなど37語から始められます。
 
 1. 用語を選ぶ。説明例を先に読むことも、自分の理解だけで説明することもできます。
 2. 日本語の音声か文字で説明する。音声は停止後に聞き間違いを修正できます。
@@ -135,7 +137,10 @@ npm run deploy
 
 ```text
 src/App.tsx                 学習ホーム・演習・見直し・問題一覧・記録・設定
-src/data/questions.ts       試験・科目に属する問題データ
+src/data/questions.ts       収録する問題セットの一覧と科目の説明
+src/data/ipa.ts             IPA過去問の共通の組み立て（ID・出典・正答）
+src/data/sc-*.ts            年度・区分ごとの問題データ
+scripts/past-exam/          過去問の取り込み・用語追加の補助スクリプト
 src/lib/model.ts            型と入力検証
 src/lib/db.ts               IndexedDB・バックアップ
 src/lib/store.tsx           学習状態と保存処理
