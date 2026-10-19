@@ -20,7 +20,9 @@ describe('令和5年度春期 午前Ⅰの収録データ', () => {
     }
   });
   it('keeps the reconstructed tables and calculation flags', () => {
-    expect(questions.filter(q => q.table).map(q => q.number)).toEqual([9, 19]);
+    expect(questions.filter(q => q.table).map(q => q.number)).toEqual([19]);
+    expect(questions.filter(q => q.figure).map(q => q.number)).toEqual([7, 9]);
+    expect(questions.filter(q => q.options.every(o => o.figure)).map(q => q.number)).toEqual([2, 6]);
     for (const q of questions.filter(q => q.table)) expect(q.table!.rows.every(row => row.length === q.table!.headers.length)).toBe(true);
     expect(questions.find(q => q.number === 19)?.table?.rows[1]).toEqual(['期間比', '0.25', '0.21', '0.11', '0.11', '0.11', '0.21']);
     expect(questions.filter(q => q.kind === 'calculation').map(q => q.number)).toEqual([4, 19]);

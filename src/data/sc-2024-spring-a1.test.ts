@@ -20,9 +20,10 @@ describe('令和6年度春期 午前Ⅰの収録データ', () => {
     }
   });
   it('keeps the reconstructed tables and calculation flags', () => {
-    expect(questions.filter(q => q.table).map(q => q.number)).toEqual([3, 6, 7, 29]);
+    expect(questions.filter(q => q.table).map(q => q.number)).toEqual([6, 29]);
+    expect(questions.filter(q => q.figure).map(q => q.number)).toEqual([3, 7, 18]);
+    expect(questions.filter(q => q.options.every(o => o.figure)).map(q => q.number)).toEqual([7, 17]);
     for (const q of questions.filter(q => q.table)) expect(q.table!.rows.every(row => row.length === q.table!.headers.length)).toBe(true);
-    expect(questions.find(q => q.number === 7)?.table?.rows.filter(row => row[3] === '0').every(row => row[1] === '1' && row[2] === '1')).toBe(true);
     expect(questions.filter(q => q.kind === 'calculation').map(q => q.number)).toEqual([1, 2, 11, 13, 19, 29]);
   });
 });

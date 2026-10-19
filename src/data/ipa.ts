@@ -12,12 +12,13 @@ export function eraLabel(set: Pick<IpaQuestionSet, 'year' | 'season'>): string {
   return `令和${set.year - 2018}年度${seasonNames[set.season]}`;
 }
 
-export function ipaQuestion(set: IpaQuestionSet, number: number, topic: string, title: string, prompt: string, choices: [string, string][], explanation: string, extra: Pick<Question, 'details' | 'table' | 'code' | 'figure'> = {}): Question {
+export function ipaQuestion(set: IpaQuestionSet, number: number, topic: string, title: string, prompt: string, choices: ([string, string] | [string, string, string])[], explanation: string, extra: Pick<Question, 'details' | 'table' | 'code' | 'figure'> = {}): Question {
   return {
     id: `${set.idPrefix}-${number}`, examId: set.examId, course: set.course, number, topic, title, prompt,
     // 数値や式を求める問題。表の有無やキーワードでは判定しない。
     kind: set.calculation.includes(number) ? 'calculation' : 'knowledge',
-    options: choices.map(([text, explanation], i) => ({ id: (['a', 'b', 'c', 'd'] as const)[i], text, explanation })),
+    // 選択肢が図の問題は、三つ目に図のSVGを渡す。文章は読み上げと解説で使う。
+    options: choices.map(([text, explanation, figure], i) => ({ id: (['a', 'b', 'c', 'd'] as const)[i], text, explanation, ...(figure && { figure }) })),
     correct: set.answers[number - 1], explanation, ...extra,
     source: {
       kind: 'ipa', label: `出典：${eraLabel(set).replace('度', '度 ')} ${set.examName} ${set.section} 問${number}`,

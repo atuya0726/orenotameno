@@ -233,7 +233,7 @@ function AnswerForm({ question, saving, result, submitError, onSubmit }: { quest
       const mark = draft.optionMarks?.[option.id] ?? 'unknown';
       return <div key={option.id} className={cn('choice-card', checked && 'choice-selected')}>
         <button type="button" className="answer-selector" disabled={locked} data-testid={`option-${option.id}`} aria-label={`${optionLabels[option.id]}で回答`} aria-describedby={`choice-text-${option.id}`} onClick={() => void submit('high', option.id)}>
-          <span className="choice-letter">{optionLabels[option.id]}</span><span id={`choice-text-${option.id}`} className="choice-text"><MathText text={option.text} /></span>
+          <span className="choice-letter">{optionLabels[option.id]}</span><span id={`choice-text-${option.id}`} className="choice-text">{option.figure ? <><span className="choice-figure" dangerouslySetInnerHTML={{ __html: option.figure }} /><span className="sr-only">{option.text}</span></> : <MathText text={option.text} />}</span>
         </button>
         <button type="button" className="choice-mark-toggle" data-mark={mark} disabled={locked} aria-label={`${optionLabels[option.id]}の印：${optionMarkLabels[mark]}`} title="初めは ?、押すと ○ → × → △ → ○ の順に切り替え" onClick={() => changeMark(option.id)}><span aria-hidden="true">{optionMarkSymbols[mark]}</span></button>
       </div>;
@@ -257,7 +257,7 @@ function ResultDetails({ question, attempt, action }: { question: Question; atte
     </section>
     <h3 className="option-review-title">選択肢の解説</h3>
     <div className="option-reviews">{question.options.map(option => <div key={option.id} className={cn('option-review', option.id === question.correct && 'correct-option')}>
-      <div className="option-review-top"><span className="choice-letter">{optionLabels[option.id]}</span><strong><MathText text={option.text} /></strong>{option.id === question.correct && <span className="correct-answer-label"><Check size={14} />正解</span>}</div>
+      <div className="option-review-top"><span className="choice-letter">{optionLabels[option.id]}</span><strong>{option.figure && <span className="choice-figure" dangerouslySetInnerHTML={{ __html: option.figure }} />}<MathText text={option.text} /></strong>{option.id === question.correct && <span className="correct-answer-label"><Check size={14} />正解</span>}</div>
       <p><MathText text={option.explanation} /></p>
     </div>)}</div>
     {question.source.kind === 'ipa' && <div className="official-answer-source"><a className="official-answer-link" href={question.source.answerUrl} target="_blank" rel="noreferrer">IPA公式の解答例 ↗</a></div>}

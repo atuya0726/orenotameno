@@ -21,6 +21,7 @@ describe('令和7年度春期 午前Ⅰの収録データ', () => {
   });
   it('keeps the reconstructed tables, SQL and calculation flags', () => {
     expect(questions.filter(q => q.table).map(q => q.number)).toEqual([4, 25]);
+    expect(questions.filter(q => q.figure).map(q => q.number)).toEqual([3, 7, 15]);
     for (const q of questions.filter(q => q.table)) expect(q.table!.rows.every(row => row.length === q.table!.headers.length)).toBe(true);
     expect(questions.find(q => q.number === 10)?.code?.text).toContain('ON DELETE  a');
     expect(questions.filter(q => q.kind === 'calculation').map(q => q.number)).toEqual([1, 3, 4, 7, 20, 29]);

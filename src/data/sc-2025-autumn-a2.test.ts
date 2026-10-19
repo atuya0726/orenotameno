@@ -24,8 +24,9 @@ describe('令和7年度秋期 午前Ⅱの収録データ', () => {
       }
     }
   });
-  it('rebuilds the figure and table as HTML tables and marks only the availability question as calculation', () => {
-    expect(sc2025AutumnA2.filter(q => q.table).map(q => q.number)).toEqual([22, 24]);
+  it('redraws the figure as SVG, rebuilds the table as HTML and marks only the availability question as calculation', () => {
+    expect(sc2025AutumnA2.filter(q => q.table).map(q => q.number)).toEqual([24]);
+    expect(sc2025AutumnA2.filter(q => q.figure).map(q => q.number)).toEqual([22]);
     expect(sc2025AutumnA2.find(q => q.number === 24)?.table?.rows[1]).toEqual(['ハードウェア故障に伴う停止', '6月26日10時から20時までの10時間']);
     expect(sc2025AutumnA2.filter(q => q.kind === 'calculation').map(q => q.number)).toEqual([24]);
   });

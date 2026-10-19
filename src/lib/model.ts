@@ -42,7 +42,7 @@ export type Draft = { questionId: string; selected?: OptionId; uncertainOptions:
 export type Question = {
   id: string; examId: string; course: Course; number: number; topic: string; title: string;
   kind: 'knowledge' | 'calculation';
-  prompt: string; options: { id: OptionId; text: string; explanation: string }[];
+  prompt: string; options: { id: OptionId; text: string; explanation: string; figure?: string }[];
   correct: OptionId; explanation: string;
   details?: { title?: string; items: string[] };
   code?: { title: string; text: string };
