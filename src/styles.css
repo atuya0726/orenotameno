@@ -185,7 +185,7 @@ svg { flex-shrink: 0; }
 .exercise-layout { width: 100%; max-width: var(--reading-width); margin-inline: auto; }
 .exercise-main { min-width: 0; }
 .question-card { margin-bottom: var(--space-4); }
-.question-heading { display: flex; align-items: flex-start; gap: var(--space-2); }
+.question-tools { display: flex; justify-content: flex-end; gap: var(--space-1); margin: calc(var(--space-2) * -1) calc(var(--space-2) * -1) var(--space-1) 0; }
 .bookmark-button, .row-go { width: 44px; height: 44px; display: grid; place-items: center; border-radius: var(--radius-control); flex-shrink: 0; color: var(--text-secondary); }
 .bookmark-button:hover, .row-go:hover { background: var(--surface-secondary); color: var(--foreground); }
 
