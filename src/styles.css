@@ -690,7 +690,7 @@ svg { flex-shrink: 0; }
 .term-practice-layout { display: grid; grid-template-columns: minmax(0,1fr) 220px; gap: var(--space-6); align-items: start; }
 .term-practice-main { min-width: 0; }
 .explanation-form, .saved-explanation { border: 1px solid var(--border); border-radius: var(--radius-card); padding: var(--space-6); }
-.explanation-form-heading { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
+.explanation-form-heading { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); flex-wrap: wrap; }
 .explanation-form-heading h2 { font-size: 16px; }
 .explanation-form-heading > span { font-size: 11px; color: var(--text-secondary); white-space: nowrap; }
 .explanation-prompt { font-size: 13px; color: var(--text-secondary); line-height: 1.9; margin-top: var(--space-3); }

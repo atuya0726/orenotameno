@@ -29,6 +29,16 @@ test('searches terms and persists drafts without exposing the reference first', 
     const draft = await new Promise<{ text?: string }>(resolve => { const r = db.transaction('drafts').objectStore('drafts').get('digital-signature'); r.onsuccess = () => resolve(r.result ?? {}); }); db.close(); return draft.text;
   })).toBe(text);
   await page.reload(); await expect(textbox(page)).toHaveValue(text);
+  await page.getByRole('button', { name: '全文削除' }).click();
+  await expect(textbox(page)).toHaveValue('');
+  await expect(textbox(page)).toBeFocused();
+  await expect(check(page)).toBeDisabled();
+  await expect(page.getByRole('button', { name: '全文削除' })).toBeDisabled();
+  await expect.poll(() => page.evaluate(async () => {
+    const db = await new Promise<IDBDatabase>(resolve => { const r = indexedDB.open('orenotameno-glossary'); r.onsuccess = () => resolve(r.result); });
+    const draft = await new Promise<{ text?: string }>(resolve => { const r = db.transaction('drafts').objectStore('drafts').get('digital-signature'); r.onsuccess = () => resolve(r.result ?? {}); }); db.close(); return draft.text;
+  })).toBe('');
+  await page.reload(); await expect(textbox(page)).toHaveValue('');
 });
 
 test('evaluates once, stores feedback separately from quizzes, and reviews a historical explanation', async ({ page }) => {
@@ -126,6 +136,7 @@ test('handles final/interim voice text, prevents checks while listening, and sto
     speech.onresult({ results: [{ isFinal: true, 0: { transcript: '秘密鍵で署名を作ります。' }, length: 1 }, { isFinal: false, 0: { transcript: '公開鍵で' }, length: 1 }] });
   });
   await expect(textbox(page)).toHaveValue('秘密鍵で署名を作ります。');
+  await expect(page.getByRole('button', { name: '全文削除' })).toBeDisabled();
   await expect(page.locator('.speech-interim')).toContainText('公開鍵で');
   // the engine ends a round on a pause; while held it restarts and keeps the earlier text without repeating it
   await page.evaluate(() => {
@@ -136,7 +147,14 @@ test('handles final/interim voice text, prevents checks while listening, and sto
   await expect(textbox(page)).toHaveValue('秘密鍵で署名を作ります。公開鍵で検証します。');
   await page.mouse.up();
   await expect(textbox(page)).toBeEditable(); await expect(check(page)).toBeEnabled();
+  await page.getByRole('button', { name: '全文削除' }).click();
+  await expect(textbox(page)).toHaveValue('');
   await page.getByRole('button', { name: '押しながら話す' }).hover(); await page.mouse.down();
+  await page.evaluate(() => {
+    const speech = (window as unknown as { testSpeech: { onresult: (e: unknown) => void } }).testSpeech;
+    speech.onresult({ results: [{ isFinal: true, 0: { transcript: '新しい説明を始めます。' }, length: 1 }] });
+  });
+  await expect(textbox(page)).toHaveValue('新しい説明を始めます。');
   // navigate without moving focus so blur doesn't stop the mic first
   await page.evaluate(() => document.querySelector<HTMLAnchorElement>('a.back-link')!.click());
   await expect(page).toHaveURL(/\/glossary$/);

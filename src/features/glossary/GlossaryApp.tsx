@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { Link, Navigate, Route, Routes, useParams, useSearchParams } from 'react-router';
-import { ArrowDownToLine, ArrowLeft, ArrowRight, ArrowUpFromLine, BookOpen, Check, CheckCheck, ChevronRight, CircleHelp, Clock3, History, LoaderCircle, Mic, RotateCcw, Search, Square, TriangleAlert, X } from 'lucide-react';
+import { ArrowDownToLine, ArrowLeft, ArrowRight, ArrowUpFromLine, BookOpen, Check, CheckCheck, ChevronRight, CircleHelp, Clock3, History, LoaderCircle, Mic, RotateCcw, Search, Square, Trash2, TriangleAlert, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { formatDate, dayKey } from '@/lib/date';
@@ -168,7 +168,7 @@ function TermPractice({ term, referenceInitially, attemptId, review }: { term: T
     <div className="term-practice-layout"><div className="term-practice-main">
       {showReference && !result && <Reference term={term} />}
       {saved && result?.id === saved.id ? <div className="saved-explanation"><span className="eyebrow">{formatDate(saved.answeredAt, true)} の説明</span><p>{saved.text}</p><Button variant="outline" onClick={() => { setResult(null); setShowReference(false); textareaRef.current?.focus(); }}>新しく説明してみる<RotateCcw size={15} /></Button></div> : <form onSubmit={event => void check(event)} className="explanation-form">
-        <div className="explanation-form-heading"><h2>仕組みと用途を説明</h2></div>
+        <div className="explanation-form-heading"><h2>仕組みと用途を説明</h2><Button type="button" variant="ghost" size="sm" disabled={!draft.text || speech.active || saving} onClick={() => { change({ text: '', usedVoice: false }); textareaRef.current?.focus(); }}><Trash2 size={15} />全文削除</Button></div>
         <div className="speech-controls"><Button type="button" className="speech-hold" variant={speech.active ? 'secondary' : 'outline'} disabled={saving || !speech.supported || speech.phase === 'stopping'}
           onPointerDown={e => { if (e.button !== 0) return; e.currentTarget.setPointerCapture(e.pointerId); speech.start(draft.text); }}
           onPointerUp={speech.stop} onPointerCancel={speech.stop} onLostPointerCapture={speech.stop}
