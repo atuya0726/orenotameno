@@ -124,6 +124,6 @@ describe('answering and recorded results', () => {
     const notebook = render('/reviews');
     expect(notebook).toContain('復習する単語');
     expect(notebook).toContain('<strong>1<small>語</small></strong>');
-    expect(notebook).toContain('href="/glossary?filter=words"');
+    expect(notebook).toContain('href="/glossary/review"');
   });
 });

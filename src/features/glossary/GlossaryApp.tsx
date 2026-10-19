@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
-import { Link, Route, Routes, useParams, useSearchParams } from 'react-router';
+import { Link, Navigate, Route, Routes, useParams, useSearchParams } from 'react-router';
 import { ArrowDownToLine, ArrowLeft, ArrowRight, ArrowUpFromLine, BookOpen, Check, CheckCheck, ChevronRight, CircleHelp, Clock3, History, LoaderCircle, Mic, RotateCcw, Search, Square, TriangleAlert, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -25,6 +25,7 @@ function GlossaryShell() {
       <Route index element={<GlossaryLibrary />} />
       <Route path="history" element={<GlossaryHistory />} />
       <Route path="extra" element={<ExtraTermRoute />} />
+      <Route path="review" element={<ReviewWordsRoute />} />
       <Route path=":termId" element={<TermRoute />} />
       <Route path="*" element={<div className="empty-state"><h2>ページが見つかりません</h2><Link className="text-link" to="/glossary">用語一覧へ戻る</Link></div>} />
     </Routes>}
@@ -64,7 +65,7 @@ function GlossaryLibrary() {
   function update(key: string, value: string) { const next = new URLSearchParams(params); next.set(key, value); setParams(next, { replace: true }); }
   const reviewWords = useLearning().snapshot.reviewWords;
   return <>
-    <Intro title="用語学習">{random && <Button asChild><Link to={`/glossary/${random.id}`}>おまかせで練習<ArrowRight size={17} /></Link></Button>}</Intro>
+    <Intro title="用語学習">{filter === 'words' ? reviewWords.length > 0 && <Button asChild><Link to="/glossary/review">単語を復習<ArrowRight size={17} /></Link></Button> : random && <Button asChild><Link to={`/glossary/${random.id}`}>おまかせで練習<ArrowRight size={17} /></Link></Button>}</Intro>
     <div className="glossary-metrics"><div><strong>{terms.length}<small>語</small></strong><span>収録用語</span></div><div><strong>{practiced}<small>語</small></strong><span>説明した用語</span></div><div><strong>{needsReview}<small>語</small></strong><span>もう一度説明したい</span></div></div>
     <div className="glossary-toolbar"><label className="search-input"><Search size={17} /><input aria-label="用語を検索" placeholder="用語・英語名で検索" value={search} onChange={e => setSearch(e.target.value)} /></label><label className="glossary-category"><span className="sr-only">用語のカテゴリ</span><select value={category} onChange={e => update('category', e.target.value)}><option value="all">すべてのカテゴリ</option>{termCategories.map(value => <option key={value}>{value}</option>)}</select></label></div>
     <div className="library-filter-row"><div className="filter-pills">{[['all', 'すべて'], ['new', 'まだ説明していない'], ['review', 'もう一度'], ...(reviewWords.length || filter === 'words' ? [['words', `復習する単語 ${reviewWords.length}`]] : [])].map(([value, label]) => <button key={value} onClick={() => update('filter', value)} className={filter === value ? 'active' : ''} aria-pressed={filter === value}>{label}</button>)}</div>{filter !== 'words' && <span>{list.length}語</span>}</div>
@@ -101,16 +102,39 @@ function ReviewWordCards({ words, search, latest }: { words: string[]; search: s
 function TermRoute() {
   const { termId } = useParams(); const term = termById.get(termId ?? ''); const [params] = useSearchParams();
   if (!term) return <div className="empty-state"><h2>用語が見つかりません</h2><Link to="/glossary" className="text-link">用語一覧へ戻る<ArrowRight size={15} /></Link></div>;
-  return <TermPractice key={`${term.id}-${params.get('reference')}-${params.get('attempt')}`} term={term} referenceInitially={params.get('reference') === '1'} attemptId={params.get('attempt') ?? undefined} />;
+  return <TermPractice key={`${term.id}-${params.get('reference')}-${params.get('attempt')}-${params.get('review')}`} term={term} referenceInitially={params.get('reference') === '1'} attemptId={params.get('attempt') ?? undefined} review={reviewSession(params)} />;
 }
 function ExtraTermRoute() {
   const [params] = useSearchParams(); const name = extraTermNameSchema.safeParse(params.get('name') ?? '');
   if (!name.success) return <div className="empty-state"><h2>用語が見つかりません</h2><Link to="/glossary" className="text-link">用語一覧へ戻る<ArrowRight size={15} /></Link></div>;
   const from = params.get('from') ?? undefined;
-  return <TermPractice key={`${name.data}-${params.get('attempt')}`} term={extraTerm(name.data, from && termById.has(from) ? from : undefined)} referenceInitially={false} attemptId={params.get('attempt') ?? undefined} />;
+  return <TermPractice key={`${name.data}-${params.get('attempt')}-${params.get('review')}`} term={extraTerm(name.data, from && termById.has(from) ? from : undefined)} referenceInitially={false} attemptId={params.get('attempt') ?? undefined} review={reviewSession(params)} />;
 }
-function TermPractice({ term, referenceInitially, attemptId }: { term: Term; referenceInitially: boolean; attemptId?: string }) {
+// A review round walks the saved words in random order; the words already explained ride along in the URL.
+type ReviewSession = { word: string; done: string[] };
+function reviewSession(params: URLSearchParams): ReviewSession | undefined {
+  const word = params.get('review'); return word ? { word, done: params.getAll('done') } : undefined;
+}
+function reviewQuery(done: string[]) { const params = new URLSearchParams(); done.forEach(word => params.append('done', word)); return params; }
+function reviewWordPath(word: string, done: string[]) {
+  const term = termByName.get(normalize(word)); const params = reviewQuery(done);
+  if (!term) params.set('name', word);
+  params.set('review', word);
+  return `/glossary/${term ? term.id : 'extra'}?${params}`;
+}
+function nextReviewPath(session: ReviewSession) { return `/glossary/review?${reviewQuery([...session.done, session.word])}`; }
+function ReviewWordsRoute() {
+  const words = useLearning().snapshot.reviewWords; const [params] = useSearchParams();
+  const done = params.getAll('done'); const remaining = words.filter(word => !done.includes(word));
+  const [pick] = useState(() => Math.random());
+  if (!words.length) return <div className="empty-state"><CheckCheck size={25} /><h2>復習する単語はありません</h2><p>問題の解説で「復習したい単語」を選ぶと、ここで続けて説明できます。</p><Link to="/reviews" className="text-link">復習ノートへ戻る<ArrowRight size={15} /></Link></div>;
+  if (!remaining.length) return <div className="session-complete"><span className="completion-icon"><CheckCheck size={34} /></span><h1>単語の復習が終わりました</h1><p>{words.length}語をすべて説明しました。</p><div className="actions"><Button asChild><Link to="/glossary/review">もう一周する<RotateCcw size={16} /></Link></Button><Button variant="outline" asChild><Link to="/reviews">復習ノートへ戻る</Link></Button></div></div>;
+  return <Navigate replace to={reviewWordPath(remaining[Math.min(Math.floor(pick * remaining.length), remaining.length - 1)], done)} />;
+}
+function TermPractice({ term, referenceInitially, attemptId, review }: { term: Term; referenceInitially: boolean; attemptId?: string; review?: ReviewSession }) {
   const { snapshot, updateDraft, submit } = useGlossary();
+  const reviewWords = useLearning().snapshot.reviewWords;
+  const reviewLast = review && reviewWords.every(word => word === review.word || review.done.includes(word));
   const saved = snapshot.attempts.find(a => a.id === attemptId && a.termId === term.id);
   const [draft, setDraft] = useState<GlossaryDraft>(() => {
     const existing = snapshot.drafts.find(d => d.termId === term.id);
@@ -141,7 +165,7 @@ function TermPractice({ term, referenceInitially, attemptId }: { term: Term; ref
   function reveal() { hasSeenReference.current = true; setShowReference(true); change({ referenceViewed: true }); }
   function retry() { setShowReference(false); change({ text: '', usedVoice: false, referenceViewed: true }); textareaRef.current?.focus(); }
   return <>
-    <Link to="/glossary" className="back-link"><ArrowLeft size={15} />用語一覧へ戻る</Link>
+    {review ? <div className="review-round-bar"><Link to="/reviews" className="back-link"><ArrowLeft size={15} />復習をやめる</Link><span className="review-round-count">単語の復習 {review.done.length + 1} / {Math.max(reviewWords.length, review.done.length + 1)}</span>{!result && <Link to={nextReviewPath(review)} className="text-link">{reviewLast ? '復習を終える' : 'この単語をとばす'}<ChevronRight size={15} /></Link>}</div> : <Link to="/glossary" className="back-link"><ArrowLeft size={15} />用語一覧へ戻る</Link>}
     <div className="term-practice-heading"><div><span className="pill">{term.category}</span><h1>{term.name}</h1><p>{term.reading}</p></div><span className="term-practice-count"><History size={14} />これまで{history.length}回説明</span></div>
     <div className="term-practice-layout"><div className="term-practice-main">
       {showReference && !result && <Reference term={term} />}
@@ -161,7 +185,7 @@ function TermPractice({ term, referenceInitially, attemptId }: { term: Term; ref
         {draft.referenceViewed && <p className="reference-viewed-note">説明例を参照済み</p>}{error && <p className="inline-error" role="alert">{error}</p>}
         <p className="speech-privacy">チェック時に説明文をOpenAIへ送信します。履歴はこのブラウザに保存。音声認識はブラウザのサービスを利用し、音声は当サイトに保存しません。</p>
       </form>}
-      {result && <div ref={feedbackRef} tabIndex={-1} className="glossary-feedback-focus"><Feedback attempt={result} /><Reference term={term} definition={result.reference} /><div className="actions glossary-next-actions"><Button variant="outline" onClick={retry}><RotateCcw size={16} />もう一度説明する</Button><Button asChild><Link to={`/glossary/${nextTerm.id}`}>次の用語へ<ArrowRight size={16} /></Link></Button></div></div>}
+      {result && <div ref={feedbackRef} tabIndex={-1} className="glossary-feedback-focus"><Feedback attempt={result} /><Reference term={term} definition={result.reference} /><div className="actions glossary-next-actions"><Button variant="outline" onClick={retry}><RotateCcw size={16} />もう一度説明する</Button>{review ? <Button asChild><Link to={nextReviewPath(review)}>{reviewLast ? '復習を終える' : '次の単語へ'}<ArrowRight size={16} /></Link></Button> : <Button asChild><Link to={`/glossary/${nextTerm.id}`}>次の用語へ<ArrowRight size={16} /></Link></Button>}</div></div>}
       {!result && history.length > 0 && <details className="term-history"><summary><History size={16} />過去の説明を見る（{history.length}件）</summary>{history.slice(0, 5).map(attempt => <Link key={attempt.id} to={termPath(term.id, attempt.id)}><time>{formatDate(attempt.answeredAt, true)}</time><ResultBadge attempt={attempt} /><ChevronRight size={15} /></Link>)}</details>}
     </div>{term.related.length > 0 && <aside className="term-coach"><div className="related-terms"><h3>関連用語</h3>{term.related.map(id => { const related = termById.get(id); return related && <Link key={id} to={`/glossary/${id}`}>{related.name}<ChevronRight size={14} /></Link>; })}</div></aside>}</div>
   </>;

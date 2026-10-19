@@ -187,10 +187,12 @@ test('shares a saved word between questions and removes it globally from the rev
   await expect(summary).toContainText('1語');
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await summary.getByRole('link', { name: '単語を復習' }).click();
-  await expect(page).toHaveURL(/\/glossary\?filter=words$/);
+  // the question's spelling opens the collected glossary term
+  await expect(page).toHaveURL(/\/glossary\/digital-signature\?review=/);
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('ディジタル署名');
+  await page.goto('/glossary?filter=words');
   const cards = page.locator('.term-card');
   await expect(cards).toHaveCount(1);
-  // the question's spelling finds the collected glossary term
   await expect(cards.getByRole('heading')).toHaveText('ディジタル署名');
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.getByRole('button', { name: 'デジタル署名を復習する単語から外す' }).click();
@@ -262,14 +264,29 @@ test('keeps the saved state on failure and allows retrying the request', async (
   expect((await readRecords(page)).cards[0].remainingReviews).toBe(2);
 });
 
-test('opens a saved word that is not in the glossary as an extra term', async ({ page }) => {
+test('reviews saved words one after another in random order from the review notebook', async ({ page }) => {
+  await page.route('**/api/glossary/evaluate', route => route.fulfill({ json: { version: 1, engine: 'openai', model: 'test-model', status: 'covered', grade: 'B', covered: 1, total: 1, criteria: [{ id: 'core', title: '基本の仕組み', level: 'B', status: 'covered', evidence: '', hint: '押さえられています。' }], summary: '説明できています。', definition: '用語の説明例です。' } }));
   await page.goto('/study/A1?question=sc-2025-autumn-a1-2');
   await page.getByRole('button', { name: 'イで回答', exact: true }).click();
   await page.getByRole('button', { name: 'ROC曲線を復習する', exact: true }).click();
+  await page.getByRole('button', { name: '偽陽性率を復習する', exact: true }).click();
+  await expect(page.getByRole('button', { name: '偽陽性率を復習する', exact: true })).toHaveAttribute('aria-pressed', 'true');
   await page.goto('/reviews');
   await page.getByRole('link', { name: '単語を復習' }).click();
-  await expect(page.getByRole('button', { name: '復習する単語 1', exact: true })).toHaveAttribute('aria-pressed', 'true');
-  await page.getByRole('link', { name: 'ROC曲線を説明する' }).click();
-  await expect(page).toHaveURL(/\/glossary\/extra\?name=ROC%E6%9B%B2%E7%B7%9A$/);
-  await expect(page.getByRole('heading', { level: 1 })).toContainText('ROC曲線');
+  // the first word is picked at random and opens its explanation page directly
+  await expect(page).toHaveURL(/\/glossary\/extra\?name=.+&review=/);
+  await expect(page.getByText('単語の復習 1 / 2')).toBeVisible();
+  const first = await page.getByRole('heading', { level: 1 }).textContent();
+  expect(['ROC曲線', '偽陽性率']).toContain(first);
+  await page.getByRole('link', { name: 'この単語をとばす' }).click();
+  await expect(page.getByText('単語の復習 2 / 2')).toBeVisible();
+  const second = await page.getByRole('heading', { level: 1 }).textContent();
+  expect([first, second].sort()).toEqual(['ROC曲線', '偽陽性率'].sort());
+  await page.getByRole('textbox', { name: `${second}についての説明` }).fill('誤って陽性と判定した割合を表す指標です。');
+  await page.getByRole('button', { name: 'AIでチェック' }).click();
+  await page.getByRole('link', { name: '復習を終える' }).click();
+  await expect(page.getByRole('heading', { name: '単語の復習が終わりました' })).toBeVisible();
+  await page.getByRole('link', { name: 'もう一周する' }).click();
+  await expect(page.getByText('単語の復習 1 / 2')).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });

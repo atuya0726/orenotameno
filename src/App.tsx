@@ -338,7 +338,7 @@ function ReviewNotebook() {
   return <><PageIntro title="復習ノート" />
     <div className="review-summaries">
       <section className="review-summary" aria-label="復習する問題"><span className="review-summary-icon"><RotateCcw size={25} /></span><div><span>復習する問題</span><strong>{pending.length}<small>問</small></strong></div>{pending.length > 0 ? <><p>優先して復習 <strong className="review-total-count">{priorityCount}問</strong></p><div className="review-course-actions">{(['A1', 'A2'] as const).filter(course => pending.some(card => questionById.get(card.questionId)?.course === course)).map(course => <Button key={course} asChild><Link to={`/study/${course}?mode=review`}>{courses[course].name}を復習<ArrowRight size={16} /></Link></Button>)}</div></> : <p className="muted">復習する問題はありません。</p>}</section>
-      <section className="review-summary" aria-label="復習する単語"><span className="review-summary-icon"><Mic size={25} /></span><div><span>復習する単語</span><strong>{words}<small>語</small></strong></div>{words > 0 ? <><p className="muted">用語学習で、自分の言葉で説明して確かめます。</p><div className="review-course-actions"><Button asChild><Link to="/glossary?filter=words">単語を復習<ArrowRight size={16} /></Link></Button></div></> : <p className="muted">登録した単語はありません。</p>}</section>
+      <section className="review-summary" aria-label="復習する単語"><span className="review-summary-icon"><Mic size={25} /></span><div><span>復習する単語</span><strong>{words}<small>語</small></strong></div>{words > 0 ? <><p className="muted">用語学習で、自分の言葉で説明して確かめます。</p><div className="review-course-actions"><Button asChild><Link to="/glossary/review">単語を復習<ArrowRight size={16} /></Link></Button></div></> : <p className="muted">登録した単語はありません。</p>}</section>
     </div>
   </>;
 }
