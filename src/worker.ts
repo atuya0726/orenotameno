@@ -19,6 +19,8 @@ export default {
     const origin = request.headers.get('Origin');
     if ((origin && origin !== url.origin) || request.headers.get('Sec-Fetch-Site') === 'cross-site') return json({ error: 'このサイトの画面から評価してください。' }, 403);
     if (!request.headers.get('Content-Type')?.toLowerCase().startsWith('application/json')) return json({ error: 'JSON形式で送信してください。' }, 415);
+    const started = Date.now();
+    let evaluatedTermId: string | undefined;
     try {
       // Bound the body as it arrives; a missing/forged Content-Length cannot bypass the limit.
       const reader = request.body?.getReader();
@@ -34,11 +36,17 @@ export default {
       const extraName = extraTermName(input.data.termId);
       const term = extraName ? extraTerm(extraName) : termById.get(input.data.termId);
       if (!term) return json({ error: '用語が見つかりません。' }, 404);
+      evaluatedTermId = extraName ? 'extra' : term.id;
       if (!env.OPENAI_API_KEY?.trim()) return json({ error: 'AI評価の接続設定がまだありません。説明はブラウザに保存されているので、設定後に続けられます。' }, 503);
       return json(await evaluateWithOpenAI(term, input.data.text, env.OPENAI_API_KEY, env.OPENAI_MODEL || DEFAULT_MODEL));
     } catch (error) {
-      if (error instanceof EvaluationError) return json({ error: error.message }, error.status);
-      return json({ error: 'AIの評価中にエラーが発生しました。入力した説明は残っています。' }, 500);
+      const status = error instanceof EvaluationError ? error.status : 500;
+      const code = error instanceof EvaluationError ? error.code : 'AI_INTERNAL_ERROR';
+      const message = error instanceof EvaluationError ? error.message : 'AIの評価中にエラーが発生しました。入力した説明は残っています。';
+      const reference = crypto.randomUUID().slice(0, 8);
+      // Never log learner text, custom term names, API keys, or upstream response bodies.
+      console.error(JSON.stringify({ event: 'glossary_evaluation_failed', reference, code, status, upstreamStatus: error instanceof EvaluationError ? error.upstreamStatus : undefined, termId: evaluatedTermId, elapsedMs: Date.now() - started }));
+      return json({ error: `${message}（確認番号: ${reference}）`, code, reference }, status);
     }
   },
 };

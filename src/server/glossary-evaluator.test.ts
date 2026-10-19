@@ -7,9 +7,14 @@ import { extraTerm } from '../features/glossary/model';
 const term = termById.get('digital-signature')!;
 const text = '署名者の秘密鍵で署名を作り、公開鍵で検証して改ざんを検知します。';
 function assessment() { return { summary: '鍵の役割を説明できています。', criteria: term.criteria.map(c => ({ id: c.id, title: '', level: c.level ?? 'B', status: 'covered', evidence: text, feedback: '要点を正しく説明できています。' })), definition: '', followUp: { name: 'ハッシュ関数', reason: '署名の前に使われるため。', termId: 'hash' } }; }
-function upstream(raw: unknown = assessment(), extra: Record<string, unknown> = {}) { return Response.json({ status: 'completed', model: 'gpt-6-luna', output: [{ type: 'reasoning' }, { type: 'message', content: [{ type: 'output_text', text: JSON.stringify(raw) }] }], ...extra }); }
+function upstream(raw: unknown = assessment(), extra: Record<string, unknown> = {}) {
+  const data = raw as ReturnType<typeof assessment>;
+  const criteria = Array.isArray(data.criteria) && data.criteria.every(c => term.criteria.some(known => known.id === c.id))
+    ? Object.fromEntries(data.criteria.map(({ id, status, evidence, feedback }) => [id, { status, evidence, feedback }])) : data.criteria;
+  return Response.json({ status: 'completed', model: 'gpt-6-luna', output: [{ type: 'reasoning' }, { type: 'message', content: [{ type: 'output_text', text: JSON.stringify({ ...data, criteria }) }] }], ...extra });
+}
 const request = (body: unknown = { termId: term.id, text }, headers = {}) => new Request('https://example.test/api/glossary/evaluate', { method: 'POST', headers: { 'Content-Type': 'application/json', Origin: 'https://example.test', ...headers }, body: JSON.stringify(body) });
-afterEach(() => vi.unstubAllGlobals());
+afterEach(() => { vi.unstubAllGlobals(); vi.restoreAllMocks(); });
 describe('LLM評価の検証と集計', () => {
   it('derives coverage from the returned criteria, not a model-reported score', () => {
     const raw = assessment(); raw.criteria[1] = { ...raw.criteria[1], status: 'missing', evidence: '' };
@@ -112,6 +117,38 @@ describe('OpenAI Responses API', () => {
     expect(JSON.parse(body.input[0].content).learnerExplanation).toBe(text);
     expect(JSON.stringify(body)).not.toContain('test-key');
     expect(body.text.format.schema.additionalProperties).toBe(false);
+    const rubric = body.text.format.schema.properties.criteria;
+    expect(rubric.type).toBe('object');
+    expect(rubric.required).toEqual(term.criteria.map(c => c.id));
+    expect(rubric.additionalProperties).toBe(false);
+    expect(Object.keys(rubric.properties.sign.properties)).toEqual(['status', 'evidence', 'feedback']);
+  });
+  it('handles fixed LRU keys and rejects missing keys or invented evidence', async () => {
+    const lru = termById.get('lru')!;
+    const explanation = '最後に参照してから最も長い時間が経ったデータをキャッシュから追い出す方式です。';
+    const points = Object.fromEntries(lru.criteria.map(c => [c.id, { status: c.level ? 'missing' : 'covered', evidence: c.level ? '' : explanation, feedback: '確認しました。' }]));
+    const raw = { ...assessment(), criteria: points };
+    const result = await evaluateWithOpenAI(lru, explanation, 'key', undefined, vi.fn().mockResolvedValue(upstream(raw)));
+    expect(result).toMatchObject({ grade: 'B', covered: 3, total: 3 });
+    expect(result.criteria.map(c => c.id)).toEqual(lru.criteria.map(c => c.id));
+    const missing = { ...points }; delete missing.cache;
+    await expect(evaluateWithOpenAI(lru, explanation, 'key', undefined, vi.fn().mockResolvedValue(upstream({ ...raw, criteria: missing })))).rejects.toThrow('評価形式');
+    const invented = { ...points, cache: { ...points.cache, evidence: '入力に存在しない説明' } };
+    await expect(evaluateWithOpenAI(lru, explanation, 'key', undefined, vi.fn().mockResolvedValue(upstream({ ...raw, criteria: invented })))).rejects.toMatchObject({ code: 'AI_EVIDENCE_INVALID' });
+  });
+  it('distinguishes the output limit from other incomplete responses', async () => {
+    const fetcher = vi.fn().mockResolvedValue(upstream(assessment(), { status: 'incomplete', incomplete_details: { reason: 'max_output_tokens' } }));
+    await expect(evaluateWithOpenAI(term, text, 'key', undefined, fetcher)).rejects.toMatchObject({ code: 'AI_OUTPUT_LIMIT' });
+    expect(fetcher).toHaveBeenCalledTimes(1);
+  });
+  it('identifies timeouts while connecting or reading the response body without retrying', async () => {
+    const timeout = new DOMException('The operation timed out', 'TimeoutError');
+    const connecting = vi.fn().mockRejectedValue(timeout);
+    await expect(evaluateWithOpenAI(term, text, 'key', undefined, connecting)).rejects.toMatchObject({ status: 504, code: 'AI_TIMEOUT' });
+    expect(connecting).toHaveBeenCalledTimes(1);
+    const reading = vi.fn().mockResolvedValue({ ok: true, json: () => Promise.reject(timeout) });
+    await expect(evaluateWithOpenAI(term, text, 'key', undefined, reading)).rejects.toMatchObject({ status: 504, code: 'AI_TIMEOUT' });
+    expect(reading).toHaveBeenCalledTimes(1);
   });
   it('does not save incomplete outputs or refusals', async () => {
     await expect(evaluateWithOpenAI(term, text, 'key', undefined, vi.fn().mockResolvedValue(upstream(assessment(), { status: 'incomplete' })))).rejects.toThrow('完了しませんでした');
@@ -125,6 +162,22 @@ describe('OpenAI Responses API', () => {
   });
 });
 describe('Worker API boundary', () => {
+  it('correlates failures without logging learner text, custom terms or provider secrets', async () => {
+    const logger = vi.spyOn(console, 'error').mockImplementation(() => {});
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(upstream(assessment(), { status: 'incomplete', incomplete_details: { reason: 'max_output_tokens' } })));
+    const res = await worker.fetch(request({ termId: 'extra:個別に入力した用語', text: '個人の説明文はログに記録しないこと。' }), { OPENAI_API_KEY: 'private-test-key' });
+    expect(res.status).toBe(502);
+    const body = await res.json() as { error: string; code: string; reference: string };
+    expect(body.code).toBe('AI_OUTPUT_LIMIT');
+    expect(body.reference).toMatch(/^[a-f0-9]{8}$/);
+    expect(body.error).toContain(body.reference);
+    expect(logger).toHaveBeenCalledTimes(1);
+    expect(JSON.parse(logger.mock.calls[0][0])).toMatchObject({ event: 'glossary_evaluation_failed', code: body.code, reference: body.reference, termId: 'extra', status: 502 });
+    const logs = JSON.stringify(logger.mock.calls);
+    expect(logs).not.toContain('個人の説明文');
+    expect(logs).not.toContain('個別に入力した用語');
+    expect(logs).not.toContain('private-test-key');
+  });
   it('returns a real evaluation with no caching', async () => {
     vi.stubGlobal('fetch', vi.fn().mockResolvedValue(upstream()));
     const res = await worker.fetch(request(), { OPENAI_API_KEY: 'test-key' });

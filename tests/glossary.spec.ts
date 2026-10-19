@@ -151,12 +151,20 @@ test('opens the collected term when the AI names it by another spelling', async 
 });
 
 test('keeps text and allows retry after an AI failure, with no fabricated feedback', async ({ page }) => {
-  await page.route('**/api/glossary/evaluate', route => route.fulfill({ status: 503, json: { error: 'AI評価の接続設定がまだありません。' } }));
+  let calls = 0;
+  await page.route('**/api/glossary/evaluate', route => ++calls === 1
+    ? route.fulfill({ status: 502, json: { error: 'AIの評価が完了しませんでした。（確認番号: deadbeef）', code: 'AI_INCOMPLETE', reference: 'deadbeef' } })
+    : route.fulfill({ json: evaluation() }));
   await page.goto('/glossary/digital-signature'); await textbox(page).fill(text); await check(page).click();
-  await expect(page.getByRole('alert').filter({ hasText: '接続設定がまだありません' }).first()).toBeVisible();
+  await expect(page.getByRole('alert').filter({ hasText: '確認番号: deadbeef' }).first()).toBeVisible();
   await expect(textbox(page)).toHaveValue(text); await expect(check(page)).toBeEnabled();
   expect(await entries(page)).toEqual([]);
   await expect(page.getByRole('region', { name: '説明のチェック結果' })).toHaveCount(0);
+  expect(calls).toBe(1);
+  await check(page).click();
+  await expect(page.getByRole('region', { name: '説明のチェック結果' })).toBeVisible();
+  expect(calls).toBe(2);
+  expect(await entries(page)).toHaveLength(1);
 });
 
 test('records whether the explanation example was consulted', async ({ page }) => {

@@ -92,6 +92,8 @@ npm run dev
 
 評価ボタンを押したときだけ1回APIを呼びます。自動採点・自動再試行・ツール呼び出しは行わず、最大出力3,000トークンに制限します。モデルは `OPENAI_MODEL` で変更できます。キー未設定・接続失敗時はその旨を表示し、架空の評価を返しません。
 
+収録済みの用語では、AIの出力を評価項目IDごとの必須キーを持つ構造に固定し、項目の欠落・重複を防ぎます。エラー時は画面に確認番号を表示し、Cloudflare Workers Logsで同じ番号の `glossary_evaluation_failed` を検索できます。コードは `AI_TIMEOUT`（時間切れ）、`AI_RATE_LIMITED`（混雑・利用上限）、`AI_OUTPUT_LIMIT`（出力上限）、`AI_EVIDENCE_INVALID`（引用不一致）、`AI_CRITERIA_INVALID`（項目不整合）などです。ログに残すのは確認番号・コード・HTTP状態（取得できた場合はOpenAI側の状態も含む）・収録用語ID・所要時間だけで、説明文・任意に入力した用語名・APIキー・AIの返答本文は記録しません。通常のリクエストログは無効にしています。
+
 ### ローカルでOpenAIに接続
 
 `.env.example` を `.env.local` にコピーし、`OPENAI_API_KEY` を設定してから `npm run dev` を起動します。キーを `VITE_` で始める変数に入れないでください。Viteのサーバー用ミドルウェアと本番Workerが同じAPIハンドラーを使います。キーはクライアントコード・IndexedDBには保存しません。
