@@ -302,9 +302,9 @@ function ReviewActions({ question, attempt, action }: { question: Question; atte
       })}</ul>
     </section>}
     <div className="result-actions">
-      <Button type="button" variant="outline" className={cn('review-flag', marked && 'review-flag-active')} aria-pressed={marked} aria-busy={pending === 'question'} disabled={pending !== null} onClick={() => void save('question', () => setReviewFlag(attempt.id, 'reviewRequested', !marked))}>
+      {attempt.correct && <Button type="button" variant="outline" className={cn('review-flag', marked && 'review-flag-active')} aria-pressed={marked} aria-busy={pending === 'question'} disabled={pending !== null} onClick={() => void save('question', () => setReviewFlag(attempt.id, 'reviewRequested', !marked))}>
         {pending === 'question' ? <LoaderCircle className="animate-spin" size={17} /> : marked ? <Check size={17} /> : <Plus size={17} />}復習リストに追加
-      </Button>
+      </Button>}
       {action}
     </div>
     {error && <p className="inline-error" role="alert">{error}</p>}

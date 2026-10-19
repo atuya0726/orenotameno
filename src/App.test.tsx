@@ -67,11 +67,21 @@ describe('answering and recorded results', () => {
     expect(html).toContain('result-unknown');
     expect(html).not.toContain('復習はあと');
     expect(html).not.toContain('>迷った</');
-    expect(html).toContain('>復習リストに追加</');
+    expect(html).not.toContain('>復習リストに追加</');
     expect(html).not.toContain('未評価');
     expect(html).not.toContain('your-assessment');
     expect(html).not.toContain('回答時の自信');
     expect(html).not.toContain('undefined');
+  });
+  it('hides the review request after an incorrect answer', () => {
+    const question = questions[0];
+    const wrong = question.options.find(option => option.id !== question.correct)!.id;
+    const input = createQuickAnswer({ questionId: question.id, selected: wrong, uncertainOptions: [] }, 'high', question);
+    const { attempt } = scheduleAnswer(input, question, undefined, new Date('2026-10-19T03:00:00.000Z'));
+    snapshot.attempts = [attempt];
+    const html = render(`/record/${attempt.id}`);
+    expect(html).toContain('もう一度解く');
+    expect(html).not.toContain('>復習リストに追加</');
   });
   it('shows an earlier doubt flag as a pressed review request below the explanations', () => {
     const question = questions[0];
