@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils';
 import { formatDate, dayKey } from '@/lib/date';
 import { GlossaryProvider, useGlossary } from './useGlossary';
 import { normalizeTermWord as normalize, termForWord, terms, termById, termCategories } from './terms';
-import { EXPLANATION_MAX_LENGTH, explanationInputSchema, extraTerm, extraTermName, extraTermNameSchema, levelInfo, levels, type Evaluation, type Grade, type GlossaryAttempt, type GlossaryDraft, type Term } from './model';
+import { EXPLANATION_MAX_LENGTH, explanationInputSchema, extraTerm, extraTermName, extraTermNameSchema, levelInfo, levels, type Evaluation, type Grade, type GlossaryAttempt, type GlossaryDraft, type Level, type Term } from './model';
 import { serializeGlossary } from './db';
 import { useLearning } from '@/lib/store';
 import { useSpeech } from './useSpeech';
@@ -100,39 +100,47 @@ function ReviewWordCards({ words, search, latest }: { words: string[]; search: s
 function TermRoute() {
   const { termId } = useParams(); const term = termById.get(termId ?? ''); const [params] = useSearchParams();
   if (!term) return <div className="empty-state"><h2>用語が見つかりません</h2><Link to="/glossary" className="text-link">用語一覧へ戻る<ArrowRight size={15} /></Link></div>;
-  return <TermPractice key={`${term.id}-${params.get('reference')}-${params.get('attempt')}-${params.get('review')}`} term={term} referenceInitially={params.get('reference') === '1'} attemptId={params.get('attempt') ?? undefined} review={reviewSession(params)} />;
+  return <TermPractice key={`${term.id}-${params.get('reference')}-${params.get('attempt')}-${params.get('review')}-${params.get('target')}`} term={term} referenceInitially={params.get('reference') === '1'} attemptId={params.get('attempt') ?? undefined} review={reviewSession(params)} />;
 }
 function ExtraTermRoute() {
   const [params] = useSearchParams(); const name = extraTermNameSchema.safeParse(params.get('name') ?? '');
   if (!name.success) return <div className="empty-state"><h2>用語が見つかりません</h2><Link to="/glossary" className="text-link">用語一覧へ戻る<ArrowRight size={15} /></Link></div>;
   const from = params.get('from') ?? undefined;
-  return <TermPractice key={`${name.data}-${params.get('attempt')}-${params.get('review')}`} term={extraTerm(name.data, from && termById.has(from) ? from : undefined)} referenceInitially={false} attemptId={params.get('attempt') ?? undefined} review={reviewSession(params)} />;
+  return <TermPractice key={`${name.data}-${params.get('attempt')}-${params.get('review')}-${params.get('target')}`} term={extraTerm(name.data, from && termById.has(from) ? from : undefined)} referenceInitially={false} attemptId={params.get('attempt') ?? undefined} review={reviewSession(params)} />;
 }
 // A review round walks the saved words in random order; the words already explained ride along in the URL.
-type ReviewSession = { word: string; done: string[] };
+type ReviewSession = { word: string; done: string[]; target: Level };
+function reviewTarget(params: URLSearchParams) { return levels.find(level => level === params.get('target')); }
 function reviewSession(params: URLSearchParams): ReviewSession | undefined {
-  const word = params.get('review'); return word ? { word, done: params.getAll('done') } : undefined;
+  const word = params.get('review'); const target = reviewTarget(params);
+  return word && target ? { word, done: params.getAll('done'), target } : undefined;
 }
-function reviewQuery(done: string[]) { const params = new URLSearchParams(); done.forEach(word => params.append('done', word)); return params; }
-function reviewWordPath(word: string, done: string[]) {
-  const term = termForWord(word); const params = reviewQuery(done);
+function reviewQuery(done: string[], target: Level) { const params = new URLSearchParams(); done.forEach(word => params.append('done', word)); params.set('target', target); return params; }
+function reviewWordPath(word: string, done: string[], target: Level) {
+  const term = termForWord(word); const params = reviewQuery(done, target);
   if (!term) params.set('name', word);
   params.set('review', word);
   return `/glossary/${term ? term.id : 'extra'}?${params}`;
 }
-function nextReviewPath(session: ReviewSession) { return `/glossary/review?${reviewQuery([...session.done, session.word])}`; }
+function nextReviewPath(session: ReviewSession) { return `/glossary/review?${reviewQuery([...session.done, session.word], session.target)}`; }
+function ReviewGoal({ count }: { count: number }) {
+  const [target, setTarget] = useState<Level>('B');
+  return <><Intro title="単語復習の目標レベル" /><div className="review-goal"><p>{count}語を復習します。目標以上の評価を取れた単語は、復習キューから自動で外します。</p><fieldset><legend>目標レベルを選んでください</legend>{levels.map(level => <label className={cn('review-goal-option', target === level && 'review-goal-selected')} key={level}><input type="radio" name="review-target" value={level} checked={target === level} onChange={() => setTarget(level)} /><span><strong>{level} · {levelInfo[level].name}</strong><small>{levelInfo[level].description}</small></span></label>)}</fieldset><div className="actions"><Button asChild><Link to={`/glossary/review?${reviewQuery([], target)}`}>復習を始める<ArrowRight size={16} /></Link></Button><Button asChild variant="outline"><Link to="/reviews">復習ノートへ戻る</Link></Button></div></div></>;
+}
 function ReviewWordsRoute() {
   const words = useLearning().snapshot.reviewWords; const [params] = useSearchParams();
-  const done = params.getAll('done'); const remaining = words.filter(word => !done.includes(word));
+  const target = reviewTarget(params); const done = [...new Set(params.getAll('done'))]; const remaining = words.filter(word => !done.includes(word));
   const [pick] = useState(() => Math.random());
+  if (target && done.length && !remaining.length) return <div className="session-complete"><span className="completion-icon"><CheckCheck size={34} /></span><h1>単語の復習が終わりました</h1><p>今回の目標：{target}（{levelInfo[target].name}）。復習キューに残っている単語は{words.length}語です。</p><div className="actions">{words.length > 0 && <Button asChild><Link to="/glossary/review">もう一周する<RotateCcw size={16} /></Link></Button>}<Button variant="outline" asChild><Link to="/reviews">復習ノートへ戻る</Link></Button></div></div>;
   if (!words.length) return <div className="empty-state"><CheckCheck size={25} /><h2>復習する単語はありません</h2><p>問題の解説で「復習したい単語」を選ぶと、ここで続けて説明できます。</p><Link to="/reviews" className="text-link">復習ノートへ戻る<ArrowRight size={15} /></Link></div>;
-  if (!remaining.length) return <div className="session-complete"><span className="completion-icon"><CheckCheck size={34} /></span><h1>単語の復習が終わりました</h1><p>{words.length}語をすべて説明しました。</p><div className="actions"><Button asChild><Link to="/glossary/review">もう一周する<RotateCcw size={16} /></Link></Button><Button variant="outline" asChild><Link to="/reviews">復習ノートへ戻る</Link></Button></div></div>;
-  return <Navigate replace to={reviewWordPath(remaining[Math.min(Math.floor(pick * remaining.length), remaining.length - 1)], done)} />;
+  if (!target) return <ReviewGoal count={words.length} />;
+  return <Navigate replace to={reviewWordPath(remaining[Math.min(Math.floor(pick * remaining.length), remaining.length - 1)], done, target)} />;
 }
 function TermPractice({ term, referenceInitially, attemptId, review }: { term: Term; referenceInitially: boolean; attemptId?: string; review?: ReviewSession }) {
   const { snapshot, updateDraft, submit } = useGlossary();
-  const reviewWords = useLearning().snapshot.reviewWords;
+  const { snapshot: learning, setReviewWord } = useLearning(); const reviewWords = learning.reviewWords;
   const reviewLast = review && reviewWords.every(word => word === review.word || review.done.includes(word));
+  const reviewTotal = review && new Set([...reviewWords, ...review.done, review.word]).size;
   const saved = snapshot.attempts.find(a => a.id === attemptId && a.termId === term.id);
   const [draft, setDraft] = useState<GlossaryDraft>(() => {
     const existing = snapshot.drafts.find(d => d.termId === term.id);
@@ -142,27 +150,37 @@ function TermPractice({ term, referenceInitially, attemptId, review }: { term: T
   const [showReference, setShowReference] = useState(referenceInitially);
   const [result, setResult] = useState<GlossaryAttempt | null>(saved ?? null);
   const [saving, setSaving] = useState(false); const [error, setError] = useState('');
+  const [removal, setRemoval] = useState<'idle' | 'removed' | 'failed'>('idle');
   const feedbackRef = useRef<HTMLDivElement>(null); const textareaRef = useRef<HTMLTextAreaElement>(null);
   function change(patch: Partial<GlossaryDraft>) {
     const next = { ...draftRef.current, ...patch, referenceViewed: hasSeenReference.current || draftRef.current.referenceViewed || Boolean(patch.referenceViewed), updatedAt: new Date().toISOString() };
-    draftRef.current = next; setDraft(next); updateDraft(next); setResult(null); setError('');
+    draftRef.current = next; setDraft(next); updateDraft(next); setResult(null); setRemoval('idle'); setError('');
   }
   const speech = useSpeech(text => change({ text, usedVoice: true }));
   const history = snapshot.attempts.filter(a => a.termId === term.id).slice().reverse();
   const nextTerm = terms[(terms.findIndex(t => t.id === term.id) + 1) % terms.length];
   useEffect(() => { if (result) { hasSeenReference.current = true; feedbackRef.current?.focus(); } }, [result]);
+  async function removeReviewedWord() {
+    if (!review) return;
+    try { await setReviewWord(review.word, false); setRemoval('removed'); }
+    catch { setRemoval('failed'); }
+  }
   async function check(event: React.FormEvent) {
     event.preventDefault(); if (speech.active || saving || result) return;
     const parsed = explanationInputSchema.safeParse(draft.text);
     if (!parsed.success) { setError(parsed.error.issues[0].message); return; }
     setSaving(true); setError('');
-    try { setResult(await submit(term, draftRef.current)); }
+    try {
+      const attempt = await submit(term, draftRef.current); setResult(attempt);
+      const grade = attempt.evaluation.grade;
+      if (review && grade && grade !== 'C' && levels.indexOf(grade) >= levels.indexOf(review.target)) await removeReviewedWord();
+    }
     catch (e) { setError(e instanceof Error ? e.message : '評価を取得できませんでした。文章は残っているので、もう一度お試しください。'); }
     finally { setSaving(false); }
   }
   function reveal() { hasSeenReference.current = true; setShowReference(true); change({ referenceViewed: true }); }
   return <>
-    {review ? <div className="review-round-bar"><Link to="/reviews" className="back-link"><ArrowLeft size={15} />復習をやめる</Link><span className="review-round-count">単語の復習 {review.done.length + 1} / {Math.max(reviewWords.length, review.done.length + 1)}</span>{!result && <Link to={nextReviewPath(review)} className="text-link">{reviewLast ? '復習を終える' : 'この単語をとばす'}<ChevronRight size={15} /></Link>}</div> : <Link to="/glossary" className="back-link"><ArrowLeft size={15} />用語一覧へ戻る</Link>}
+    {review ? <div className="review-round-bar"><Link to="/reviews" className="back-link"><ArrowLeft size={15} />復習をやめる</Link><span className="review-round-count">単語の復習 {review.done.length + 1} / {reviewTotal}</span><span className="pill">目標 {review.target} · {levelInfo[review.target].name}</span>{!result && !saving && <Link to={nextReviewPath(review)} className="text-link">{reviewLast ? '復習を終える' : 'この単語をとばす'}<ChevronRight size={15} /></Link>}</div> : <Link to="/glossary" className="back-link"><ArrowLeft size={15} />用語一覧へ戻る</Link>}
     <div className="term-practice-heading"><div><span className="pill">{term.category}</span><h1>{term.name}</h1><p>{term.reading}</p></div><span className="term-practice-count"><History size={14} />これまで{history.length}回説明</span></div>
     <div className="term-practice-layout"><div className="term-practice-main">
       {showReference && !result && <Reference term={term} />}
@@ -182,7 +200,7 @@ function TermPractice({ term, referenceInitially, attemptId, review }: { term: T
         {draft.referenceViewed && <p className="reference-viewed-note">説明例を参照済み</p>}{error && <p className="inline-error" role="alert">{error}</p>}
         <p className="speech-privacy">チェック時に説明文をOpenAIへ送信します。履歴はこのブラウザに保存。音声認識はブラウザのサービスを利用し、音声は当サイトに保存しません。</p>
       </form>}
-      {result && <div ref={feedbackRef} tabIndex={-1} className="glossary-feedback-focus"><Feedback attempt={result} /><Reference term={term} definition={result.reference} /><div className="actions glossary-next-actions">{review ? <Button asChild><Link to={nextReviewPath(review)}>{reviewLast ? '復習を終える' : '次の単語へ'}<ArrowRight size={16} /></Link></Button> : <Button asChild><Link to={`/glossary/${nextTerm.id}`}>次の用語へ<ArrowRight size={16} /></Link></Button>}</div></div>}
+      {result && <div ref={feedbackRef} tabIndex={-1} className="glossary-feedback-focus"><Feedback attempt={result} />{review && <div className="review-goal-result">{removal === 'failed' ? <><p className="inline-error" role="alert">目標に達しましたが、復習キューから外せませんでした。評価は保存されています。</p><Button type="button" variant="outline" disabled={saving} onClick={async () => { setSaving(true); try { await removeReviewedWord(); } finally { setSaving(false); } }}>キューから外す処理を再試行</Button></> : <p role="status" className={removal === 'removed' ? 'success-message' : 'muted'}>{saving ? '復習キューを更新しています…' : removal === 'removed' ? `目標${review.target}に達したので「${review.word}」を復習キューから外しました。` : `目標${review.target}に届かなかったので「${review.word}」は復習キューに残します。`}</p>}</div>}<Reference term={term} definition={result.reference} /><div className="actions glossary-next-actions">{review ? saving || removal === 'failed' ? <Button disabled>{reviewLast ? '復習を終える' : '次の単語へ'}<ArrowRight size={16} /></Button> : <Button asChild><Link to={nextReviewPath(review)}>{reviewLast ? '復習を終える' : '次の単語へ'}<ArrowRight size={16} /></Link></Button> : <Button asChild><Link to={`/glossary/${nextTerm.id}`}>次の用語へ<ArrowRight size={16} /></Link></Button>}</div></div>}
       {!result && history.length > 0 && <details className="term-history"><summary><History size={16} />過去の説明を見る（{history.length}件）</summary>{history.slice(0, 5).map(attempt => <Link key={attempt.id} to={termPath(term.id, attempt.id)}><time>{formatDate(attempt.answeredAt, true)}</time><ResultBadge attempt={attempt} /><ChevronRight size={15} /></Link>)}</details>}
     </div>{term.related.length > 0 && <aside className="term-coach"><div className="related-terms"><h3>関連用語</h3>{term.related.map(id => { const related = termById.get(id); return related && <Link key={id} to={`/glossary/${id}`}>{related.name}<ChevronRight size={14} /></Link>; })}</div></aside>}</div>
   </>;
