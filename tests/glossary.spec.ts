@@ -5,7 +5,7 @@ const term = termById.get('digital-signature')!;
 const text = '署名者の秘密鍵で署名を作り、公開鍵で検証し、改ざんを検知する仕組みです。';
 const textbox = (page: Page) => page.getByRole('textbox', { name: 'ディジタル署名についての説明' });
 const check = (page: Page) => page.getByRole('button', { name: 'AIでチェック' });
-function evaluation(input = text) { return { version: 1, engine: 'openai', model: 'gpt-6-luna', status: 'covered', covered: 3, total: 3, criteria: term.criteria.map(c => ({ id: c.id, title: c.title, status: 'covered', evidence: input, hint: '鍵の関係を正しく説明できています。' })), concerns: [], summary: '署名と検証の役割を説明できています。', improvedExplanation: term.definition }; }
+function evaluation(input = text) { return { version: 1, engine: 'openai', model: 'gpt-6-luna', status: 'covered', covered: 3, total: 3, criteria: term.criteria.map(c => ({ id: c.id, title: c.title, status: 'covered', evidence: input, hint: '鍵の関係を正しく説明できています。' })), summary: '署名と検証の役割を説明できています。', followUp: { name: '公開鍵基盤', reason: '公開鍵が本人のものだと確かめる仕組みが説明にないためです。' } }; }
 async function entries(page: Page, name = 'orenotameno-glossary') {
   return page.evaluate(async dbName => {
     const db = await new Promise<IDBDatabase>((resolve, reject) => { const request = indexedDB.open(dbName); request.onsuccess = () => resolve(request.result); request.onerror = () => reject(request.error); });
@@ -38,7 +38,7 @@ test('evaluates once, stores feedback separately from quizzes, and reviews a his
     await route.fulfill({ json: evaluation() });
   });
   await page.goto('/glossary/digital-signature'); await textbox(page).fill(text); await check(page).click();
-  await expect(page.getByRole('heading', { name: '説明の改善例' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: '公開鍵基盤' })).toBeVisible();
   await expect(page.getByText('OpenAI · gpt-6-luna')).toBeVisible();
   expect(calls).toBe(1); expect(await entries(page, 'orenotameno-sc')).toEqual([]);
   expect(await entries(page)).toHaveLength(1);
@@ -48,6 +48,26 @@ test('evaluates once, stores feedback separately from quizzes, and reviews a his
   await page.getByRole('button', { name: 'もう一度説明する' }).click();
   await expect(textbox(page)).toHaveValue('');
   await expect(page.getByText('説明例を参照済み')).toBeVisible();
+});
+
+test('practices a follow-up term the AI suggested outside the built-in list', async ({ page }) => {
+  await page.route('**/api/glossary/evaluate', async route => {
+    const body = route.request().postDataJSON();
+    if (body.termId === term.id) return route.fulfill({ json: evaluation() });
+    expect(body.termId).toBe('extra:公開鍵基盤');
+    await route.fulfill({ json: { ...evaluation(body.text), criteria: [{ id: 'ca', title: '認証局が証明書を発行する', status: 'missing', evidence: '', hint: '誰が証明書を発行するかが足りません。' }], covered: 0, total: 1, status: 'unconfirmed', definition: '公開鍵とその持ち主を認証局が証明書で結び付ける仕組みです。', followUp: { name: '認証局', reason: '証明書の発行者だからです。' } } });
+  });
+  await page.goto('/glossary/digital-signature'); await textbox(page).fill(text); await check(page).click();
+  await page.getByRole('link', { name: 'この用語を説明する' }).click();
+  await expect(page.getByRole('heading', { name: '公開鍵基盤', level: 1 })).toBeVisible();
+  await expect(page.getByRole('button', { name: '説明例を先に見る' })).toHaveCount(0);
+  await page.getByRole('textbox', { name: '公開鍵基盤についての説明' }).fill('公開鍵が本人のものか確かめるための仕組みです。');
+  await check(page).click();
+  await expect(page.getByText('誰が証明書を発行するかが足りません。')).toBeVisible();
+  await expect(page.locator('.term-reference')).toContainText('認証局が証明書で結び付ける');
+  await page.getByRole('link', { name: '説明の履歴', exact: true }).click();
+  await page.getByRole('link', { name: '公開鍵基盤' }).click();
+  await expect(page.locator('.saved-explanation')).toContainText('公開鍵が本人のものか');
 });
 
 test('keeps text and allows retry after an AI failure, with no fabricated feedback', async ({ page }) => {

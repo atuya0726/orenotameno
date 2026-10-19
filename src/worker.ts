@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { explanationInputSchema } from './features/glossary/model';
+import { explanationInputSchema, extraTerm, extraTermName } from './features/glossary/model';
 import { termById } from './features/glossary/terms';
 import { DEFAULT_MODEL, EvaluationError, evaluateWithOpenAI } from './server/glossary-evaluator';
 
@@ -31,7 +31,8 @@ export default {
       try { body = JSON.parse(new TextDecoder().decode(bytes)); } catch { return json({ error: '入力した説明を読み込めませんでした。' }, 400); }
       const input = inputSchema.safeParse(body);
       if (!input.success) return json({ error: '用語と10〜5,000文字の説明を送信してください。' }, 400);
-      const term = termById.get(input.data.termId);
+      const extraName = extraTermName(input.data.termId);
+      const term = extraName ? extraTerm(extraName) : termById.get(input.data.termId);
       if (!term) return json({ error: '用語が見つかりません。' }, 404);
       if (!env.OPENAI_API_KEY?.trim()) return json({ error: 'AI評価の接続設定がまだありません。説明はブラウザに保存されているので、設定後に続けられます。' }, 503);
       return json(await evaluateWithOpenAI(term, input.data.text, env.OPENAI_API_KEY, env.OPENAI_MODEL || DEFAULT_MODEL));

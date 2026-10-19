@@ -6,11 +6,11 @@ import { cn } from '@/lib/utils';
 import { formatDate, dayKey } from '@/lib/date';
 import { GlossaryProvider, useGlossary } from './useGlossary';
 import { terms, termById, termCategories } from './terms';
-import { explanationInputSchema, type Evaluation, type GlossaryAttempt, type GlossaryDraft, type Term } from './model';
+import { explanationInputSchema, extraTerm, extraTermName, extraTermNameSchema, type Evaluation, type GlossaryAttempt, type GlossaryDraft, type Term } from './model';
 import { serializeGlossary } from './db';
 import { useSpeech } from './useSpeech';
 
-const statusLabels: Record<Evaluation['status'], string> = { covered: '要点を確認', partial: '説明を補おう', review: '表現を見直そう', unconfirmed: '要点を確認できず' };
+const statusLabels: Record<Evaluation['status'], string> = { covered: '要点を確認', partial: '説明を補おう', review: '要点に誤りあり', unconfirmed: '要点を確認できず' };
 export default function GlossaryApp() {
   return <GlossaryProvider><GlossaryShell /></GlossaryProvider>;
 }
@@ -22,6 +22,7 @@ function GlossaryShell() {
     {!ready ? <div className="empty-state"><LoaderCircle className={error ? '' : 'animate-spin'} /><h2>{error ? '用語の記録を開けませんでした' : '用語の学習記録を開いています'}</h2>{error && <Button onClick={() => window.location.reload()}>再読み込み</Button>}</div> : <Routes>
       <Route index element={<GlossaryLibrary />} />
       <Route path="history" element={<GlossaryHistory />} />
+      <Route path="extra" element={<ExtraTermRoute />} />
       <Route path=":termId" element={<TermRoute />} />
       <Route path="*" element={<div className="empty-state"><h2>ページが見つかりません</h2><Link className="text-link" to="/glossary">用語一覧へ戻る</Link></div>} />
     </Routes>}
@@ -29,6 +30,15 @@ function GlossaryShell() {
 }
 function Intro({ title, children }: { title: string; children?: ReactNode }) {
   return <div className="page-intro"><h1>{title}</h1>{children}</div>;
+}
+function termPath(termId: string, attemptId?: string, fromTermId?: string) {
+  const name = extraTermName(termId);
+  const params = new URLSearchParams();
+  if (name) params.set('name', name);
+  if (fromTermId) params.set('from', fromTermId);
+  if (attemptId) params.set('attempt', attemptId);
+  const query = params.toString();
+  return `/glossary/${name ? 'extra' : termId}${query ? `?${query}` : ''}`;
 }
 function latestByTerm(attempts: GlossaryAttempt[]) { return new Map(attempts.map(attempt => [attempt.termId, attempt])); }
 function ResultBadge({ attempt }: { attempt?: GlossaryAttempt }) {
@@ -62,6 +72,12 @@ function TermRoute() {
   const { termId } = useParams(); const term = termById.get(termId ?? ''); const [params] = useSearchParams();
   if (!term) return <div className="empty-state"><h2>用語が見つかりません</h2><Link to="/glossary" className="text-link">用語一覧へ戻る<ArrowRight size={15} /></Link></div>;
   return <TermPractice key={`${term.id}-${params.get('reference')}-${params.get('attempt')}`} term={term} referenceInitially={params.get('reference') === '1'} attemptId={params.get('attempt') ?? undefined} />;
+}
+function ExtraTermRoute() {
+  const [params] = useSearchParams(); const name = extraTermNameSchema.safeParse(params.get('name') ?? '');
+  if (!name.success) return <div className="empty-state"><h2>用語が見つかりません</h2><Link to="/glossary" className="text-link">用語一覧へ戻る<ArrowRight size={15} /></Link></div>;
+  const from = params.get('from') ?? undefined;
+  return <TermPractice key={`${name.data}-${params.get('attempt')}`} term={extraTerm(name.data, from && termById.has(from) ? from : undefined)} referenceInitially={false} attemptId={params.get('attempt') ?? undefined} />;
 }
 function TermPractice({ term, referenceInitially, attemptId }: { term: Term; referenceInitially: boolean; attemptId?: string }) {
   const { snapshot, updateDraft, submit } = useGlossary();
@@ -111,26 +127,30 @@ function TermPractice({ term, referenceInitially, attemptId }: { term: Term; ref
         <label className="sr-only" htmlFor="term-explanation">{term.name}についての説明</label><textarea id="term-explanation" ref={textareaRef} value={draft.text} maxLength={5000} readOnly={speech.active || saving} onChange={e => change({ text: e.target.value })} placeholder="説明を入力（音声入力も可）" aria-describedby="explanation-input-help" />
         {speech.interim && <div className="speech-interim" role="status"><span>聞き取り途中</span><p>{speech.interim}</p></div>}
         <div className="explanation-input-meta"><span id="explanation-input-help">{speech.active ? '離した後に修正・チェックできます。' : '10〜5,000文字'}</span><span>{draft.text.length} / 5,000</span></div>
-        <div className="explanation-submit"><Button type="button" variant="ghost" disabled={speech.active || saving} onClick={reveal}><BookOpen size={15} />説明例を先に見る</Button><Button type="submit" disabled={speech.active || saving || Boolean(result) || draft.text.trim().length < 10}>{saving ? <LoaderCircle size={16} className="animate-spin" /> : <Check size={16} />}{saving ? 'チェック中' : result ? 'チェック済み' : 'AIでチェック'}</Button></div>
+        <div className="explanation-submit">{term.definition && <Button type="button" variant="ghost" disabled={speech.active || saving} onClick={reveal}><BookOpen size={15} />説明例を先に見る</Button>}<Button type="submit" disabled={speech.active || saving || Boolean(result) || draft.text.trim().length < 10}>{saving ? <LoaderCircle size={16} className="animate-spin" /> : <Check size={16} />}{saving ? 'チェック中' : result ? 'チェック済み' : 'AIでチェック'}</Button></div>
         {draft.referenceViewed && <p className="reference-viewed-note">説明例を参照済み</p>}{error && <p className="inline-error" role="alert">{error}</p>}
         <p className="speech-privacy">チェック時に説明文をOpenAIへ送信します。履歴はこのブラウザに保存。音声認識はブラウザのサービスを利用し、音声は当サイトに保存しません。</p>
       </form>}
       {result && <div ref={feedbackRef} tabIndex={-1} className="glossary-feedback-focus"><Feedback attempt={result} /><Reference term={term} definition={result.reference} /><div className="actions glossary-next-actions"><Button variant="outline" onClick={retry}><RotateCcw size={16} />もう一度説明する</Button><Button asChild><Link to={`/glossary/${nextTerm.id}`}>次の用語へ<ArrowRight size={16} /></Link></Button></div></div>}
-      {!result && history.length > 0 && <details className="term-history"><summary><History size={16} />過去の説明を見る（{history.length}件）</summary>{history.slice(0, 5).map(attempt => <Link key={attempt.id} to={`/glossary/${term.id}?attempt=${attempt.id}`}><time>{formatDate(attempt.answeredAt, true)}</time><ResultBadge attempt={attempt} /><ChevronRight size={15} /></Link>)}</details>}
+      {!result && history.length > 0 && <details className="term-history"><summary><History size={16} />過去の説明を見る（{history.length}件）</summary>{history.slice(0, 5).map(attempt => <Link key={attempt.id} to={termPath(term.id, attempt.id)}><time>{formatDate(attempt.answeredAt, true)}</time><ResultBadge attempt={attempt} /><ChevronRight size={15} /></Link>)}</details>}
     </div>{term.related.length > 0 && <aside className="term-coach"><div className="related-terms"><h3>関連用語</h3>{term.related.map(id => { const related = termById.get(id); return related && <Link key={id} to={`/glossary/${id}`}>{related.name}<ChevronRight size={14} /></Link>; })}</div></aside>}</div>
   </>;
 }
 function Reference({ term, definition = term.definition }: { term: Term; definition?: string }) {
-  return <section className="term-reference"><span className="eyebrow">用語の説明例</span><h2>{term.name}</h2><p>{definition}</p><div className="term-example"><strong>例えば</strong><p>{term.example}</p></div></section>;
+  return <section className="term-reference"><span className="eyebrow">用語の説明例</span><h2>{term.name}</h2><p>{definition}</p>{term.example && <div className="term-example"><strong>例えば</strong><p>{term.example}</p></div>}</section>;
 }
 function Feedback({ attempt }: { attempt: GlossaryAttempt }) {
   const evaluation = attempt.evaluation;
   return <section className="glossary-feedback" aria-label="説明のチェック結果"><div className={cn('glossary-result-heading', evaluation.status === 'covered' && 'glossary-result-covered')}><span className="glossary-result-icon">{evaluation.status === 'covered' ? <Check size={25} /> : <CircleHelp size={25} />}</span><div><h2>{statusLabels[evaluation.status]}</h2><p>{evaluation.summary}</p></div><span className="coverage-count"><strong>{evaluation.covered}<small> / {evaluation.total}</small></strong>確認できた要点</span></div>
     <div className="glossary-result-meta"><span>OpenAI · {evaluation.model}</span><span>{attempt.usedVoice ? '音声入力を使用' : '文字で入力'}</span><span>{attempt.referenceViewed ? '説明例を参照した練習' : '説明例を見る前の練習'}</span><time>{formatDate(attempt.answeredAt, true)}</time></div>
-    {evaluation.concerns.length > 0 && <div className="glossary-concerns"><h3><TriangleAlert size={17} />見直したい表現</h3>{evaluation.concerns.map((concern, i) => <div key={i}><blockquote>{concern.evidence}</blockquote><p>{concern.message}</p></div>)}</div>}
-    <div className="rubric-results">{evaluation.criteria.map(criterion => <div className={cn('rubric-item', `rubric-${criterion.status}`)} key={criterion.id}><span className="rubric-icon">{criterion.status === 'covered' ? <Check size={17} /> : criterion.status === 'review' ? <TriangleAlert size={17} /> : <CircleHelp size={17} />}</span><div><span className="rubric-state">{criterion.status === 'covered' ? '説明に含まれています' : criterion.status === 'review' ? '表現を見直しましょう' : 'この説明では未確認'}</span><h3>{criterion.title}</h3>{criterion.evidence && <blockquote>{criterion.evidence}</blockquote>}<p>{criterion.hint}</p></div></div>)}</div>
-    <div className="ai-improved-explanation"><h3>説明の改善例</h3><p>{evaluation.improvedExplanation}</p></div><p className="glossary-check-limit">AI評価は誤る場合があります。説明例も確認してください。</p>
+    <div className="rubric-results">{evaluation.criteria.map(criterion => <div className={cn('rubric-item', `rubric-${criterion.status}`)} key={criterion.id}><span className="rubric-icon">{criterion.status === 'covered' ? <Check size={17} /> : criterion.status === 'review' ? <TriangleAlert size={17} /> : <CircleHelp size={17} />}</span><div><span className="rubric-state">{criterion.status === 'covered' ? '説明に含まれています' : criterion.status === 'review' ? '内容に誤りがあります' : 'この説明では未確認'}</span><h3>{criterion.title}</h3>{criterion.evidence && <blockquote>{criterion.evidence}</blockquote>}<p>{criterion.hint}</p></div></div>)}</div>
+    {evaluation.followUp && <FollowUp attempt={attempt} followUp={evaluation.followUp} />}<p className="glossary-check-limit">AI評価は誤る場合があります。説明例も確認してください。</p>
   </section>;
+}
+function FollowUp({ attempt, followUp }: { attempt: GlossaryAttempt; followUp: NonNullable<Evaluation['followUp']> }) {
+  const name = extraTermNameSchema.safeParse(followUp.name);
+  const to = followUp.termId && termById.has(followUp.termId) ? termPath(followUp.termId) : name.success ? termPath(`extra:${name.data}`, undefined, extraTermName(attempt.termId) ? undefined : attempt.termId) : undefined;
+  return <div className="glossary-follow-up"><span className="eyebrow">次に説明してみよう</span><h3>{followUp.name}</h3><p>{followUp.reason}</p>{to && <Button asChild variant="outline"><Link to={to}>この用語を説明する<ArrowRight size={15} /></Link></Button>}</div>;
 }
 function GlossaryHistory() {
   const { snapshot, restore } = useGlossary();
@@ -138,5 +158,5 @@ function GlossaryHistory() {
   function download() { const url = URL.createObjectURL(new Blob([serializeGlossary(snapshot)], { type: 'application/json' })); const a = document.createElement('a'); a.href = url; a.download = `orenotameno-glossary-${dayKey(new Date())}.json`; a.click(); URL.revokeObjectURL(url); setMessage('用語の学習記録を書き出しました。'); }
   async function upload(file?: File) { if (!file) return; setError(''); setMessage(''); setImporting(true); try { if (file.size > 10_000_000) throw new Error('バックアップは10MB以内のファイルを選んでください。'); await restore(await file.text()); setMessage('用語の学習記録を取り込みました。'); } catch { setError('用語学習のバックアップを読み込めませんでした。ファイルの形式を確認してください。'); } finally { setImporting(false); if (fileRef.current) fileRef.current.value = ''; } }
   return <><Intro title="説明の履歴" /><div className="glossary-history-tools"><span>{snapshot.attempts.length}回の説明</span><Button variant="outline" onClick={download}><ArrowDownToLine size={15} />記録を書き出す</Button><Button variant="outline" disabled={importing} onClick={() => fileRef.current?.click()}><ArrowUpFromLine size={15} />記録を取り込む</Button><input ref={fileRef} className="sr-only" aria-label="用語学習のバックアップ" type="file" accept=".json,application/json" onChange={e => void upload(e.target.files?.[0])} /></div>{message && <p className="success-message" role="status">{message}</p>}{error && <p className="inline-error" role="alert">{error}</p>}
-    {snapshot.attempts.length ? <div className="glossary-history-list">{[...snapshot.attempts].reverse().map(attempt => <article key={attempt.id}><div className="glossary-history-top"><span className="glossary-history-icon">{attempt.usedVoice ? <Mic size={19} /> : <BookOpen size={19} />}</span><div><h2>{termById.has(attempt.termId) ? <Link to={`/glossary/${attempt.termId}?attempt=${attempt.id}`}>{attempt.termName}</Link> : attempt.termName}</h2><time>{formatDate(attempt.answeredAt, true)}</time></div><ResultBadge attempt={attempt} /></div><p className="history-explanation">{attempt.text}</p><div className="glossary-history-bottom"><span>確認できた要点 {attempt.evaluation.covered} / {attempt.evaluation.total}{attempt.referenceViewed ? ' · 説明例を参照' : ''}</span>{termById.has(attempt.termId) && <Link to={`/glossary/${attempt.termId}?attempt=${attempt.id}`}>見直す<ArrowRight size={14} /></Link>}</div></article>)}</div> : <div className="empty-state"><Clock3 size={26} /><h2>説明の履歴はありません</h2><Button asChild><Link to="/glossary">用語を選ぶ<ArrowRight size={15} /></Link></Button></div>}</>;
+    {snapshot.attempts.length ? <div className="glossary-history-list">{[...snapshot.attempts].reverse().map(attempt => <article key={attempt.id}><div className="glossary-history-top"><span className="glossary-history-icon">{attempt.usedVoice ? <Mic size={19} /> : <BookOpen size={19} />}</span><div><h2>{termById.has(attempt.termId) || extraTermName(attempt.termId) ? <Link to={termPath(attempt.termId, attempt.id)}>{attempt.termName}</Link> : attempt.termName}</h2><time>{formatDate(attempt.answeredAt, true)}</time></div><ResultBadge attempt={attempt} /></div><p className="history-explanation">{attempt.text}</p><div className="glossary-history-bottom"><span>確認できた要点 {attempt.evaluation.covered} / {attempt.evaluation.total}{attempt.referenceViewed ? ' · 説明例を参照' : ''}</span>{(termById.has(attempt.termId) || extraTermName(attempt.termId)) && <Link to={termPath(attempt.termId, attempt.id)}>見直す<ArrowRight size={14} /></Link>}</div></article>)}</div> : <div className="empty-state"><Clock3 size={26} /><h2>説明の履歴はありません</h2><Button asChild><Link to="/glossary">用語を選ぶ<ArrowRight size={15} /></Link></Button></div>}</>;
 }

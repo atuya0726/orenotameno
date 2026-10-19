@@ -22,7 +22,7 @@ function useGlossaryStore() {
     try {
       await writes.current.catch(() => {});
       const evaluation = await evaluateExplanation(term, text);
-      const attempt: GlossaryAttempt = { id: crypto.randomUUID(), termId: term.id, termName: term.name, text, answeredAt: new Date().toISOString(), usedVoice: draft.usedVoice, referenceViewed: draft.referenceViewed, evaluation, reference: term.definition };
+      const attempt: GlossaryAttempt = { id: crypto.randomUUID(), termId: term.id, termName: term.name, text, answeredAt: new Date().toISOString(), usedVoice: draft.usedVoice, referenceViewed: draft.referenceViewed, evaluation, reference: evaluation.definition || term.definition };
       await commitGlossaryAttempt(attempt, draft); await refresh(); setError(''); return attempt;
     } catch (e) { setError(message(e)); throw e; } finally { pending.current = false; }
   }
