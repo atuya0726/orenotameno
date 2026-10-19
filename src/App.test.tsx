@@ -124,7 +124,7 @@ describe('answering and recorded results', () => {
     const notebook = render('/reviews');
     expect(notebook).toContain('復習する単語');
     expect(notebook.match(/<strong>デジタル署名<\/strong>/g)).toHaveLength(1);
-    expect(notebook).toContain('デジタル署名が出てくる科目A1の問13を解く');
-    expect(notebook).toContain('デジタル署名が出てくる科目A1の問15を解く');
+    expect(notebook).toContain('デジタル署名が出てくる令和7年度秋期 科目A1の問13を解く');
+    expect(notebook).toContain('デジタル署名が出てくる令和7年度秋期 科目A1の問15を解く');
   });
 });

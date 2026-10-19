@@ -45,6 +45,7 @@ export type Question = {
   prompt: string; options: { id: OptionId; text: string; explanation: string }[];
   correct: OptionId; explanation: string;
   details?: { title?: string; items: string[] };
+  code?: { title: string; text: string };
   table?: { caption: string; headers: string[]; rows: string[][] };
   source: { kind: 'original'; label: string } | {
     kind: 'ipa'; label: string; year: number; season: 'autumn' | 'spring'; section: string;

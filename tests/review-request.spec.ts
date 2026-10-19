@@ -182,8 +182,8 @@ test('shares a saved word between questions and removes it globally from the rev
   await page.goto('/reviews');
   const list = page.getByRole('region', { name: '復習する単語', exact: true });
   await expect(list.getByRole('listitem')).toHaveCount(1);
-  await expect(list.getByRole('link', { name: 'デジタル署名が出てくる科目A1の問13を解く' })).toBeVisible();
-  await expect(list.getByRole('link', { name: 'デジタル署名が出てくる科目A1の問15を解く' })).toBeVisible();
+  await expect(list.getByRole('link', { name: 'デジタル署名が出てくる令和7年度秋期 科目A1の問13を解く' })).toBeVisible();
+  await expect(list.getByRole('link', { name: 'デジタル署名が出てくる令和7年度秋期 科目A1の問15を解く' })).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await list.getByRole('button', { name: 'デジタル署名を復習する単語から外す' }).click();
   await expect(list.getByRole('listitem')).toHaveCount(0);

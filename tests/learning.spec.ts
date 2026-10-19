@@ -57,7 +57,7 @@ test('can choose unknown without selecting an answer in both calculation and kno
     await expect(unknown).toBeEnabled();
     await unknown.click();
     await expect(page.locator('.answer-outcome strong')).toHaveText('未解答');
-    await expect(page.getByRole('button', { name: '復習リストに追加', exact: true })).toBeVisible();
+    await expect(page.getByRole('button', { name: '復習リストに追加', exact: true })).toHaveCount(0);
     await expect(page.getByText('未評価', { exact: true })).toHaveCount(0);
     await expect(page.locator('.answer-outcome')).toHaveClass(/result-unknown/);
   }
@@ -164,7 +164,7 @@ test('queues a requested calculation review and finishes a session', async ({ pa
 
 test('requires three reviews for a confident mistake and exposes them immediately', async ({ page }) => {
   await answerFirst(page, 'ア');
-  await expect(page.getByRole('button', { name: '復習リストに追加', exact: true })).toBeVisible();
+  await expect(page.getByRole('button', { name: '復習リストに追加', exact: true })).toHaveCount(0);
   await page.goto('/reviews');
   await page.getByRole('link', { name: '科目A1を復習' }).click();
   await expect(page.getByRole('heading', { name: /伝票処理システム/ })).toBeVisible();
@@ -230,9 +230,9 @@ test('shows the dashboard and subject selection with accurate empty stats', asyn
   await page.screenshot({ path: 'test-results/desktop-home.png', fullPage: true });
 });
 
-test('offers 30 A1 and 25 A2 questions and renders their tables', async ({ page }) => {
+test('offers 180 A1 and 25 A2 questions and renders their tables', async ({ page }) => {
   await page.goto('/questions?course=A1');
-  await expect(page.locator('.question-row')).toHaveCount(30);
+  await expect(page.locator('.question-row')).toHaveCount(180);
   await expect(page.getByText('2進数と情報量', { exact: true })).toHaveCount(0);
   await page.goto('/study/A1?question=sc-2025-autumn-a1-6');
   await expect(page.getByRole('table', { name: 'キャッシュメモリの状態' })).toBeVisible();
@@ -242,6 +242,11 @@ test('offers 30 A1 and 25 A2 questions and renders their tables', async ({ page 
   await expect(page.getByRole('link', { name: 'IPA公式の問題PDF ↗' })).toBeVisible();
   await expect(page.getByRole('link', { name: 'IPA公式の問題PDF ↗' })).toHaveAttribute('href', /2025r07a_koudo_am1_qs.pdf/);
   await expect(page.getByRole('link', { name: 'IPA公式の解答例 ↗' })).toHaveCount(0);
+  await page.goto('/study/A1?question=sc-2025-spring-a1-10');
+  await expect(page.getByLabel('SQL文')).toContainText('ON DELETE  a');
+  await page.goto('/study/A1?question=sc-2023-autumn-a1-19');
+  await expect(page.getByRole('rowheader', { name: 'E3', exact: true })).toBeVisible();
+  await expect(page.locator('.katex-error')).toHaveCount(0);
   await page.goto('/questions?course=A2');
   await expect(page.locator('.question-row')).toHaveCount(25);
   await page.goto('/study/A2?question=sc-2025-autumn-a2-24');

@@ -207,6 +207,7 @@ function QuestionHeader({ question }: { question: Question }) {
     <div className="question-tools">{question.kind === 'calculation' && <CalculatorToggle key={question.id} questionId={question.id} />}<button className={cn('bookmark-button', saved && 'bookmarked')} aria-label={saved ? 'あとで見るから外す' : 'あとで見るに追加'} aria-pressed={saved} onClick={() => void toggleBookmark(question.id)}><Bookmark size={19} fill={saved ? 'currentColor' : 'none'} /></button></div>
     <h2 className="question-prompt"><MathText text={question.prompt} /></h2>
     {question.details && <div className="question-details">{question.details.title && <h3>〔<MathText text={question.details.title} />〕</h3>}<ul>{question.details.items.map(item => <li key={item}><MathText text={item} /></li>)}</ul></div>}
+    {question.code && <div className="question-code"><h3>〔{question.code.title}〕</h3><pre tabIndex={0} aria-label={question.code.title}><code>{question.code.text}</code></pre></div>}
     {question.table && <div className="question-table-scroll" role="region" aria-label={question.table.caption} tabIndex={0}><table className="question-table"><caption><MathText text={question.table.caption} /></caption><thead><tr>{question.table.headers.map(header => <th key={header} scope="col"><MathText text={header} /></th>)}</tr></thead><tbody>{question.table.rows.map((row, i) => <tr key={i}>{row.map((cell, j) => j === 0 ? <th key={j} scope="row"><MathText text={cell} /></th> : <td key={j}><MathText text={cell} /></td>)}</tr>)}</tbody></table></div>}
   </section>;
 }
@@ -369,7 +370,7 @@ function ReviewWordList() {
   return <section className="review-words" aria-labelledby="review-words-heading">
     <h2 id="review-words-heading">復習する単語</h2>
     {snapshot.reviewWords.length > 0 ? <ul className="review-word-list">{snapshot.reviewWords.map(term => <li key={term}>
-      <div className="review-word-content"><strong>{term}</strong><div className="review-word-questions">{questions.filter(question => getQuestionTerms(question).includes(term)).map(question => <Link key={question.id} to={`/study/${question.course}?question=${question.id}`} aria-label={`${term}が出てくる${courses[question.course].name}の問${question.number}を解く`}>{courses[question.course].name} 問{question.number}<ChevronRight size={14} /></Link>)}</div></div>
+      <div className="review-word-content"><strong>{term}</strong><div className="review-word-questions">{questions.filter(question => getQuestionTerms(question).includes(term)).map(question => { const where = `${question.source.kind === 'ipa' ? `${eraLabel(question.source)} ` : ''}${courses[question.course].name}`; return <Link key={question.id} to={`/study/${question.course}?question=${question.id}`} aria-label={`${term}が出てくる${where}の問${question.number}を解く`}>{where} 問{question.number}<ChevronRight size={14} /></Link>; })}</div></div>
       <button type="button" className="review-word-remove" aria-label={`${term}を復習する単語から外す`} disabled={pending !== null} aria-busy={pending === term} onClick={() => void remove(term)}>{pending === term ? <LoaderCircle className="animate-spin" size={17} /> : <X size={17} />}</button>
     </li>)}</ul> : <p className="muted">登録した単語はありません。</p>}
     {error && <p className="inline-error" role="alert">{error}</p>}

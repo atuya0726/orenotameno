@@ -9,7 +9,7 @@ describe('question vocabulary candidates', () => {
       expect(candidates.length, question.id).toBeGreaterThan(0);
       expect(new Set(candidates).size).toBe(candidates.length);
       const content = [question.title, question.prompt, question.explanation, question.details?.title,
-        ...(question.details?.items ?? []), question.table?.caption, ...(question.table?.headers ?? []),
+        ...(question.details?.items ?? []), question.code?.text, question.table?.caption, ...(question.table?.headers ?? []),
         ...(question.table?.rows.flat() ?? []), ...question.options.flatMap(option => [option.text, option.explanation])].join('\n');
       for (const term of candidates) expect(content, `${question.id}: ${term}`).toContain(term);
     }
