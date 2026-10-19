@@ -31,7 +31,11 @@ scripts/past-exam/fetch.sh sc 2025 autumn am2   # <試験> <西暦> <autumn|spri
 
 - 出力で `check` が付いた問題のページ画像だけを開く（図・表・数式）。全ページを読まない。
 - ほかのページは1枚だけ抜き取り、問題文が公式と一致するかを確認する。
-- 図は `table` で表に再構成する。条件の箇条書きは `details` を使う。数式は `String.raw` とKaTeXの `\(...\)` で書く。
+- 問題文に図があれば、必ずSVGで描いて載せる（文章の箇条書きで済ませない）。表やマトリクスのように表で表せる図だけは `table` にする。
+  - SVGは `src/data/figures/<内容>.ts` に `String.raw` の文字列として書き（例：`intermittent-current.ts`）、`figure: { caption, svg }` で渡す。tsxスクリプトからも読めるよう `?raw` のインポートは使わない。
+  - 線と文字は `currentColor` で描く。`<title>` に図の内容を文章で書き、`id` には図ごとの接頭辞を付けて他の図と重ならないようにする。
+  - 描いたら `pages/pNN.png` の原図と並べて見比べる。`marker-start`/`marker-end` は1つのpathの最初と最後にしか付かないので、矢印ごとにpathを分ける。
+- 条件の箇条書きは `details` を使う。数式は `String.raw` とKaTeXの `\(...\)` で書く。
 - 計算問題の番号を `calculation` に入れる。
 
 ## 3. データファイル
