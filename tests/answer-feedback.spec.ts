@@ -1,0 +1,59 @@
+import { test, expect } from '@playwright/test';
+
+for (const answer of [
+  { selected: 'イ', outcome: '正解' },
+  { selected: 'ア', outcome: '不正解' },
+  { selected: null, outcome: '未解答' },
+]) {
+  test(`reveals ${answer.outcome} below the preserved answer form`, async ({ page }) => {
+    await page.goto('/study/A1?question=sc-2025-autumn-a1-2');
+    const form = page.getByRole('form', { name: '問題の回答' });
+    const formBefore = await form.evaluate(element => ({ top: element.getBoundingClientRect().top + scrollY, height: element.getBoundingClientRect().height }));
+    // A property on the DOM node proves that submitting did not replace the form.
+    await form.evaluate(element => element.setAttribute('data-preserved-form', 'true'));
+    await form.getByRole('button', { name: answer.selected ? `${answer.selected}で回答` : 'わからない', exact: true }).click();
+    const feedback = page.getByRole('region', { name: '解答結果と解説' });
+    await expect(feedback).toBeVisible();
+    await expect(feedback.locator('.answer-outcome strong')).toHaveText(answer.outcome);
+    await expect(feedback.getByRole('heading', { name: '解説', exact: true })).toBeVisible();
+    await expect(form).toHaveAttribute('data-preserved-form', 'true');
+    if (answer.selected) await expect(form.locator('.choice-selected .choice-letter')).toHaveText(answer.selected);
+    else await expect(form.locator('.choice-selected')).toHaveCount(0);
+    for (const button of await form.getByRole('button').all()) await expect(button).toBeDisabled();
+    const formAfter = await form.evaluate(element => ({ top: element.getBoundingClientRect().top + scrollY, height: element.getBoundingClientRect().height }));
+    expect(formAfter.top).toBeCloseTo(formBefore.top, 0);
+    expect(formAfter.height).toBeCloseTo(formBefore.height, 0);
+    expect(await feedback.evaluate(element => element.getBoundingClientRect().top + scrollY)).toBeGreaterThanOrEqual(formAfter.top + formAfter.height);
+    expect(await feedback.evaluate(element => getComputedStyle(element).animationName)).not.toBe('none');
+    await expect(page).toHaveURL(/question=sc-2025-autumn-a1-2/);
+    await page.getByRole('button', { name: '今回の学習を終える' }).click();
+    await expect(page.getByRole('heading', { name: '学習完了', exact: true })).toBeVisible();
+  });
+}
+
+test('clears the previous answer and explanation only when moving to the next question', async ({ page }) => {
+  await page.goto('/study/A1');
+  await page.getByRole('button', { name: 'イで回答', exact: true }).click();
+  await expect(page.getByRole('region', { name: '解答結果と解説' })).toBeVisible();
+  await page.getByRole('button', { name: '次の問題へ' }).click();
+  await expect(page.locator('.question-number')).toHaveText('問2');
+  await expect(page.getByRole('region', { name: '解答結果と解説' })).toHaveCount(0);
+  await expect(page.locator('.choice-selected')).toHaveCount(0);
+  await expect(page.getByRole('button', { name: 'わからない', exact: true })).toBeEnabled();
+});
+
+test('shows inline feedback on mobile with reduced motion', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/study/A1?question=sc-2025-autumn-a1-2');
+  await page.getByRole('button', { name: 'イで回答', exact: true }).click();
+  const feedback = page.getByRole('region', { name: '解答結果と解説' });
+  await expect(feedback).toBeVisible();
+  const toggle = feedback.getByRole('button', { name: '復習したい', exact: true });
+  await toggle.click();
+  await expect(toggle).toHaveAttribute('aria-pressed', 'true');
+  expect(await feedback.evaluate(element => parseFloat(getComputedStyle(element).animationDuration))).toBeLessThan(0.001);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await feedback.locator('.explanation-heading').scrollIntoViewIfNeeded();
+  await page.screenshot({ path: 'test-results/mobile-inline-feedback.png', fullPage: true });
+});
