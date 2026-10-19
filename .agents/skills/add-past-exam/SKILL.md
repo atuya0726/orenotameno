@@ -40,6 +40,7 @@ scripts/past-exam/fetch.sh sc 2025 autumn am2   # <試験> <西暦> <autumn|spri
    - `examName`：午前Ⅰは `高度試験・情報処理安全確保支援士試験`、SCの午前Ⅱは `情報処理安全確保支援士試験`。
    - 解説は独自に書く（です・ます調）。選択肢ごとに「何の説明か／なぜ違うか」を1〜2文で書く。全体の解説では判断の手掛かりを示す。計算問題では、誤りの選択肢の値がどの誤りから出るかを実際に計算して確かめる。
 2. `src/data/questions.ts` の `questions` に追加し、`courses` の `description` を更新する。
+   - 分野（`q()`の第2引数）は既存の名前を使う。新しい名前を使ったら `src/data/fields.ts` のどれかの分野に追加する（`fields.test.ts`が漏れを検出する）。
 3. `src/data/question-terms.ts` に問題ごとの復習単語の候補（4〜8語）を追加し、`sets` に登録する。各語は問題文・選択肢・解説のどこかに必ず含める（テストで検査する）。
 4. テスト：`src/data/sc-2025-autumn-a2.test.ts` をコピーし、件数・正答（`ans.pdf` から独立に転記）・表のある問題・計算問題を合わせる。
 5. `docs/sources/<year>-<season>-<a1|a2>.md` を既存の形式で作る。README の収録内容を更新する。
