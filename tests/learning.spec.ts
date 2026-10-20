@@ -264,7 +264,7 @@ test('chooses questions by session, field and options like a past-exam dojo, and
   await expect(page.getByRole('heading', { name: /逆ポーランド表記法/ })).toBeVisible();
 });
 
-test('offers 180 A1 and 25 A2 questions and renders their tables', async ({ page }) => {
+test('offers 180 A1 and 50 A2 questions and renders their tables', async ({ page }) => {
   await page.goto('/questions?course=A1');
   await expect(page.locator('.question-row')).toHaveCount(180);
   await expect(page.getByText('2進数と情報量', { exact: true })).toHaveCount(0);
@@ -279,14 +279,26 @@ test('offers 180 A1 and 25 A2 questions and renders their tables', async ({ page
   await page.goto('/study/A1?question=sc-2025-spring-a1-10');
   await expect(page.getByLabel('SQL文')).toContainText('ON DELETE  a');
   await page.goto('/study/A1?question=sc-2023-autumn-a1-19');
-  await expect(page.getByRole('rowheader', { name: 'E3', exact: true })).toBeVisible();
+  await expect(page.getByRole('figure', { name: '図1 当初の計画／図2 変更後の計画' }).getByRole('img')).toBeVisible();
   await expect(page.locator('.katex-error')).toHaveCount(0);
   await page.goto('/questions?course=A2');
-  await expect(page.locator('.question-row')).toHaveCount(25);
+  await expect(page.locator('.question-row')).toHaveCount(50);
   await page.goto('/study/A2?question=sc-2025-autumn-a2-24');
   await expect(page.getByRole('table', { name: 'サービス停止状況' })).toBeVisible();
   await page.locator('.question-source summary').click();
   await expect(page.getByRole('link', { name: 'IPA公式の問題PDF ↗' })).toHaveAttribute('href', /2025r07a_sc_am2_qs.pdf/);
+  await page.goto('/study/A2?question=sc-2025-spring-a2-21');
+  await expect(page.getByRole('table', { name: '従業員', exact: true })).toBeVisible();
+  await expect(page.getByLabel('SQL文')).toContainText('WHERE NOT EXISTS');
+  await expect(page.getByRole('columnheader', { name: '従業員コード（主キー）' })).toBeVisible();
+  await expect(page.locator('.katex-error')).toHaveCount(0);
+  await page.screenshot({ path: '.cache/past-exam/2025r07h_sc_am2/sql-preview.png', fullPage: true });
+  await page.goto('/study/A2?question=sc-2025-spring-a2-24');
+  await expect(page.getByText('システム障害によるサービス提供時間内の停止時間：7時間', { exact: true })).toBeVisible();
+  await page.getByRole('button', { name: 'ウで回答', exact: true }).click();
+  await expect(page.getByRole('region', { name: '解答結果と解説' })).toBeVisible();
+  await expect(page.locator('.katex').first()).toBeVisible();
+  await expect(page.locator('.katex-error')).toHaveCount(0);
   await page.goto('/study/A2');
-  await expect(page.locator('.study-session-counter')).toContainText('25');
+  await expect(page.locator('.study-session-counter')).toContainText('50');
 });

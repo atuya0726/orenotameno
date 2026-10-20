@@ -982,9 +982,7 @@ export const terms: Term[] = [
     "id": "pki",
     "name": "PKI（公開鍵基盤）",
     "aliases": [
-      "CA",
-      "RA",
-      "デジタル証明書"
+      "RA"
     ],
     "reading": "Public Key Infrastructure",
     "category": "暗号・認証",
@@ -2563,8 +2561,6 @@ export const terms: Term[] = [
     "id": "submission-port",
     "name": "サブミッションポート",
     "aliases": [
-      "OP25B",
-      "SMTP-AUTH",
       "POP before SMTP"
     ],
     "reading": "Submission port",
@@ -2653,9 +2649,6 @@ export const terms: Term[] = [
   {
     "id": "botnet",
     "name": "ボットネット",
-    "aliases": [
-      "C&Cサーバ"
-    ],
     "reading": "Botnet",
     "category": "攻撃手法",
     "definition": "マルウェア（ボット）に感染した多数の端末が、攻撃者のC&Cサーバからの指令で一斉に動くネットワークです。DDoS攻撃やスパム送信、情報窃取に使われます。",
@@ -6966,8 +6959,7 @@ export const terms: Term[] = [
     "id": "mac-address",
     "name": "MACアドレス",
     "aliases": [
-      "ARP",
-      "ARPキャッシュ"
+      "ARP"
     ],
     "reading": "MAC address",
     "category": "ネットワーク",
@@ -7573,7 +7565,6 @@ export const terms: Term[] = [
     "id": "http-status",
     "name": "HTTPステータスコード",
     "aliases": [
-      "HTTP",
       "ステータスコード",
       "リダイレクト",
       "クライアントエラー",
@@ -9103,7 +9094,8 @@ export const terms: Term[] = [
     "name": "証明書失効リスト",
     "aliases": [
       "危殆化",
-      "OCSP"
+      "OCSP",
+      "CRL"
     ],
     "reading": "Certificate Revocation List (CRL)",
     "category": "暗号・認証",
@@ -10346,7 +10338,6 @@ export const terms: Term[] = [
     "id": "service-availability",
     "name": "サービス可用性",
     "aliases": [
-      "サービス提供時間",
       "計画停止"
     ],
     "reading": "Service availability",
@@ -11068,10 +11059,8 @@ export const terms: Term[] = [
     "id": "scrum",
     "name": "スクラム",
     "aliases": [
-      "スプリントレビュー",
       "スプリントプランニング",
       "デイリースクラム",
-      "レトロスペクティブ",
       "ステークホルダ"
     ],
     "reading": "Scrum",
@@ -12855,6 +12844,1532 @@ export const terms: Term[] = [
       }
     ],
     "commonMistakes": []
+  },
+  {
+    "id": "drdos",
+    "name": "DRDoS攻撃",
+    "reading": "Distributed Reflection Denial of Service",
+    "category": "攻撃手法",
+    "definition": "送信元IPアドレスを標的のものに偽装し、多数の第三者サーバからの応答を標的へ集中させてサービスを妨害する攻撃です。",
+    "example": "標的を送信元にしたDNS問合せを多数のサーバへ送り、その応答で標的の回線を圧迫します。",
+    "related": [
+      "ddos",
+      "dns"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "送信元を標的に偽装し第三者サーバの応答を集中させる",
+        "hint": "誰に要求を送り、誰に応答を集めますか？"
+      }
+    ],
+    "commonMistakes": [
+      "単に多数の端末から直接攻撃するだけでなく、第三者の応答を反射させる点が特徴です。"
+    ]
+  },
+  {
+    "id": "zero-day-attack",
+    "name": "ゼロデイ攻撃",
+    "reading": "Zero-day attack",
+    "category": "攻撃手法",
+    "definition": "脆弱性への修正プログラムなどの対策が提供される前に、その脆弱性を悪用する攻撃です。",
+    "example": "製品の未知の脆弱性を、修正プログラムの公開前に悪用して侵入します。",
+    "related": [
+      "vulnerability"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "対策が提供される前の脆弱性を悪用する",
+        "hint": "修正プログラムが提供される時期と攻撃の時期の関係は？"
+      }
+    ],
+    "commonMistakes": [
+      "パッチが提供済みなのに未適用の状態を狙う攻撃とは区別します。"
+    ]
+  },
+  {
+    "id": "saml",
+    "name": "SAML",
+    "reading": "Security Assertion Markup Language",
+    "category": "暗号・認証",
+    "definition": "認証結果や属性などの情報をXML形式のアサーションで連携する仕様です。シングルサインオンでは、IdPが認証し、SPがアサーションを検証してサービスへのアクセスを認めます。",
+    "example": "社内のIdPでログインした結果を外部の業務サービスへ伝え、再度パスワードを入力せずに利用します。",
+    "related": [
+      "single-sign-on"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "IdPの認証結果をアサーションでSPへ連携する",
+        "hint": "認証を行う側とサービスを提供する側は何を受け渡しますか？"
+      },
+      {
+        "id": "verification",
+        "title": "SPが受け取ったアサーションを検証する",
+        "hint": "サービス側は受け取った認証情報をどう扱いますか？"
+      }
+    ],
+    "commonMistakes": [
+      "Kerberosのチケットや、各サービスへのパスワードの配布による連携ではありません。"
+    ]
+  },
+  {
+    "id": "single-sign-on",
+    "name": "シングルサインオン",
+    "aliases": [
+      "SSO"
+    ],
+    "reading": "Single sign-on",
+    "category": "暗号・認証",
+    "definition": "一度の認証によって、複数のシステムやサービスを再認証なしで利用できるようにする仕組みです。",
+    "example": "社内ポータルへのログイン後、経費精算と勤怠管理の画面も追加のログインなしで開きます。",
+    "related": [
+      "saml",
+      "kerberos"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "一度の認証で複数のサービスを利用できる",
+        "hint": "何回の認証で、いくつのサービスを利用しますか？"
+      }
+    ],
+    "commonMistakes": [
+      "全サービスで同じパスワードを使い回すだけでは、シングルサインオンにはなりません。"
+    ]
+  },
+  {
+    "id": "kerberos",
+    "name": "Kerberos",
+    "reading": "Kerberos",
+    "category": "暗号・認証",
+    "definition": "信頼する鍵配布センターが発行するチケットを使い、ネットワーク上のサービスへの認証を行う仕組みです。共通鍵暗号を用います。",
+    "example": "利用者は認証基盤からサービス用のチケットを取得し、ファイルサーバへ提示して認証を受けます。",
+    "related": [
+      "single-sign-on"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "信頼する認証基盤が発行するチケットでサービスを利用する",
+        "hint": "パスワードを各サーバへ送る代わりに、何を使いますか？"
+      }
+    ],
+    "commonMistakes": [
+      "SAMLのXMLアサーションを使う認証方式とは異なります。"
+    ]
+  },
+  {
+    "id": "sha-512-256",
+    "name": "SHA-512/256",
+    "reading": "SHA-512/256",
+    "category": "暗号・認証",
+    "definition": "SHA-512に基づくハッシュ計算を行い、最終的な512ビットの値を256ビットに切り詰める方式です。通常のSHA-512とは異なる初期値を使います。",
+    "example": "ファイルから256ビットのダイジェストを計算します。同じ入力でも、通常のSHA-512を半分に切った値やSHA-256の値とは異なります。",
+    "related": [
+      "sha-512",
+      "sha-256",
+      "hash"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "SHA-512に基づく計算結果を256ビットに切り詰める",
+        "hint": "どのハッシュ関数に基づき、何ビットを出力しますか？"
+      },
+      {
+        "id": "initial-value",
+        "title": "通常のSHA-512とは異なる初期値を使う",
+        "hint": "通常のSHA-512の出力を切るだけで同じ値になりますか？",
+        "level": "A"
+      }
+    ],
+    "commonMistakes": [
+      "512回や256回の繰返しを意味しません。また通常のSHA-512の出力を切るだけではありません。"
+    ]
+  },
+  {
+    "id": "sha-512",
+    "name": "SHA-512",
+    "reading": "Secure Hash Algorithm 512",
+    "category": "暗号・認証",
+    "definition": "SHA-2系列の暗号学的ハッシュ関数で、任意長の入力から512ビットのハッシュ値を計算します。",
+    "example": "配布ファイルのSHA-512値を計算して、公表された512ビットの値と一致するか確認します。",
+    "related": [
+      "hash",
+      "sha-512-256"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "SHA-2系列で512ビットのハッシュ値を出力する",
+        "hint": "何ビットの値を計算するハッシュ関数ですか？"
+      }
+    ],
+    "commonMistakes": [
+      "512は繰返し回数ではなく、出力のビット数です。"
+    ]
+  },
+  {
+    "id": "sha-256",
+    "name": "SHA-256",
+    "reading": "Secure Hash Algorithm 256",
+    "category": "暗号・認証",
+    "definition": "SHA-2系列の暗号学的ハッシュ関数で、任意長の入力から256ビットのハッシュ値を計算します。",
+    "example": "ダウンロードしたファイルのSHA-256値を計算して、配布元が示す値と比較します。",
+    "related": [
+      "hash",
+      "sha-512-256"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "SHA-2系列で256ビットのハッシュ値を出力する",
+        "hint": "入力の長さに対して出力は何ビットですか？"
+      }
+    ],
+    "commonMistakes": [
+      "同じ256ビットの出力でも、SHA-512/256とは異なる方式です。"
+    ]
+  },
+  {
+    "id": "kaminsky-attack",
+    "name": "カミンスキー攻撃",
+    "reading": "Kaminsky attack",
+    "category": "攻撃手法",
+    "definition": "未キャッシュの名前へのDNS問合せを次々に発生させ、偽応答を送り込んでキャッシュに偽の情報を登録させる攻撃手法です。送信元ポート番号のランダム化が対策の一つです。",
+    "example": "毎回異なるサブドメインを問い合わせさせ、正規の応答が来る前に偽の委任情報を注入しようとします。",
+    "related": [
+      "dns-cache-poisoning",
+      "dns"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "未キャッシュ名への問合せと偽応答でDNSキャッシュを汚染する",
+        "hint": "繰返し問合せを発生させ、何に偽情報を残しますか？"
+      }
+    ],
+    "commonMistakes": [
+      "DNSサーバの冗長化やSQLのプレースホルダだけでは防げません。"
+    ]
+  },
+  {
+    "id": "cryptojacking",
+    "name": "クリプトジャッキング",
+    "reading": "Cryptojacking",
+    "category": "攻撃手法",
+    "definition": "他人の端末やサーバの計算資源を無断で使い、暗号資産のマイニングを行う攻撃です。",
+    "example": "侵入したクラウドサーバで採掘プログラムを動かし、攻撃者が報酬を得る一方で所有者の電気代や利用料金が増えます。",
+    "related": [
+      "crypto-mining",
+      "malware"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "他人の計算資源を無断で暗号資産のマイニングに使う",
+        "hint": "何を盗用し、どのように利益を得ますか？"
+      }
+    ],
+    "commonMistakes": [
+      "暗号資産を口座から盗む行為や、暗号資産で身代金を要求する行為とは異なります。"
+    ]
+  },
+  {
+    "id": "crypto-mining",
+    "name": "マイニング",
+    "reading": "Cryptocurrency mining",
+    "category": "セキュリティ運用",
+    "definition": "PoW方式の暗号資産などで、大量の計算を行って条件を満たす値を探し、ブロックを確定して報酬を得る仕組みです。",
+    "example": "採掘者がナンスを変えながらハッシュ値を計算し、条件を満たすブロックを見つけます。",
+    "related": [
+      "cryptojacking",
+      "hash"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "計算によってブロックを確定し報酬を得る",
+        "hint": "どのような作業を行い、何を得る仕組みですか？"
+      }
+    ],
+    "commonMistakes": [
+      "マイニング自体が攻撃ではなく、他人の資源を無断利用するとクリプトジャッキングになります。"
+    ]
+  },
+  {
+    "id": "certificate-authority",
+    "name": "認証局",
+    "aliases": [
+      "CA"
+    ],
+    "reading": "Certification Authority",
+    "category": "暗号・認証",
+    "definition": "主体と公開鍵の対応を証明するデジタル証明書を、自身の秘密鍵で署名して発行する機関です。証明書の失効なども管理します。",
+    "example": "Webサイトの公開鍵を含む証明書を発行し、ブラウザは認証局の公開鍵でその署名を検証します。",
+    "related": [
+      "pki",
+      "digital-certificate",
+      "crl"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "自身の秘密鍵で署名してデジタル証明書を発行する",
+        "hint": "誰のどちらの鍵で証明書に署名しますか？"
+      }
+    ],
+    "commonMistakes": [
+      "申請者の秘密鍵に署名するわけでも、認証局の公開鍵で署名を作るわけでもありません。"
+    ]
+  },
+  {
+    "id": "x509",
+    "name": "X.509",
+    "reading": "ITU-T X.509",
+    "category": "暗号・認証",
+    "definition": "公開鍵証明書などの形式を定める規格です。証明書には主体、公開鍵、発行者、有効期間、発行者の署名などが含まれます。",
+    "example": "TLSで使うサーバー証明書は、X.509の形式で公開鍵や有効期間を表します。",
+    "related": [
+      "digital-certificate",
+      "tls"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "主体や公開鍵、発行者の署名を含む公開鍵証明書の形式を定める",
+        "hint": "どのような情報の形式を規定していますか？"
+      }
+    ],
+    "commonMistakes": [
+      "電子メールシステムのX.400と混同しないようにします。"
+    ]
+  },
+  {
+    "id": "mirai",
+    "name": "Mirai",
+    "reading": "Mirai",
+    "category": "攻撃手法",
+    "definition": "IoT機器などへ感染してボットネットを構成し、C&Cサーバの指令に従ってDDoS攻撃を行うマルウェアです。代表的な感染ではTelnetで弱い認証情報を試します。",
+    "example": "初期パスワードのまま公開されたIoTカメラを侵害し、他の機器と一斉に標的へ通信させます。",
+    "related": [
+      "iot",
+      "botnet",
+      "command-control-server",
+      "ddos"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "IoT機器を感染させC&CサーバからDDoS攻撃を指示する",
+        "hint": "どの機器を感染させ、何に悪用しますか？"
+      }
+    ],
+    "commonMistakes": [
+      "Webページの改ざんやファイル共有ソフトからの情報流出を主な動作とする説明とは異なります。"
+    ]
+  },
+  {
+    "id": "connect-back",
+    "name": "コネクトバック",
+    "reading": "Connect back",
+    "category": "攻撃手法",
+    "definition": "侵害されたシステム側から攻撃者のサーバ側へ通信を開始する動作です。外向きの通信が許可されている環境で、攻撃者との通信経路の確立に悪用されます。",
+    "example": "感染端末が外部サーバへ接続し、その接続を通じて攻撃者から指令を受け取ります。",
+    "related": [
+      "backdoor",
+      "command-control-server"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "侵害されたシステムから攻撃者のサーバへ接続を開始する",
+        "hint": "通信を開始する側は攻撃者側ですか、侵害された側ですか？"
+      }
+    ],
+    "commonMistakes": [
+      "バックドアの埋込みや、身代金要求そのものを指す用語ではありません。"
+    ]
+  },
+  {
+    "id": "trojan-horse",
+    "name": "トロイの木馬",
+    "reading": "Trojan horse",
+    "category": "攻撃手法",
+    "definition": "正常で有益なプログラムに見せかけ、実行されると利用者の意図しない不正な処理を行うプログラムです。",
+    "example": "便利なツールを装ってインストールさせ、裏で入力情報を盗みます。",
+    "related": [
+      "malware",
+      "backdoor"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "有益なプログラムを装い不正な処理を実行する",
+        "hint": "どのように利用者を実行へ誘導しますか？"
+      }
+    ],
+    "commonMistakes": [
+      "自己増殖することは必須の性質ではありません。"
+    ]
+  },
+  {
+    "id": "backdoor",
+    "name": "バックドア",
+    "reading": "Backdoor",
+    "category": "攻撃手法",
+    "definition": "通常の認証やアクセス制御を迂回してシステムへ入るための隠された経路や機能です。",
+    "example": "侵入した攻撃者が再侵入用の不正なアカウントや待受けプログラムを残します。",
+    "related": [
+      "malware",
+      "connect-back"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "通常の認証などを迂回する隠れた侵入口",
+        "hint": "正規の入口に対して、どのような経路を残しますか？"
+      }
+    ],
+    "commonMistakes": [
+      "通信を侵害先から開始する動作はコネクトバックであり、バックドアという機能と同義ではありません。"
+    ]
+  },
+  {
+    "id": "cps",
+    "name": "CPS",
+    "aliases": [
+      "認証局運用規程"
+    ],
+    "reading": "Certification Practice Statement",
+    "category": "暗号・認証",
+    "definition": "認証局が証明書の発行、管理、失効、鍵管理などを実際にどのように行うかを記述する認証局運用規程です。",
+    "example": "申請者の本人確認方法や、失効依頼を受け付けて反映するまでの手順を公開します。",
+    "related": [
+      "certificate-authority",
+      "certificate-policy"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "認証局の認証業務の具体的な実施方法を定める",
+        "hint": "誰の業務の、どのような内容を記述しますか？"
+      }
+    ],
+    "commonMistakes": [
+      "証明書所有者や監査機関のセキュリティ宣言ではありません。"
+    ]
+  },
+  {
+    "id": "certificate-policy",
+    "name": "証明書ポリシー",
+    "aliases": [
+      "CP"
+    ],
+    "reading": "Certificate Policy",
+    "category": "暗号・認証",
+    "definition": "ある種類の証明書の適用範囲や、認証局などが満たすべき要求事項を定める規則です。",
+    "example": "決済用証明書に必要な本人確認の水準や利用目的を定めます。",
+    "related": [
+      "cps",
+      "pki"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "証明書の適用範囲と満たすべき要求事項を定める",
+        "hint": "どの証明書をどの用途に使い、どの水準を求める文書ですか？"
+      }
+    ],
+    "commonMistakes": [
+      "認証局の具体的な実施方法を詳述するCPSとは区別します。"
+    ]
+  },
+  {
+    "id": "threat",
+    "name": "脅威",
+    "reading": "Threat",
+    "category": "セキュリティ運用",
+    "definition": "システムや組織に損害を与える可能性がある、望ましくないインシデントの潜在的な原因です。",
+    "example": "不正侵入を試みる攻撃者や、設備を破損させる自然災害が脅威となります。",
+    "related": [
+      "vulnerability",
+      "risk-identification"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "損害をもたらすインシデントの潜在的な原因",
+        "hint": "被害の原因と、それに付け込まれる弱点のどちらですか？"
+      }
+    ],
+    "commonMistakes": [
+      "資産や管理策の弱点は脆弱性です。"
+    ]
+  },
+  {
+    "id": "risk-identification",
+    "name": "リスク特定",
+    "reading": "Risk identification",
+    "category": "セキュリティ運用",
+    "definition": "リスクを発見し、認識し、記述するプロセスです。リスク源、事象、原因、起こり得る結果などを明らかにします。",
+    "example": "重要な業務で個人情報が漏れる事象と、その原因や影響を洗い出します。",
+    "related": [
+      "risk-evaluation",
+      "risk-management"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "リスクを発見・認識・記述する",
+        "hint": "リスクの大きさを判定する前に、何を洗い出しますか？"
+      }
+    ],
+    "commonMistakes": [
+      "リスク基準と比較して受容可能かを決める段階はリスク評価です。"
+    ]
+  },
+  {
+    "id": "risk-evaluation",
+    "name": "リスク評価",
+    "reading": "Risk evaluation",
+    "category": "セキュリティ運用",
+    "definition": "リスク分析の結果をリスク基準と比較し、リスクが受容可能または許容可能かを判断するプロセスです。",
+    "example": "分析した情報漏えいリスクを自社の許容基準と比べ、追加対策が必要と判断します。",
+    "related": [
+      "risk-identification",
+      "risk-management"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "分析結果をリスク基準と比較し受容可能か判断する",
+        "hint": "分析した大きさを何と比較し、何を決めますか？"
+      }
+    ],
+    "commonMistakes": [
+      "リスクを発見する特定や、リスクを修正する対応とは区別します。"
+    ]
+  },
+  {
+    "id": "ismap",
+    "name": "ISMAP",
+    "reading": "Information system Security Management and Assessment Program",
+    "category": "クラウドセキュリティ",
+    "definition": "政府が求めるセキュリティ要求を満たすクラウドサービスをあらかじめ評価・登録し、政府のクラウドサービス調達でセキュリティ水準を確保する制度です。",
+    "example": "政府機関がクラウドサービスを調達する際に、ISMAPの登録サービスリストを確認します。",
+    "related": [
+      "cloud-service"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "政府調達向けにクラウドサービスのセキュリティを評価・登録する",
+        "hint": "誰の調達を支えるため、何を評価する制度ですか？"
+      }
+    ],
+    "commonMistakes": [
+      "個人情報保護の体制だけを評価するマーク制度や、外国へのデータ移転の制度ではありません。"
+    ]
+  },
+  {
+    "id": "cloud-service",
+    "name": "クラウドサービス",
+    "reading": "Cloud service",
+    "category": "システム構成",
+    "definition": "ネットワークを通じて、サーバ、ストレージ、実行基盤、ソフトウェアなどのIT資源を必要に応じて利用するサービスです。",
+    "example": "自社でサーバを購入する代わりに、事業者の仮想サーバを必要な期間だけ利用します。",
+    "related": [
+      "ismap"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "ネットワーク経由でIT資源を必要に応じて利用する",
+        "hint": "IT資源をどのように利用するサービスですか？"
+      }
+    ],
+    "commonMistakes": [
+      "利用者側の設定やデータ管理の責任まで、全て事業者へ移るわけではありません。"
+    ]
+  },
+  {
+    "id": "privacy-mark",
+    "name": "プライバシーマーク",
+    "reading": "PrivacyMark",
+    "category": "法務",
+    "definition": "個人情報を適切に取り扱うための体制を整備した事業者を評価し、適合を示すマークの使用を認める制度です。JIS Q 15001に基づきます。",
+    "example": "事業者が個人情報保護マネジメントシステムを整え、審査を受けます。",
+    "related": [
+      "isms"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "事業者の個人情報保護の体制を評価する制度",
+        "hint": "情報全般ではなく、何の取扱いを対象に評価しますか？"
+      }
+    ],
+    "commonMistakes": [
+      "政府調達向けのクラウドサービス登録制度であるISMAPとは異なります。"
+    ]
+  },
+  {
+    "id": "isms",
+    "name": "情報セキュリティマネジメントシステム",
+    "aliases": [
+      "ISMS"
+    ],
+    "reading": "Information Security Management System",
+    "category": "セキュリティ運用",
+    "definition": "組織が情報セキュリティの方針や目標を定め、リスクに応じた管理策を運用・評価し、継続的に改善するための管理の仕組みです。",
+    "example": "情報資産のリスクを評価し、アクセス管理の運用状況を監査して改善します。",
+    "related": [
+      "risk-management"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "情報セキュリティをリスクに応じて管理し継続的に改善する仕組み",
+        "hint": "管理策を導入した後も組織として何を繰り返しますか？"
+      }
+    ],
+    "commonMistakes": [
+      "単一のセキュリティ製品や技術の名称ではありません。"
+    ]
+  },
+  {
+    "id": "csf-2",
+    "name": "CSF 2.0",
+    "reading": "NIST Cybersecurity Framework 2.0",
+    "category": "セキュリティ運用",
+    "definition": "組織のサイバーセキュリティリスクを管理するためのNISTのフレームワークです。コアを統治、特定、防御、検知、対応、復旧の六つの機能で整理します。",
+    "example": "現在の対策と目標の状態を六つの機能に沿って整理し、改善の優先順位を決めます。",
+    "related": [
+      "security-orgs",
+      "csf-govern"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "コアをGOVERN・IDENTIFY・PROTECT・DETECT・RESPOND・RECOVERで整理する",
+        "hint": "2.0で追加された機能を含め、六つを挙げられますか？"
+      }
+    ],
+    "commonMistakes": [
+      "2.0ではGOVERNが加わったため、機能は五つではなく六つです。"
+    ]
+  },
+  {
+    "id": "csf-govern",
+    "name": "GOVERN",
+    "reading": "Govern",
+    "category": "セキュリティ運用",
+    "definition": "NIST CSF 2.0の統治機能です。組織のサイバーセキュリティリスク管理の戦略、方針、責任などを定め、伝達し、監督します。",
+    "example": "経営層が許容するリスクや責任分担を決め、方針に沿った活動か監督します。",
+    "related": [
+      "csf-2",
+      "risk-management"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "サイバーセキュリティの戦略・方針・責任を定め監督する統治機能",
+        "hint": "技術対策の前提として、組織で何を定め監督しますか？"
+      }
+    ],
+    "commonMistakes": [
+      "CSF 2.0の機能名はCONTROLやDIRECTではなくGOVERNです。"
+    ]
+  },
+  {
+    "id": "risk-management",
+    "name": "リスク管理",
+    "reading": "Risk management",
+    "category": "セキュリティ運用",
+    "definition": "リスクに関して組織を指揮・統制するための調整された活動です。リスクの把握、対応、監視などを方針に沿って継続します。",
+    "example": "情報漏えいのリスクを把握し、対策後の残るリスクも定期的に見直します。",
+    "related": [
+      "risk-identification",
+      "risk-evaluation"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "リスクに関して組織を指揮・統制する継続的な活動",
+        "hint": "一度の対策に限らず、リスクを組織としてどう扱いますか？"
+      }
+    ],
+    "commonMistakes": [
+      "全てのリスクを完全になくすことだけを意味しません。"
+    ]
+  },
+  {
+    "id": "ioc",
+    "name": "IoC",
+    "reading": "Indicator of Compromise",
+    "category": "セキュリティ運用",
+    "definition": "システムが侵害された可能性を示す痕跡や指標です。悪性の通信先、マルウェアのハッシュ値、特徴的なファイルなどが調査や検知に使われます。",
+    "example": "既知のC&Cサーバへの通信履歴が端末に見つかり、侵害の調査を進めます。",
+    "related": [
+      "command-control-server",
+      "digital-forensics"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "システムの侵害を示す痕跡や指標",
+        "hint": "防御の設定や弱点の情報と異なり、何を示しますか？"
+      }
+    ],
+    "commonMistakes": [
+      "脆弱性情報やファイアウォールのルール自体は、侵害の痕跡とは限りません。"
+    ]
+  },
+  {
+    "id": "side-channel-attack",
+    "name": "サイドチャネル攻撃",
+    "reading": "Side-channel attack",
+    "category": "攻撃手法",
+    "definition": "暗号などの処理に伴う時間、消費電力、電磁波などを観測し、秘密情報を推測する攻撃の総称です。",
+    "example": "ICカードの演算中に消費電力や処理時間を測り、秘密鍵の手掛かりを得ます。",
+    "related": [
+      "timing-attack",
+      "power-analysis-attack"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "処理時間や消費電力などの観測情報から秘密を推測する",
+        "hint": "入出力データ以外の、何を観測する攻撃ですか？"
+      }
+    ],
+    "commonMistakes": [
+      "暗号アルゴリズムが数学的に強くても、実装の情報漏えいを防げるとは限りません。"
+    ]
+  },
+  {
+    "id": "power-analysis-attack",
+    "name": "電力解析攻撃",
+    "reading": "Power analysis attack",
+    "category": "攻撃手法",
+    "definition": "暗号処理中などの消費電力の変化を測定・解析し、秘密鍵などを推測するサイドチャネル攻撃です。",
+    "example": "ICカードの演算時の電力波形を収集し、処理データとの関係を解析します。",
+    "related": [
+      "side-channel-attack",
+      "timing-attack"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "消費電力の変化から秘密情報を推測する",
+        "hint": "どの物理量を観測しますか？"
+      }
+    ],
+    "commonMistakes": [
+      "処理時間を測るタイミング攻撃とは、主に観測する情報が異なります。"
+    ]
+  },
+  {
+    "id": "tamper-resistance",
+    "name": "耐タンパー性",
+    "reading": "Tamper resistance",
+    "category": "セキュリティ運用",
+    "definition": "機器やソフトウェアの不正な解析、改変、内部情報の読取りなどに抵抗する性質です。保護構造や異常検知、秘密情報の消去などで高めます。",
+    "example": "ICカードの筐体を開けると秘密鍵を消去する仕組みを設けます。",
+    "related": [
+      "side-channel-attack"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "不正な解析・改変・内部情報の読取りに抵抗する性質",
+        "hint": "機器内部へ不正に触れようとする行為に、どう備える性質ですか？"
+      }
+    ],
+    "commonMistakes": [
+      "耐タンパー対策を設けるだけで、処理時間の差も必ずなくなるわけではありません。"
+    ]
+  },
+  {
+    "id": "volatility",
+    "name": "揮発性",
+    "reading": "Volatility",
+    "category": "セキュリティ運用",
+    "definition": "証拠保全では、電源断や時間経過によって情報が消失・変化しやすい性質を指します。揮発性の高い情報から優先して収集します。",
+    "example": "メモリ上のプロセス情報を、ディスクのファイルより先に保存します。",
+    "related": [
+      "digital-forensics",
+      "routing-table"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "電源断や時間経過で消失・変化しやすい情報を優先して保全する",
+        "hint": "どのような情報を先に集めるべきですか？"
+      }
+    ],
+    "commonMistakes": [
+      "ディスクのファイルの収集を優先して電源を切ると、メモリ上の証拠を失うことがあります。"
+    ]
+  },
+  {
+    "id": "routing-table",
+    "name": "ルーティングテーブル",
+    "reading": "Routing table",
+    "category": "ネットワーク",
+    "definition": "宛先ネットワークに対する次の転送先や出力インタフェースなど、パケットの経路選択に使う情報を保持する表です。",
+    "example": "宛先IPアドレスに最も長く一致する経路を選び、指定された次のルータへ転送します。",
+    "related": [
+      "router",
+      "volatility"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "宛先に応じたパケットの転送先を保持する表",
+        "hint": "どの宛先へ、どこを通って送るかを何で決めますか？"
+      }
+    ],
+    "commonMistakes": [
+      "動的に追加された経路は、電源断や経路変更によって失われる可能性があります。"
+    ]
+  },
+  {
+    "id": "oauth2",
+    "name": "OAuth 2.0",
+    "reading": "OAuth 2.0",
+    "category": "暗号・認証",
+    "definition": "リソースオーナーの許可に基づき、クライアントへリソースへのアクセス権限を委譲するための認可の枠組みです。権限はアクセストークンで表します。",
+    "example": "写真編集アプリに、利用者のクラウド上の写真を読み出す権限だけを付与します。",
+    "related": [
+      "authorization",
+      "access-token",
+      "authentication"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "利用者の許可に基づきクライアントへアクセス権限を委譲する",
+        "hint": "誰に何の権限を与える枠組みですか？"
+      }
+    ],
+    "commonMistakes": [
+      "OAuth 2.0だけを、利用者の本人確認結果をクライアントへ伝える認証プロトコルとして扱いません。"
+    ]
+  },
+  {
+    "id": "authentication",
+    "name": "認証",
+    "reading": "Authentication",
+    "category": "暗号・認証",
+    "definition": "利用者や機器などが主張する身元を確認することです。パスワード、所持物、生体情報などの認証要素を利用します。",
+    "example": "ログイン時に入力されたパスワードを確認し、登録した利用者本人かを確かめます。",
+    "related": [
+      "authorization",
+      "mfa"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "利用者や機器などの主張する身元を確認する",
+        "hint": "誰なのかと何を許可するかの、どちらを確認しますか？"
+      }
+    ],
+    "commonMistakes": [
+      "アクセス権限を与える認可と区別します。"
+    ]
+  },
+  {
+    "id": "access-token",
+    "name": "アクセストークン",
+    "reading": "Access token",
+    "category": "暗号・認証",
+    "definition": "保護されたリソースへのアクセス権限を表す情報です。OAuth 2.0では、クライアントが認可サーバから取得し、リソースサーバへの要求時に提示します。",
+    "example": "写真の読取り権限を表すトークンをAPIへ提示して写真を取得します。",
+    "related": [
+      "oauth2",
+      "authorization"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "リソースへのアクセス権限を表し要求時に提示する情報",
+        "hint": "パスワードの代わりに何の権限を示して提示しますか？"
+      }
+    ],
+    "commonMistakes": [
+      "利用者の身元情報を伝えるIDトークンとは役割が異なります。"
+    ]
+  },
+  {
+    "id": "smtp",
+    "name": "SMTP",
+    "reading": "Simple Mail Transfer Protocol",
+    "category": "メールセキュリティ",
+    "definition": "電子メールを送信・転送するためのプロトコルです。メールサーバ間での転送や、クライアントからのメール投稿に使います。",
+    "example": "送信側のメールサーバが宛先のメールサーバへメールを転送します。",
+    "related": [
+      "submission-port",
+      "op25b"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "電子メールの送信・転送に使うプロトコル",
+        "hint": "メールの送信と受信箱からの取出しのどちらに使いますか？"
+      }
+    ],
+    "commonMistakes": [
+      "受信箱からの取出しに使うPOPやIMAPとは役割が異なります。"
+    ]
+  },
+  {
+    "id": "router",
+    "name": "ルータ",
+    "reading": "Router",
+    "category": "ネットワーク",
+    "definition": "ネットワーク層で宛先IPアドレスと経路情報に基づき、異なるネットワーク間でパケットを転送する機器です。",
+    "example": "社内LANからインターネットへ向かうパケットを、経路表に従って中継します。",
+    "related": [
+      "routing-table",
+      "broadcast-domain",
+      "collision-domain"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "宛先IPアドレスと経路情報に基づきネットワーク間を中継する",
+        "hint": "どのアドレスを見て、何と何をつなぎますか？"
+      }
+    ],
+    "commonMistakes": [
+      "イーサネットのブロードキャストフレームを、そのまま全ての接続先へ中継する機器ではありません。"
+    ]
+  },
+  {
+    "id": "collision-domain",
+    "name": "コリジョンドメイン",
+    "reading": "Collision domain",
+    "category": "ネットワーク",
+    "definition": "イーサネットでフレームの衝突が伝わる範囲です。リピータハブでは共有され、ブリッジやスイッチ、ルータで分割されます。",
+    "example": "リピータハブに接続した半二重の端末群では、ある端末の送信が他の端末の送信と衝突します。",
+    "related": [
+      "ethernet",
+      "router",
+      "bridge"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "イーサネットの衝突が伝わる範囲",
+        "hint": "どの現象が伝搬する範囲ですか？"
+      }
+    ],
+    "commonMistakes": [
+      "ブロードキャストが届く範囲とは別です。全二重通信では衝突は起きません。"
+    ]
+  },
+  {
+    "id": "broadcast-domain",
+    "name": "ブロードキャストドメイン",
+    "reading": "Broadcast domain",
+    "category": "ネットワーク",
+    "definition": "同じリンク層のブロードキャストが届く範囲です。ルータやVLANによって分割します。",
+    "example": "同じVLAN内の端末にはARP要求が届きますが、別のルータ配下へはそのまま届きません。",
+    "related": [
+      "router",
+      "ethernet"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "リンク層のブロードキャストが届く範囲",
+        "hint": "どの種類のフレームが届く範囲ですか？"
+      }
+    ],
+    "commonMistakes": [
+      "L2スイッチでコリジョンドメインを分けても、同じVLANならブロードキャストドメインは共有します。"
+    ]
+  },
+  {
+    "id": "spanning-tree",
+    "name": "スパニングツリープロトコル",
+    "aliases": [
+      "STP"
+    ],
+    "reading": "Spanning Tree Protocol",
+    "category": "ネットワーク",
+    "definition": "複数のブリッジやスイッチで情報を交換し、冗長な接続の一部を転送に使わず、ループのない木構造の経路を作るプロトコルです。障害時には経路を再構成します。",
+    "example": "三角形に結んだスイッチの一部のポートを待機させ、回線障害時に代替経路として使います。",
+    "related": [
+      "bridge"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "冗長なL2接続からループのない転送経路を作る",
+        "hint": "複数のブリッジがつながるとき、何を防ぎますか？"
+      }
+    ],
+    "commonMistakes": [
+      "アプリケーション別に通信を振り分ける負荷分散や、MACアドレスのエージングではありません。"
+    ]
+  },
+  {
+    "id": "bridge",
+    "name": "ブリッジ",
+    "reading": "Bridge",
+    "category": "ネットワーク",
+    "definition": "データリンク層でMACアドレスに基づき、LANのセグメント間でフレームを中継・フィルタリングする機器です。",
+    "example": "学習した宛先MACアドレスの側だけにフレームを送ることで、不要な転送を減らします。",
+    "related": [
+      "mac-address",
+      "spanning-tree"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "MACアドレスに基づいてセグメント間のフレームを中継する",
+        "hint": "どの層で、何のアドレスを使って中継しますか？"
+      }
+    ],
+    "commonMistakes": [
+      "IPアドレスに基づいてネットワーク間の経路を選ぶルータとは異なります。"
+    ]
+  },
+  {
+    "id": "load-balancing",
+    "name": "負荷分散",
+    "reading": "Load balancing",
+    "category": "システム構成",
+    "definition": "要求や処理を複数のサーバや経路などへ振り分け、特定の資源への負荷の集中を避ける仕組みです。",
+    "example": "利用者のHTTPリクエストを複数のWebサーバへ分配します。",
+    "related": [
+      "spanning-tree"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "処理や通信を複数の資源へ振り分けて負荷の集中を避ける",
+        "hint": "一つに集中する負荷をどのように扱いますか？"
+      }
+    ],
+    "commonMistakes": [
+      "ループ防止のために転送経路を限定するSTPそのものは、負荷分散の機能ではありません。"
+    ]
+  },
+  {
+    "id": "http-get",
+    "name": "GETメソッド",
+    "reading": "HTTP GET method",
+    "category": "ネットワーク",
+    "definition": "指定したリソースの表現を取得するHTTPメソッドです。通常のHTMLフォームをGETで送信すると、入力値はURIのクエリに付加されます。",
+    "example": "検索フォームの入力値が/search?q=wordというURIに含まれます。",
+    "related": [
+      "http-protocol",
+      "http-post"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "リソースの取得に使いフォームデータはURIのクエリに含める",
+        "hint": "何のためのメソッドで、フォームの入力値はどこに入りますか？"
+      }
+    ],
+    "commonMistakes": [
+      "HTTP/1.1のフォーム送信では、クエリはヘッダーではなくリクエスト行に現れます。"
+    ]
+  },
+  {
+    "id": "http-post",
+    "name": "POSTメソッド",
+    "reading": "HTTP POST method",
+    "category": "ネットワーク",
+    "definition": "対象リソースにデータを送って処理を依頼するHTTPメソッドです。通常のHTMLフォームでは、入力値をリクエストのメッセージボディに含めます。",
+    "example": "申込フォームの内容をメッセージボディへ格納してWebサーバに送ります。",
+    "related": [
+      "http-protocol",
+      "http-get",
+      "tls"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "処理するデータをメッセージボディに含めて送信する",
+        "hint": "フォームの入力値はリクエストのどの部分に入りますか？"
+      }
+    ],
+    "commonMistakes": [
+      "POSTを使うだけではデータは暗号化されません。"
+    ]
+  },
+  {
+    "id": "not-exists",
+    "name": "NOT EXISTS",
+    "reading": "SQL NOT EXISTS",
+    "category": "データベース",
+    "definition": "副問合せの結果に行が一つも存在しないときに真となるSQLの条件です。相関副問合せと組み合わせて、対応する行がないデータを抽出できます。",
+    "example": "上司として参照する従業員が存在しない行を選び、部下のいない従業員を抽出します。",
+    "related": [
+      "correlated-subquery",
+      "sql-null"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "副問合せの結果が0行のときに真となる",
+        "hint": "副問合せの結果が何行のとき成立しますか？"
+      }
+    ],
+    "commonMistakes": [
+      "NOT INと同じようにNULLで必ず真偽不明になるわけではありません。EXISTSは結果行の有無を判定します。"
+    ]
+  },
+  {
+    "id": "correlated-subquery",
+    "name": "相関副問合せ",
+    "reading": "Correlated subquery",
+    "category": "データベース",
+    "definition": "外側の問合せの列を参照する副問合せです。外側の行の値に対応するデータがあるかなどを条件にできます。",
+    "example": "外側の従業員コードを内側の「上司」と比較し、その従業員に部下がいるかを調べます。",
+    "related": [
+      "not-exists"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "副問合せの中から外側の問合せの列を参照する",
+        "hint": "内側の問合せがどこの行の値を使いますか？"
+      }
+    ],
+    "commonMistakes": [
+      "同じ表を使っていても、別名で区別した内側と外側の行は別々の役割を持ちます。"
+    ]
+  },
+  {
+    "id": "sql-null",
+    "name": "NULL",
+    "reading": "SQL NULL",
+    "category": "データベース",
+    "definition": "SQLで値が存在しない、または不明であることを表すものです。0や空文字とは区別し、判定にはIS NULLなどを使います。",
+    "example": "上司が設定されていない従業員の「上司」列をNULLにします。",
+    "related": [
+      "not-exists"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "値の不存在や不明を表し通常の等値比較では真にならない",
+        "hint": "0や空文字とどう異なり、どの条件で判定しますか？"
+      }
+    ],
+    "commonMistakes": [
+      "NULL同士を「=」で比較しても真にはなりません。"
+    ]
+  },
+  {
+    "id": "sonarqube",
+    "name": "SonarQube",
+    "reading": "SonarQube",
+    "category": "開発技術",
+    "definition": "ソースコードを静的解析し、バグ、脆弱性、重複などを検出してコード品質の管理を支援するツールです。",
+    "example": "コード変更ごとに解析し、重複したコードや問題を起こす可能性のある記述を確認します。",
+    "related": [
+      "git",
+      "jenkins"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "ソースコードを静的解析してバグ・脆弱性・重複などを検出する",
+        "hint": "ソースコードのどのような問題を何の方法で検出しますか？"
+      }
+    ],
+    "commonMistakes": [
+      "バージョン管理やネットワークの侵入検知を主目的とするツールではありません。"
+    ]
+  },
+  {
+    "id": "git",
+    "name": "Git",
+    "reading": "Git",
+    "category": "開発技術",
+    "definition": "ソースコードなどの変更履歴を管理する分散バージョン管理システムです。各開発者がリポジトリの履歴を保持し、ブランチやマージを使って共同開発します。",
+    "example": "修正をコミットし、別の作業ブランチの変更をマージします。",
+    "related": [
+      "jenkins",
+      "sonarqube"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "変更履歴を管理する分散バージョン管理システム",
+        "hint": "コードを解析するのではなく、何を記録・管理しますか？"
+      }
+    ],
+    "commonMistakes": [
+      "バグや脆弱性を自動検出する静的解析ツールそのものではありません。"
+    ]
+  },
+  {
+    "id": "jenkins",
+    "name": "Jenkins",
+    "reading": "Jenkins",
+    "category": "開発技術",
+    "definition": "ビルド、テスト、デプロイなどの処理を自動実行するための自動化サーバです。継続的インテグレーションなどに使います。",
+    "example": "リポジトリへの変更を契機に、ビルドとテストを順に実行します。",
+    "related": [
+      "git",
+      "sonarqube"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "ビルドやテストなどの処理を自動化する",
+        "hint": "開発に伴うどのような作業を自動実行しますか？"
+      }
+    ],
+    "commonMistakes": [
+      "静的解析は連携する解析ツールが行い、Jenkins自体の主な役割は処理の自動化です。"
+    ]
+  },
+  {
+    "id": "snort",
+    "name": "Snort",
+    "reading": "Snort",
+    "category": "ネットワークセキュリティ",
+    "definition": "ネットワーク通信を解析し、ルールに基づいて不正侵入や攻撃を検知・防止するOSSのツールです。",
+    "example": "ネットワーク上のパケットを監視し、既知の攻撃に一致する通信を検知します。",
+    "related": [
+      "ids-ips",
+      "ips"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "ネットワーク通信から不正侵入や攻撃を検知・防止する",
+        "hint": "ソースコードではなく、何を監視して攻撃を見つけますか？"
+      }
+    ],
+    "commonMistakes": [
+      "ソースコードのバグや重複を検出するツールではありません。"
+    ]
+  },
+  {
+    "id": "kpt",
+    "name": "KPT",
+    "reading": "Keep Problem Try",
+    "category": "開発技術",
+    "definition": "振り返りの内容をKeep（続けたいこと）、Problem（問題点）、Try（次に試すこと）の三つで整理する手法です。",
+    "example": "短いレビューを続けることをKeep、レビュー待ちをProblem、担当者の交代制をTryに挙げます。",
+    "related": [
+      "scrum",
+      "sprint-retrospective"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "Keep・Problem・Tryで継続事項と問題点、次の改善行動を整理する",
+        "hint": "K・P・Tはそれぞれ何を表しますか？"
+      }
+    ],
+    "commonMistakes": [
+      "KはKaizenやKnowledge、PはPersonaやPracticeではありません。"
+    ]
+  },
+  {
+    "id": "downtime",
+    "name": "停止時間",
+    "reading": "Downtime",
+    "category": "サービス管理",
+    "definition": "システムやサービスが利用できない時間です。サービス可用性の計算では、合意したサービス提供時間内の利用不能時間を対象にします。",
+    "example": "6時〜20時のサービスが10時から12時まで利用できなければ、提供時間内の停止は2時間です。",
+    "related": [
+      "service-availability",
+      "service-hours",
+      "repair-time"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "サービスが利用できない時間で可用性では合意した提供時間内を数える",
+        "hint": "サービスの可用性を計算するとき、どの時間帯の利用不能を数えますか？"
+      }
+    ],
+    "commonMistakes": [
+      "提供時間外に修復作業をしていても、その時間を提供時間内の停止にそのまま足しません。"
+    ]
+  },
+  {
+    "id": "repair-time",
+    "name": "修復時間",
+    "reading": "Repair time",
+    "category": "サービス管理",
+    "definition": "故障したシステムや機器を修復して利用可能な状態に戻すために要する時間です。サービス提供時間内の停止時間と必ずしも一致しません。",
+    "example": "夜間に3時間の修復を行っても、朝までに復旧すれば日中だけのサービスの停止時間は増えません。",
+    "related": [
+      "downtime",
+      "mttr"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "故障から利用可能な状態へ戻すために要する時間",
+        "hint": "修復に要した時間は、サービス提供時間内とは限りますか？"
+      }
+    ],
+    "commonMistakes": [
+      "修復作業の全時間が、サービス可用性の停止時間になるわけではありません。"
+    ]
+  },
+  {
+    "id": "compliance",
+    "name": "準拠性",
+    "reading": "Compliance",
+    "category": "システム監査",
+    "definition": "業務や情報システムの運用が、適用される法令、規則、契約、組織内の規程などに従っていることです。",
+    "example": "取引記録の保管期間やアクセス手続が法令と社内規程に適合しているか確認します。",
+    "related": [
+      "it-control-reliability"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "適用される法令・規則・契約などに従うこと",
+        "hint": "どのような要求事項を守るという目標ですか？"
+      }
+    ],
+    "commonMistakes": [
+      "記録した取引に漏れや重複がないというデータ品質は、この設問の統制目標では信頼性に含まれます。"
+    ]
+  },
+  {
+    "id": "digital-certificate",
+    "name": "デジタル証明書",
+    "reading": "Digital certificate",
+    "category": "暗号・認証",
+    "definition": "主体と公開鍵の対応などを記載し、発行者のデジタル署名で保証する電子的な証明書です。秘密鍵は含みません。",
+    "example": "ブラウザがサーバー証明書の署名とホスト名などを検証し、接続先の公開鍵を確認します。",
+    "related": [
+      "pki",
+      "certificate-authority",
+      "x509"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "主体と公開鍵の対応を発行者の署名で保証する",
+        "hint": "何と何の対応を、何で保証するデータですか？"
+      }
+    ],
+    "commonMistakes": [
+      "公開鍵基盤という仕組み全体ではなく、その中で発行・検証する証明書です。秘密鍵は載せません。"
+    ]
+  },
+  {
+    "id": "command-control-server",
+    "name": "C&Cサーバ",
+    "reading": "Command and Control server",
+    "category": "攻撃手法",
+    "definition": "マルウェアに感染した端末などに指令を送り、不正な動作を制御するためのサーバです。",
+    "example": "感染したIoT機器に、攻撃先のIPアドレスと攻撃開始の指令を送ります。",
+    "related": [
+      "botnet",
+      "mirai"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "感染端末などへ指令を送り不正な動作を制御するサーバ",
+        "hint": "多数の感染端末にどのような役割を果たしますか？"
+      }
+    ],
+    "commonMistakes": [
+      "感染端末群であるボットネット全体と、指令を送るサーバは同じ概念ではありません。"
+    ]
+  },
+  {
+    "id": "arp-cache",
+    "name": "ARPキャッシュ",
+    "reading": "ARP cache",
+    "category": "ネットワーク",
+    "definition": "ARPによって得たIPv4アドレスとMACアドレスの対応を一時的に保持する情報です。一定時間で更新・削除されるため、証拠保全では早めに取得します。",
+    "example": "同じLAN内のゲートウェイのIPv4アドレスとMACアドレスの対応を保存します。",
+    "related": [
+      "mac-address",
+      "digital-forensics"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "ARPで得たIPアドレスとMACアドレスの対応を一時保持する",
+        "hint": "どの二つのアドレスの対応を記録しますか？"
+      }
+    ],
+    "commonMistakes": [
+      "MACアドレス自体や、宛先ネットワークの経路を保持する表とは異なります。"
+    ]
+  },
+  {
+    "id": "op25b",
+    "name": "OP25B",
+    "reading": "Outbound Port 25 Blocking",
+    "category": "メールセキュリティ",
+    "definition": "管理下のネットワークから外部のTCPの25番ポートへの接続を制限し、端末などによる直接のスパムメール送信を抑制する対策です。",
+    "example": "ISPが加入者の感染端末から外部メールサーバへの直接送信を遮断します。",
+    "related": [
+      "submission-port",
+      "smtp-auth",
+      "smtp"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "外向きのTCP25番ポートへの接続を制限しスパム送信を抑える",
+        "hint": "通信方向と対象ポート番号は何ですか？"
+      }
+    ],
+    "commonMistakes": [
+      "外部から入るメールや、ICMPによるDDoS攻撃を直接制限する仕組みではありません。"
+    ]
+  },
+  {
+    "id": "smtp-auth",
+    "name": "SMTP-AUTH",
+    "reading": "SMTP Authentication",
+    "category": "メールセキュリティ",
+    "definition": "SMTPでメールを投稿する利用者を認証する拡張です。許可された利用者だけがメール送信サービスを使えるようにします。",
+    "example": "メールクライアントが認証情報を提示してから投稿用サーバにメールを送信します。",
+    "related": [
+      "smtp",
+      "submission-port",
+      "op25b"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "SMTPでメールを投稿する利用者を認証する",
+        "hint": "どの利用者の何の操作を認証しますか？"
+      }
+    ],
+    "commonMistakes": [
+      "送信ドメインを検査するSPFや、外向き25番ポートを制限するOP25Bとは異なります。"
+    ]
+  },
+  {
+    "id": "http-protocol",
+    "name": "HTTP",
+    "reading": "Hypertext Transfer Protocol",
+    "category": "ネットワーク",
+    "definition": "クライアントとサーバがリクエストとレスポンスをやり取りし、Web上のリソースを取得・送信するためのアプリケーション層のプロトコルです。",
+    "example": "ブラウザがGETリクエストを送り、Webサーバがステータスコードとページの内容を返します。",
+    "related": [
+      "http-status",
+      "http-get",
+      "http-post"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "Webのリソースをリクエストとレスポンスでやり取りするプロトコル",
+        "hint": "クライアントとサーバはどのような単位でやり取りしますか？"
+      }
+    ],
+    "commonMistakes": [
+      "HTTPステータスコードはHTTPの応答結果を示す一要素で、プロトコル全体とは異なります。"
+    ]
+  },
+  {
+    "id": "sprint-retrospective",
+    "name": "レトロスペクティブ",
+    "reading": "Sprint retrospective",
+    "category": "開発技術",
+    "definition": "スクラムで、直近のスプリントの進め方や協働、プロセスなどを振り返り、品質と有効性を高める改善を計画するイベントです。",
+    "example": "レビュー待ちで手戻りが増えた原因を話し合い、次のスプリントで試す改善を決めます。",
+    "related": [
+      "scrum",
+      "kpt",
+      "sprint-review"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "スプリントの進め方を振り返り次の改善を計画する",
+        "hint": "成果物そのものではなく、何を振り返って改善しますか？"
+      }
+    ],
+    "commonMistakes": [
+      "成果をステークホルダーと確認するスプリントレビューとは目的が異なります。"
+    ]
+  },
+  {
+    "id": "sprint-review",
+    "name": "スプリントレビュー",
+    "reading": "Sprint review",
+    "category": "開発技術",
+    "definition": "スクラムで、スプリントの成果をステークホルダーと検査し、状況の変化も踏まえて今後の適応を決めるイベントです。",
+    "example": "開発した機能を利用部門と確認し、得られた意見から今後の優先順位を見直します。",
+    "related": [
+      "scrum",
+      "sprint-retrospective"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "スプリントの成果をステークホルダーと確認し今後に適応する",
+        "hint": "誰と何を確認するイベントですか？"
+      }
+    ],
+    "commonMistakes": [
+      "チームの進め方を改善するためのレトロスペクティブとは区別します。"
+    ]
+  },
+  {
+    "id": "service-hours",
+    "name": "サービス提供時間",
+    "reading": "Agreed service time",
+    "category": "サービス管理",
+    "definition": "サービスを利用できるように提供することが顧客などとの間で合意された時間です。サービス可用性の計算の基準になります。",
+    "example": "毎日6時から20時までを提供時間と合意した場合、1日当たり14時間が対象です。",
+    "related": [
+      "service-availability",
+      "downtime"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "サービスを提供すると合意した時間",
+        "hint": "可用性の分母には24時間全体と合意時間のどちらを使いますか？"
+      }
+    ],
+    "commonMistakes": [
+      "サービスが実際に使えた時間や、修復作業にかかった全時間とは異なります。"
+    ]
+  },
+  {
+    "id": "it-control-reliability",
+    "name": "信頼性（ITの統制目標）",
+    "reading": "Reliability in IT control objectives",
+    "category": "システム監査",
+    "definition": "財務報告に係る内部統制のITの統制目標では、情報が組織の意図どおりに承認され、漏れや重複なく正確に記録・処理されることです。",
+    "example": "売上取引を二重計上せず、全件を正しい金額と科目で記録します。",
+    "related": [
+      "compliance",
+      "reliability"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "取引情報が承認され漏れや重複なく正確に記録・処理される",
+        "hint": "財務報告に使う取引情報に、どのような性質を求めますか？"
+      }
+    ],
+    "commonMistakes": [
+      "情報セキュリティの「意図した行動と結果の一貫性」という信頼性とは、設問の文脈を区別します。"
+    ]
   }
 ];
 

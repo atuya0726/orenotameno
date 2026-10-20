@@ -227,7 +227,35 @@ const sc2023SpringA1Terms: Record<number, readonly string[]> = {
   30: ['労働者派遣法', '派遣元', '派遣先', '派遣先管理台帳', '派遣先責任者'],
 };
 
-const sets: [string, Record<number, readonly string[]>][] = [['sc-2025-autumn-a1', sc2025AutumnA1Terms], ['sc-2025-autumn-a2', sc2025AutumnA2Terms], ['sc-2025-spring-a1', sc2025SpringA1Terms], ['sc-2024-autumn-a1', sc2024AutumnA1Terms], ['sc-2024-spring-a1', sc2024SpringA1Terms], ['sc-2023-autumn-a1', sc2023AutumnA1Terms], ['sc-2023-spring-a1', sc2023SpringA1Terms]];
+const sc2025SpringA2Terms: Record<number, readonly string[]> = {
+  1: ["DRDoS攻撃", "DNS", "SYNフラッド攻撃", "ゼロデイ攻撃"],
+  2: ["SAML", "シングルサインオン", "Kerberos", "リバースプロキシ"],
+  3: ["SHA-512/256", "SHA-512", "SHA-256", "ハッシュ関数"],
+  4: ["カミンスキー攻撃", "DNSキャッシュポイズニング", "SPF", "SQLインジェクション"],
+  5: ["クリプトジャッキング", "マイニング", "ランサムウェア", "マルウェア"],
+  6: ["デジタル証明書", "TLS", "認証局", "X.509"],
+  7: ["Mirai", "IoT", "C&Cサーバ", "DDoS攻撃"],
+  8: ["コネクトバック", "ランサムウェア", "トロイの木馬", "バックドア"],
+  9: ["CPS", "公開鍵基盤", "認証局", "証明書ポリシー"],
+  10: ["脅威", "脆弱性", "リスク特定", "リスク評価"],
+  11: ["ISMAP", "クラウドサービス", "プライバシーマーク", "情報セキュリティマネジメントシステム"],
+  12: ["NIST", "CSF 2.0", "GOVERN", "リスク管理"],
+  13: ["IoC", "C&Cサーバ", "脆弱性", "CRL"],
+  14: ["タイミング攻撃", "サイドチャネル攻撃", "電力解析攻撃", "耐タンパー性"],
+  15: ["デジタルフォレンジックス", "揮発性", "ARPキャッシュ", "ルーティングテーブル"],
+  16: ["OAuth 2.0", "認可", "認証", "アクセストークン"],
+  17: ["OP25B", "SMTP", "サブミッションポート", "SMTP-AUTH"],
+  18: ["ルータ", "イーサネット", "コリジョンドメイン", "ブロードキャストドメイン"],
+  19: ["スパニングツリープロトコル", "ブリッジ", "MACアドレス", "負荷分散"],
+  20: ["GETメソッド", "POSTメソッド", "HTTP", "TLS"],
+  21: ["NOT EXISTS", "相関副問合せ", "NULL", "主キー"],
+  22: ["SonarQube", "Git", "Jenkins", "Snort"],
+  23: ["KPT", "スクラム", "レトロスペクティブ", "スプリントレビュー"],
+  24: ["サービス可用性", "サービス提供時間", "停止時間", "修復時間"],
+  25: ["信頼性（ITの統制目標）", "可用性", "機密性", "準拠性"],
+};
+
+const sets: [string, Record<number, readonly string[]>][] = [['sc-2025-autumn-a1', sc2025AutumnA1Terms], ['sc-2025-autumn-a2', sc2025AutumnA2Terms], ['sc-2025-spring-a2', sc2025SpringA2Terms], ['sc-2025-spring-a1', sc2025SpringA1Terms], ['sc-2024-autumn-a1', sc2024AutumnA1Terms], ['sc-2024-spring-a1', sc2024SpringA1Terms], ['sc-2023-autumn-a1', sc2023AutumnA1Terms], ['sc-2023-spring-a1', sc2023SpringA1Terms]];
 const termsByQuestion = new Map<string, readonly string[]>(sets.flatMap(([prefix, terms]) => Object.entries(terms).map(([number, list]) => [`${prefix}-${number}`, list] as const)));
 const knownTerms = new Set(sets.flatMap(([, terms]) => Object.values(terms).flat()));
 export function isQuestionTerm(term: string): boolean { return knownTerms.has(term); }
