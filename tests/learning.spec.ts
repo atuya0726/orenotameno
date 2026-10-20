@@ -122,6 +122,7 @@ test('submits only once when choices are clicked rapidly', async ({ page }) => {
 });
 
 test('allows retrying the same choice after a storage failure', async ({ page }) => {
+  const errors: string[] = []; page.on('pageerror', error => errors.push(error.message));
   await page.addInitScript(() => {
     const put = IDBObjectStore.prototype.put;
     let fail = true;
@@ -141,6 +142,7 @@ test('allows retrying the same choice after a storage failure', async ({ page })
   await expect(page.getByRole('button', { name: '復習リストに追加', exact: true })).toBeVisible();
   expect(await storedAttempts(page)).toHaveLength(1);
   expect((await storedAttempts(page))[0]).toMatchObject({ selected: 'b', confidence: 'high' });
+  expect(errors).toEqual([]);
 });
 
 test('answers with the keyboard without submitting when moving focus', async ({ page }) => {

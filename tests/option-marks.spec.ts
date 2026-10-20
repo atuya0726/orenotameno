@@ -14,11 +14,8 @@ test('cycles independent option notes, restores drafts, and locks them after ans
   await first.focus();
   await first.press('Space');
   await marks.nth(2).click();
-  // Wait for the queued IndexedDB writes before reloading.
-  await expect.poll(() => page.evaluate(async () => {
-    const db = await new Promise<IDBDatabase>(resolve => { const request = indexedDB.open('orenotameno-sc'); request.onsuccess = () => resolve(request.result); });
-    const draft = await new Promise<{ optionMarks?: Record<string, string> }>(resolve => { const request = db.transaction('drafts').objectStore('drafts').get('sc-2025-autumn-a1-1'); request.onsuccess = () => resolve(request.result); });
-    db.close();
+  await expect.poll(() => page.evaluate(() => {
+    const draft = JSON.parse(sessionStorage.getItem('orenotameno:question-draft:sc-2025-autumn-a1-1') ?? 'null');
     return draft?.optionMarks;
   })).toEqual({ a: 'candidate', c: 'candidate' });
   await page.reload();

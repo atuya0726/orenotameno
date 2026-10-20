@@ -4,6 +4,14 @@ import { isQuestionTerm } from '@/data/question-terms';
 import { attemptSchema, reviewWordsSchema, collectReviewWords, reviewCardSchema, legacyReviewCardSchema, settingsSchema, defaultSettings, answerConfidence, validateAnswerForQuestion, restoreDraft, type Snapshot, type Draft, type Attempt, type ReviewCard, type ReviewFlag, type Settings } from './model';
 import { rebuildReviewHistory } from './scheduler';
 import { loadStudySessions } from './study-session';
+import { createSessionStore } from './session-storage';
+
+const questionDrafts = createSessionStore<Draft>('orenotameno:question-draft:', value => {
+  const { questionId } = z.object({ questionId: z.string() }).parse(value);
+  const question = questionById.get(questionId);
+  if (!question) throw new Error('問題が見つかりません。');
+  return restoreDraft(value, question);
+});
 
 export const DB_NAME = 'orenotameno-sc';
 let connection: Promise<IDBDatabase> | undefined;
@@ -33,8 +41,9 @@ export function openDatabase(): Promise<IDBDatabase> {
     request.onsuccess = () => {
       const db = request.result;
       db.onversionchange = () => { db.close(); connection = undefined; };
-      // Remove progress left by the former permanent-storage implementation.
-      const tx = db.transaction('settings', 'readwrite');
+      // Remove temporary data left by the former permanent-storage implementation.
+      const tx = db.transaction(['settings', 'drafts'], 'readwrite');
+      tx.objectStore('drafts').clear();
       const cursor = tx.objectStore('settings').openKeyCursor(IDBKeyRange.bound('study:', 'study:\uffff'));
       cursor.onsuccess = () => {
         if (!cursor.result) return;
@@ -59,11 +68,11 @@ function completed(transaction: IDBTransaction): Promise<void> {
 }
 export async function loadSnapshot(): Promise<Snapshot> {
   const db = await openDatabase();
-  const tx = db.transaction(['attempts', 'bookmarks', 'drafts', 'settings', 'reviewWords'], 'readonly');
+  const tx = db.transaction(['attempts', 'bookmarks', 'settings', 'reviewWords'], 'readonly');
   const done = completed(tx);
-  const [attempts, bookmarks, drafts, settings, words] = await Promise.all([
+  const [attempts, bookmarks, settings, words] = await Promise.all([
     result<Attempt[]>(tx.objectStore('attempts').getAll()),
-    result<{ questionId: string }[]>(tx.objectStore('bookmarks').getAll()), result<Draft[]>(tx.objectStore('drafts').getAll()),
+    result<{ questionId: string }[]>(tx.objectStore('bookmarks').getAll()),
     result<{ name: string; value: Settings } | undefined>(tx.objectStore('settings').get('preferences')),
     result<{ term: string }[]>(tx.objectStore('reviewWords').getAll()),
   ]);
@@ -74,21 +83,27 @@ export async function loadSnapshot(): Promise<Snapshot> {
     ...rebuildReviewHistory(attempts.filter(a => questionById.has(a.questionId)), words.map(word => word.term)),
     reviewWords: words.map(word => word.term),
     bookmarks: bookmarks.map(b => b.questionId).filter(id => questionById.has(id)),
-    drafts: drafts.filter(d => questionById.has(d.questionId)).map(d => restoreDraft(d, questionById.get(d.questionId)!)),
+    drafts: questionDrafts.load(),
     settings: settings?.value ?? defaultSettings,
     studySessions: loadStudySessions(attempts),
   };
 }
 export async function saveDraft(draft: Draft): Promise<void> {
-  const db = await openDatabase(); const tx = db.transaction('drafts', 'readwrite');
-  const done = completed(tx); tx.objectStore('drafts').put(structuredClone(draft)); await done;
+  questionDrafts.save(draft.questionId, draft);
 }
 export async function commitAnswer(attempt: Attempt, card: ReviewCard): Promise<void> {
   const db = await openDatabase();
-  const tx = db.transaction(['attempts', 'cards', 'drafts'], 'readwrite');
+  const tx = db.transaction(['attempts', 'cards'], 'readwrite');
   const done = completed(tx);
-  tx.objectStore('attempts').put(attempt); tx.objectStore('cards').put(card); tx.objectStore('drafts').delete(attempt.questionId);
-  await done;
+  try {
+    tx.objectStore('attempts').put(attempt); tx.objectStore('cards').put(card);
+    await done;
+  } catch (error) {
+    try { tx.abort(); } catch { /* The transaction may already have aborted. */ }
+    await done.catch(() => {});
+    throw error;
+  }
+  try { questionDrafts.remove(attempt.questionId); } catch { /* The answer is already saved. */ }
 }
 export async function saveReviewFlag(attemptId: string, flag: ReviewFlag, active: boolean): Promise<void> {
   // The review request replaces the earlier doubt button, including when cleared.

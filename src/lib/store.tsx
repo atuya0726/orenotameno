@@ -1,6 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from 'react';
 import { loadSnapshot, commitAnswer, saveDraft, saveBookmark, saveSettings, saveReviewFlag, saveReviewWord, importBackup } from './db';
 import { saveStudySession, type StudySession } from './study-session';
+import { removeLocalStorageByPrefix } from './session-storage';
 import { emptySnapshot, type Snapshot, type Draft, type Question, type Attempt, type ReviewFlag, type Settings, type QuickAnswerInput } from './model';
 import { scheduleAnswer } from './scheduler';
 import { answerSchema } from './model';
@@ -22,7 +23,10 @@ export function LearningProvider({ children }: { children: ReactNode }) {
     try { saveStudySession(session); await refresh(); }
     catch (e) { setError(message(e)); throw e; }
   }, [refresh]);
-  useEffect(() => { void refresh().then(() => setReady(true)).catch(e => setError(message(e))); }, [refresh]);
+  useEffect(() => {
+    removeLocalStorageByPrefix('orenotameno-calculator:');
+    void refresh().then(() => setReady(true)).catch(e => setError(message(e)));
+  }, [refresh]);
   function updateDraft(draft: Draft) {
     change(s => ({ ...s, drafts: [...s.drafts.filter(d => d.questionId !== draft.questionId), structuredClone(draft)] }));
     draftWrites.current = draftWrites.current.catch(() => {}).then(() => saveDraft(draft));

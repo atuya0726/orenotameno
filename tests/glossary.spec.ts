@@ -84,21 +84,14 @@ test('searches terms and persists drafts without exposing the reference first', 
   await expect(check(page)).toBeDisabled();
   await textbox(page).fill(text);
   await expect(check(page)).toBeEnabled();
-  // Wait for the IndexedDB write, not only the React input state.
-  await expect.poll(() => page.evaluate(async () => {
-    const db = await new Promise<IDBDatabase>(resolve => { const r = indexedDB.open('orenotameno-glossary'); r.onsuccess = () => resolve(r.result); });
-    const draft = await new Promise<{ text?: string }>(resolve => { const r = db.transaction('drafts').objectStore('drafts').get('digital-signature'); r.onsuccess = () => resolve(r.result ?? {}); }); db.close(); return draft.text;
-  })).toBe(text);
+  await expect.poll(() => page.evaluate(() => JSON.parse(sessionStorage.getItem('orenotameno:glossary-draft:digital-signature') ?? '{}').text)).toBe(text);
   await page.reload(); await expect(textbox(page)).toHaveValue(text);
   await page.getByRole('button', { name: '全文削除' }).click();
   await expect(textbox(page)).toHaveValue('');
   await expect(textbox(page)).toBeFocused();
   await expect(check(page)).toBeDisabled();
   await expect(page.getByRole('button', { name: '全文削除' })).toBeDisabled();
-  await expect.poll(() => page.evaluate(async () => {
-    const db = await new Promise<IDBDatabase>(resolve => { const r = indexedDB.open('orenotameno-glossary'); r.onsuccess = () => resolve(r.result); });
-    const draft = await new Promise<{ text?: string }>(resolve => { const r = db.transaction('drafts').objectStore('drafts').get('digital-signature'); r.onsuccess = () => resolve(r.result ?? {}); }); db.close(); return draft.text;
-  })).toBe('');
+  await expect.poll(() => page.evaluate(() => JSON.parse(sessionStorage.getItem('orenotameno:glossary-draft:digital-signature') ?? '{}').text)).toBe('');
   await page.reload(); await expect(textbox(page)).toHaveValue('');
 });
 

@@ -51,6 +51,10 @@ describe('AI評価のクライアント', () => {
   });
 });
 describe('用語学習のバックアップ', () => {
+  it('excludes temporary explanation drafts from exported backups', () => {
+    const backup = parseGlossaryBackup(serializeGlossary({ attempts: [], drafts: [{ termId: term.id, text, usedVoice: false, referenceViewed: false, updatedAt: '2026-10-19T03:00:00.000Z' }] }));
+    expect(backup.drafts).toEqual([]);
+  });
   it('round-trips explanations and LLM feedback separately from quiz records', () => {
     const attempt = glossaryAttemptSchema.parse({ id: 'test-attempt', termId: term.id, termName: term.name, text, answeredAt: '2026-10-19T03:00:00.000Z', usedVoice: true, referenceViewed: false, evaluation, reference: term.definition });
     expect(parseGlossaryBackup(serializeGlossary({ attempts: [attempt], drafts: [] })).attempts).toEqual([attempt]);

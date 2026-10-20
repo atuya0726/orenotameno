@@ -48,10 +48,8 @@ test('restores table marks and supports keyboard answers with an accessible desc
   const mark = page.getByRole('button', { name: 'イの印：はてな', exact: true });
   await mark.click();
   await expect(page.getByRole('button', { name: 'イの印：まる', exact: true })).toBeVisible();
-  await expect.poll(() => page.evaluate(async () => {
-    const db = await new Promise<IDBDatabase>(resolve => { const request = indexedDB.open('orenotameno-sc'); request.onsuccess = () => resolve(request.result); });
-    const draft = await new Promise<{ optionMarks?: { b?: string } }>(resolve => { const request = db.transaction('drafts').objectStore('drafts').get('sc-2025-spring-a2-18'); request.onsuccess = () => resolve(request.result); });
-    db.close();
+  await expect.poll(() => page.evaluate(() => {
+    const draft = JSON.parse(sessionStorage.getItem('orenotameno:question-draft:sc-2025-spring-a2-18') ?? 'null');
     return draft?.optionMarks?.b;
   })).toBe('candidate');
   await page.reload();

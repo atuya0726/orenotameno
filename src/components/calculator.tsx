@@ -6,18 +6,18 @@ import { CalcError, evaluate, formatResult } from '@/lib/calculator';
 type Entry = { expression: string; result: string };
 type Saved = { entries: Entry[]; input: string };
 const storageKey = (questionId: string) => `orenotameno-calculator:${questionId}`;
-// Per-question scratch work stays on this device only; storage may be unavailable, so every access is guarded.
+// Per-question scratch work lasts for this tab; every access is guarded.
 function load(questionId: string): Saved {
   try {
-    const saved = JSON.parse(localStorage.getItem(storageKey(questionId)) ?? 'null') as Saved | null;
+    const saved = JSON.parse(sessionStorage.getItem(storageKey(questionId)) ?? 'null') as Saved | null;
     if (saved && Array.isArray(saved.entries) && typeof saved.input === 'string') return saved;
   } catch { /* unreadable or blocked storage */ }
   return { entries: [], input: '' };
 }
 function save(questionId: string, value: Saved) {
   try {
-    if (!value.entries.length && !value.input) localStorage.removeItem(storageKey(questionId));
-    else localStorage.setItem(storageKey(questionId), JSON.stringify(value));
+    if (!value.entries.length && !value.input) sessionStorage.removeItem(storageKey(questionId));
+    else sessionStorage.setItem(storageKey(questionId), JSON.stringify(value));
   } catch { /* storage full or blocked */ }
 }
 const KEYS: { label: string; insert?: string; action?: 'clear' | 'back' | 'ans' | 'equals'; aria?: string; wide?: boolean; kind?: 'op' | 'fn' | 'eq' }[] = [
