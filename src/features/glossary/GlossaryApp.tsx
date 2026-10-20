@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { Link, Navigate, Route, Routes, useParams, useSearchParams } from 'react-router';
-import { ArrowDownToLine, ArrowLeft, ArrowRight, ArrowUpFromLine, BookOpen, Check, CheckCheck, ChevronRight, CircleHelp, Clock3, History, Keyboard, LoaderCircle, Mic, Pencil, RotateCcw, Search, Square, Trash2, TriangleAlert, X } from 'lucide-react';
+import { ArrowDownToLine, ArrowLeft, ArrowRight, ArrowUpFromLine, BookOpen, Check, CheckCheck, ChevronDown, ChevronRight, CircleHelp, Clock3, History, Keyboard, LoaderCircle, Mic, Pencil, RotateCcw, Search, Square, Trash2, TriangleAlert, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { formatDate, dayKey } from '@/lib/date';
@@ -188,7 +188,7 @@ function TermPractice({ term, referenceInitially, attemptId, review }: { term: T
     {review ? <div className="review-round-bar"><Link to="/reviews" className="back-link"><ArrowLeft size={15} />復習をやめる</Link><span className="review-round-count">単語の復習 {review.done.length + 1} / {reviewTotal}</span><span className="pill">目標 {review.target} · {levelInfo[review.target].name}</span>{!result && !saving && <Link to={nextReviewPath(review)} className="text-link">{reviewLast ? '復習を終える' : 'この単語をとばす'}<ChevronRight size={15} /></Link>}</div> : <Link to="/glossary" className="back-link"><ArrowLeft size={15} />用語一覧へ戻る</Link>}
     <div className="term-practice-heading"><div><span className="pill">{term.category}</span><h1>{term.name}</h1><p>{term.reading}</p></div><span className="term-practice-count"><History size={14} />これまで{history.length}回説明</span></div>
     <div className="term-practice-layout"><div className="term-practice-main">
-      {showReference && !result && <Reference term={term} />}
+      {term.definition && !result && <div className="term-reference-disclosure"><Button type="button" variant="ghost" className="term-reference-toggle" aria-expanded={showReference} aria-controls="term-reference-panel" disabled={speech.active || saving} onClick={() => showReference ? setShowReference(false) : reveal()}><BookOpen size={17} /><span>{showReference ? '説明例を閉じる' : '説明例を見る'}</span><ChevronDown size={17} /></Button>{showReference && <div id="term-reference-panel"><Reference term={term} /></div>}</div>}
       {saved && result?.id === saved.id ? <div className="saved-explanation"><span className="eyebrow">{formatDate(saved.answeredAt, true)} の説明</span><p>{saved.text}</p><Button variant="outline" onClick={() => { setResult(null); setShowReference(false); textareaRef.current?.focus(); }}>新しく説明してみる<RotateCcw size={15} /></Button></div> : <form onSubmit={event => void check(event)} className="explanation-form">
         <div className="explanation-form-heading"><h2>仕組みと用途を説明</h2></div>
         <div className="speech-controls"><Button type="button" className="speech-hold" aria-pressed={speech.active} disabled={saving || !speech.supported || speech.phase === 'stopping'}
@@ -203,7 +203,7 @@ function TermPractice({ term, referenceInitially, attemptId, review }: { term: T
         <div className="explanation-input-meta"><span id="explanation-input-count">{draft.text.length} / {EXPLANATION_MAX_LENGTH.toLocaleString('ja-JP')}</span><Button type="button" variant="ghost" size="sm" disabled={!draft.text || speech.active || saving} onClick={() => { change({ text: '', usedVoice: false }); if (inputMode === 'correction') setInputMode('voice'); textareaRef.current?.focus(); }}><Trash2 size={15} />全文削除</Button></div>
         {canUseText && !editing && <Button type="button" className="speech-text-fallback" variant="ghost" size="sm" disabled={speech.active || saving} onClick={() => setInputMode('text')}><Keyboard size={16} />文字で続ける</Button>}
         {speech.interim && <div className="speech-interim" role="status"><span>聞き取り途中</span><p>{speech.interim}</p></div>}
-        <div className="explanation-submit">{term.definition && <Button type="button" variant="ghost" disabled={speech.active || saving} onClick={reveal}><BookOpen size={15} />説明例を先に見る</Button>}<Button type="submit" disabled={speech.active || saving || Boolean(result) || draft.text.trim().length < 10}>{saving ? <LoaderCircle size={16} className="animate-spin" /> : <Check size={16} />}{saving ? 'チェック中' : result ? 'チェック済み' : 'AIでチェック'}</Button></div>
+        <div className="explanation-submit"><Button type="submit" disabled={speech.active || saving || Boolean(result) || draft.text.trim().length < 10}>{saving ? <LoaderCircle size={16} className="animate-spin" /> : <Check size={16} />}{saving ? 'チェック中' : result ? 'チェック済み' : 'AIでチェック'}</Button></div>
         {error && <p className="inline-error" role="alert">{error}</p>}
         <p className="speech-privacy">チェック時に説明文をOpenAIへ送信します。履歴はこのブラウザに保存。音声認識はブラウザのサービスを利用し、音声は当サイトに保存しません。</p>
       </form>}

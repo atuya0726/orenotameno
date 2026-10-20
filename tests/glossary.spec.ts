@@ -128,7 +128,7 @@ test('practices a follow-up term the AI suggested outside the built-in list', as
   await page.goto('/glossary/digital-signature'); await speakExplanation(page, text); await check(page).click();
   await page.getByRole('link', { name: 'この用語を説明する' }).click();
   await expect(page.getByRole('heading', { name: 'Kerberos認証', level: 1 })).toBeVisible();
-  await expect(page.getByRole('button', { name: '説明例を先に見る' })).toHaveCount(0);
+  await expect(page.getByRole('button', { name: '説明例を見る', exact: true })).toHaveCount(0);
   await speakExplanation(page, '公開鍵が本人のものか確かめるための仕組みです。');
   await check(page).click();
   await expect(page.getByText('誰が証明書を発行するかが足りません。')).toBeVisible();
@@ -168,6 +168,36 @@ test('records whether the explanation example was consulted', async ({ page }) =
   await page.goto('/glossary/digital-signature?reference=1');
   await expect(page.locator('.term-reference')).toBeVisible();
   await speakExplanation(page, text); await check(page).click();
+  await expect(page.getByText('説明例を参照した練習', { exact: true })).toBeVisible();
+  expect((await entries(page))[0].referenceViewed).toBe(true);
+});
+
+test('opens the example directly below its toggle outside the form and remembers consultation after closing', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.route('**/api/glossary/evaluate', route => route.fulfill({ json: evaluation() }));
+  await page.goto('/glossary/digital-signature');
+  await speakExplanation(page, text);
+  const toggle = page.locator('.term-reference-toggle');
+  await expect(toggle).toHaveAccessibleName('説明例を見る');
+  await expect(toggle).toHaveAttribute('aria-expanded', 'false');
+  await expect(page.locator('.explanation-form .term-reference-toggle')).toHaveCount(0);
+  await toggle.scrollIntoViewIfNeeded();
+  const before = await toggle.boundingBox();
+  await toggle.click();
+  await expect(toggle).toHaveAccessibleName('説明例を閉じる');
+  await expect(toggle).toHaveAttribute('aria-expanded', 'true');
+  await expect(page.locator('#term-reference-panel .term-reference')).toBeVisible();
+  const after = await toggle.boundingBox();
+  const panel = await page.locator('#term-reference-panel').boundingBox();
+  expect(Math.abs(after!.y - before!.y)).toBeLessThan(2);
+  expect(panel!.y).toBeGreaterThanOrEqual(after!.y + after!.height);
+  expect(panel!.y).toBeLessThan(844);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await toggle.press('Enter');
+  await expect(toggle).toHaveAttribute('aria-expanded', 'false');
+  await expect(page.locator('#term-reference-panel')).toHaveCount(0);
+  await expect(textbox(page)).toHaveValue(text);
+  await check(page).click();
   await expect(page.getByText('説明例を参照した練習', { exact: true })).toBeVisible();
   expect((await entries(page))[0].referenceViewed).toBe(true);
 });
