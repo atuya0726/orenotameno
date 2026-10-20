@@ -176,39 +176,21 @@ test('requires three reviews for a confident mistake and exposes them immediatel
   await expect(page.getByRole('button', { name: '迷いあり', exact: true })).toHaveCount(0);
 });
 
-test('exports and merges a backup without duplicating attempts', async ({ page }) => {
+test('removes settings and daily goals while preserving saved learning records', async ({ page }) => {
   await answerFirst(page);
+  await page.goto('/');
+  await expect(page.getByRole('heading', { name: '学習ホーム', exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: '今日の学習', exact: true })).toHaveCount(0);
+  await expect(page.getByRole('progressbar', { name: '今日の学習目標' })).toHaveCount(0);
+  await expect(page.locator('a[href="/settings"]')).toHaveCount(0);
+  await expect(page.locator('.overview-main > strong')).toHaveText('1 / 380 問');
   await page.goto('/settings');
-  const downloading = page.waitForEvent('download');
-  await page.getByRole('button', { name: '記録を書き出す' }).click();
-  const download = await downloading; const path = await download.path();
-  expect(path).toBeTruthy();
-  await page.locator('input[type=file]').setInputFiles(path!);
-  await expect(page.getByRole('status')).toContainText('既存の記録と統合しました');
+  await expect(page.getByRole('heading', { name: 'ページが見つかりません', exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: '学習の設定', exact: true })).toHaveCount(0);
+  await expect(page.getByRole('heading', { name: '学習記録の保存', exact: true })).toHaveCount(0);
   expect(await counts(page)).toEqual([1, 1, 0]);
-  await page.locator('input[type=file]').setInputFiles({ name: 'broken.json', mimeType: 'application/json', buffer: Buffer.from('{bad') });
-  await expect(page.getByRole('alert')).toBeVisible();
-  expect(await counts(page)).toEqual([1, 1, 0]);
-});
-
-test('imports and displays a version 1 backup alongside a new answer', async ({ page }) => {
-  await answerFirst(page);
-  await page.goto('/settings');
-  const answeredAt = '2026-10-19T03:00:00.000Z'; const dueAt = '2026-10-26T03:00:00.000Z';
-  const backup = {
-    version: 1, exportedAt: answeredAt,
-    attempts: [{ id: 'earlier-record', questionId: 'sc-2025-autumn-a1-2', selected: 'b', assessments: {
-      a: { mark: 'exclude', confidence: 'high' }, b: { mark: 'candidate', confidence: 'high' },
-      c: { mark: 'exclude', confidence: 'high' }, d: { mark: 'exclude', confidence: 'high' },
-    }, answeredAt, correct: true, confidence: 'high', nextReviewAt: dueAt, intervalMinutes: 10080, reason: '以前の学習記録です。' }],
-    cards: [], bookmarks: [], settings: { dailyGoal: 5, defaultCourse: 'A1' },
-  };
-  await page.locator('input[type=file]').setInputFiles({ name: 'version-1.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify(backup)) });
-  await expect(page.getByRole('status')).toContainText('既存の記録と統合しました');
-  expect(await counts(page)).toEqual([2, 2, 0]);
   await page.goto('/records');
-  await page.getByRole('link', { name: /ROC曲線と偽陽性率/ }).click();
-  await expect(page.getByText('以前の判断', { exact: false })).toHaveCount(0);
+  await page.getByRole('link', { name: /M\/M\/1/ }).click();
   await expect(page.locator('.answer-outcome').getByText('正解', { exact: true })).toBeVisible();
 });
 

@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { questionById } from '@/data/questions';
 import { isQuestionTerm } from '@/data/question-terms';
-import { attemptSchema, reviewWordsSchema, collectReviewWords, reviewCardSchema, legacyReviewCardSchema, settingsSchema, defaultSettings, answerConfidence, validateAnswerForQuestion, restoreDraft, type Snapshot, type Draft, type Attempt, type ReviewCard, type ReviewFlag, type Settings } from './model';
+import { attemptSchema, reviewWordsSchema, collectReviewWords, reviewCardSchema, legacyReviewCardSchema, answerConfidence, validateAnswerForQuestion, restoreDraft, type Snapshot, type Draft, type Attempt, type ReviewCard, type ReviewFlag } from './model';
 import { rebuildReviewHistory } from './scheduler';
 import { loadStudySessions } from './study-session';
 import { createSessionStore } from './session-storage';
@@ -68,12 +68,11 @@ function completed(transaction: IDBTransaction): Promise<void> {
 }
 export async function loadSnapshot(): Promise<Snapshot> {
   const db = await openDatabase();
-  const tx = db.transaction(['attempts', 'bookmarks', 'settings', 'reviewWords'], 'readonly');
+  const tx = db.transaction(['attempts', 'bookmarks', 'reviewWords'], 'readonly');
   const done = completed(tx);
-  const [attempts, bookmarks, settings, words] = await Promise.all([
+  const [attempts, bookmarks, words] = await Promise.all([
     result<Attempt[]>(tx.objectStore('attempts').getAll()),
     result<{ questionId: string }[]>(tx.objectStore('bookmarks').getAll()),
-    result<{ name: string; value: Settings } | undefined>(tx.objectStore('settings').get('preferences')),
     result<{ term: string }[]>(tx.objectStore('reviewWords').getAll()),
   ]);
   await done;
@@ -84,7 +83,6 @@ export async function loadSnapshot(): Promise<Snapshot> {
     reviewWords: words.map(word => word.term),
     bookmarks: bookmarks.map(b => b.questionId).filter(id => questionById.has(id)),
     drafts: questionDrafts.load(),
-    settings: settings?.value ?? defaultSettings,
     studySessions: loadStudySessions(attempts),
   };
 }
@@ -159,18 +157,13 @@ export async function saveBookmark(questionId: string, active: boolean): Promise
   if (active) tx.objectStore('bookmarks').put({ questionId }); else tx.objectStore('bookmarks').delete(questionId);
   await done;
 }
-export async function saveSettings(value: Settings): Promise<void> {
-  const parsed = settingsSchema.parse(value);
-  const db = await openDatabase(); const tx = db.transaction('settings', 'readwrite'); const done = completed(tx);
-  tx.objectStore('settings').put({ name: 'preferences', value: parsed }); await done;
-}
 const backupSchema = z.object({
   version: z.union([z.literal(1), z.literal(2), z.literal(3), z.literal(4)]), exportedAt: z.string().datetime(),
   attempts: z.array(attemptSchema).max(100_000), cards: z.array(z.union([reviewCardSchema, legacyReviewCardSchema])).max(10_000),
-  bookmarks: z.array(z.string()).max(10_000), settings: settingsSchema, reviewWords: reviewWordsSchema.optional(),
+  bookmarks: z.array(z.string()).max(10_000), reviewWords: reviewWordsSchema.optional(),
 }).refine(backup => backup.version < 4 || backup.reviewWords !== undefined, '単語の復習リストがありません。');
 export function exportBackup(snapshot: Snapshot): string {
-  return JSON.stringify({ version: 4, exportedAt: new Date().toISOString(), attempts: snapshot.attempts, cards: snapshot.cards, bookmarks: snapshot.bookmarks, settings: snapshot.settings, reviewWords: snapshot.reviewWords }, null, 2);
+  return JSON.stringify({ version: 4, exportedAt: new Date().toISOString(), attempts: snapshot.attempts, cards: snapshot.cards, bookmarks: snapshot.bookmarks, reviewWords: snapshot.reviewWords }, null, 2);
 }
 export function parseBackup(text: string) {
   const backup = backupSchema.parse(JSON.parse(text));
@@ -191,10 +184,10 @@ export async function importBackup(text: string): Promise<void> {
   const merged = [...new Map([...existing.attempts, ...backup.attempts].map(a => [a.id, a])).values()];
   const reviewWords = [...new Set([...existing.reviewWords, ...backup.reviewWords])];
   const { attempts, cards } = rebuildReviewHistory(merged, reviewWords);
-  const db = await openDatabase(); const tx = db.transaction(['attempts', 'cards', 'bookmarks', 'settings', 'reviewWords'], 'readwrite'); const done = completed(tx);
+  const db = await openDatabase(); const tx = db.transaction(['attempts', 'cards', 'bookmarks', 'reviewWords'], 'readwrite'); const done = completed(tx);
   for (const attempt of attempts) tx.objectStore('attempts').put(attempt);
   for (const card of cards) tx.objectStore('cards').put(card);
   for (const questionId of backup.bookmarks) tx.objectStore('bookmarks').put({ questionId });
   for (const term of reviewWords) tx.objectStore('reviewWords').put({ term });
-  tx.objectStore('settings').put({ name: 'preferences', value: backup.settings }); await done;
+  await done;
 }

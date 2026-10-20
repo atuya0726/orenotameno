@@ -88,11 +88,8 @@ export const legacyReviewCardSchema = z.object({
   streak: z.number().int().nonnegative(), lapses: z.number().int().nonnegative(), lastAttemptId: z.string(), reason: z.string(),
 });
 export type ReviewCard = z.infer<typeof reviewCardSchema>;
-export const settingsSchema = z.object({ dailyGoal: z.number().int().min(1).max(100), defaultCourse: courseSchema });
-export type Settings = z.infer<typeof settingsSchema>;
-export const defaultSettings: Settings = { dailyGoal: 5, defaultCourse: 'A1' };
-export type Snapshot = { attempts: Attempt[]; cards: ReviewCard[]; bookmarks: string[]; drafts: Draft[]; reviewWords: string[]; settings: Settings; studySessions: StudySession[] };
-export const emptySnapshot = (): Snapshot => ({ attempts: [], cards: [], bookmarks: [], drafts: [], reviewWords: [], settings: defaultSettings, studySessions: [] });
+export type Snapshot = { attempts: Attempt[]; cards: ReviewCard[]; bookmarks: string[]; drafts: Draft[]; reviewWords: string[]; studySessions: StudySession[] };
+export const emptySnapshot = (): Snapshot => ({ attempts: [], cards: [], bookmarks: [], drafts: [], reviewWords: [], studySessions: [] });
 export function collectReviewWords(attempts: Pick<Attempt, 'reviewTerms'>[]): string[] {
   return [...new Set(attempts.flatMap(attempt => attempt.reviewTerms ?? []))];
 }

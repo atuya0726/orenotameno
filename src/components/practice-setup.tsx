@@ -27,7 +27,7 @@ const toggled = (list: string[], id: string, on: boolean) => on ? [...new Set([.
 export function PracticeSetup() {
   const { snapshot } = useLearning();
   const [saved] = useState(loadSaved);
-  const [course, setCourse] = useState<Course>(() => saved?.course === 'A1' || saved?.course === 'A2' ? saved.course : snapshot.settings.defaultCourse);
+  const [course, setCourse] = useState<Course>(() => saved?.course === 'A1' || saved?.course === 'A2' ? saved.course : 'A1');
   const [setups, setSetups] = useState<Record<Course, PracticeConfig>>(() => ({ A1: normalizePracticeConfig('A1', saved?.setups?.A1), A2: normalizePracticeConfig('A2', saved?.setups?.A2) }));
   useEffect(() => {
     try { localStorage.setItem(storageKey, JSON.stringify({ course, setups })); } catch { /* storage is optional */ }
