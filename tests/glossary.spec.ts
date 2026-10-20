@@ -107,7 +107,10 @@ test('evaluates once, stores feedback separately from quizzes, and reviews a his
   });
   await page.goto('/glossary/digital-signature'); await speakExplanation(page, text); await check(page).click();
   await expect(page.getByRole('heading', { name: '公開鍵基盤' })).toBeVisible();
-  await expect(page.getByRole('heading', { name: '応用の論点まで説明' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: '判定', exact: true })).toBeVisible();
+  await expect(page.getByLabel('評価 A', { exact: true })).toBeVisible();
+  await expect(page.locator('.glossary-result-heading')).toHaveText('判定A');
+  await expect(page.getByText(evaluation().summary, { exact: true })).toHaveCount(0);
   await expect(page.locator('.rubric-level-heading').filter({ hasText: /^B/ })).toContainText('用語の意味・目的・基本の仕組み');
   await expect(page.locator('.rubric-level-heading').filter({ hasText: '応用' })).toContainText('用途・理由・制約・影響');
   await expect(page.locator('.rubric-level-heading').filter({ hasText: '発展' })).toHaveCount(0);
@@ -118,6 +121,7 @@ test('evaluates once, stores feedback separately from quizzes, and reviews a his
   await page.getByRole('link', { name: '説明の履歴', exact: true }).click();
   await page.reload(); await page.getByRole('link', { name: '見直す', exact: true }).click();
   await expect(page.locator('.saved-explanation')).toContainText(text);
+  await expect(page.locator('.glossary-result-heading')).toHaveText('判定A');
   await expect(page.getByRole('link', { name: '次の用語へ' })).toBeVisible();
 });
 
@@ -394,10 +398,20 @@ test('backs up and merges history without duplicating paid evaluations', async (
   await expect(page.getByText('用語の学習記録を取り込みました。')).toBeVisible(); expect(await entries(page)).toHaveLength(1);
 });
 
-test('fits the glossary and explanation form at mobile width', async ({ page }) => {
+test('fits the glossary, explanation form, and compact C result at mobile width', async ({ page }) => {
+  await page.route('**/api/glossary/evaluate', route => route.fulfill({ json: {
+    ...evaluation(), grade: 'C', status: 'unconfirmed', covered: 0,
+    criteria: evaluation().criteria.map(c => ({ ...c, status: 'missing', evidence: '', hint: '用語の説明例と照らし合わせてみましょう。' })),
+  } }));
   await page.setViewportSize({ width: 390, height: 844 }); await page.goto('/glossary');
   await expect(page.getByRole('heading', { name: '用語学習' })).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.goto('/glossary/digital-signature'); await expect(textbox(page)).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await speakExplanation(page, text); await check(page).click();
+  await expect(page.getByLabel('評価 C', { exact: true })).toBeVisible();
+  await expect(page.locator('.glossary-result-heading')).toHaveText('判定C');
+  await expect(page.locator('.glossary-result-heading')).not.toHaveClass(/glossary-result-covered/);
+  await expect(page.locator('.rubric-missing').first()).toContainText('用語の説明例と照らし合わせてみましょう。');
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });
