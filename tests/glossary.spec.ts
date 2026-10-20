@@ -191,7 +191,7 @@ test('records whether the explanation example was consulted', async ({ page }) =
   await page.goto('/glossary/digital-signature?reference=1');
   await expect(page.locator('.term-reference')).toBeVisible();
   await speakExplanation(page, text); await check(page).click();
-  await expect(page.getByText('説明例を参照した練習', { exact: true })).toBeVisible();
+  await expect(page.getByRole('region', { name: '説明のチェック結果' })).toBeVisible();
   expect((await entries(page))[0].referenceViewed).toBe(true);
 });
 
@@ -221,7 +221,7 @@ test('opens the example directly below its toggle outside the form and remembers
   await expect(page.locator('#term-reference-panel')).toHaveCount(0);
   await expect(textbox(page)).toHaveValue(text);
   await check(page).click();
-  await expect(page.getByText('説明例を参照した練習', { exact: true })).toBeVisible();
+  await expect(page.getByRole('region', { name: '説明のチェック結果' })).toBeVisible();
   expect((await entries(page))[0].referenceViewed).toBe(true);
 });
 

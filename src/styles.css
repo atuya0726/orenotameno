@@ -736,13 +736,11 @@ svg { flex-shrink: 0; }
 .related-terms a:hover { text-decoration: underline; }
 .glossary-feedback-focus { outline: 0; }
 .glossary-feedback { margin-top: var(--space-6); }
-.glossary-result-heading { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3) var(--space-4); background: var(--caution-soft); border: 1px solid var(--border); border-radius: var(--radius-control); }
+.glossary-result-heading { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3) var(--space-4); margin-bottom: var(--space-5); background: var(--caution-soft); border: 1px solid var(--border); border-radius: var(--radius-control); }
 .glossary-result-covered { background: var(--success-soft); }
 .glossary-result-heading h2 { font-size: 12px; font-weight: 500; color: var(--text-secondary); }
 .glossary-result-value { color: var(--caution); font-size: 14px; font-weight: 700; }
 .glossary-result-covered .glossary-result-value { color: var(--success); }
-.glossary-result-meta { display: flex; gap: var(--space-3); flex-wrap: wrap; margin: var(--space-3) 0 var(--space-5); color: var(--text-secondary); font-size: 11px; }
-.glossary-result-meta time { margin-left: auto; }
 .rubric-results { display: grid; gap: var(--space-3); }
 .rubric-level + .rubric-level { margin-top: var(--space-5); }
 .rubric-level-heading { display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-2); margin: 0 0 var(--space-3); font-size: 13px; color: var(--text-secondary); }
@@ -758,7 +756,6 @@ svg { flex-shrink: 0; }
 .rubric-item h3 { font-size: 14px; line-height: 1.8; margin-top: var(--space-1); }
 .rubric-item p, .rubric-item blockquote { margin: var(--space-2) 0 0; font-size: 12px; line-height: 1.9; color: var(--text-secondary); }
 .rubric-item blockquote { padding-left: var(--space-3); border-left: 2px solid var(--brand); overflow-wrap: anywhere; }
-.glossary-check-limit { font-size: 11px; line-height: 1.9; color: var(--text-secondary); margin-top: var(--space-4); }
 .term-reference { margin: 0 0 var(--space-5); border: 1px solid var(--border); border-radius: var(--radius-card); padding: var(--space-6); background: var(--surface-secondary); }
 .term-reference-disclosure { border: 1px solid var(--border); border-radius: var(--radius-card); margin-bottom: var(--space-4); overflow: hidden; }
 .term-reference-toggle { width: 100%; justify-content: flex-start; min-height: 48px; border-radius: 0; font-size: 13px; color: var(--text-secondary); }
@@ -800,7 +797,6 @@ svg { flex-shrink: 0; }
   .term-practice-heading { align-items: flex-start; flex-direction: column; gap: var(--space-3); } .term-practice-heading h1 { font-size: 26px; } .term-practice-count { font-size: 11px; }
   .explanation-form, .saved-explanation, .term-reference { padding: var(--space-5) var(--space-4); } .explanation-form-heading { align-items: flex-start; flex-direction: column; gap: var(--space-1); } .explanation-form-heading h2 { font-size: 15px; }
   .explanation-form textarea { min-height: 220px; } .explanation-input-meta { font-size: 10px; gap: var(--space-2); } .explanation-submit { flex-direction: column; align-items: stretch; }
-  .glossary-result-meta { font-size: 10px; gap: var(--space-2); } .glossary-result-meta time { margin-left: 0; }
   .rubric-item { padding: var(--space-4); } .rubric-item h3 { font-size: 13px; }
   .glossary-next-actions { flex-direction: column; } .glossary-history-tools .ui-button { flex: 1; font-size: 11px; } .glossary-history-tools > span { width: 100%; }
 }

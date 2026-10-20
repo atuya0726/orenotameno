@@ -214,9 +214,8 @@ function Feedback({ attempt }: { attempt: GlossaryAttempt }) {
   const evaluation = attempt.evaluation; const { grade } = evaluation;
   const passed = grade ? grade !== 'C' : evaluation.status === 'covered';
   return <section className="glossary-feedback" aria-label="説明のチェック結果"><div className={cn('glossary-result-heading', passed && 'glossary-result-covered')}><h2>判定</h2><span className={cn('glossary-result-value', grade && 'glossary-grade')} aria-label={grade ? `評価 ${grade}` : undefined}>{grade ?? statusLabels[evaluation.status]}</span></div>
-    <div className="glossary-result-meta"><span>{attempt.usedVoice ? '音声入力を使用' : '文字で入力'}</span><span>{attempt.referenceViewed ? '説明例を参照した練習' : '説明例を見る前の練習'}</span><time>{formatDate(attempt.answeredAt, true)}</time></div>
     {levels.map(level => { const items = evaluation.criteria.filter(c => (c.level ?? 'B') === level); return items.length > 0 && <div className="rubric-level" key={level}>{grade && <h3 className="rubric-level-heading"><span>{level}</span>{levelInfo[level].name}<small>{levelInfo[level].description}</small></h3>}<div className="rubric-results">{items.map(criterion => <div className={cn('rubric-item', `rubric-${criterion.status}`)} key={criterion.id}><span className="rubric-icon">{criterion.status === 'covered' ? <Check size={17} /> : criterion.status === 'review' ? <TriangleAlert size={17} /> : <CircleHelp size={17} />}</span><div><span className="rubric-state">{criterion.status === 'covered' ? '説明に含まれています' : criterion.status === 'review' ? '内容に誤りがあります' : level === 'B' ? 'この説明では未確認' : 'まだ触れていません'}</span><h3>{criterion.title}</h3>{criterion.evidence && <blockquote>{criterion.evidence}</blockquote>}<p>{criterion.hint}</p></div></div>)}</div></div>; })}
-    {evaluation.followUp && <FollowUp attempt={attempt} followUp={evaluation.followUp} />}<p className="glossary-check-limit">AI評価は誤る場合があります。説明例も確認してください。</p>
+    {evaluation.followUp && <FollowUp attempt={attempt} followUp={evaluation.followUp} />}
   </section>;
 }
 function FollowUp({ attempt, followUp }: { attempt: GlossaryAttempt; followUp: NonNullable<Evaluation['followUp']> }) {
