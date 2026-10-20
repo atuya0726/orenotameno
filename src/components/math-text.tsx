@@ -1,7 +1,12 @@
 import { lazy, memo, Suspense, useMemo, type ReactNode } from 'react';
 
 // Load the typesetter and its fonts only when a question contains a formula.
-const MathFormula = lazy(() => import('./math-formula'));
+// Missing chunks (for example after a deployment) must not unmount the exercise.
+const MathFormula = lazy(() => import('./math-formula').catch(() => ({ default: MathFallback })));
+
+function MathFallback({ tex, display }: { tex: string; display: boolean }) {
+  return <span className={display ? 'math-fallback math-display' : 'math-fallback'}>{tex}</span>;
+}
 
 export const MathText = memo(function MathText({ text }: { text: string }) {
   const content = useMemo(() => {
