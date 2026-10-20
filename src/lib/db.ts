@@ -3,7 +3,7 @@ import { questionById } from '@/data/questions';
 import { isQuestionTerm } from '@/data/question-terms';
 import { attemptSchema, reviewWordsSchema, collectReviewWords, reviewCardSchema, legacyReviewCardSchema, settingsSchema, defaultSettings, answerConfidence, validateAnswerForQuestion, restoreDraft, type Snapshot, type Draft, type Attempt, type ReviewCard, type ReviewFlag, type Settings } from './model';
 import { rebuildReviewHistory } from './scheduler';
-import { restoreStudySession, studySessionSchema, type StudySession } from './study-session';
+import { loadStudySessions } from './study-session';
 
 export const DB_NAME = 'orenotameno-sc';
 let connection: Promise<IDBDatabase> | undefined;
@@ -31,8 +31,16 @@ export function openDatabase(): Promise<IDBDatabase> {
       };
     };
     request.onsuccess = () => {
-      request.result.onversionchange = () => { request.result.close(); connection = undefined; };
-      resolve(request.result);
+      const db = request.result;
+      db.onversionchange = () => { db.close(); connection = undefined; };
+      // Remove progress left by the former permanent-storage implementation.
+      const tx = db.transaction('settings', 'readwrite');
+      const cursor = tx.objectStore('settings').openKeyCursor(IDBKeyRange.bound('study:', 'study:\uffff'));
+      cursor.onsuccess = () => {
+        if (!cursor.result) return;
+        tx.objectStore('settings').delete(cursor.result.primaryKey); cursor.result.continue();
+      };
+      void completed(tx).then(() => resolve(db)).catch(error => { db.close(); connection = undefined; reject(error); });
     };
     request.onerror = () => { connection = undefined; reject(request.error); };
     request.onblocked = () => { connection = undefined; reject(new Error('別のタブを閉じてから再読み込みしてください。')); };
@@ -56,7 +64,7 @@ export async function loadSnapshot(): Promise<Snapshot> {
   const [attempts, bookmarks, drafts, settings, words] = await Promise.all([
     result<Attempt[]>(tx.objectStore('attempts').getAll()),
     result<{ questionId: string }[]>(tx.objectStore('bookmarks').getAll()), result<Draft[]>(tx.objectStore('drafts').getAll()),
-    result<{ name: string; value: unknown }[]>(tx.objectStore('settings').getAll()),
+    result<{ name: string; value: Settings } | undefined>(tx.objectStore('settings').get('preferences')),
     result<{ term: string }[]>(tx.objectStore('reviewWords').getAll()),
   ]);
   await done;
@@ -67,30 +75,19 @@ export async function loadSnapshot(): Promise<Snapshot> {
     reviewWords: words.map(word => word.term),
     bookmarks: bookmarks.map(b => b.questionId).filter(id => questionById.has(id)),
     drafts: drafts.filter(d => questionById.has(d.questionId)).map(d => restoreDraft(d, questionById.get(d.questionId)!)),
-    settings: settings.find(row => row.name === 'preferences')?.value as Settings ?? defaultSettings,
-    studySessions: settings.filter(row => row.name.startsWith('study:'))
-      .map(row => restoreStudySession(row.value, attempts)).filter((session): session is StudySession => session !== null)
-      .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt)),
+    settings: settings?.value ?? defaultSettings,
+    studySessions: loadStudySessions(attempts),
   };
 }
 export async function saveDraft(draft: Draft): Promise<void> {
   const db = await openDatabase(); const tx = db.transaction('drafts', 'readwrite');
   const done = completed(tx); tx.objectStore('drafts').put(structuredClone(draft)); await done;
 }
-export async function saveStudySession(session: StudySession): Promise<void> {
-  const value = studySessionSchema.parse(session);
-  const db = await openDatabase(); const tx = db.transaction('settings', 'readwrite');
-  const done = completed(tx);
-  tx.objectStore('settings').put({ name: `study:${value.id}`, value }); await done;
-}
-export async function commitAnswer(attempt: Attempt, card: ReviewCard, session?: StudySession): Promise<void> {
-  const progress = session && studySessionSchema.parse({ ...session, attemptIds: [...session.attemptIds, attempt.id], updatedAt: attempt.answeredAt });
+export async function commitAnswer(attempt: Attempt, card: ReviewCard): Promise<void> {
   const db = await openDatabase();
-  const tx = db.transaction(['attempts', 'cards', 'drafts', 'settings'], 'readwrite');
+  const tx = db.transaction(['attempts', 'cards', 'drafts'], 'readwrite');
   const done = completed(tx);
   tx.objectStore('attempts').put(attempt); tx.objectStore('cards').put(card); tx.objectStore('drafts').delete(attempt.questionId);
-  // Progress and the answer must survive (or roll back) together on a reload.
-  if (progress) tx.objectStore('settings').put({ name: `study:${progress.id}`, value: progress });
   await done;
 }
 export async function saveReviewFlag(attemptId: string, flag: ReviewFlag, active: boolean): Promise<void> {

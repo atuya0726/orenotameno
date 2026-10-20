@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from 'react';
-import { loadSnapshot, commitAnswer, saveDraft, saveBookmark, saveSettings, saveReviewFlag, saveReviewWord, saveStudySession, importBackup } from './db';
-import type { StudySession } from './study-session';
+import { loadSnapshot, commitAnswer, saveDraft, saveBookmark, saveSettings, saveReviewFlag, saveReviewWord, importBackup } from './db';
+import { saveStudySession, type StudySession } from './study-session';
 import { emptySnapshot, type Snapshot, type Draft, type Question, type Attempt, type ReviewFlag, type Settings, type QuickAnswerInput } from './model';
 import { scheduleAnswer } from './scheduler';
 import { answerSchema } from './model';
@@ -19,7 +19,7 @@ export function LearningProvider({ children }: { children: ReactNode }) {
   }, []);
   const refresh = useCallback(async () => { const next = await loadSnapshot(); snapshotRef.current = next; setSnapshot(next); }, []);
   const updateStudySession = useCallback(async (session: StudySession) => {
-    try { await saveStudySession(session); await refresh(); }
+    try { saveStudySession(session); await refresh(); }
     catch (e) { setError(message(e)); throw e; }
   }, [refresh]);
   useEffect(() => { void refresh().then(() => setReady(true)).catch(e => setError(message(e))); }, [refresh]);
@@ -38,7 +38,14 @@ export function LearningProvider({ children }: { children: ReactNode }) {
       await draftWrites.current.catch(() => {});
       const fresh = await loadSnapshot();
       const { attempt, card } = scheduleAnswer(input, question, fresh.cards.find(c => c.questionId === question.id), undefined, fresh.reviewWords);
-      await commitAnswer(attempt, card, session);
+      // Save the answer's identity first so a reload after the database commit
+      // can restore its result without submitting a duplicate answer.
+      if (session) saveStudySession({ ...session, attemptIds: [...session.attemptIds, attempt.id], updatedAt: attempt.answeredAt });
+      try { await commitAnswer(attempt, card); }
+      catch (e) {
+        if (session) { try { saveStudySession(session); } catch { /* Loading also recovers an uncommitted answer. */ } }
+        throw e;
+      }
       await refresh();
       return attempt;
     } catch (e) { setError(message(e)); throw e; }

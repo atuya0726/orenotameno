@@ -12,6 +12,27 @@ export const studySessionSchema = z.object({
   && (session.attemptIds.length === session.index || (session.index < session.questionIds.length && session.attemptIds.length === session.index + 1))
   && new Set(session.attemptIds).size === session.attemptIds.length);
 export type StudySession = z.infer<typeof studySessionSchema>;
+const storagePrefix = 'orenotameno:study:';
+
+export function saveStudySession(session: StudySession): void {
+  const value = studySessionSchema.parse(session);
+  sessionStorage.setItem(storagePrefix + value.id, JSON.stringify(value));
+}
+
+export function loadStudySessions(attempts: Attempt[]): StudySession[] {
+  const sessions: StudySession[] = [];
+  try {
+    for (let i = 0; i < sessionStorage.length; i++) {
+      const key = sessionStorage.key(i);
+      if (!key?.startsWith(storagePrefix)) continue;
+      try {
+        const session = restoreStudySession(JSON.parse(sessionStorage.getItem(key) ?? 'null'), attempts);
+        if (session) sessions.push(session);
+      } catch { /* Ignore a damaged entry without losing the other sessions. */ }
+    }
+  } catch { /* Saving will report unavailable storage when starting an exercise. */ }
+  return sessions.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
+}
 
 export function studyPath(pathname: string, search: URLSearchParams): string {
   const params = new URLSearchParams(search);
@@ -25,6 +46,11 @@ export function restoreStudySession(value: unknown, attempts: Attempt[]): StudyS
   if (!parsed.success) return null;
   const session = parsed.data;
   const byId = new Map(attempts.map(attempt => [attempt.id, attempt]));
+  // Progress is written before the answer transaction. If a reload interrupts it,
+  // drop only that uncommitted answer and keep the queue and current position.
+  if (session.attemptIds.length === session.index + 1 && !byId.has(session.attemptIds[session.index])) {
+    session.attemptIds.pop();
+  }
   return session.questionIds.every(id => questionById.has(id))
     && session.attemptIds.every((id, index) => byId.get(id)?.questionId === session.questionIds[index]) ? session : null;
 }
