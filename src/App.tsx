@@ -165,10 +165,10 @@ function Study() {
     const timer = window.setTimeout(() => {
       const heading = resultRef.current?.querySelector<HTMLElement>('.explanation-heading'); if (!heading) return;
       const behavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth';
-      // Bring the explanation up under the sticky header after any answer.
+      // Bring the explanation up while the answer feedback is still visible.
       const header = document.querySelector('.site-header')?.getBoundingClientRect().height ?? 0;
       window.scrollTo({ top: heading.getBoundingClientRect().top + window.scrollY - header - 16, behavior });
-    }, 800);
+    }, 300);
     return () => window.clearTimeout(timer);
   }, [result?.id]);
   if (!course) return <Empty icon={<BookOpen />} title="科目が見つかりません" description="A1またはA2から学習をはじめてください。"><Button asChild><Link to="/">学習ホームへ</Link></Button></Empty>;
