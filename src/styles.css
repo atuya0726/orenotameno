@@ -718,11 +718,9 @@ svg { flex-shrink: 0; }
 .speech-state { display: inline-flex; align-items: center; gap: var(--space-2); font-size: 11px; color: var(--text-secondary); }
 .speech-recording { color: var(--success); }
 .speech-recording .status-dot { width: 8px; height: 8px; }
-.explanation-transcript-heading { display: flex; align-items: center; justify-content: space-between; min-height: 44px; margin-bottom: var(--space-2); font-size: 12px; color: var(--text-secondary); }
-.speech-text-fallback { margin-top: var(--space-2); color: var(--text-secondary); }
 .explanation-form textarea { resize: vertical; min-height: 230px; width: 100%; display: block; border: 1px solid var(--border-strong); border-radius: var(--radius-control); padding: var(--space-4); background: var(--background); font: inherit; font-size: 16px; line-height: 1.9; color: var(--foreground); }
 .explanation-form textarea::placeholder { color: var(--text-disabled); font-size: 14px; }
-.explanation-form textarea:read-only { background: var(--surface-secondary); }
+.explanation-form textarea:disabled { background: var(--surface-secondary); opacity: 1; }
 .speech-interim { padding: var(--space-3); margin-top: var(--space-2); border-left: 2px solid var(--brand); background: var(--surface-secondary); }
 .speech-interim > span { font-size: 10px; color: var(--text-secondary); }
 .speech-interim p { font-size: 13px; line-height: 1.8; }

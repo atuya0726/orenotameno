@@ -91,7 +91,8 @@ test('searches terms and persists drafts without exposing the reference first', 
   await page.reload(); await expect(textbox(page)).toHaveValue(text);
   await page.getByRole('button', { name: '全文削除' }).click();
   await expect(textbox(page)).toHaveValue('');
-  await expect(textbox(page)).toBeFocused();
+  await expect(textbox(page)).toBeDisabled();
+  await expect(page.getByRole('button', { name: '押しながら話す' })).toBeFocused();
   await expect(check(page)).toBeDisabled();
   await expect(page.getByRole('button', { name: '全文削除' })).toBeDisabled();
   await expect.poll(() => page.evaluate(() => JSON.parse(sessionStorage.getItem('orenotameno:glossary-draft:digital-signature') ?? '{}').text)).toBe('');
@@ -202,39 +203,59 @@ test('opens the example directly below its toggle outside the form and remembers
   expect((await entries(page))[0].referenceViewed).toBe(true);
 });
 
-test('starts with voice and lets the user correct, reload and submit the transcript', async ({ page }) => {
+test('blocks focus while empty and allows direct corrections after speech, including full replacement', async ({ page }) => {
   const corrected = '秘密鍵で署名を作り、公開鍵で検証して、改ざんを検知する仕組みです。';
   await page.route('**/api/glossary/evaluate', route => {
     expect(route.request().postDataJSON()).toEqual({ termId: term.id, text: corrected });
     return route.fulfill({ json: evaluation(corrected) });
   });
   await page.goto('/glossary/digital-signature');
-  await expect(textbox(page)).not.toBeEditable();
-  await textbox(page).focus(); await page.keyboard.type('typing');
+  await expect(textbox(page)).toBeDisabled();
+  await textbox(page).focus();
+  await expect(textbox(page)).not.toBeFocused();
+  await page.getByRole('button', { name: '押しながら話す' }).focus();
+  await page.keyboard.press('Tab');
+  await expect(textbox(page)).not.toBeFocused();
   await expect(textbox(page)).toHaveValue('');
   await expect(page.getByRole('button', { name: '誤認識を訂正する' })).toHaveCount(0);
   await expect(page.getByRole('button', { name: '文字で続ける' })).toHaveCount(0);
+  await expect(page.getByText('話した内容', { exact: true })).toHaveCount(0);
   await speakExplanation(page, '秘密鍵で署名を作り、公開鍵で検証します。');
-  await expect(textbox(page)).not.toBeEditable();
-  await page.getByRole('button', { name: '誤認識を訂正する' }).click();
+  await textbox(page).click();
   await expect(textbox(page)).toBeFocused(); await expect(textbox(page)).toBeEditable();
-  await textbox(page).fill(corrected);
-  await page.getByRole('button', { name: '訂正を終える' }).click();
-  await expect(textbox(page)).not.toBeEditable();
+  await textbox(page).fill('');
+  await expect(textbox(page)).toBeFocused(); await expect(textbox(page)).toBeEditable();
+  await textbox(page).pressSequentially(corrected);
+  await page.getByRole('button', { name: '押しながら話す' }).focus();
+  await expect(textbox(page)).not.toBeFocused();
   await page.reload();
-  await expect(textbox(page)).toHaveValue(corrected); await expect(textbox(page)).not.toBeEditable();
-  await page.getByRole('button', { name: '誤認識を訂正する' }).click();
+  await expect(textbox(page)).toHaveValue(corrected); await expect(textbox(page)).toBeEditable();
+  await textbox(page).click();
   await page.getByRole('button', { name: '押しながら話す' }).hover(); await page.mouse.down();
   await expect(textbox(page)).not.toBeEditable();
   await page.mouse.up();
-  await expect(textbox(page)).toHaveValue(corrected); await expect(textbox(page)).not.toBeEditable();
+  await expect(textbox(page)).toHaveValue(corrected); await expect(textbox(page)).toBeEditable();
   await check(page).click();
   await expect(page.getByRole('region', { name: '説明のチェック結果' })).toBeVisible();
   expect((await entries(page))[0]).toMatchObject({ text: corrected, usedVoice: true });
 });
 
+test('locks an emptied transcript after leaving the input and after clearing all text', async ({ page }) => {
+  await page.goto('/glossary/digital-signature');
+  await speakExplanation(page, text);
+  await textbox(page).fill('');
+  await expect(textbox(page)).toBeFocused();
+  await page.getByRole('button', { name: '押しながら話す' }).focus();
+  await expect(textbox(page)).toBeDisabled();
+  await textbox(page).focus(); await expect(textbox(page)).not.toBeFocused();
+  await speakExplanation(page, text);
+  await page.getByRole('button', { name: '全文削除' }).click();
+  await expect(textbox(page)).toHaveValue(''); await expect(textbox(page)).toBeDisabled();
+  await expect(page.getByRole('button', { name: '押しながら話す' })).toBeFocused();
+});
+
 for (const failure of ['no-result', 'network', 'not-allowed'] as const) {
-  test(`offers text input after speech fails with ${failure}`, async ({ page }) => {
+  test(`keeps empty input locked and existing text editable after speech fails with ${failure}`, async ({ page }) => {
     await page.goto('/glossary/digital-signature');
     if (failure === 'network') await speakExplanation(page, text);
     await page.getByRole('button', { name: '押しながら話す' }).hover(); await page.mouse.down();
@@ -245,25 +266,25 @@ for (const failure of ['no-result', 'network', 'not-allowed'] as const) {
     await page.mouse.up();
     await expect(page.getByRole('alert')).toBeVisible();
     await expect(textbox(page)).toHaveValue(failure === 'network' ? text : '');
-    await expect(textbox(page)).not.toBeEditable();
-    await page.getByRole('button', { name: '文字で続ける' }).click();
-    await expect(textbox(page)).toBeFocused(); await expect(textbox(page)).toBeEditable();
-    await textbox(page).fill(text); await expect(check(page)).toBeEnabled();
+    await expect(page.getByRole('button', { name: '文字で続ける' })).toHaveCount(0);
+    if (failure === 'network') {
+      await textbox(page).click();
+      await expect(textbox(page)).toBeFocused(); await expect(textbox(page)).toBeEditable();
+      await textbox(page).fill(text); await expect(check(page)).toBeEnabled();
+    } else {
+      await expect(textbox(page)).toBeDisabled();
+      await textbox(page).focus(); await expect(textbox(page)).not.toBeFocused();
+    }
   });
 }
 
-test('falls back to editable text when speech recognition is unavailable', async ({ page }) => {
-  await page.route('**/api/glossary/evaluate', route => route.fulfill({ json: evaluation() }));
+test('keeps an empty input unfocusable when speech recognition is unavailable', async ({ page }) => {
   await page.addInitScript(() => { Object.defineProperty(window, 'SpeechRecognition', { value: undefined, configurable: true }); Object.defineProperty(window, 'webkitSpeechRecognition', { value: undefined, configurable: true }); });
   await page.goto('/glossary/digital-signature');
   await expect(page.getByRole('button', { name: '押しながら話す' })).toBeDisabled();
-  await expect(textbox(page)).not.toBeEditable();
-  await page.getByRole('button', { name: '文字で続ける' }).click();
-  await expect(textbox(page)).toBeFocused();
-  await expect(textbox(page)).toBeEditable(); await textbox(page).fill(text); await expect(check(page)).toBeEnabled();
-  await check(page).click();
-  await expect(page.getByRole('region', { name: '説明のチェック結果' })).toBeVisible();
-  expect((await entries(page))[0].usedVoice).toBe(false);
+  await expect(textbox(page)).toBeDisabled();
+  await textbox(page).focus(); await expect(textbox(page)).not.toBeFocused();
+  await expect(page.getByRole('button', { name: '文字で続ける' })).toHaveCount(0);
 });
 
 test('handles final/interim voice text, prevents checks while listening, and stops the mic on navigation', async ({ page }) => {
@@ -296,7 +317,7 @@ test('handles final/interim voice text, prevents checks while listening, and sto
   });
   await expect(textbox(page)).toHaveValue('秘密鍵で署名を作ります。公開鍵で検証します。');
   await page.mouse.up();
-  await expect(textbox(page)).not.toBeEditable(); await expect(check(page)).toBeEnabled();
+  await expect(textbox(page)).toBeEditable(); await expect(check(page)).toBeEnabled();
   await page.getByRole('button', { name: '全文削除' }).click();
   await expect(textbox(page)).toHaveValue('');
   await page.getByRole('button', { name: '押しながら話す' }).hover(); await page.mouse.down();
@@ -336,7 +357,7 @@ test('limits voice input to 1000 characters including existing text and stops re
     speech.onresult({ results: [{ isFinal: true, 0: { transcript: 'い'.repeat(20) }, length: 1 }] });
   });
   await expect(textbox(page)).toHaveValue(`${'あ'.repeat(990)}\n${'い'.repeat(9)}`);
-  await expect(textbox(page)).not.toBeEditable();
+  await expect(textbox(page)).toBeEditable();
   await expect(page.locator('.explanation-input-meta')).toContainText('1000 / 1,000');
   await page.mouse.up();
   await page.getByRole('button', { name: '押しながら話す' }).click();

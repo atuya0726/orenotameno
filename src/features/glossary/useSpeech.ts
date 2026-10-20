@@ -13,12 +13,12 @@ type SpeechWindow = Window & { SpeechRecognition?: new () => Recognition; webkit
 export function speechConstructor() { if (typeof window === 'undefined') return undefined; const w = window as SpeechWindow; return w.SpeechRecognition ?? w.webkitSpeechRecognition; }
 export function speechErrorMessage(error: string): string {
   const messages: Record<string, string> = {
-    'not-allowed': 'マイクの使用が許可されていません。ブラウザの設定を確認するか、文字で入力してください。',
-    'service-not-allowed': 'このブラウザでは音声認識サービスを利用できません。文字で入力できます。',
+    'not-allowed': 'マイクの使用が許可されていません。ブラウザの設定でマイクの使用を許可してください。',
+    'service-not-allowed': 'このブラウザでは音声認識サービスを利用できません。',
     'audio-capture': '利用できるマイクが見つかりません。接続を確認してください。',
     network: '音声認識サービスに接続できませんでした。入力済みの文章は残っています。',
-    'no-speech': '音声を認識できませんでした。もう一度話すか、文字で入力してください。',
-    'language-not-supported': '日本語の音声認識を利用できません。文字で入力してください。',
+    'no-speech': '音声を認識できませんでした。もう一度マイクを押しながら話してください。',
+    'language-not-supported': '日本語の音声認識を利用できません。',
   };
   return messages[error] ?? '音声認識を続けられませんでした。入力済みの文章を確認してください。';
 }
@@ -103,14 +103,14 @@ export function useSpeech(onText: (text: string) => void) {
       }
     };
     try { active.start(); }
-    catch { finish(); setError('音声入力を開始できませんでした。文字で入力するか、ブラウザのマイク設定を確認してください。'); }
+    catch { finish(); setError('音声入力を開始できませんでした。ブラウザのマイク設定を確認してください。'); }
   }
   function start(base: string) {
     if (session.current) return;
     if (base.length >= EXPLANATION_MAX_LENGTH) { setError('説明は1,000文字までです。文章を短くしてから音声入力してください。'); return; }
     const Constructor = speechConstructor();
-    if (!Constructor) { setError('このブラウザは音声入力に対応していません。文字で入力できます。'); return; }
-    if (!window.isSecureContext) { setError('音声入力はHTTPSまたはlocalhostで開いて利用してください。文字で入力できます。'); return; }
+    if (!Constructor) { setError('このブラウザは音声入力に対応していません。'); return; }
+    if (!window.isSecureContext) { setError('音声入力はHTTPSまたはlocalhostで開いて利用してください。'); return; }
     session.current = { base, committed: '', held: true, quickEnds: 0 };
     setError(''); setInterim(''); setPhase('starting');
     timer.current = setTimeout(stop, 120_000);

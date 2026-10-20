@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { Link, Navigate, Route, Routes, useParams, useSearchParams } from 'react-router';
-import { ArrowDownToLine, ArrowLeft, ArrowRight, ArrowUpFromLine, BookOpen, Check, CheckCheck, ChevronDown, ChevronRight, CircleHelp, Clock3, History, Keyboard, LoaderCircle, Mic, Pencil, RotateCcw, Search, Square, Trash2, TriangleAlert, X } from 'lucide-react';
+import { ArrowDownToLine, ArrowLeft, ArrowRight, ArrowUpFromLine, BookOpen, Check, CheckCheck, ChevronDown, ChevronRight, CircleHelp, Clock3, History, LoaderCircle, Mic, RotateCcw, Search, Square, Trash2, TriangleAlert, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { formatDate, dayKey } from '@/lib/date';
@@ -150,18 +150,15 @@ function TermPractice({ term, referenceInitially, attemptId, review }: { term: T
   const [showReference, setShowReference] = useState(referenceInitially);
   const [result, setResult] = useState<GlossaryAttempt | null>(saved ?? null);
   const [saving, setSaving] = useState(false); const [error, setError] = useState('');
-  const [inputMode, setInputMode] = useState<'voice' | 'correction' | 'text'>('voice');
+  const [transcriptFocused, setTranscriptFocused] = useState(false);
   const [removal, setRemoval] = useState<'idle' | 'removed' | 'failed'>('idle');
-  const feedbackRef = useRef<HTMLDivElement>(null); const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const feedbackRef = useRef<HTMLDivElement>(null); const textareaRef = useRef<HTMLTextAreaElement>(null); const micRef = useRef<HTMLButtonElement>(null);
   function change(patch: Partial<GlossaryDraft>) {
     const next = { ...draftRef.current, ...patch, referenceViewed: hasSeenReference.current || draftRef.current.referenceViewed || Boolean(patch.referenceViewed), updatedAt: new Date().toISOString() };
     draftRef.current = next; setDraft(next); updateDraft(next); setResult(null); setRemoval('idle'); setError('');
   }
   const speech = useSpeech(text => change({ text, usedVoice: true }));
-  const editing = inputMode !== 'voice';
-  const canUseText = !speech.supported || !window.isSecureContext || Boolean(speech.error);
-  useEffect(() => { if (editing && !speech.active) textareaRef.current?.focus(); }, [editing, speech.active]);
-  function startSpeaking() { setInputMode('voice'); speech.start(draftRef.current.text); }
+  function startSpeaking() { setTranscriptFocused(false); speech.start(draftRef.current.text); }
   const history = snapshot.attempts.filter(a => a.termId === term.id).slice().reverse();
   const nextTerm = terms[(terms.findIndex(t => t.id === term.id) + 1) % terms.length];
   useEffect(() => { if (result) { hasSeenReference.current = true; feedbackRef.current?.focus(); } }, [result]);
@@ -191,17 +188,15 @@ function TermPractice({ term, referenceInitially, attemptId, review }: { term: T
       {term.definition && !result && <div className="term-reference-disclosure"><Button type="button" variant="ghost" className="term-reference-toggle" aria-expanded={showReference} aria-controls="term-reference-panel" disabled={speech.active || saving} onClick={() => showReference ? setShowReference(false) : reveal()}><BookOpen size={17} /><span>{showReference ? '説明例を閉じる' : '説明例を見る'}</span><ChevronDown size={17} /></Button>{showReference && <div id="term-reference-panel"><Reference term={term} /></div>}</div>}
       {saved && result?.id === saved.id ? <div className="saved-explanation"><span className="eyebrow">{formatDate(saved.answeredAt, true)} の説明</span><p>{saved.text}</p><Button variant="outline" onClick={() => { setResult(null); setShowReference(false); textareaRef.current?.focus(); }}>新しく説明してみる<RotateCcw size={15} /></Button></div> : <form onSubmit={event => void check(event)} className="explanation-form">
         <div className="explanation-form-heading"><h2>仕組みと用途を説明</h2></div>
-        <div className="speech-controls"><Button type="button" className="speech-hold" aria-pressed={speech.active} disabled={saving || !speech.supported || speech.phase === 'stopping'}
-          onPointerDown={e => { if (e.button !== 0) return; e.currentTarget.setPointerCapture(e.pointerId); startSpeaking(); }}
+        <div className="speech-controls"><Button ref={micRef} type="button" className="speech-hold" aria-pressed={speech.active} disabled={saving || !speech.supported || speech.phase === 'stopping'}
+          onPointerDown={e => { if (e.button !== 0) return; e.preventDefault(); e.currentTarget.focus(); e.currentTarget.setPointerCapture(e.pointerId); startSpeaking(); }}
           onPointerUp={speech.stop} onPointerCancel={speech.stop} onLostPointerCapture={speech.stop}
           onKeyDown={e => { if (e.key !== ' ' && e.key !== 'Enter') return; e.preventDefault(); if (!e.repeat) startSpeaking(); }}
           onKeyUp={e => { if (e.key === ' ' || e.key === 'Enter') speech.stop(); }} onBlur={speech.stop} onContextMenu={e => e.preventDefault()}>
           {speech.active ? <Square size={44} /> : <Mic size={48} />}<span>{speech.phase === 'starting' ? 'マイクの準備中…' : speech.phase === 'listening' ? '離すと停止' : speech.phase === 'stopping' ? '文字起こしを確定中' : '押しながら話す'}</span></Button><span className={cn('speech-state', speech.active && 'speech-recording')} role="status">{speech.active ? <><span className="status-dot" />{speech.phase === 'listening' ? '聞き取り中' : speech.phase === 'stopping' ? '確定結果を待っています' : 'マイクの準備中'}</> : speech.supported ? '' : '音声入力は非対応です'}</span></div>
         {speech.error && <p className="inline-error" role="alert">{speech.error}</p>}
-        <div className="explanation-transcript-heading"><span>{inputMode === 'text' ? '説明文' : '話した内容'}</span>{(draft.text || editing) && <Button type="button" variant="ghost" size="icon" disabled={speech.active || saving} aria-label={editing ? '訂正を終える' : '誤認識を訂正する'} title={editing ? '訂正を終える' : '誤認識を訂正する'} onClick={() => setInputMode(editing ? 'voice' : 'correction')}>{editing ? <Check size={17} /> : <Pencil size={17} />}</Button>}</div>
-        <label className="sr-only" htmlFor="term-explanation">{term.name}についての説明</label><textarea id="term-explanation" ref={textareaRef} value={draft.text} maxLength={EXPLANATION_MAX_LENGTH} readOnly={!editing || speech.active || saving} onChange={e => change({ text: e.target.value })} placeholder={editing ? '説明を入力・訂正' : 'マイクを押しながら話すと、ここに表示されます'} aria-describedby="explanation-input-count" />
-        <div className="explanation-input-meta"><span id="explanation-input-count">{draft.text.length} / {EXPLANATION_MAX_LENGTH.toLocaleString('ja-JP')}</span><Button type="button" variant="ghost" size="sm" disabled={!draft.text || speech.active || saving} onClick={() => { change({ text: '', usedVoice: false }); if (inputMode === 'correction') setInputMode('voice'); textareaRef.current?.focus(); }}><Trash2 size={15} />全文削除</Button></div>
-        {canUseText && !editing && <Button type="button" className="speech-text-fallback" variant="ghost" size="sm" disabled={speech.active || saving} onClick={() => setInputMode('text')}><Keyboard size={16} />文字で続ける</Button>}
+        <label className="sr-only" htmlFor="term-explanation">{term.name}についての説明</label><textarea id="term-explanation" ref={textareaRef} value={draft.text} maxLength={EXPLANATION_MAX_LENGTH} disabled={(!draft.text && !transcriptFocused) || speech.active || saving} onFocus={() => setTranscriptFocused(true)} onBlur={() => setTranscriptFocused(false)} onChange={e => change({ text: e.target.value })} placeholder="マイクを押しながら話すと、ここに表示されます" aria-describedby="explanation-input-count" />
+        <div className="explanation-input-meta"><span id="explanation-input-count">{draft.text.length} / {EXPLANATION_MAX_LENGTH.toLocaleString('ja-JP')}</span><Button type="button" variant="ghost" size="sm" disabled={!draft.text || speech.active || saving} onClick={() => { setTranscriptFocused(false); change({ text: '', usedVoice: false }); micRef.current?.focus(); }}><Trash2 size={15} />全文削除</Button></div>
         {speech.interim && <div className="speech-interim" role="status"><span>聞き取り途中</span><p>{speech.interim}</p></div>}
         <div className="explanation-submit"><Button type="submit" disabled={speech.active || saving || Boolean(result) || draft.text.trim().length < 10}>{saving ? <LoaderCircle size={16} className="animate-spin" /> : <Check size={16} />}{saving ? 'チェック中' : result ? 'チェック済み' : 'AIでチェック'}</Button></div>
         {error && <p className="inline-error" role="alert">{error}</p>}
