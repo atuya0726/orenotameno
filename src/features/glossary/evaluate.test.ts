@@ -51,6 +51,14 @@ describe('AI評価のクライアント', () => {
   });
 });
 describe('用語学習のバックアップ', () => {
+  it('preserves a historical criterion after the current rubric has retired it', () => {
+    const earlier = { ...evaluation, grade: 'S', criteria: [{ id: 'timestamp', title: '保存当時の長期署名の観点', level: 'S', status: 'covered', evidence: text, hint: '保存当時の評価です。' }] };
+    const attempt = glossaryAttemptSchema.parse({ id: 'before-rubric-review', termId: term.id, termName: term.name, text, answeredAt: '2026-10-19T03:00:00.000Z', usedVoice: false, referenceViewed: false, evaluation: earlier, reference: '保存当時の説明例です。' });
+    expect(term.criteria.some(c => c.id === 'timestamp')).toBe(false);
+    const restored = parseGlossaryBackup(serializeGlossary({ attempts: [attempt], drafts: [] })).attempts[0];
+    expect(restored.evaluation).toEqual(attempt.evaluation);
+    expect(restored.reference).toBe(attempt.reference);
+  });
   it('excludes temporary explanation drafts from exported backups', () => {
     const backup = parseGlossaryBackup(serializeGlossary({ attempts: [], drafts: [{ termId: term.id, text, usedVoice: false, referenceViewed: false, updatedAt: '2026-10-19T03:00:00.000Z' }] }));
     expect(backup.drafts).toEqual([]);

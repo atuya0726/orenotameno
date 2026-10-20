@@ -309,7 +309,9 @@ function wordEvaluation(grade: string | undefined) {
 async function startWordReview(page: Page, target: string) {
   await page.goto('/study/A1?question=sc-2025-autumn-a1-13');
   await page.getByRole('button', { name: 'ウで回答', exact: true }).click();
-  await page.getByRole('button', { name: 'デジタル署名を復習する', exact: true }).click();
+  const word = page.getByRole('button', { name: 'デジタル署名を復習する', exact: true });
+  await word.click();
+  await expect(word).toHaveAttribute('aria-pressed', 'true');
   await page.goto('/glossary?filter=words');
   await page.getByRole('link', { name: '単語を復習', exact: true }).click();
   await page.getByRole('radio', { name: new RegExp(`^${target} ·`) }).check();

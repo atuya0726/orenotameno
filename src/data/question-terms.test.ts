@@ -67,4 +67,22 @@ describe('question vocabulary candidates', () => {
     expect(termForWord('可用性')?.name).toBe('可用性');
     expect(termForWord('可用性')?.id).not.toBe('availability');
   });
+  it.each([
+    ['公開鍵暗号方式', '共通鍵暗号方式'],
+    ['SVG', 'PNG', 'TIFF', 'W3C', 'ラスタ形式', 'ベクター形式'],
+    ['量子コンピュータ', '量子ビット', '量子ゲート', '重ね合わせ'],
+    ['BASE', 'NoSQL', '結果整合性'],
+    ['機械学習', '教師あり学習', '教師なし学習', '強化学習', '推論'],
+    ['モデル抽出攻撃', 'データポイズニング'],
+    ['整列アルゴリズム', 'バブルソート', '挿入ソート', 'ヒープソート'],
+    ['レンダリング', 'レイトレーシング', 'ラジオシティ法', 'テクスチャマッピング'],
+    ['QC七つ道具', 'パレート図', '特性要因図', '連関図', 'マトリックス図'],
+    ['環境分析のフレームワーク', 'SWOT', '3C', 'PEST分析', 'VRIO分析'],
+    ['ハンドオーバー', 'ローミング', 'テザリング', 'フォールバック'],
+    ['著作権', '著作者人格権', '同一性保持権'],
+  ])('opens %s and the neighboring concepts with their own assessment', (...words) => {
+    const resolved = words.map(termForWord);
+    expect(resolved.every(Boolean)).toBe(true);
+    expect(new Set(resolved.map(term => term?.id)).size).toBe(words.length);
+  });
 });

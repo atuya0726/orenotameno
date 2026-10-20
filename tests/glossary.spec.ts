@@ -108,8 +108,10 @@ test('evaluates once, stores feedback separately from quizzes, and reviews a his
   await page.goto('/glossary/digital-signature'); await speakExplanation(page, text); await check(page).click();
   await expect(page.getByRole('heading', { name: '公開鍵基盤' })).toBeVisible();
   await expect(page.getByRole('heading', { name: '応用の論点まで説明' })).toBeVisible();
-  await expect(page.locator('.rubric-level-heading').filter({ hasText: '発展' })).toContainText('めったに問われない');
-  await expect(page.locator('.rubric-missing')).toContainText('まだ触れていません');
+  await expect(page.locator('.rubric-level-heading').filter({ hasText: /^B/ })).toContainText('用語の意味・目的・基本の仕組み');
+  await expect(page.locator('.rubric-level-heading').filter({ hasText: '応用' })).toContainText('用途・理由・制約・影響');
+  await expect(page.locator('.rubric-level-heading').filter({ hasText: '発展' })).toHaveCount(0);
+  await expect(page.locator('.rubric-missing')).toHaveCount(0);
   await expect(page.getByText('OpenAI · gpt-6-luna')).toBeVisible();
   expect(calls).toBe(1); expect(await entries(page, 'orenotameno-sc')).toEqual([]);
   expect(await entries(page)).toHaveLength(1);
@@ -117,6 +119,22 @@ test('evaluates once, stores feedback separately from quizzes, and reviews a his
   await page.reload(); await page.getByRole('link', { name: '見直す', exact: true }).click();
   await expect(page.locator('.saved-explanation')).toContainText(text);
   await expect(page.getByRole('link', { name: '次の用語へ' })).toBeVisible();
+});
+
+test('shows the specific conditions at S after the basic and applied explanations', async ({ page }) => {
+  const normal = termById.get('normal-distribution')!;
+  const explanation = '平均を中心に左右対称な釣鐘型の分布で、標準偏差が大きいほど横に広がります。';
+  await page.route('**/api/glossary/evaluate', route => route.fulfill({ json: {
+    ...evaluation(explanation), grade: 'A', covered: 1, total: 1,
+    criteria: normal.criteria.map(c => ({ ...c, level: c.level ?? 'B', status: c.level === 'S' ? 'missing' : 'covered', evidence: c.level === 'S' ? '' : explanation, hint: c.level === 'S' ? '具体的な範囲や位置はまだ説明していません。' : '説明できています。' })),
+  } }));
+  await page.goto('/glossary/normal-distribution');
+  await speakExplanation(page, explanation);
+  await check(page).click();
+  await expect(page.getByLabel('評価 A', { exact: true })).toBeVisible();
+  await expect(page.locator('.rubric-level-heading').filter({ hasText: /^S/ })).toContainText('試験範囲内の細かな条件・仕様・例外');
+  await expect(page.locator('.rubric-missing')).toHaveCount(2);
+  await expect(page.locator('.rubric-state').filter({ hasText: 'この説明では未確認' })).toHaveCount(0);
 });
 
 test('practices a follow-up term the AI suggested outside the built-in list', async ({ page }) => {

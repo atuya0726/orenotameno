@@ -23,14 +23,19 @@ describe('LLM評価の検証と集計', () => {
     expect(result.criteria[0].title).toBe(term.criteria[0].title);
   });
   it('grades B as the minimum line and A/S on top of it', () => {
-    const grade = (missing: string[]) => { const raw = assessment(); raw.criteria = raw.criteria.map(c => missing.includes(c.id) ? { ...c, status: 'missing', evidence: '' } : c); return parseAssessment(raw, term, text, 'gpt-6-luna').grade; };
+    const layeredTerm = termById.get('normal-distribution')!;
+    const explanation = '平均を中心に左右対称の釣鐘型です。標準偏差で広がりが変わり、平均から1標準偏差に約68%、2標準偏差に約95%が入り、1標準偏差の位置が変曲点です。';
+    const grade = (missing: string[]) => {
+      const raw = { ...assessment(), criteria: layeredTerm.criteria.map(c => ({ id: c.id, title: '', level: c.level ?? 'B', status: missing.includes(c.id) ? 'missing' : 'covered', evidence: missing.includes(c.id) ? '' : explanation, feedback: '要点を確認します。' })) };
+      return parseAssessment(raw, layeredTerm, explanation, 'gpt-6-luna').grade;
+    };
     expect(grade([])).toBe('S');
-    expect(grade(['timestamp'])).toBe('A');
-    expect(grade(['certificate'])).toBe('B');
-    expect(grade(['certificate', 'timestamp'])).toBe('B');
-    expect(grade(['verify'])).toBe('C');
+    expect(grade(['inflection'])).toBe('A');
+    expect(grade(['sd'])).toBe('B');
+    expect(grade(['sd', 'ratio', 'inflection'])).toBe('B');
+    expect(grade(['bell'])).toBe('C');
     // S without A still stays at B
-    expect(grade(['digest'])).toBe('B');
+    expect(grade(['sd'])).toBe('B');
     const wrong = assessment(); wrong.criteria[4] = { ...wrong.criteria[4], status: 'review', evidence: '公開鍵で検証' };
     expect(parseAssessment(wrong, term, text, 'gpt-6-luna').grade).toBe('C');
   });
@@ -90,10 +95,13 @@ describe('LLM評価の検証と集計', () => {
   it('accepts the quantum computing overview without requiring specialist topics', () => {
     const quantum = termById.get('quantum-computer')!;
     const explanation = '量子ビットの重ね合わせを利用して計算するコンピュータです。';
-    const raw = { ...assessment(), criteria: [{ id: 'qubit', title: '', level: 'B', status: 'covered', evidence: explanation, feedback: '基本を説明できています。' }] };
+    const raw = { ...assessment(), criteria: [{ id: 'qubit', title: '', level: 'B', status: 'covered', evidence: explanation, feedback: '基本を説明できています。' }, { id: 'crypto', title: '', level: 'A', status: 'missing', evidence: '', feedback: '暗号への影響はまだ説明していません。' }] };
     const result = parseAssessment(raw, quantum, explanation, 'gpt-6-luna');
     expect(result).toMatchObject({ status: 'covered', grade: 'B', covered: 1, total: 1 });
-    expect(result.criteria).toHaveLength(1);
+    expect(result.criteria).toHaveLength(2);
+    const applied = explanation + '十分な規模になれば、RSAなど一部の暗号の解読を速くできる可能性があります。';
+    const complete = { ...raw, criteria: raw.criteria.map(c => ({ ...c, status: 'covered', evidence: applied })) };
+    expect(parseAssessment(complete, quantum, applied, 'gpt-6-luna')).toMatchObject({ status: 'covered', grade: 'A' });
   });
   it('rejects invented quotes, empty evidence, unknown and duplicated criteria', () => {
     const invented = assessment(); invented.criteria[0].evidence = '公開鍵で署名を作る';
@@ -120,7 +128,10 @@ describe('OpenAI Responses API', () => {
     expect(init.headers.Authorization).toBe('Bearer test-key');
     expect(body).toMatchObject({ model: 'gpt-6-luna', store: false, max_output_tokens: 3000, text: { format: { type: 'json_schema', strict: true } } });
     expect(body.tools).toBeUndefined();
-    expect(body.instructions).toContain('否定'); expect(body.instructions).toContain('誤字'); expect(body.instructions).toContain('めったに問われない');
+    expect(body.instructions).toContain('否定'); expect(body.instructions).toContain('誤字'); expect(body.instructions).toContain('理解の深さ');
+    expect(body.instructions).toContain('用途・理由・制約・影響');
+    expect(body.instructions).toContain('細かな条件・仕様・例外');
+    expect(body.instructions).not.toContain('出題頻度に応じた段階');
     expect(JSON.parse(body.input[0].content).knownTerms).toContainEqual({ id: 'hash', name: 'ハッシュ関数' });
     expect(JSON.parse(body.input[0].content).learnerExplanation).toBe(text);
     expect(JSON.stringify(body)).not.toContain('test-key');
@@ -137,11 +148,11 @@ describe('OpenAI Responses API', () => {
     const points = Object.fromEntries(lru.criteria.map(c => [c.id, { status: c.level ? 'missing' : 'covered', evidence: c.level ? '' : explanation, feedback: '確認しました。' }]));
     const raw = { ...assessment(), criteria: points };
     const result = await evaluateWithOpenAI(lru, explanation, 'key', undefined, vi.fn().mockResolvedValue(upstream(raw)));
-    expect(result).toMatchObject({ grade: 'B', covered: 3, total: 3 });
+    expect(result).toMatchObject({ grade: 'B', covered: 1, total: 1 });
     expect(result.criteria.map(c => c.id)).toEqual(lru.criteria.map(c => c.id));
-    const missing = { ...points }; delete missing.cache;
+    const missing = { ...points }; delete missing.oldest;
     await expect(evaluateWithOpenAI(lru, explanation, 'key', undefined, vi.fn().mockResolvedValue(upstream({ ...raw, criteria: missing })))).rejects.toThrow('評価形式');
-    const invented = { ...points, cache: { ...points.cache, evidence: '入力に存在しない説明' } };
+    const invented = { ...points, oldest: { ...points.oldest, evidence: '入力に存在しない説明' } };
     await expect(evaluateWithOpenAI(lru, explanation, 'key', undefined, vi.fn().mockResolvedValue(upstream({ ...raw, criteria: invented })))).rejects.toMatchObject({ code: 'AI_EVIDENCE_INVALID' });
   });
   it('distinguishes the output limit from other incomplete responses', async () => {
