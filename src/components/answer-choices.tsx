@@ -28,7 +28,7 @@ export function AnswerChoices({ question, draft, result, locked, onAnswer, onMar
         <thead role="rowgroup"><tr role="row">
           <th scope="col" role="columnheader" className="combination-letter-heading">回答</th>
           {combination.headers.map((header, i) => <th scope="col" role="columnheader" id={`combination-header-${i}`} key={header}><MathText text={header} /></th>)}
-          <th scope="col" role="columnheader" className="combination-mark-heading">印</th>
+          <th scope="col" role="columnheader" className="combination-mark-heading" />
         </tr></thead>
         <tbody role="rowgroup">{combination.rows.map(row => {
           const correct = Boolean(result) && row.id === question.correct;
