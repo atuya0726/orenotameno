@@ -132,8 +132,7 @@ function Study() {
     const timer = window.setTimeout(() => {
       const heading = resultRef.current?.querySelector<HTMLElement>('.explanation-heading'); if (!heading) return;
       const behavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth';
-      if (!result.correct) { heading.scrollIntoView({ block: 'nearest', behavior }); return; }
-      // A correct answer needs no second look at the choices, so bring the explanation up under the sticky header.
+      // Bring the explanation up under the sticky header after any answer.
       const header = document.querySelector('.site-header')?.getBoundingClientRect().height ?? 0;
       window.scrollTo({ top: heading.getBoundingClientRect().top + window.scrollY - header - 16, behavior });
     }, 800);

@@ -58,21 +58,17 @@ test('shows inline feedback on mobile with reduced motion', async ({ page }) => 
   await page.screenshot({ path: 'test-results/mobile-inline-feedback.png', fullPage: true });
 });
 
-for (const width of [390, 1280]) test(`scrolls a correct answer's explanation to the top at ${width}px`, async ({ page }) => {
+for (const width of [390, 1280]) for (const answer of [
+  { button: 'イで回答', outcome: 'correct' },
+  { button: 'アで回答', outcome: 'incorrect' },
+  { button: 'わからない', outcome: 'unknown' },
+]) for (const reducedMotion of ['no-preference', 'reduce'] as const) test(`scrolls the ${answer.outcome} answer's explanation to the top at ${width}px with ${reducedMotion} motion`, async ({ page }) => {
   await page.setViewportSize({ width, height: 800 });
+  await page.emulateMedia({ reducedMotion });
   await page.goto('/study/A1?question=sc-2025-autumn-a1-2');
-  await page.getByRole('button', { name: 'イで回答', exact: true }).click();
+  await page.getByRole('button', { name: answer.button, exact: true }).click();
   const heading = page.locator('.explanation-heading');
   const headerBottom = await page.locator('.site-header').evaluate(el => el.getBoundingClientRect().bottom);
   await expect.poll(() => heading.evaluate(el => el.getBoundingClientRect().top), { timeout: 4000 }).toBeLessThan(headerBottom + 40);
   expect(await heading.evaluate(el => el.getBoundingClientRect().top)).toBeGreaterThanOrEqual(headerBottom);
-});
-
-test('keeps the choices in view after an incorrect answer', async ({ page }) => {
-  await page.setViewportSize({ width: 390, height: 800 });
-  await page.goto('/study/A1?question=sc-2025-autumn-a1-2');
-  await page.getByRole('button', { name: 'アで回答', exact: true }).click();
-  await page.waitForTimeout(1500);
-  const headerBottom = await page.locator('.site-header').evaluate(el => el.getBoundingClientRect().bottom);
-  expect(await page.locator('.explanation-heading').evaluate(el => el.getBoundingClientRect().top)).toBeGreaterThan(headerBottom + 100);
 });
