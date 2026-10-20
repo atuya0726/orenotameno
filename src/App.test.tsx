@@ -33,10 +33,10 @@ describe('answering and recorded results', () => {
       index: total, attemptIds: snapshot.attempts.map(attempt => attempt.id), updatedAt: '2026-10-19T03:00:00.000Z',
     }];
     const html = render('/study/A1?session=completed');
-    expect(html).toContain(`<strong>${percent}<small>%</small></strong>`);
+    expect(html).toContain(`aria-label="正答率${percent}%。${target}。`);
     expect(html).toContain(target);
     expect(html.includes('completion-score-reached')).toBe(reached);
-    expect(html).toContain(`<strong>${unknown}<small>問</small></strong><span>わからなかった問題</span>`);
+    expect(html).toContain(`<strong>${unknown}<small>問</small></strong><span>わからない</span>`);
     expect(html).not.toContain('自信あり');
   });
   it('offers four immediate answer buttons without asking for confidence', () => {

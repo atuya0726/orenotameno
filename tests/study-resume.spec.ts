@@ -1,4 +1,5 @@
 import { test, expect, type Page } from '@playwright/test';
+import { sc2025AutumnA1 } from '../src/data/sc-2025-autumn-a1';
 
 async function progress(page: Page) {
   return page.evaluate(async () => {
@@ -77,9 +78,9 @@ test('keeps completion totals on reload and starts fresh when solving again', as
   await expect(page.getByRole('heading', { name: '学習完了', exact: true })).toBeVisible();
   await page.reload();
   await expect(page.getByRole('heading', { name: '学習完了', exact: true })).toBeVisible();
-  await expect(page.locator('.completion-stats strong')).toHaveText(['1問', '1問', '0問']);
-  await expect(page.getByRole('region', { name: '今回の正答率と目標' })).toContainText('100%');
-  await expect(page.locator('.completion-target')).toHaveText('60%以上を達成');
+  await expect(page.locator('.completion-stats strong')).toHaveText(['1問', '0問', '0問']);
+  await expect(page.getByRole('img', { name: /^正答率100%。60%以上を達成/ })).toBeVisible();
+  await expect(page.locator('.completion-target')).toHaveAccessibleName('60%以上を達成');
   await expect(page.locator('.session-complete')).not.toContainText('自信あり');
   await page.getByRole('link', { name: '学習ホームへ', exact: true }).click();
   await expect(page.getByRole('link', { name: '続きから再開', exact: true })).toHaveCount(0);
@@ -91,6 +92,42 @@ test('keeps completion totals on reload and starts fresh when solving again', as
   await page.getByRole('link', { name: 'もう一度解く', exact: true }).click();
   await expect(page.getByRole('button', { name: 'イで回答', exact: true })).toBeEnabled();
   await expect(page.getByRole('region', { name: '解答結果と解説' })).toHaveCount(0);
+});
+
+test('visualizes mixed results at the 60 percent target', async ({ page }, testInfo) => {
+  await page.goto('/study/A1?by=mock&set=sc-2025-autumn-a1');
+  await expect(page).toHaveURL(/session=/);
+  await page.evaluate(() => {
+    const key = `orenotameno:study:${new URL(location.href).searchParams.get('session')}`;
+    const session = JSON.parse(sessionStorage.getItem(key)!);
+    session.questionIds = session.questionIds.slice(0, 5);
+    sessionStorage.setItem(key, JSON.stringify(session));
+  });
+  await page.reload();
+  for (let index = 0; index < 5; index++) {
+    const question = sc2025AutumnA1[index];
+    const selected = index < 3 ? question.correct : question.options.find(option => option.id !== question.correct)!.id;
+    const label = index === 4 ? 'わからない' : `${{ a: 'ア', b: 'イ', c: 'ウ', d: 'エ' }[selected]}で回答`;
+    await page.getByRole('button', { name: label, exact: true }).click();
+    await page.getByRole('button', { name: index === 4 ? '今回の学習を終える' : '次の問題へ', exact: true }).click();
+  }
+  await expect(page.getByRole('img', { name: '正答率60%。60%以上を達成。正解3問、不正解1問、わからない1問、全5問。' })).toBeVisible();
+  await expect(page.locator('.completion-stats strong')).toHaveText(['3問', '1問', '1問']);
+  await expect(page.locator('.completion-target')).toHaveText('達成');
+  await page.screenshot({ path: testInfo.outputPath('completion-desktop.png'), fullPage: true });
+});
+
+test('visualizes unknown answers and the target on a narrow screen', async ({ page }, testInfo) => {
+  await page.setViewportSize({ width: 320, height: 740 });
+  await page.goto('/study/A1?question=sc-2025-autumn-a1-2');
+  await page.getByRole('button', { name: 'わからない', exact: true }).click();
+  await page.getByRole('button', { name: '今回の学習を終える' }).click();
+  await expect(page.getByRole('img', { name: '正答率0%。60%まであと1問正解。正解0問、不正解0問、わからない1問、全1問。' })).toBeVisible();
+  await expect(page.locator('.completion-stats strong')).toHaveText(['0問', '0問', '1問']);
+  await expect(page.locator('.completion-gauge-goal')).toHaveText('目標 60%');
+  await expect(page.locator('.completion-target')).toHaveText('あと1問');
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await page.screenshot({ path: testInfo.outputPath('completion-mobile.png'), fullPage: true });
 });
 
 test('rolls back answers when saving progress fails, then allows retry and reload', async ({ page }) => {
