@@ -3,11 +3,12 @@ import { Link, NavLink, Route, Routes, useLocation, useParams, useSearchParams }
 import { ArrowDownToLine, ArrowLeft, ArrowRight, ArrowUpFromLine, BarChart3, BookMarked, BookOpen, Bookmark, Check, CheckCheck, ChevronRight, CircleHelp, Database, LayoutDashboard, LoaderCircle, Plus, RotateCcw, Search, Settings2, Target, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { MathText } from '@/components/math-text';
+import { AnswerChoices } from '@/components/answer-choices';
 import { courses, questions, questionById } from '@/data/questions';
 import { getQuestionTerms } from '@/data/question-terms';
 import { eraLabel } from '@/data/ipa';
 import { useLearning, useNow } from '@/lib/store';
-import { responseConfidenceLabels, attemptConfidenceLabel, createQuickAnswer, cycleOptionMark, isQuickAnswer, optionLabels, optionMarkLabels, optionMarkSymbols, selectAnswer, type Attempt, type Course, type Draft, type OptionId, type Question, type QuickAnswerInput, type ResponseConfidence } from '@/lib/model';
+import { responseConfidenceLabels, attemptConfidenceLabel, createQuickAnswer, cycleOptionMark, isQuickAnswer, optionLabels, selectAnswer, type Attempt, type Course, type Draft, type OptionId, type Question, type QuickAnswerInput, type ResponseConfidence } from '@/lib/model';
 import { activeReviews, reviewPriorityLabel } from '@/lib/scheduler';
 import { exportBackup } from '@/lib/db';
 import { dayKey, formatDate } from '@/lib/date';
@@ -227,16 +228,7 @@ function AnswerForm({ question, saving, result, submitError, onSubmit }: { quest
     } finally { submitting.current = false; }
   }
   return <form onSubmit={e => e.preventDefault()} aria-label="問題の回答" className={result ? 'answer-submitted' : undefined} aria-busy={saving}>
-    <div className="choices">{question.options.map(option => {
-      const checked = result ? result.selected === option.id : draft.selected === option.id;
-      const mark = draft.optionMarks?.[option.id] ?? 'unknown';
-      return <div key={option.id} className={cn('choice-card', checked && 'choice-selected')}>
-        <button type="button" className="answer-selector" disabled={locked} data-testid={`option-${option.id}`} aria-label={`${optionLabels[option.id]}で回答`} aria-describedby={`choice-text-${option.id}`} onClick={() => void submit('high', option.id)}>
-          <span className="choice-letter">{optionLabels[option.id]}</span><span id={`choice-text-${option.id}`} className="choice-text">{option.figure ? <><span className="choice-figure" dangerouslySetInnerHTML={{ __html: option.figure }} /><span className="sr-only">{option.text}</span></> : <MathText text={option.text} />}</span>
-        </button>
-        <button type="button" className="choice-mark-toggle" data-mark={mark} disabled={locked} aria-label={`${optionLabels[option.id]}の印：${optionMarkLabels[mark]}`} title="初めは ?、押すと ○ → × → △ → ○ の順に切り替え" onClick={() => changeMark(option.id)}><span aria-hidden="true">{optionMarkSymbols[mark]}</span></button>
-      </div>;
-    })}</div>
+    <AnswerChoices question={question} draft={draft} result={result} locked={locked} onAnswer={id => void submit('high', id)} onMark={changeMark} />
     <div className="answer-controls">
       <QuestionSource question={question} />
       <Button type="button" variant="ghost" className="unknown-response" disabled={locked} onClick={() => void submit('unknown')}>わからない</Button>

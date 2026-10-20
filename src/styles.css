@@ -313,6 +313,49 @@ svg { flex-shrink: 0; }
 .choice-mark-toggle[data-mark='unsure'] { color: var(--caution); }
 .answer-selector:focus-visible, .choice-mark-toggle:focus-visible { outline: 2px solid var(--focus); outline-offset: -4px; border-radius: var(--radius-control); }
 .choice-letter { font-size: 13px; font-weight: 600; flex-shrink: 0; line-height: 30px; }
+.combination-choices { container: combination / inline-size; }
+.combination-table { width: 100%; table-layout: fixed; border-spacing: 0; border: 1px solid var(--border); border-radius: var(--radius-card); overflow: hidden; font-size: 14px; line-height: 1.8; }
+.combination-table thead th { padding: var(--space-3) var(--space-2); background: var(--surface-secondary); text-align: center; font-size: 12px; font-weight: 500; vertical-align: middle; }
+.combination-table .combination-letter-heading { width: 48px; }
+.combination-table .combination-mark-heading { width: 44px; }
+.combination-table th + th, .combination-table td { border-left: 1px solid var(--border); }
+.combination-row { position: relative; }
+.combination-row > th, .combination-row > td { border-top: 1px solid var(--border); }
+.combination-letter-cell, .combination-mark-cell { padding: 0; vertical-align: middle; }
+.combination-answer { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; min-height: 64px; padding: var(--space-2) 0; }
+/* Extend the native answer button over the row, leaving the mark independent. */
+.combination-answer::after { content: ''; position: absolute; inset: 0 44px 0 0; z-index: 1; }
+.combination-answer:disabled { cursor: default; }
+.combination-answer:focus-visible { outline: none; }
+.combination-answer:focus-visible::after { outline: 2px solid var(--focus); outline-offset: -3px; border-radius: var(--radius-control); }
+.combination-row:has(.combination-answer:not(:disabled):hover) { background: var(--surface-hover); }
+.combination-row.choice-selected { background: var(--surface-secondary); }
+.combination-row.choice-selected .combination-answer::after { box-shadow: inset 3px 0 0 var(--foreground); }
+.combination-row.choice-correct { background: var(--success-soft); }
+.combination-row.choice-correct .combination-answer::after { box-shadow: inset 3px 0 0 var(--success); }
+.combination-outcome { font-size: 10px; line-height: 1.5; font-weight: 600; }
+.choice-correct .combination-outcome { color: var(--success); }
+.combination-cell { padding: var(--space-4) var(--space-3); text-align: center; vertical-align: middle; }
+.combination-cell-label { display: none; }
+.combination-mark-cell .choice-mark-toggle { position: absolute; top: 0; right: 0; bottom: 0; width: 44px; z-index: 2; }
+.combination-mark-cell .choice-mark-toggle::before { display: none; }
+@container combination (max-width: 560px) {
+  .combination-table { font-size: 13px; }
+  .combination-table thead th { padding: var(--space-3) 6px; font-size: 11px; }
+  .combination-cell { padding: var(--space-4) var(--space-2); }
+  .combination-long .combination-table { display: block; border: 0; border-radius: 0; overflow: visible; }
+  .combination-long thead { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .combination-long tbody { display: grid; gap: var(--space-3); }
+  .combination-long .combination-row { display: grid; grid-template-columns: 48px minmax(0, 1fr) 44px; border: 1px solid var(--border); border-radius: var(--radius-card); overflow: hidden; }
+  .combination-long .combination-row > th, .combination-long .combination-row > td { border-top: 0; }
+  .combination-long .combination-letter-cell { grid-column: 1; grid-row: 1 / span var(--combination-columns); }
+  .combination-long .combination-answer { height: 100%; }
+  .combination-long .combination-cell { grid-column: 2; display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); align-items: start; gap: var(--space-3); padding: var(--space-2) var(--space-3); text-align: left; }
+  .combination-long .combination-cell:nth-child(2) { padding-top: var(--space-4); }
+  .combination-long .combination-cell:nth-last-child(2) { padding-bottom: var(--space-4); }
+  .combination-long .combination-cell-label { display: block; color: var(--text-secondary); font-size: 11px; }
+  .combination-long .combination-mark-cell { grid-column: 3; grid-row: 1 / span var(--combination-columns); }
+}
 .answer-controls { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: start; gap: var(--space-4); margin-top: var(--space-2); }
 .answer-controls .question-source { min-width: 0; margin-top: 0; }
 .answer-controls .ui-button { padding: 8px 12px; font-size: 13px; }
