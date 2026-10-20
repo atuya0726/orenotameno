@@ -1,5 +1,6 @@
 import { questionById } from '@/data/questions';
 import { getQuestionTerms } from '@/data/question-terms';
+import { randomId } from './id';
 import { answerSchema, attemptSchema, answerConfidence, isConfidentCorrectAnswer, validateAnswerForQuestion, type AnswerInput, type Question, type ReviewCard, type Attempt } from './model';
 
 // The latest answer sets the review weight: unknown/wrong = 3, uncertain = 2,
@@ -24,7 +25,7 @@ export function scheduleAnswer(input: AnswerInput, question: Question, _previous
   validateAnswerForQuestion(answer, question);
   const reviewTerms = getQuestionTerms(question).filter(term => reviewWords.includes(term));
   const review = reviewRequirement({ ...answer, reviewTerms }, question);
-  const id = crypto.randomUUID();
+  const id = randomId();
   const attempt = attemptSchema.parse({
     ...structuredClone(answer), ...(reviewTerms.length > 0 && { reviewTerms }), id, answeredAt: now.toISOString(), correct: answer.selected === question.correct,
     confidence: answerConfidence(answer), reviewMode: 'count', ...review,

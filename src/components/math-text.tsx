@@ -1,4 +1,5 @@
 import { lazy, memo, Suspense, useMemo, type ReactNode } from 'react';
+import { RenderBoundary } from './render-boundary';
 
 // Load the typesetter and its fonts only when a question contains a formula.
 // Missing chunks (for example after a deployment) must not unmount the exercise.
@@ -17,7 +18,9 @@ export const MathText = memo(function MathText({ text }: { text: string }) {
       const index = match.index;
       if (index > cursor) parts.push(text.slice(cursor, index));
       const tex = match[1] ?? match[2];
-      parts.push(<Suspense key={index} fallback={<span>{tex}</span>}><MathFormula tex={tex} display={match[2] !== undefined} /></Suspense>);
+      const display = match[2] !== undefined;
+      const fallback = <MathFallback tex={tex} display={display} />;
+      parts.push(<RenderBoundary key={`${index}:${match[0]}`} fallback={() => fallback}><Suspense fallback={<span>{tex}</span>}><MathFormula tex={tex} display={display} /></Suspense></RenderBoundary>);
       cursor = index + match[0].length;
     }
     if (cursor < text.length) parts.push(text.slice(cursor));

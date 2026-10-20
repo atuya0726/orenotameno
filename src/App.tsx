@@ -19,6 +19,7 @@ import GlossaryApp from '@/features/glossary/GlossaryApp';
 import { PracticeSetup } from '@/components/practice-setup';
 import { buildPracticeQueue, parsePracticeSearch } from '@/lib/practice';
 import { studyPath, studySessionUrl, type StudySession } from '@/lib/study-session';
+import { randomId } from '@/lib/id';
 
 const menu = [
   { to: '/', label: '学習ホーム', icon: LayoutDashboard, end: true },
@@ -127,7 +128,7 @@ function Study() {
       : mode === 'bookmarks' ? list.filter(q => snapshot.bookmarks.includes(q.id))
       : mode === 'review' ? activeReviews(snapshot.cards).map(card => list.find(q => q.id === card.questionId)).filter((q): q is Question => q !== undefined)
       : list;
-    return { id: crypto.randomUUID(), path, questionIds: queue.map(q => q.id), index: 0, attemptIds: [], updatedAt: new Date().toISOString() };
+    return { id: randomId(), path, questionIds: queue.map(q => q.id), index: 0, attemptIds: [], updatedAt: new Date().toISOString() };
   });
   const queue = session.questionIds.map(id => questionById.get(id)!);
   const index = session.index;

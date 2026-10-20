@@ -363,6 +363,9 @@ svg { flex-shrink: 0; }
 .review-flag-active:hover { background: var(--caution-soft); }
 .unknown-response { color: var(--text-secondary); }
 .result-focus:focus { outline: none; }
+.render-error-details { width: 100%; max-width: 620px; margin-top: var(--space-6); text-align: left; }
+.render-error-details summary { cursor: pointer; }
+.render-error-details pre { white-space: pre-wrap; overflow-wrap: anywhere; margin-top: var(--space-3); }
 .answer-flash { position: fixed; inset: 0; z-index: 60; display: grid; place-items: center; pointer-events: none; color: var(--success); }
 .answer-flash-incorrect { color: var(--danger); }
 .answer-flash-unknown { color: var(--text-secondary); }
