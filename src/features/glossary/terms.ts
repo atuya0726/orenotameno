@@ -57,7 +57,7 @@ export const terms: Term[] = [
     "id": "hash",
     "name": "ハッシュ関数",
     "aliases": [
-      "ハッシュ値"
+      "ハッシュアルゴリズム"
     ],
     "reading": "Hash function",
     "category": "暗号・認証",
@@ -230,9 +230,6 @@ export const terms: Term[] = [
   {
     "id": "sql-injection",
     "name": "SQLインジェクション",
-    "aliases": [
-      "プレースホルダ"
-    ],
     "reading": "SQL injection",
     "category": "Webセキュリティ",
     "definition": "入力値などがSQLの命令として解釈され、意図しない問合せやデータ操作を起こす攻撃です。プレースホルダとパラメータバインドでSQLの構造とデータを分離します。",
@@ -290,7 +287,8 @@ export const terms: Term[] = [
     "id": "xss",
     "name": "XSS",
     "aliases": [
-      "エスケープ"
+      "エスケープ",
+      "クロスサイトスクリプティング"
     ],
     "reading": "Cross-site scripting",
     "category": "Webセキュリティ",
@@ -349,7 +347,6 @@ export const terms: Term[] = [
     "name": "CSRF",
     "aliases": [
       "クロスサイトリクエストフォージェリ",
-      "Referer",
       "トークン"
     ],
     "reading": "Cross-site request forgery",
@@ -462,6 +459,9 @@ export const terms: Term[] = [
   {
     "id": "least-privilege",
     "name": "最小権限の原則",
+    "aliases": [
+      "最小権限"
+    ],
     "reading": "Principle of least privilege",
     "category": "アクセス制御",
     "definition": "利用者やプログラムに、業務や処理に必要な最小限の権限だけを与える原則です。不要な権限や過剰なアクセスを減らし、誤操作・侵害時の被害を限定します。",
@@ -514,8 +514,7 @@ export const terms: Term[] = [
     "name": "DNS",
     "aliases": [
       "正引き",
-      "逆引き",
-      "リゾルバ"
+      "逆引き"
     ],
     "reading": "Domain Name System",
     "category": "ネットワーク",
@@ -981,9 +980,6 @@ export const terms: Term[] = [
   {
     "id": "pki",
     "name": "PKI（公開鍵基盤）",
-    "aliases": [
-      "RA"
-    ],
     "reading": "Public Key Infrastructure",
     "category": "暗号・認証",
     "definition": "公開鍵とその持ち主の対応を、認証局（CA）が発行するデジタル証明書で保証する仕組みです。登録局（RA）が本人確認と申請の審査を行い、CAが証明書に署名して発行し、失効した証明書はCRLやOCSPで確認できるようにします。",
@@ -1002,11 +998,6 @@ export const terms: Term[] = [
         "id": "ca",
         "title": "認証局（CA）が証明書に自らの秘密鍵で署名して発行する",
         "hint": "証明書が偽物でないことは、誰の何によって保証されますか？"
-      },
-      {
-        "id": "ra",
-        "title": "登録局（RA）が本人確認を行い、発行申請を承認・却下する",
-        "hint": "証明書を発行する前の本人確認は、どの機能が担いますか？"
       },
       {
         "id": "revocation",
@@ -1035,11 +1026,6 @@ export const terms: Term[] = [
   {
     "id": "cryptrec",
     "name": "CRYPTREC暗号リスト",
-    "aliases": [
-      "電子政府推奨暗号リスト",
-      "推奨候補暗号リスト",
-      "運用監視暗号リスト"
-    ],
     "reading": "CRYPTREC Ciphers List",
     "category": "暗号・認証",
     "definition": "電子政府での調達のために参照すべき暗号を示した日本のリストです。電子政府推奨暗号リスト、推奨候補暗号リスト、運用監視暗号リストの三つで構成されます。",
@@ -1184,9 +1170,9 @@ export const terms: Term[] = [
     "id": "xml-signature",
     "name": "XMLデジタル署名",
     "aliases": [
-      "デタッチ署名",
       "エンベローピング署名",
-      "エンベロープ署名"
+      "エンベロープ署名",
+      "XML Signature"
     ],
     "reading": "XML Signature",
     "category": "暗号・認証",
@@ -1233,10 +1219,6 @@ export const terms: Term[] = [
   {
     "id": "pass-the-hash",
     "name": "Pass the Hash攻撃",
-    "aliases": [
-      "NTLM認証",
-      "平文パスワード"
-    ],
     "reading": "Pass the Hash",
     "category": "攻撃手法",
     "definition": "パスワードのハッシュ値だけで認証が成立する仕組みを悪用し、盗んだハッシュ値を解読せずにそのまま使ってログインする攻撃です。WindowsのNTLM認証などが狙われます。",
@@ -1373,6 +1355,9 @@ export const terms: Term[] = [
   {
     "id": "model-inversion",
     "name": "モデルインバージョン攻撃",
+    "aliases": [
+      "Model Inversion"
+    ],
     "reading": "Model inversion attack",
     "category": "攻撃手法",
     "definition": "AIモデルへの入力と出力を繰り返し観察・解析し、学習に使われた元のデータを推測する攻撃です。学習データに個人情報が含まれると、プライバシーの侵害につながります。",
@@ -1701,10 +1686,6 @@ export const terms: Term[] = [
     "id": "ieee8021x",
     "name": "IEEE 802.1X",
     "aliases": [
-      "EAP",
-      "RADIUS",
-      "サプリカント",
-      "オーセンティケータ",
       "認証VLAN"
     ],
     "reading": "IEEE 802.1X",
@@ -1850,7 +1831,6 @@ export const terms: Term[] = [
     "id": "risk-approach",
     "name": "リスク・アプローチ（システム監査）",
     "aliases": [
-      "監査リスク",
       "固有リスク",
       "統制リスク",
       "発見リスク"
@@ -2870,7 +2850,7 @@ export const terms: Term[] = [
     "id": "application-control",
     "name": "業務処理統制",
     "aliases": [
-      "全般統制"
+      "IT業務処理統制"
     ],
     "reading": "IT application controls",
     "category": "システム監査",
@@ -2889,11 +2869,6 @@ export const terms: Term[] = [
         "id": "examples",
         "title": "入力チェック、照合、承認、エラー処理などが例",
         "hint": "具体的にはどのような統制がありますか？"
-      },
-      {
-        "id": "vs-general",
-        "title": "入退室管理・アクセス管理・開発や運用の管理などは全般統制",
-        "hint": "全般統制とは、どう区別しますか？"
       },
       {
         "id": "assertions",
@@ -4163,8 +4138,6 @@ export const terms: Term[] = [
     "aliases": [
       "論理積",
       "論理和",
-      "排他的論理和",
-      "XOR",
       "真理値表",
       "2進数"
     ],
@@ -5293,9 +5266,6 @@ export const terms: Term[] = [
   {
     "id": "poe",
     "name": "PoE",
-    "aliases": [
-      "無線LAN"
-    ],
     "reading": "Power over Ethernet",
     "category": "ネットワーク",
     "definition": "LANケーブルを通じて、データと一緒に電力を供給する技術です。無線LANのアクセスポイントやネットワークカメラなど、電源を取りにくい場所の機器に使います。",
@@ -6012,7 +5982,8 @@ export const terms: Term[] = [
     "id": "iac",
     "name": "IaC",
     "aliases": [
-      "インフラ"
+      "インフラ",
+      "Infrastructure as Code"
     ],
     "reading": "Infrastructure as Code",
     "category": "システム構成",
@@ -6269,7 +6240,6 @@ export const terms: Term[] = [
     "id": "primary-key",
     "name": "主キー",
     "aliases": [
-      "候補キー",
       "顧客ID"
     ],
     "reading": "Primary key",
@@ -6485,7 +6455,6 @@ export const terms: Term[] = [
     "id": "referential-constraint",
     "name": "参照制約",
     "aliases": [
-      "外部キー",
       "CASCADE",
       "RESTRICT",
       "SET NULL"
@@ -6715,9 +6684,7 @@ export const terms: Term[] = [
     "id": "packet",
     "name": "パケット",
     "aliases": [
-      "ヘッダー",
-      "ビット",
-      "バイト"
+      "ヘッダー"
     ],
     "reading": "Packet",
     "category": "ネットワーク",
@@ -6832,7 +6799,6 @@ export const terms: Term[] = [
     "id": "vpn",
     "name": "VPN",
     "aliases": [
-      "L2TP",
       "トンネリング"
     ],
     "reading": "Virtual Private Network",
@@ -6958,9 +6924,6 @@ export const terms: Term[] = [
   {
     "id": "mac-address",
     "name": "MACアドレス",
-    "aliases": [
-      "ARP"
-    ],
     "reading": "MAC address",
     "category": "ネットワーク",
     "definition": "ネットワーク機器のインタフェースに割り当てる48ビットの物理アドレスです。同じLAN内での通信に使い、IPアドレスからMACアドレスを調べるのがARPです。調べた結果はARPキャッシュに保存され、arpコマンドで確認できます。",
@@ -7397,10 +7360,6 @@ export const terms: Term[] = [
   {
     "id": "multicast",
     "name": "マルチキャスト",
-    "aliases": [
-      "ブロードキャスト",
-      "ユニキャスト"
-    ],
     "reading": "Multicast",
     "category": "ネットワーク",
     "definition": "特定のグループに属する複数の宛先に、1回の送信でデータを届ける通信です。1対1はユニキャスト、ネットワーク内の全員に送るのはブロードキャストです。RIP-2やOSPFは経路情報の交換にマルチキャストを使います。",
@@ -7411,11 +7370,6 @@ export const terms: Term[] = [
         "id": "group",
         "title": "特定のグループの複数宛先に1回の送信で届ける",
         "hint": "誰に届けますか？"
-      },
-      {
-        "id": "compare",
-        "title": "ユニキャストは1対1、ブロードキャストは全員宛て",
-        "hint": "他の方式との違いは？"
       },
       {
         "id": "routing",
@@ -7816,7 +7770,6 @@ export const terms: Term[] = [
     "id": "cyber-kill-chain",
     "name": "サイバーキルチェーン",
     "aliases": [
-      "偵察",
       "デリバリ"
     ],
     "reading": "Cyber Kill Chain",
@@ -8359,9 +8312,6 @@ export const terms: Term[] = [
   {
     "id": "authorization",
     "name": "認可",
-    "aliases": [
-      "アクセス制御"
-    ],
     "reading": "Authorization",
     "category": "アクセス制御",
     "definition": "認証で本人と確かめた利用者に対して、どの資源にどんな操作を許すかを決めて与えることです。認証（誰か）と認可（何をしてよいか）は区別します。",
@@ -8735,9 +8685,7 @@ export const terms: Term[] = [
     "id": "public-key-crypto",
     "name": "公開鍵暗号方式",
     "aliases": [
-      "共通鍵暗号方式",
-      "公開鍵",
-      "秘密鍵"
+      "共通鍵暗号方式"
     ],
     "reading": "Public-key cryptography",
     "category": "暗号・認証",
@@ -8759,14 +8707,9 @@ export const terms: Term[] = [
         "hint": "誰の鍵で暗号化しますか？"
       },
       {
-        "id": "symmetric",
-        "title": "共通鍵暗号方式は同じ鍵で暗号化・復号し、高速だが鍵の配送が課題",
-        "hint": "共通鍵暗号との違いは？"
-      },
-      {
         "id": "count",
-        "title": "n人の通信で公開鍵方式は2n個、共通鍵方式はn(n−1)/2個の鍵が必要",
-        "hint": "必要な鍵の数は？",
+        "title": "n人が公開鍵と秘密鍵を1組ずつ持つと、合計2n個の鍵になる",
+        "hint": "各利用者が持つ鍵の組と合計個数は？",
         "level": "A"
       },
       {
@@ -8980,9 +8923,6 @@ export const terms: Term[] = [
   {
     "id": "password-attacks",
     "name": "パスワードリスト攻撃",
-    "aliases": [
-      "ブルートフォース攻撃"
-    ],
     "reading": "Password list attack",
     "category": "攻撃手法",
     "definition": "他のサービスから漏えいしたIDとパスワードの組をリストにして、別のサービスにログインを試す攻撃です。パスワードを使い回している利用者が被害に遭います。考えられる文字の組合せをすべて試すのはブルートフォース攻撃（総当たり）です。",
@@ -9000,12 +8940,6 @@ export const terms: Term[] = [
         "id": "measure",
         "title": "パスワードを使い回さない、多要素認証を使う",
         "hint": "有効な対策は？"
-      },
-      {
-        "id": "bruteforce",
-        "title": "ブルートフォース攻撃は全組合せを試し、リバースブルートフォースはパスワードを固定してIDを変える",
-        "hint": "総当たりとの違いは？",
-        "level": "A"
       },
       {
         "id": "lockout",
@@ -9093,8 +9027,6 @@ export const terms: Term[] = [
     "id": "crl",
     "name": "証明書失効リスト",
     "aliases": [
-      "危殆化",
-      "OCSP",
       "CRL"
     ],
     "reading": "Certificate Revocation List (CRL)",
@@ -9116,12 +9048,6 @@ export const terms: Term[] = [
         "hint": "利用者は何をしますか？"
       },
       {
-        "id": "ocsp",
-        "title": "OCSPは個々の証明書の失効状態をオンラインで問い合わせる",
-        "hint": "リストを取得しない確認方法は？",
-        "level": "A"
-      },
-      {
         "id": "compromise",
         "title": "秘密鍵の危殆化（漏えいなど）が失効の代表的な理由",
         "hint": "どんなときに失効させますか？",
@@ -9140,8 +9066,7 @@ export const terms: Term[] = [
     "id": "quantum-crypto",
     "name": "量子暗号",
     "aliases": [
-      "格子問題",
-      "量子鍵配送"
+      "格子問題"
     ],
     "reading": "Quantum cryptography",
     "category": "暗号・認証",
@@ -9156,17 +9081,6 @@ export const terms: Term[] = [
         "id": "qkd",
         "title": "量子の性質で盗聴を検知できる鍵配送を行う",
         "hint": "何を実現する技術ですか？"
-      },
-      {
-        "id": "vs-pqc",
-        "title": "PQCは格子問題などの数学的に難しい問題に基づく暗号で、別物",
-        "hint": "PQCとの違いは？"
-      },
-      {
-        "id": "lattice",
-        "title": "PQCの代表は格子問題に基づく暗号",
-        "hint": "PQCが基づく問題は？",
-        "level": "A"
       },
       {
         "id": "distance",
@@ -10156,7 +10070,6 @@ export const terms: Term[] = [
     "id": "itsm",
     "name": "サービスマネジメント",
     "aliases": [
-      "JIS Q 20000-1",
       "サービス要求",
       "変更要求",
       "リリース"
@@ -10337,9 +10250,6 @@ export const terms: Term[] = [
   {
     "id": "service-availability",
     "name": "サービス可用性",
-    "aliases": [
-      "計画停止"
-    ],
     "reading": "Service availability",
     "category": "サービス管理",
     "definition": "合意したサービス提供時間のうち、実際にサービスを利用できた時間の割合です。（サービス提供時間－停止時間）÷サービス提供時間で求め、あらかじめ合意した計画停止は停止時間に含めないのが一般的です。",
@@ -10563,8 +10473,7 @@ export const terms: Term[] = [
       "チェックリスト法",
       "突合・照合法",
       "現地調査法",
-      "コンピュータ支援監査技法",
-      "並行シミュレーション法"
+      "コンピュータ支援監査技法"
     ],
     "reading": "Audit techniques",
     "category": "システム監査",
@@ -11253,9 +11162,7 @@ export const terms: Term[] = [
     "id": "integration-test",
     "name": "結合テスト",
     "aliases": [
-      "トップダウンテスト",
       "ボトムアップテスト",
-      "サンドイッチテスト",
       "ビッグバンテスト",
       "スタブ",
       "ドライバ"
@@ -11310,7 +11217,8 @@ export const terms: Term[] = [
     "aliases": [
       "フルバックアップ",
       "差分バックアップ",
-      "復旧"
+      "復旧",
+      "バックアップ"
     ],
     "reading": "Backup methods",
     "category": "サービス管理",
@@ -11827,7 +11735,6 @@ export const terms: Term[] = [
     "id": "investment-evaluation",
     "name": "投資評価手法",
     "aliases": [
-      "ROI",
       "NPV",
       "PBP法",
       "NPV法",
@@ -14369,6 +14276,4457 @@ export const terms: Term[] = [
     ],
     "commonMistakes": [
       "情報セキュリティの「意図した行動と結果の一貫性」という信頼性とは、設問の文脈を区別します。"
+    ]
+  },
+  {
+    "id": "symmetric-key",
+    "name": "共通鍵",
+    "reading": "Symmetric Key",
+    "category": "暗号・認証",
+    "definition": "暗号化と復号、またはMACの生成と検証などで、当事者が共有して使う秘密の鍵です。",
+    "example": "送受信者が同じAES鍵を安全に共有します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "当事者が共有して暗号処理などに使う秘密の鍵",
+        "hint": "共通鍵の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "public-key",
+    "name": "公開鍵",
+    "reading": "Public Key",
+    "category": "暗号・認証",
+    "definition": "公開鍵暗号方式で公開して利用する鍵です。対応する秘密鍵で作った署名の検証や、秘密鍵の所有者宛ての暗号化などに使います。",
+    "example": "認証局の公開鍵で証明書の署名を検証します。",
+    "related": [
+      "private-key",
+      "public-key-crypto"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "秘密鍵と対になり公開して暗号化や署名検証などに使う鍵",
+        "hint": "公開鍵の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "private-key",
+    "name": "秘密鍵",
+    "reading": "Private Key",
+    "category": "暗号・認証",
+    "definition": "公開鍵暗号方式で公開鍵と対になり、所有者が秘密に保持する鍵です。署名の生成や、自分宛ての暗号文の復号などに使います。",
+    "example": "認証局が秘密鍵で証明書に署名します。",
+    "related": [
+      "public-key",
+      "digital-signature"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "公開鍵と対になり秘密に保持して署名生成や復号などに使う鍵",
+        "hint": "秘密鍵の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "forward-secrecy",
+    "name": "前方秘匿性",
+    "reading": "Forward Secrecy",
+    "category": "暗号・認証",
+    "definition": "認証用などの長期秘密鍵が後から漏えいしても、過去の通信のセッション鍵を復元できない性質です。",
+    "example": "一時的なDH鍵を通信ごとに作り、利用後に破棄します。",
+    "related": [
+      "dh-key-exchange",
+      "session-key"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "長期秘密鍵の将来の漏えいから過去の通信を守る",
+        "hint": "前方秘匿性の目的や仕組みを説明できますか？"
+      },
+      {
+        "id": "ephemeral-key",
+        "title": "一時的な鍵共有と鍵の破棄などで実現する",
+        "hint": "過去のセッション鍵を後から導出できなくするにはどうしますか？",
+        "level": "A"
+      }
+    ],
+    "commonMistakes": [
+      "認証用の長期秘密鍵の漏えいに対する性質で、通信のセッション鍵自体の漏えいまで保護しません。"
+    ]
+  },
+  {
+    "id": "session-key",
+    "name": "セッション鍵",
+    "reading": "Session Key",
+    "category": "暗号・認証",
+    "definition": "個々の通信セッションのデータを暗号化・復号などするために使う鍵です。",
+    "example": "TLSの鍵交換で得た情報から、実際の通信保護用の鍵を導出します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "個々の通信セッションを保護するための鍵",
+        "hint": "セッション鍵の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "blockchain",
+    "name": "ブロックチェーン",
+    "reading": "Blockchain",
+    "category": "暗号・認証",
+    "definition": "データをブロックにまとめ、前のブロックのハッシュ値などで連結し、複数の参加者が履歴を共有する仕組みです。",
+    "example": "過去の取引を変更すると後続のハッシュの対応が崩れます。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "ブロックをハッシュで連結して履歴を共有する",
+        "hint": "ブロックチェーンの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "tls13",
+    "name": "TLS 1.3",
+    "reading": "TLS 1.3",
+    "category": "暗号・認証",
+    "definition": "暗号スイートをAEADとハッシュの組に整理し、鍵交換や署名を別に選ぶTLSの版です。古い暗号方式を除き、通常のハンドシェイクも短縮しています。",
+    "example": "TLS_AES_128_GCM_SHA256でWeb通信を保護します。",
+    "related": [
+      "tls",
+      "aead",
+      "cipher-suite"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "AEADとハッシュを暗号スイートとして選び通信を保護するTLSの版",
+        "hint": "TLS 1.3の目的や仕組みを説明できますか？"
+      },
+      {
+        "id": "separate-negotiation",
+        "title": "鍵交換と署名の方式は暗号スイートと別に選ぶ",
+        "hint": "TLS 1.2と暗号スイートの内容は同じですか？",
+        "level": "A"
+      }
+    ],
+    "commonMistakes": [
+      "TLS 1.3ではAES-CBCは暗号スイートに含まれません。鍵交換・署名はスイートと別に選びます。"
+    ]
+  },
+  {
+    "id": "aead",
+    "name": "AEAD",
+    "reading": "AEAD",
+    "category": "暗号・認証",
+    "definition": "平文の暗号化と認証を一体で行い、暗号化しない付加データも改ざん検知の対象にできる方式です。",
+    "example": "AES-GCMで本文を暗号化し、ヘッダーの一部も認証します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "暗号化と完全性保護を行い付加データも認証する",
+        "hint": "AEADの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "cipher-suite",
+    "name": "暗号スイート",
+    "reading": "Cipher Suite",
+    "category": "暗号・認証",
+    "definition": "通信で用いる暗号アルゴリズムなどの組合せです。含む要素はプロトコルの版によって異なります。",
+    "example": "TLS 1.3ではAEAD方式とハッシュ方式の組に合意します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "通信で使用する暗号アルゴリズムなどの組合せ",
+        "hint": "暗号スイートの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "collision-resistance",
+    "name": "衝突発見困難性",
+    "reading": "Collision Resistance",
+    "category": "暗号・認証",
+    "definition": "同じハッシュ値になる異なる二つの入力を見つけることが計算上困難である性質です。",
+    "example": "別の文書を用意して同じ署名対象ハッシュを作ることを難しくします。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "同じハッシュ値を生む異なる二入力を見つけにくい",
+        "hint": "衝突発見困難性の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": [
+      "与えられたハッシュ値に対する入力の探索は原像計算困難性で、二入力の衝突探索とは違います。"
+    ]
+  },
+  {
+    "id": "preimage-resistance",
+    "name": "原像計算困難性",
+    "reading": "Preimage Resistance",
+    "category": "暗号・認証",
+    "definition": "与えられたハッシュ値に対応する入力を求めることが計算上困難である性質です。",
+    "example": "ハッシュ値だけから元のメッセージを探すことを難しくします。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "与えられたハッシュ値から対応する入力を求めにくい",
+        "hint": "原像計算困難性の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "birthday-attack",
+    "name": "誕生日攻撃",
+    "reading": "Birthday Attack",
+    "category": "暗号・認証",
+    "definition": "ハッシュなどの出力の衝突を、候補同士の多数の組合せを利用して探索する攻撃です。理想的なnビット出力では約2のn/2乗が探索回数の目安です。",
+    "example": "256ビットハッシュの衝突を約2の128乗回の試行で探すことを考えます。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "候補間の組合せを利用して衝突を探す",
+        "hint": "誕生日攻撃の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "ctr-mode",
+    "name": "CTRモード",
+    "reading": "Ctr Mode",
+    "category": "暗号・認証",
+    "definition": "カウンタ値をブロック暗号で暗号化して鍵ストリームを作り、データとXORを取る暗号利用モードです。同じ鍵でカウンタを再利用しません。",
+    "example": "各ブロックのカウンタを独立に処理し、暗号化を並列化します。",
+    "related": [
+      "block-cipher",
+      "logic-operation"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "暗号化したカウンタの出力とデータのXORを取る",
+        "hint": "CTRモードの目的や仕組みを説明できますか？"
+      },
+      {
+        "id": "counter-unique",
+        "title": "同じ鍵でカウンタを再利用しない",
+        "hint": "鍵ストリームが再利用されると安全ですか？"
+      }
+    ],
+    "commonMistakes": [
+      "パディングは不要で、暗号化も復号も並列化できます。同じ鍵とカウンタの再利用は避けます。"
+    ]
+  },
+  {
+    "id": "block-cipher",
+    "name": "ブロック暗号",
+    "reading": "Block Cipher",
+    "category": "暗号・認証",
+    "definition": "固定長のブロックごとに、鍵を使って暗号化・復号する共通鍵暗号です。長いデータには暗号利用モードを組み合わせます。",
+    "example": "AESをCTRやGCMなどのモードで利用します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "固定長のブロック単位で処理する共通鍵暗号",
+        "hint": "ブロック暗号の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "padding",
+    "name": "パディング",
+    "reading": "Padding",
+    "category": "暗号・認証",
+    "definition": "データを必要な長さや形式にそろえるため、規則に従って付加データを加えることです。",
+    "example": "CBCモードで平文の長さをブロック長の倍数へそろえます。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "規則に従い付加データを加えて長さや形式をそろえる",
+        "hint": "パディングの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "cprm",
+    "name": "CPRM",
+    "reading": "CPRM",
+    "category": "暗号・認証",
+    "definition": "記録可能な媒体上のコンテンツを保護する技術です。SDメモリカードなどで利用されます。",
+    "example": "SDカードに記録した映像の不正なコピーを制限します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "記録可能な媒体のコンテンツを保護する",
+        "hint": "CPRMの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "cppm",
+    "name": "CPPM",
+    "reading": "CPPM",
+    "category": "暗号・認証",
+    "definition": "記録済みの媒体のコンテンツを保護する技術です。DVD-Audioなどで利用されます。",
+    "example": "販売される記録済み音楽メディアの内容を保護します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "記録済み媒体のコンテンツを保護する",
+        "hint": "CPPMの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "dtcp",
+    "name": "DTCP",
+    "reading": "DTCP",
+    "category": "暗号・認証",
+    "definition": "デジタル機器間で伝送するコンテンツを、機器認証や暗号化などで保護する技術です。",
+    "example": "対応する映像機器間で録画番組を保護して転送します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "デジタル機器間のコンテンツ伝送を保護する",
+        "hint": "DTCPの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "hdcp",
+    "name": "HDCP",
+    "reading": "HDCP",
+    "category": "暗号・認証",
+    "definition": "HDMIなどのデジタル映像・音声の伝送路で、機器認証と暗号化によってコンテンツを保護する技術です。",
+    "example": "プレーヤーからディスプレイへ送る映像を保護します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "映像・音声のデジタル伝送路を保護する",
+        "hint": "HDCPの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "left-outer-join",
+    "name": "LEFT OUTER JOIN",
+    "reading": "LEFT OUTER JOIN",
+    "category": "データベース",
+    "definition": "左側の表の全行を残し、結合条件に一致する右側の行を結び付ける外部結合です。一致しない右側の列はNULLになります。",
+    "example": "顧客表を左に置き、受注がない顧客も一覧に残します。",
+    "related": [
+      "full-outer-join",
+      "sql-null"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "左の全行を残し右に対応がない列をNULLにする",
+        "hint": "LEFT OUTER JOINの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": [
+      "右側だけに存在する行まで残すわけではありません。"
+    ]
+  },
+  {
+    "id": "join-condition",
+    "name": "結合条件",
+    "reading": "Join Condition",
+    "category": "データベース",
+    "definition": "複数の表の行をどの対応関係で組み合わせるかを指定する条件です。",
+    "example": "顧客コードが等しい受注行と顧客行を結合します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "複数表の行を対応付ける条件",
+        "hint": "結合条件の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "full-outer-join",
+    "name": "完全外部結合",
+    "reading": "Full Outer Join",
+    "category": "データベース",
+    "definition": "両方の表の全行を残す外部結合です。相手に一致する行がなければ、相手側の列をNULLにします。",
+    "example": "片方だけにある商品コードも両方の一覧に残します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "両側の一致しない行も残して相手側をNULLにする",
+        "hint": "完全外部結合の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "sql-or",
+    "name": "OR条件",
+    "reading": "Sql Or",
+    "category": "データベース",
+    "definition": "複数の条件のうち、少なくとも一つが真なら全体を真とする条件です。SQLではNULLによる不明の扱いも考慮します。",
+    "example": "勤続年数>10 OR 年齢>28で、どちらかを満たす社員を選びます。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "いずれかの条件が真なら全体が真になる",
+        "hint": "OR条件の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "sql-and",
+    "name": "AND条件",
+    "reading": "Sql And",
+    "category": "データベース",
+    "definition": "複数の条件が全て真のときに全体を真とする条件です。SQLではNULLによる不明の扱いも考慮します。",
+    "example": "条件を満たし、かつ所属が総務部の社員を選びます。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "全ての条件が真のとき全体が真になる",
+        "hint": "AND条件の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "data-lineage",
+    "name": "データリネージ",
+    "reading": "Data Lineage",
+    "category": "データベース",
+    "definition": "データの発生源から変換・加工を経て現在の形になるまでの流れを示す情報です。",
+    "example": "集計値がどの元データと処理から作られたかを追います。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "データの発生源と変換・加工の経路を追跡する",
+        "hint": "データリネージの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "metadata",
+    "name": "メタデータ",
+    "reading": "Metadata",
+    "category": "データベース",
+    "definition": "データの構造、意味、作成元、更新日時など、データを説明・管理するための情報です。",
+    "example": "売上列の型や単位、集計の対象期間を記録します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "データの構造や意味などを説明する情報",
+        "hint": "メタデータの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "data-warehouse",
+    "name": "データウェアハウス",
+    "reading": "Data Warehouse",
+    "category": "データベース",
+    "definition": "様々なシステムのデータを統合・蓄積し、分析や意思決定に利用するためのデータ基盤です。",
+    "example": "販売・在庫・顧客の履歴をまとめて分析します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "業務データを統合・蓄積して分析に使う基盤",
+        "hint": "データウェアハウスの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "odbc",
+    "name": "ODBC",
+    "reading": "ODBC",
+    "category": "データベース",
+    "definition": "アプリケーションからドライバーを介し、様々なDBMSへ共通のインタフェースでアクセスするための仕組みです。",
+    "example": "対応ドライバーを使って業務アプリからDBへSQLを送ります。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "ドライバーを介した共通のDBアクセスのインタフェース",
+        "hint": "ODBCの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "data-dictionary",
+    "name": "データディクショナリ",
+    "reading": "Data Dictionary",
+    "category": "データベース",
+    "definition": "表や列、制約、利用者、権限など、DBMSがデータベースを管理するための情報を集めたものです。",
+    "example": "表の定義や列の型を調べます。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "データベースの構造や利用者などの管理情報を保持する",
+        "hint": "データディクショナリの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "log",
+    "name": "ログ",
+    "reading": "Log",
+    "category": "データベース",
+    "definition": "システムの動作や操作、事象などを時系列で記録した情報です。調査や監査、障害回復などに使います。",
+    "example": "誰がどのレコードを更新したか記録します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "動作・操作・事象の履歴を記録する",
+        "hint": "ログの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "sql-grant",
+    "name": "GRANT",
+    "reading": "GRANT",
+    "category": "データベース",
+    "definition": "SQLで、利用者などへ表や資源に対する操作権限を与える文です。",
+    "example": "利用者BにA表のSELECT権限を付与します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "利用者などへ操作権限を付与するSQL文",
+        "hint": "GRANTの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "sql-grant-option",
+    "name": "WITH GRANT OPTION",
+    "reading": "WITH GRANT OPTION",
+    "category": "データベース",
+    "definition": "SQLのGRANTで、与えた権限を受領者が他者へ再付与することも認める指定です。",
+    "example": "Bが受け取ったSELECT権限をCにも付与できるようにします。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "付与した権限を他者へ再付与できるようにする",
+        "hint": "WITH GRANT OPTIONの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "sql-select",
+    "name": "SELECT",
+    "reading": "SELECT",
+    "category": "データベース",
+    "definition": "SQLで、指定した列や条件に基づいて表などからデータを取り出す文です。",
+    "example": "条件に合う社員番号だけを取得します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "表などから条件に合うデータを取り出すSQL文",
+        "hint": "SELECTの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "sql-update",
+    "name": "UPDATE",
+    "reading": "UPDATE",
+    "category": "データベース",
+    "definition": "SQLで、表の既存の行の値を変更する文です。対象行はWHEREなどで指定します。",
+    "example": "社員番号を指定し、その社員の所属を変更します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "既存の行の値を変更するSQL文",
+        "hint": "UPDATEの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "referential-integrity",
+    "name": "参照整合性",
+    "reading": "Referential Integrity",
+    "category": "データベース",
+    "definition": "外部キーの値に対応する参照先が存在するなど、表間の参照関係に矛盾がない性質です。",
+    "example": "存在しない顧客コードを受注表へ登録しないようにします。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "外部キーと参照先の関係に矛盾がない",
+        "hint": "参照整合性の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "sql",
+    "name": "SQL",
+    "reading": "SQL",
+    "category": "データベース",
+    "definition": "関係データベースの定義、検索、更新、権限管理などを行うための言語です。",
+    "example": "SELECTで検索し、GRANTで利用者に権限を与えます。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "関係データベースの定義や操作などに使う言語",
+        "hint": "SQLの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "reproduction-right",
+    "name": "複製権",
+    "reading": "Reproduction Right",
+    "category": "法務",
+    "definition": "著作物を有形的に再製する行為を専有する著作者の権利です。プログラムのコピーも対象になります。",
+    "example": "ソフトウェアを別の媒体へコピーすることの許諾を確認します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "著作物をコピーする行為を専有する権利",
+        "hint": "複製権の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "technological-protection",
+    "name": "技術的保護手段",
+    "reading": "Technological Protection",
+    "category": "法務",
+    "definition": "著作権などを侵害する行為を技術的に防止・抑止する手段です。コピー制御などが該当し、回避を伴う利用には法令や許諾の確認が必要です。",
+    "example": "複製制御を解除してソフトウェアをコピーする行為が問題になります。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "著作権侵害などを技術的に防止・抑止する手段",
+        "hint": "技術的保護手段の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "software-license",
+    "name": "使用許諾契約",
+    "reading": "Software License",
+    "category": "法務",
+    "definition": "権利者が、利用者に対してソフトウェアなどの利用を認める範囲と条件を定める契約です。",
+    "example": "利用台数や改変・複製の可否を契約で確認します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "ソフトウェアなどの利用の範囲と条件を定める契約",
+        "hint": "使用許諾契約の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "return-on-investment",
+    "name": "投資利益率",
+    "aliases": [
+      "ROI"
+    ],
+    "reading": "Return On Investment",
+    "category": "サービス管理",
+    "definition": "投資によって得る利益の増加額を投資額で割り、投資効率を表す指標です。算定では対象期間と利益・投資の定義を合わせます。",
+    "example": "投資額40、利益増加70なら175％です。",
+    "related": [
+      "initial-cost",
+      "operating-cost",
+      "incremental-profit"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "利益の増加額を投資額で割って投資効率を表す",
+        "hint": "投資利益率の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "initial-cost",
+    "name": "初期費用",
+    "reading": "Initial Cost",
+    "category": "サービス管理",
+    "definition": "導入や開発などの開始時に必要となる費用です。運用開始後に継続して発生する費用とは分けます。",
+    "example": "システム導入時に機器の購入と初期設定の費用を払います。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "導入・開発などの開始時に必要な費用",
+        "hint": "初期費用の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "operating-cost",
+    "name": "運用費",
+    "reading": "Operating Cost",
+    "category": "サービス管理",
+    "definition": "システムやサービスを継続して利用・運用するために発生する費用です。",
+    "example": "保守、回線、クラウド利用の料金を毎年支払います。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "利用・運用を継続するために発生する費用",
+        "hint": "運用費の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "incremental-profit",
+    "name": "利益の増加額",
+    "reading": "Incremental Profit",
+    "category": "サービス管理",
+    "definition": "投資前などの基準と比較して増えた利益です。投資評価では、対象期間の効果から必要な費用を差し引いて求めます。",
+    "example": "削減した業務費110から投資額40を引き、増加額70とします。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "基準と比べて増えた利益を効果と費用から求める",
+        "hint": "利益の増加額の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "business-continuity",
+    "name": "事業継続",
+    "reading": "Business Continuity",
+    "category": "サービス管理",
+    "definition": "災害や障害などが起きても重要業務を継続し、許容される時間内に復旧できるようにすることです。",
+    "example": "拠点が使えなくなっても代替拠点で重要な受注業務を続けます。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "中断に備え重要業務を継続・復旧する",
+        "hint": "事業継続の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "supply-chain",
+    "name": "サプライチェーン",
+    "reading": "Supply Chain",
+    "category": "サービス管理",
+    "definition": "調達、生産、物流、販売など、製品やサービスを届けるまでにつながる企業や活動の連鎖です。",
+    "example": "部品の供給元から販売先までの取引関係を把握します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "製品やサービスを届ける調達から販売などの連鎖",
+        "hint": "サプライチェーンの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "saas",
+    "name": "SaaS",
+    "reading": "SaaS",
+    "category": "サービス管理",
+    "definition": "提供者が運用するアプリケーションをネットワーク経由で利用するクラウドサービスの区分です。",
+    "example": "ブラウザで事業者の会計サービスを使います。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "提供者が運用するアプリケーションをサービスとして利用する",
+        "hint": "SaaSの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": [
+      "利用企業がサーバOSやDBMSの管理者IDまで管理するとは限りません。"
+    ]
+  },
+  {
+    "id": "paas",
+    "name": "PaaS",
+    "reading": "PaaS",
+    "category": "サービス管理",
+    "definition": "アプリケーションの開発・実行に使う基盤を提供するクラウドサービスの区分です。利用者は主にアプリケーションやデータを管理します。",
+    "example": "OSの管理を提供者へ任せ、自作アプリを実行します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "アプリの開発・実行基盤をサービスとして利用する",
+        "hint": "PaaSの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": [
+      "通常、利用者がアプリケーションを開発し、提供者がOSなどの基盤を管理します。"
+    ]
+  },
+  {
+    "id": "iaas",
+    "name": "IaaS",
+    "reading": "IaaS",
+    "category": "サービス管理",
+    "definition": "仮想サーバやストレージ、ネットワークなどの基盤資源を提供するクラウドサービスの区分です。利用者は通常OSやアプリケーションを管理します。",
+    "example": "仮想マシンに自分でOSやDBMSを導入します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "計算・ストレージ・ネットワークなどの基盤資源を利用する",
+        "hint": "IaaSの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "internal-audit",
+    "name": "内部監査",
+    "reading": "Internal Audit",
+    "category": "サービス管理",
+    "definition": "組織内の仕組みや活動が要求事項などを満たすかを、独立性と客観性を確保して評価する活動です。",
+    "example": "SMSが規格と自社の要求に適合しているか定期的に確認します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "組織の活動や仕組みが要求に適合するか評価する",
+        "hint": "内部監査の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "management-review",
+    "name": "マネジメントレビュー",
+    "reading": "Management Review",
+    "category": "サービス管理",
+    "definition": "経営層が、マネジメントシステムの適切性・妥当性・有効性などを定期的に評価し、改善や変更を判断する活動です。",
+    "example": "監査結果や目標の達成状況を見て資源配分や方針を見直します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "経営層が管理の仕組みを評価し改善や変更を判断する",
+        "hint": "マネジメントレビューの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "sms",
+    "name": "SMS",
+    "reading": "SMS",
+    "category": "サービス管理",
+    "definition": "サービスを指揮・管理する方針や目標、プロセスなどから成るサービスマネジメントシステムです。",
+    "example": "サービスの計画・提供・測定・改善の仕組みを整備します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "サービスを計画・提供・管理・改善するための仕組み",
+        "hint": "SMSの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "ooda",
+    "name": "OODAループ",
+    "reading": "Ooda",
+    "category": "サービス管理",
+    "definition": "観察、状況判断、意思決定、行動を繰り返し、状況の変化へ適応して判断・行動する枠組みです。",
+    "example": "現場の変化を把握して対応を選び、実行結果から次の行動を変えます。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "観察・状況判断・意思決定・行動を繰り返す",
+        "hint": "OODAループの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "continual-improvement",
+    "name": "継続的改善",
+    "reading": "Continual Improvement",
+    "category": "サービス管理",
+    "definition": "パフォーマンスを向上させるために繰り返し行う活動です。一度の改善で終わらず測定・評価などを次の改善につなげます。",
+    "example": "毎月の障害傾向を分析し、対策の効果を確認して次の改善を行います。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "パフォーマンス向上のために繰り返す活動",
+        "hint": "継続的改善の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "degressive-charging",
+    "name": "逓減課金方式",
+    "reading": "Degressive Charging",
+    "category": "サービス管理",
+    "definition": "利用量が増えるほど追加利用分などの単価を下げる課金方式です。料金総額は増えても増え方が緩やかになります。",
+    "example": "大量に利用する部分へ低い従量単価を適用します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "利用量が増えるほど追加利用分などの単価を下げる",
+        "hint": "逓減課金方式の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": [
+      "下がるのは追加利用分などの単価であり、利用料金の総額が減るという意味ではありません。"
+    ]
+  },
+  {
+    "id": "progressive-charging",
+    "name": "逓増課金方式",
+    "reading": "Progressive Charging",
+    "category": "サービス管理",
+    "definition": "利用量が増えるほど追加利用分などの単価を上げる課金方式です。",
+    "example": "一定量を超えた利用分へ高い従量単価を適用します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "利用量が増えるほど追加利用分などの単価を上げる",
+        "hint": "逓増課金方式の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "unit-price",
+    "name": "単価",
+    "reading": "Unit Price",
+    "category": "サービス管理",
+    "definition": "商品やサービスの単位量当たりの価格です。単価と利用量などから総額を求めます。",
+    "example": "1Gバイト当たりの料金にデータ量を掛けて料金を計算します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "単位量当たりの価格",
+        "hint": "単価の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "usage-charge",
+    "name": "利用料金",
+    "reading": "Usage Charge",
+    "category": "サービス管理",
+    "definition": "サービスや資源を利用する対価として支払う金額です。従量制では利用量と単価などから決まります。",
+    "example": "利用した時間やデータ量に応じて月額の総料金を計算します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "サービスや資源の利用に対して支払う金額",
+        "hint": "利用料金の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "permutation",
+    "name": "順列",
+    "reading": "Permutation",
+    "category": "基礎理論",
+    "definition": "複数の要素から、選んだ要素の並ぶ順序を区別して数える並べ方です。重複の可否により数え方が変わります。",
+    "example": "異なるM個から重複なくn個を並べる数はM!/(M−n)!です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "選んだ要素の順序を区別する並べ方",
+        "hint": "順列の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "combination",
+    "name": "組合せ",
+    "reading": "Combination",
+    "category": "基礎理論",
+    "definition": "複数の要素から、選んだ要素の順序を区別せずに数える選び方です。",
+    "example": "異なるM個から重複なくn個を選ぶ数はM!/(n!(M−n)!)です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "選んだ要素の順序を区別しない選び方",
+        "hint": "組合せの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "combination-with-repetition",
+    "name": "重複組合せ",
+    "reading": "Combination With Repetition",
+    "category": "基礎理論",
+    "definition": "同じ要素を繰り返し選ぶことを許し、選ぶ順序を区別しない組合せです。",
+    "example": "M種類から合計n個を選ぶ数は(M+n−1)!/(n!(M−1)!)です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "重複を許して順序を区別せずに選ぶ",
+        "hint": "重複組合せの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "icmp",
+    "name": "ICMP",
+    "reading": "ICMP",
+    "category": "ネットワーク",
+    "definition": "IP通信のエラーや制御情報を通知するプロトコルです。エコー要求・応答による到達性の確認にも使います。",
+    "example": "ルータが時間切れや宛先への到達不能を送信元へ通知します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "IP通信のエラーや制御情報を通知する",
+        "hint": "ICMPの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "ipv4",
+    "name": "IPv4",
+    "reading": "IPv4",
+    "category": "ネットワーク",
+    "definition": "32ビットのIPアドレスを使うインターネットプロトコルです。通常アドレスを8ビットずつの四つの十進数で表します。",
+    "example": "192.0.2.1というアドレスを端末へ設定します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "32ビットのアドレスでIPパケットを配送する",
+        "hint": "IPv4の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "udp",
+    "name": "UDP",
+    "reading": "UDP",
+    "category": "ネットワーク",
+    "definition": "コネクション確立や再送制御を行わず、ポート番号を用いてデータグラムを送受信するトランスポート層のプロトコルです。",
+    "example": "遅延を抑えたい通信で、必要な損失対策をアプリケーション側に実装します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "接続確立や再送を行わないデータグラム通信",
+        "hint": "UDPの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "tcp",
+    "name": "TCP",
+    "reading": "TCP",
+    "category": "ネットワーク",
+    "definition": "コネクションを確立し、再送や順序制御、フロー制御などによって信頼性のあるバイト列の通信を提供するプロトコルです。",
+    "example": "Web通信のデータを欠落や順序の乱れから回復して受信します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "再送や順序制御で信頼性のあるバイト列を届ける",
+        "hint": "TCPの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "txt-record",
+    "name": "TXTレコード",
+    "reading": "Txt Record",
+    "category": "ネットワーク",
+    "definition": "DNSに文字列情報を公開するためのリソースレコードです。SPFやDKIMの公開情報などにも使います。",
+    "example": "ドメインの送信許可方針をSPFの文字列として登録します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "DNSで文字列情報を公開するレコード",
+        "hint": "TXTレコードの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "pgp",
+    "name": "PGP",
+    "reading": "PGP",
+    "category": "ネットワーク",
+    "definition": "公開鍵暗号と共通鍵暗号などを組み合わせ、電子メールやファイルの暗号化・署名を行う仕組みです。",
+    "example": "受信者の公開鍵を使ってメールの暗号鍵を保護します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "メールやファイルの暗号化とデジタル署名を行う",
+        "hint": "PGPの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "smtp-over-tls",
+    "name": "SMTP over TLS",
+    "reading": "SMTP over TLS",
+    "category": "ネットワーク",
+    "definition": "SMTPの通信路をTLSで暗号化し、メール転送や投稿時の盗聴・改ざんを防ぐ方式です。",
+    "example": "メールサーバ同士の接続でTLSを使い通信を保護します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "SMTPの通信路をTLSで保護する",
+        "hint": "SMTP over TLSの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": [
+      "通信路単位の保護であり、PGPやS/MIMEのような利用者間のメール本文の保護とは異なります。"
+    ]
+  },
+  {
+    "id": "privacy-separator",
+    "name": "プライバシーセパレータ",
+    "aliases": [
+      "アクセスポイントアイソレーション"
+    ],
+    "reading": "Privacy Separator",
+    "category": "ネットワーク",
+    "definition": "同じアクセスポイントに接続する無線端末同士の直接通信を禁止する機能です。",
+    "example": "公衆無線LANの利用者が別の利用者のPCへ直接アクセスすることを抑えます。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "同じAPに接続した無線端末間の通信を禁止する",
+        "hint": "プライバシーセパレータの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "ssid",
+    "name": "SSID",
+    "reading": "SSID",
+    "category": "ネットワーク",
+    "definition": "無線LANのネットワークを識別するための識別子です。秘密の暗号鍵ではありません。",
+    "example": "端末のWi-Fi設定で接続するネットワークのSSIDを選びます。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "無線LANのネットワークを識別する",
+        "hint": "SSIDの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "mac-filtering",
+    "name": "MACアドレスフィルタリング",
+    "reading": "Mac Filtering",
+    "category": "ネットワーク",
+    "definition": "端末のMACアドレスに基づいて通信や接続を許可・拒否する機能です。MACアドレスは偽装され得るため強い認証の代わりにはなりません。",
+    "example": "登録された端末のMACアドレスだけ接続を許可します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "MACアドレスを基に接続や通信を制限する",
+        "hint": "MACアドレスフィルタリングの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "neighbor-discovery",
+    "name": "近隣探索",
+    "reading": "Neighbor Discovery",
+    "category": "ネットワーク",
+    "definition": "IPv6で同一リンク上のルータや近隣ノードの発見、アドレス解決などを行う仕組みです。ICMPv6を使います。",
+    "example": "宛先IPv6アドレスに対応するリンク層アドレスを問い合わせます。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "ICMPv6で近隣ノードやリンク層アドレスを発見する",
+        "hint": "近隣探索の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "private-address",
+    "name": "プライベートアドレス",
+    "reading": "Private Address",
+    "category": "ネットワーク",
+    "definition": "組織内などのネットワークで使うために予約されたIPアドレスです。インターネット上の公的な到達先としては使いません。",
+    "example": "IPv4の192.168.0.0/16を社内LANへ割り当てます。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "閉じたネットワークで使うために予約されたアドレス",
+        "hint": "プライベートアドレスの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "class-d",
+    "name": "クラスD",
+    "reading": "Class D",
+    "category": "ネットワーク",
+    "definition": "IPv4の旧来のクラス分けで、224.0.0.0から239.255.255.255までのマルチキャスト用アドレスの範囲です。",
+    "example": "239.0.1.1を受信者グループの宛先として使います。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "IPv4のマルチキャスト用アドレスの範囲",
+        "hint": "クラスDの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "vrrp",
+    "name": "VRRP",
+    "reading": "VRRP",
+    "category": "ネットワーク",
+    "definition": "複数のルータで仮想ルータを構成し、障害時にゲートウェイ機能を引き継ぐためのプロトコルです。",
+    "example": "端末のゲートウェイ設定を変えずに稼働中のルータを切り替えます。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "仮想ルータでデフォルトゲートウェイを冗長化する",
+        "hint": "VRRPの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "default-gateway",
+    "name": "デフォルトゲートウェイ",
+    "reading": "Default Gateway",
+    "category": "ネットワーク",
+    "definition": "特定の経路がない宛先へパケットを送るときに使う、既定の転送先となるルータです。",
+    "example": "LAN外の宛先へ向かうパケットを指定したルータへ渡します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "明示的な経路がない宛先への既定の転送先",
+        "hint": "デフォルトゲートウェイの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "rstp",
+    "name": "RSTP",
+    "reading": "RSTP",
+    "category": "ネットワーク",
+    "definition": "スパニングツリープロトコルを改良し、L2ネットワークのループ防止と障害後の素早い経路切替えを行うプロトコルです。",
+    "example": "冗長スイッチのリンク障害時に代替経路へ収束します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "L2のループを防ぎSTPより速い収束を図る",
+        "hint": "RSTPの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "rarp",
+    "name": "RARP",
+    "reading": "RARP",
+    "category": "ネットワーク",
+    "definition": "MACアドレスなどの情報から、自分のIPv4アドレスをサーバへ問い合わせるための旧来のプロトコルです。",
+    "example": "ディスクを持たない端末が起動時に自分のIPアドレスを得ます。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "自端末のIPv4アドレスをMACアドレスなどから取得する",
+        "hint": "RARPの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "isp",
+    "name": "ISP",
+    "reading": "ISP",
+    "category": "ネットワーク",
+    "definition": "利用者へインターネットへの接続サービスを提供する事業者です。",
+    "example": "自宅の回線をインターネットへ接続し、割り当てるIPアドレスなどを管理します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "インターネット接続サービスを提供する事業者",
+        "hint": "ISPの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "https",
+    "name": "HTTPS",
+    "reading": "HTTPS",
+    "category": "ネットワーク",
+    "definition": "HTTPの通信をTLSで保護する方式です。サーバの認証、通信内容の暗号化や改ざん検知を提供します。",
+    "example": "ブラウザでhttpsから始まるURLへ接続します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "HTTP通信をTLSで保護する",
+        "hint": "HTTPSの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "imaps",
+    "name": "IMAPS",
+    "reading": "IMAPS",
+    "category": "ネットワーク",
+    "definition": "メールボックスへアクセスするIMAPの通信をTLSで保護する方式です。認証情報やメール本文などを暗号化します。",
+    "example": "スマートフォンがメールサーバ上の受信箱を安全に参照します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "IMAPの通信全体をTLSで保護する",
+        "hint": "IMAPSの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": [
+      "APOPは認証方式であり、メール本文まで暗号化するものではありません。"
+    ]
+  },
+  {
+    "id": "apop",
+    "name": "APOP",
+    "reading": "APOP",
+    "category": "ネットワーク",
+    "definition": "POP3で平文パスワードをそのまま送らず、チャレンジに応じた値で認証する旧来の方式です。通信全体を暗号化するものではありません。",
+    "example": "サーバのチャレンジと秘密から認証用のダイジェストを計算します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "POPの認証で平文パスワードの直接送信を避ける",
+        "hint": "APOPの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "pop3",
+    "name": "POP3",
+    "reading": "POP3",
+    "category": "ネットワーク",
+    "definition": "メールサーバのメールボックスから電子メールを取り出すためのプロトコルです。暗号化にはTLSなどが別途必要です。",
+    "example": "メールクライアントがサーバのメールをダウンロードします。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "メールボックスからメールを取り出す",
+        "hint": "POP3の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "sntp",
+    "name": "SNTP",
+    "reading": "SNTP",
+    "category": "ネットワーク",
+    "definition": "NTPの仕組みを簡易な形で利用してネットワーク越しに時刻を同期するためのプロトコルです。",
+    "example": "端末が時刻サーバへ問い合わせて時計を合わせます。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "簡易なNTPで時刻を同期する",
+        "hint": "SNTPの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "ntp",
+    "name": "NTP",
+    "reading": "NTP",
+    "category": "ネットワーク",
+    "definition": "ネットワーク上の時刻サーバと情報を交換し、通信遅延などを考慮して時計を同期するプロトコルです。",
+    "example": "複数の時刻源を使ってサーバ群の時刻を合わせます。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "ネットワーク越しに時計を同期する",
+        "hint": "NTPの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "nntp",
+    "name": "NNTP",
+    "reading": "NNTP",
+    "category": "ネットワーク",
+    "definition": "ネットニュースの記事をサーバ間で配送したり、クライアントが取得・投稿したりするためのプロトコルです。",
+    "example": "ニュースグループの記事を別のニュースサーバへ転送します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "ネットニュースの記事を配送・取得する",
+        "hint": "NNTPの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "tftp",
+    "name": "TFTP",
+    "reading": "TFTP",
+    "category": "ネットワーク",
+    "definition": "UDPを使う簡易なファイル転送プロトコルです。FTPのような利用者認証の機能は持ちません。",
+    "example": "ネットワーク機器の起動用ファイルを転送します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "UDPを使う簡易なファイル転送",
+        "hint": "TFTPの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "igmp",
+    "name": "IGMP",
+    "reading": "IGMP",
+    "category": "ネットワーク",
+    "definition": "IPv4で、端末と近隣ルータとの間でマルチキャストグループへの参加情報などを交換するプロトコルです。",
+    "example": "ルータへ受信したいマルチキャストグループを知らせます。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "IPv4のマルチキャストグループ参加を管理する",
+        "hint": "IGMPの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "sip",
+    "name": "SIP",
+    "reading": "SIP",
+    "category": "ネットワーク",
+    "definition": "音声通話などのセッションを確立・変更・終了するための制御用プロトコルです。",
+    "example": "IP電話で相手を呼び出して通話セッションを開始します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "通話などのセッションを確立・制御する",
+        "hint": "SIPの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "ldap",
+    "name": "LDAP",
+    "reading": "LDAP",
+    "category": "ネットワーク",
+    "definition": "利用者や組織、機器などを階層的に管理するディレクトリへアクセスするためのプロトコルです。",
+    "example": "社内のディレクトリから利用者の属性を検索します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "ディレクトリ情報を検索・更新する",
+        "hint": "LDAPの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "dmz",
+    "name": "DMZ",
+    "reading": "DMZ",
+    "category": "ネットワーク",
+    "definition": "内部ネットワークとインターネットの間などに設ける、公開サーバ用の隔離されたネットワーク領域です。",
+    "example": "公開WebサーバをDMZへ置き、内部DBへの通信をFWで制限します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "公開サーバなどを内部ネットワークから隔離する領域",
+        "hint": "DMZの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "pptp",
+    "name": "PPTP",
+    "reading": "PPTP",
+    "category": "ネットワーク",
+    "definition": "PPPのフレームをIPネットワークでトンネル転送するための旧来のプロトコルです。",
+    "example": "離れた拠点間でPPP接続の内容を運びます。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "PPPフレームをトンネル転送する",
+        "hint": "PPTPの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "network-address",
+    "name": "ネットワークアドレス",
+    "reading": "Network Address",
+    "category": "ネットワーク",
+    "definition": "IPアドレスのネットワーク部を示し、IPv4の通常のサブネットではホスト部を全て0にした値です。",
+    "example": "192.168.10.0/24では192.168.10.0がネットワークを表します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "ホスト部を0にしてネットワーク自体を表すアドレス",
+        "hint": "ネットワークアドレスの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "broadcast-address",
+    "name": "ブロードキャストアドレス",
+    "reading": "Broadcast Address",
+    "category": "ネットワーク",
+    "definition": "同じ範囲の全端末へ送るための宛先アドレスです。IPv4のサブネットでは通常ホスト部を全て1にします。",
+    "example": "192.168.10.0/24の全端末へ192.168.10.255を宛先として送ります。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "範囲内の全端末へ送る宛先アドレス",
+        "hint": "ブロードキャストアドレスの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "host-part",
+    "name": "ホスト部",
+    "reading": "Host Part",
+    "category": "ネットワーク",
+    "definition": "IPアドレスのうち、同じネットワーク内のホストを区別するために使う部分です。境界はプレフィックス長などで決まります。",
+    "example": "/26のIPv4ネットワークでは下位6ビットがホスト部です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "同じネットワーク内のホストを識別する部分",
+        "hint": "ホスト部の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "loopback",
+    "name": "ループバック",
+    "reading": "Loopback",
+    "category": "ネットワーク",
+    "definition": "通信を自分自身へ戻し、同じ端末内のサービスへのアクセスや試験などに使う仕組みです。",
+    "example": "IPv4の127.0.0.1で自分のWebサーバに接続します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "自分自身へ通信を戻す",
+        "hint": "ループバックの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "wpa3-enterprise",
+    "name": "WPA3-Enterprise",
+    "reading": "WPA3-Enterprise",
+    "category": "ネットワーク",
+    "definition": "IEEE 802.1Xの認証基盤を用いる、組織向けのWPA3のセキュリティ方式です。利用者ごとの認証と動的な鍵の確立を行います。",
+    "example": "社員ごとの認証情報で無線LANへ接続します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "802.1Xの利用者認証と動的な鍵で無線LANを保護する",
+        "hint": "WPA3-Enterpriseの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "transmission-efficiency",
+    "name": "伝送効率",
+    "reading": "Transmission Efficiency",
+    "category": "ネットワーク",
+    "definition": "回線の理論上の伝送能力に対し、有効なデータの転送に使える割合です。制御情報や待ち時間などの影響を反映します。",
+    "example": "1Gビット/秒で効率50％なら有効速度を500Mビット/秒と見積もります。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "理論上の伝送能力のうち有効転送に使える割合",
+        "hint": "伝送効率の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "designated-port",
+    "name": "代表ポート",
+    "reading": "Designated Port",
+    "category": "ネットワーク",
+    "definition": "STPで、各セグメントからルートブリッジへ最良の経路を提供する側のポートです。",
+    "example": "リンク両端のルートまでのコストを比較して選びます。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "セグメントからルートへの最良経路を提供するポート",
+        "hint": "代表ポートの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "root-port",
+    "name": "ルートポート",
+    "reading": "Root Port",
+    "category": "ネットワーク",
+    "definition": "STPで、各非ルートブリッジがルートブリッジへ向かう最良経路として選ぶポートです。",
+    "example": "非ルートのスイッチが最小コストでルートに到達する上流ポートを選びます。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "非ルートブリッジからルートへ向かう最良経路のポート",
+        "hint": "ルートポートの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "root-bridge",
+    "name": "ルートブリッジ",
+    "reading": "Root Bridge",
+    "category": "ネットワーク",
+    "definition": "STPで、ループのない木構造を計算する基準として選出されるブリッジです。",
+    "example": "全てのスイッチがこのブリッジまでの経路コストを計算します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "STPの木構造の基準となるブリッジ",
+        "hint": "ルートブリッジの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "directed-broadcast",
+    "name": "ディレクテッドブロードキャスト",
+    "reading": "Directed Broadcast",
+    "category": "ネットワーク",
+    "definition": "特定のIPv4ネットワークを宛先とするブロードキャストです。宛先ネットワークのホスト部を全て1にして表します。",
+    "example": "192.168.10.255を192.168.10.0/24への一斉送信に使います。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "特定のIPv4ネットワークを指定するブロードキャスト",
+        "hint": "ディレクテッドブロードキャストの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "limited-broadcast",
+    "name": "リミテッドブロードキャスト",
+    "reading": "Limited Broadcast",
+    "category": "ネットワーク",
+    "definition": "255.255.255.255を宛先にする、同一リンク内に限定されたIPv4ブロードキャストです。ルータは通常中継しません。",
+    "example": "自分のネットワーク情報が未確定の端末がローカルへ送信します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "255.255.255.255でローカルに限定して送る",
+        "hint": "リミテッドブロードキャストの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "icmp-redirect",
+    "name": "Redirect",
+    "reading": "Redirect",
+    "category": "ネットワーク",
+    "definition": "ICMPで、送信元へより適切な次の転送先を知らせ、経路の変更を促すメッセージです。",
+    "example": "同じLAN上の別ルータへ直接送る方がよいことを通知します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "ICMPでより適切な経路を送信元へ通知する",
+        "hint": "Redirectの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "icmp-time-exceeded",
+    "name": "Time Exceeded",
+    "reading": "Time Exceeded",
+    "category": "ネットワーク",
+    "definition": "IPパケットのTTLの超過や再組立ての時間切れなどを送信元へ通知するICMPメッセージです。",
+    "example": "途中のルータでTTLが0になり、送信元へ時間切れを返します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "TTL超過や再組立ての時間切れを通知する",
+        "hint": "Time Exceededの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "ttl",
+    "name": "TTL",
+    "reading": "TTL",
+    "category": "ネットワーク",
+    "definition": "IPv4パケットがネットワーク内で無限に循環することを防ぐ値です。ルータで減らされ、0になったパケットは破棄されます。",
+    "example": "転送のたびにTTLを減らしてループするパケットを止めます。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "転送ごとに減らしてパケットの無限循環を防ぐ",
+        "hint": "TTLの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "network-tap",
+    "name": "ネットワークタップ",
+    "reading": "Network Tap",
+    "category": "ネットワーク",
+    "definition": "通信回線の信号などを分岐し、監視装置へトラフィックを取り出すための装置です。",
+    "example": "光回線の信号を光学的に分岐してセキュリティ監視へ渡します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "回線の信号を分岐して監視用に取り出す",
+        "hint": "ネットワークタップの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "wavelength-division-multiplexing",
+    "name": "波長分割多重",
+    "reading": "Wavelength Division Multiplexing",
+    "category": "ネットワーク",
+    "definition": "波長の異なる複数の光信号を、1本の光ファイバに重ねて伝送する技術です。",
+    "example": "複数の通信回線を異なる波長へ割り当ててまとめます。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "異なる波長の光を一つの光ファイバで伝送する",
+        "hint": "波長分割多重の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "layer2-switch",
+    "name": "レイヤー2スイッチ",
+    "reading": "Layer2 Switch",
+    "category": "ネットワーク",
+    "definition": "データリンク層で、学習したMACアドレスとポートの対応に基づきフレームを転送する装置です。",
+    "example": "宛先MACアドレスを見て必要なポートへだけ送ります。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "MACアドレスに基づいてフレームを転送する",
+        "hint": "レイヤー2スイッチの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "cache-control",
+    "name": "Cache-Control",
+    "reading": "Cache-Control",
+    "category": "ネットワーク",
+    "definition": "HTTPのキャッシュに保存や再利用の条件を伝えるヘッダーフィールドです。",
+    "example": "機密情報の応答にno-storeを指定します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "HTTPキャッシュの保存や再利用を制御する",
+        "hint": "Cache-Controlの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "cache-no-store",
+    "name": "no-store",
+    "reading": "no-store",
+    "category": "ネットワーク",
+    "definition": "HTTPのCache-Controlで、要求や応答をキャッシュに保存しないよう指示するディレクティブです。",
+    "example": "個人情報の応答をブラウザや共有キャッシュへ保存させません。",
+    "related": [
+      "cache-control",
+      "cache-no-cache"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "HTTPの要求や応答をキャッシュへ保存させない",
+        "hint": "no-storeの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "cache-no-cache",
+    "name": "no-cache",
+    "reading": "no-cache",
+    "category": "ネットワーク",
+    "definition": "HTTPのCache-Controlで、保存した応答を再利用する前に元サーバで検証するよう要求するディレクティブです。保存自体の禁止ではありません。",
+    "example": "キャッシュを使う前に条件付き要求で有効性を確認します。",
+    "related": [
+      "cache-control",
+      "cache-no-store"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "保存済み応答の再利用前に検証を要求する",
+        "hint": "no-cacheの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": [
+      "キャッシュへの保存を禁止する指定ではありません。保存禁止はno-storeです。"
+    ]
+  },
+  {
+    "id": "shared-cache",
+    "name": "共有キャッシュ",
+    "reading": "Shared Cache",
+    "category": "ネットワーク",
+    "definition": "複数の利用者のために応答などを保存・再利用するキャッシュです。HTTPではプロキシなどが該当します。",
+    "example": "社内プロキシが同じ公開コンテンツを複数人へ配信します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "複数の利用者で応答を保存・再利用するキャッシュ",
+        "hint": "共有キャッシュの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "unicast",
+    "name": "ユニキャスト",
+    "reading": "Unicast",
+    "category": "ネットワーク",
+    "definition": "一つの送信先を指定してデータを送る通信方式です。",
+    "example": "特定の端末のIPアドレスを宛先に通信します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "一つの宛先を指定して送信する",
+        "hint": "ユニキャストの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "broadcast",
+    "name": "ブロードキャスト",
+    "reading": "Broadcast",
+    "category": "ネットワーク",
+    "definition": "同じネットワークなどの範囲にある全ての端末へデータを送る通信方式です。",
+    "example": "同じLANへARP要求を一斉送信します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "対象範囲の全端末へ送信する",
+        "hint": "ブロードキャストの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "aaa",
+    "name": "AAA",
+    "reading": "AAA",
+    "category": "セキュリティ",
+    "definition": "認証・認可・アカウンティングをまとめた、ネットワークの利用を管理する枠組みです。RADIUSやDiameterなどで扱います。",
+    "example": "利用者の身元、利用を許すサービス、接続時間の記録を一つの認証基盤で管理します。",
+    "related": [
+      "authentication",
+      "authorization",
+      "accounting",
+      "radius",
+      "diameter"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "認証・認可・アカウンティングの三つから成る",
+        "hint": "AAAの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": [
+      "三つ目のAはAuditではなくAccountingです。"
+    ]
+  },
+  {
+    "id": "diameter",
+    "name": "Diameter",
+    "reading": "Diameter",
+    "category": "セキュリティ",
+    "definition": "認証、認可、アカウンティングを扱うプロトコルです。RADIUSを発展させ、信頼性のある転送や拡張性などを備えます。",
+    "example": "通信事業者のネットワークで加入者のサービス利用を管理します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "AAAを提供しRADIUSを発展させたプロトコル",
+        "hint": "Diameterの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "accounting",
+    "name": "アカウンティング",
+    "reading": "Accounting",
+    "category": "セキュリティ",
+    "definition": "利用者がシステムやネットワークをいつどれだけ使ったかなどの利用記録を収集・管理することです。",
+    "example": "無線LANの接続開始・終了時刻や通信量を記録します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "利用状況を記録し管理する",
+        "hint": "アカウンティングの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "adversarial-examples",
+    "name": "Adversarial Examples",
+    "reading": "Adversarial Examples",
+    "category": "セキュリティ",
+    "definition": "学習済みモデルに誤った判断をさせるよう、微小な摂動などを加えた入力です。敵対的サンプルとも呼びます。",
+    "example": "人には同じ標識に見える画像へノイズを加え、画像認識モデルの分類を変えます。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "入力の微小な変化などでモデルを誤認識させる",
+        "hint": "Adversarial Examplesの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": [
+      "入力を改変して誤認識させる攻撃であり、学習データを推定するModel Inversionとは異なります。"
+    ]
+  },
+  {
+    "id": "cvss",
+    "name": "CVSS",
+    "reading": "CVSS",
+    "category": "セキュリティ",
+    "definition": "脆弱性の深刻度を共通の指標と計算方法で評価する仕組みです。環境や脅威の状況と併せて対応の優先度を判断します。",
+    "example": "遠隔から認証なしで悪用できる脆弱性のスコアを確認します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "脆弱性の深刻度を共通の尺度で評価する",
+        "hint": "CVSSの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": [
+      "CWEは弱点の種類、CVSSは脆弱性の深刻度です。"
+    ]
+  },
+  {
+    "id": "stix",
+    "name": "STIX",
+    "reading": "STIX",
+    "category": "セキュリティ",
+    "definition": "サイバー脅威に関する情報を構造化して表現するための仕様です。攻撃手法や侵害指標などの関係も記述できます。",
+    "example": "悪性IPアドレスと攻撃キャンペーンの関係を機械処理できる形で共有します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "サイバー脅威情報を構造化して記述する仕様",
+        "hint": "STIXの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": [
+      "情報をどう記述するかがSTIXで、どう交換するかがTAXIIです。"
+    ]
+  },
+  {
+    "id": "taxii",
+    "name": "TAXII",
+    "reading": "TAXII",
+    "category": "セキュリティ",
+    "definition": "STIXなどで表現したサイバー脅威情報を交換するためのアプリケーション層のプロトコルです。",
+    "example": "組織間で脅威情報のコレクションを取得し、検知ルールの更新に使います。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "構造化された脅威情報を交換するプロトコル",
+        "hint": "TAXIIの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": [
+      "STIXのような表現形式自体ではなく、脅威情報を交換するためのプロトコルです。"
+    ]
+  },
+  {
+    "id": "ntp-reflection",
+    "name": "NTPリフレクション攻撃",
+    "reading": "Ntp Reflection",
+    "category": "セキュリティ",
+    "definition": "送信元を標的のIPアドレスに偽装した要求をNTPサーバへ送り、その応答を標的へ集中させる攻撃です。大きな応答で通信量を増幅する場合があります。",
+    "example": "小さなNTP要求に対する大きな応答を、多数のサーバから標的へ送らせます。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "NTPの応答を標的へ反射・増幅させる",
+        "hint": "NTPリフレクション攻撃の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "smurf",
+    "name": "Smurf攻撃",
+    "reading": "Smurf",
+    "category": "セキュリティ",
+    "definition": "標的のIPアドレスを送信元とするICMPエコー要求をブロードキャストし、多数の応答を標的へ集中させる攻撃です。",
+    "example": "同じネットワーク内の複数端末から標的へエコー応答を送らせます。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "偽装したICMP要求への多数の応答で標的を妨害する",
+        "hint": "Smurf攻撃の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "passkey",
+    "name": "パスキー",
+    "reading": "Passkey",
+    "category": "セキュリティ",
+    "definition": "FIDOの仕組みを用いた公開鍵暗号方式の認証資格情報です。対応するサービスにだけ使える鍵で認証し、パスワードをサーバと共有しません。",
+    "example": "端末の生体認証で秘密鍵の使用を許可し、サーバのチャレンジに署名してログインします。",
+    "related": [
+      "fido",
+      "biometrics"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "サービスに結び付いた公開鍵の認証資格情報",
+        "hint": "パスキーの目的や仕組みを説明できますか？"
+      },
+      {
+        "id": "local-verification",
+        "title": "生体情報を使う場合も認証器内で照合する",
+        "hint": "生体情報そのものはサーバへ送りますか？"
+      }
+    ],
+    "commonMistakes": [
+      "生体情報そのものをIdPやWebサーバへ送信して照合する方式ではありません。"
+    ]
+  },
+  {
+    "id": "fido",
+    "name": "FIDO",
+    "reading": "FIDO",
+    "category": "セキュリティ",
+    "definition": "パスワードへの依存を減らすため、認証器内の秘密鍵とサービス側の公開鍵を使って認証する仕様群です。",
+    "example": "指紋で端末の鍵を使用可能にし、署名した応答をサーバで検証します。",
+    "related": [
+      "passkey",
+      "public-key",
+      "private-key"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "認証器の秘密鍵とサーバの公開鍵で認証する",
+        "hint": "FIDOの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": [
+      "利用者確認に使う生体情報そのものは、通常は認証器の外へ送りません。"
+    ]
+  },
+  {
+    "id": "proxy-authentication-sso",
+    "name": "代理認証方式",
+    "reading": "Proxy Authentication Sso",
+    "category": "セキュリティ",
+    "definition": "シングルサインオンで、利用者に代わって対象システムのログイン画面へ認証情報を入力する方式です。",
+    "example": "端末のソフトウェアが業務アプリのログイン画面を検出してIDとパスワードを入力します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "利用者に代わってログイン画面へ認証情報を入力する",
+        "hint": "代理認証方式の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "soar",
+    "name": "SOAR",
+    "reading": "SOAR",
+    "category": "セキュリティ",
+    "definition": "複数のセキュリティツールを連携し、調査や対応のワークフローを自動化・効率化する技術です。",
+    "example": "SIEMの通知を受けて関連情報を収集し、承認後に端末を隔離します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "ツールの連携と対応手順の自動化で運用を効率化する",
+        "hint": "SOARの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": [
+      "ログの集約・相関分析を中心に行うSIEMと、対応手順を連携・自動化するSOARを区別します。"
+    ]
+  },
+  {
+    "id": "waf",
+    "name": "WAF",
+    "reading": "WAF",
+    "category": "セキュリティ",
+    "definition": "WebアプリケーションへのHTTP通信を検査し、SQLインジェクションやXSSなどの攻撃を検出・遮断する仕組みです。",
+    "example": "公開Webサイトの前段で不正な入力を含むリクエストを遮断します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "HTTP通信を検査してWebアプリケーションへの攻撃を防ぐ",
+        "hint": "WAFの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "false-positive",
+    "name": "フォールスポジティブ",
+    "reading": "False Positive",
+    "category": "セキュリティ",
+    "definition": "正常なものを誤って異常や攻撃として検知することです。誤検知とも呼びます。",
+    "example": "WAFが正当な数式入力を攻撃と判断して遮断します。",
+    "related": [
+      "false-negative",
+      "waf"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "正常なものを攻撃・異常と誤判定する",
+        "hint": "フォールスポジティブの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": [
+      "攻撃の見逃しはフォールスネガティブで、正常通信の誤検知とは逆です。"
+    ]
+  },
+  {
+    "id": "false-negative",
+    "name": "フォールスネガティブ",
+    "reading": "False Negative",
+    "category": "セキュリティ",
+    "definition": "実際には異常や攻撃であるものを、正常として見逃すことです。",
+    "example": "不正なSQLを含むリクエストがWAFを通過します。",
+    "related": [
+      "false-positive",
+      "waf"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "実際の攻撃・異常を見逃す",
+        "hint": "フォールスネガティブの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": [
+      "正常な通信を遮断する誤検知とは逆です。"
+    ]
+  },
+  {
+    "id": "inline-mode",
+    "name": "インラインモード",
+    "reading": "Inline Mode",
+    "category": "セキュリティ",
+    "definition": "監視・防御装置を通信経路に直列に配置し、通信を装置へ通過させる動作形態です。",
+    "example": "IPSが全パケットを検査し、不正な通信をその場で遮断します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "通信を通過させる経路上に装置を配置する",
+        "hint": "インラインモードの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": [
+      "ミラーポートなどで経路外からコピーを受ける配置ではありません。"
+    ]
+  },
+  {
+    "id": "anomaly-detection",
+    "name": "アノマリ型",
+    "reading": "Anomaly Detection",
+    "category": "セキュリティ",
+    "definition": "通常の振る舞いを基準として、そこから外れたものを異常として検出する方式です。",
+    "example": "普段と大きく異なる通信量や接続先への変化を検知します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "正常時の基準からの逸脱で異常を検出する",
+        "hint": "アノマリ型の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": [
+      "既知の攻撃パターンへの一致を見るシグネチャ型とは異なります。"
+    ]
+  },
+  {
+    "id": "signature-detection",
+    "name": "シグネチャ型",
+    "reading": "Signature Detection",
+    "category": "セキュリティ",
+    "definition": "既知の攻撃などの特徴を定義し、そのパターンに一致するものを検出する方式です。",
+    "example": "攻撃リクエストに特徴的な文字列や通信パターンを照合します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "既知の攻撃パターンへの一致で検出する",
+        "hint": "シグネチャ型の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": [
+      "正常時からの逸脱で判定するアノマリ型とは異なります。"
+    ]
+  },
+  {
+    "id": "clickjacking",
+    "name": "クリックジャッキング",
+    "reading": "Clickjacking",
+    "category": "セキュリティ",
+    "definition": "透明なフレームなどで画面を重ね、利用者に見えている操作とは異なる操作を行わせる攻撃です。",
+    "example": "無害なボタンの上に設定変更のボタンを透明に重ねます。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "画面を重ねて意図しないクリック操作を誘導する",
+        "hint": "クリックジャッキングの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": [
+      "cookieのHttpOnlyやSecure、HTTPSを強制するHSTSだけではフレームの埋込みを防げません。"
+    ]
+  },
+  {
+    "id": "x-frame-options",
+    "name": "X-Frame-Options",
+    "reading": "X-Frame-Options",
+    "category": "セキュリティ",
+    "definition": "Webページをフレームへ埋め込めるかをブラウザへ伝えるHTTPレスポンスヘッダーです。クリックジャッキング対策に使います。",
+    "example": "DENYを指定してページをフレーム内へ表示させません。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "フレームへの埋込みを制限するHTTPヘッダー",
+        "hint": "X-Frame-Optionsの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "httponly-cookie",
+    "name": "HttpOnly属性",
+    "reading": "Httponly Cookie",
+    "category": "セキュリティ",
+    "definition": "JavaScriptなどからcookieを読み書きできないようにする属性です。XSSでcookieの値が盗まれる影響を抑えます。",
+    "example": "セッションcookieへHttpOnlyを付け、document.cookieから読めなくします。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "スクリプトからのcookieアクセスを制限する",
+        "hint": "HttpOnly属性の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "secure-cookie",
+    "name": "Secure属性",
+    "reading": "Secure Cookie",
+    "category": "セキュリティ",
+    "definition": "cookieをHTTPSなどの安全な通信でのみ送信するように指定する属性です。",
+    "example": "セッションcookieが暗号化されていないHTTPへ送られないようにします。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "cookieの送信を安全な通信に限定する",
+        "hint": "Secure属性の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "hsts",
+    "name": "HSTS",
+    "reading": "HSTS",
+    "category": "セキュリティ",
+    "definition": "ブラウザに一定期間そのホストへHTTPSでのみ接続するよう要求する仕組みです。Strict-Transport-Securityヘッダーなどで設定します。",
+    "example": "HTTPのURLを開いてもブラウザが送信前にHTTPSへ変更します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "指定期間ホストへの接続をHTTPSに限定する",
+        "hint": "HSTSの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": [
+      "クリックジャッキング対策のフレーム制限や、EV証明書の表示を制御する仕組みではありません。"
+    ]
+  },
+  {
+    "id": "dtls",
+    "name": "DTLS",
+    "reading": "DTLS",
+    "category": "セキュリティ",
+    "definition": "TLSの保護をUDPなどのデータグラム通信に適用するプロトコルです。暗号化や改ざん検知を行い、損失や順序の変化を考慮します。",
+    "example": "UDPで送るリアルタイム通信の内容を保護します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "データグラム通信に暗号化や完全性保護を提供する",
+        "hint": "DTLSの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "authorization-server",
+    "name": "認可サーバ",
+    "reading": "Authorization Server",
+    "category": "セキュリティ",
+    "definition": "OAuthなどで利用者の許可に基づいてクライアントへアクセストークンを発行するサーバです。",
+    "example": "写真へのアクセスを利用者が許可した後、アプリにトークンを発行します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "利用者の許可に基づいてアクセストークンを発行する",
+        "hint": "認可サーバの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "resource-owner",
+    "name": "リソースオーナー",
+    "reading": "Resource Owner",
+    "category": "セキュリティ",
+    "definition": "保護されたリソースへのアクセスを許可する権限を持つ主体です。OAuthでは利用者本人などが該当します。",
+    "example": "自分の写真を編集アプリが読み出すことを許可します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "保護されたリソースへのアクセスを許可できる主体",
+        "hint": "リソースオーナーの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "csrf-token",
+    "name": "CSRFトークン",
+    "reading": "Csrf Token",
+    "category": "セキュリティ",
+    "definition": "正規の画面からの要求であることをサーバが確認するため、フォームなどに含めて照合する推測困難な値です。",
+    "example": "送信されたトークンをセッション側の値と照合し、不一致なら更新を拒否します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "推測困難な値の照合で要求の偽造を防ぐ",
+        "hint": "CSRFトークンの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": [
+      "HTMLの特殊文字の置換だけでは、利用者の権限を使った要求の偽造を防げません。"
+    ]
+  },
+  {
+    "id": "http-header-injection",
+    "name": "HTTPヘッダインジェクション",
+    "reading": "Http Header Injection",
+    "category": "セキュリティ",
+    "definition": "外部入力に改行などを混入し、HTTP応答のヘッダーや本文の構成を不正に変える攻撃です。",
+    "example": "Locationヘッダーの値に改行を混入し、別のヘッダーを追加します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "改行などでHTTPヘッダーや応答の構成を改変する",
+        "hint": "HTTPヘッダインジェクションの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "session-hijacking",
+    "name": "セッションハイジャック",
+    "reading": "Session Hijacking",
+    "category": "セキュリティ",
+    "definition": "セッションIDの窃取や推測などにより、認証済み利用者のセッションを不正に利用する攻撃です。",
+    "example": "盗んだcookieを使って本人として操作します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "セッションを不正に取得して利用者になりすます",
+        "hint": "セッションハイジャックの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "mitb",
+    "name": "MITB攻撃",
+    "reading": "Mitb",
+    "category": "セキュリティ",
+    "definition": "ブラウザに侵入したマルウェアが、正規サイトとの通信内容や表示を改ざんする攻撃です。",
+    "example": "送金先口座を送信直前に別の口座へ置き換えます。",
+    "related": [
+      "transaction-signing"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "侵害したブラウザ内で通信内容や表示を改ざんする",
+        "hint": "MITB攻撃の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": [
+      "TLSやログイン時だけのワンタイムパスワードでは、ブラウザ内の取引改ざんを防げません。"
+    ]
+  },
+  {
+    "id": "transaction-signing",
+    "name": "トランザクション署名",
+    "reading": "Transaction Signing",
+    "category": "セキュリティ",
+    "definition": "送金先や金額などの取引情報に結び付いた確認値を作り、利用者が確認した内容と受信側の内容の一致を検証する仕組みです。",
+    "example": "別端末で入力した送金先と金額から確認値を生成します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "取引内容に結び付いた確認値で改ざんを検証する",
+        "hint": "トランザクション署名の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": [
+      "ログイン用のワンタイムパスワードとは異なり、送金先などの取引内容に結び付けます。"
+    ]
+  },
+  {
+    "id": "notice",
+    "name": "NOTICE",
+    "reading": "NOTICE",
+    "category": "セキュリティ",
+    "definition": "インターネット上のIoT機器などを調査し、悪用のおそれのある機器の利用者へISPなどを通じて注意喚起する取組です。",
+    "example": "推測しやすい認証情報を使う機器の利用者へ対策を促します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "悪用のおそれがあるIoT機器を調査し注意喚起する",
+        "hint": "NOTICEの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": [
+      "IoT機器メーカーへの情報提供だけや、申告者への無料の侵入テストの制度ではありません。"
+    ]
+  },
+  {
+    "id": "nict",
+    "name": "NICT",
+    "reading": "NICT",
+    "category": "セキュリティ",
+    "definition": "情報通信分野の研究開発を行う国立研究開発法人情報通信研究機構です。IoT機器の調査やサイバー攻撃の観測などにも取り組みます。",
+    "example": "NOTICEでセキュリティ上の問題がある機器を調査します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "情報通信研究を担いサイバーセキュリティにも取り組む機関",
+        "hint": "NICTの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "scap",
+    "name": "SCAP",
+    "reading": "SCAP",
+    "category": "セキュリティ",
+    "definition": "セキュリティ設定や脆弱性情報を標準化して表現・交換・処理し、管理や評価の自動化を支えるNISTの仕様群です。",
+    "example": "機器の設定を基準と照合し、結果を共通形式で交換します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "脆弱性や設定の管理・評価を自動化するための仕様群",
+        "hint": "SCAPの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": [
+      "SIEMのログ分析、SOARの対応自動化とは対象が異なります。"
+    ]
+  },
+  {
+    "id": "dnssec",
+    "name": "DNSSEC",
+    "reading": "DNSSEC",
+    "category": "セキュリティ",
+    "definition": "DNSのデータにデジタル署名を付け、検証側が作成元の正当性と改ざんの有無を確認できるようにする拡張です。",
+    "example": "信頼の連鎖をたどって応答レコードの署名を検証します。",
+    "related": [
+      "dns",
+      "digital-signature"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "DNSデータの真正性と完全性を署名で検証する",
+        "hint": "DNSSECの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": [
+      "データの検証であり、通信内容を暗号化する仕組みではありません。"
+    ]
+  },
+  {
+    "id": "ismap-liu",
+    "name": "ISMAP-LIU",
+    "reading": "ISMAP-LIU",
+    "category": "セキュリティ",
+    "definition": "ISMAPのうち、セキュリティ上のリスクの小さな業務・情報の処理に使うSaaSを対象とする仕組みです。",
+    "example": "低リスクの業務向けSaaSの登録状況を調達時に確認します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "低リスクの業務・情報を扱うSaaSを対象とする",
+        "hint": "ISMAP-LIUの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "sim3",
+    "name": "SIM3",
+    "reading": "SIM3",
+    "category": "セキュリティ",
+    "definition": "Open CSIRT Foundationが開発した、セキュリティインシデント管理の成熟度を評価するモデルです。組織、人材、ツール、プロセスを扱います。",
+    "example": "CSIRTの体制や対応手順を評価して改善項目を見つけます。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "セキュリティインシデント管理の成熟度を評価する",
+        "hint": "SIM3の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": [
+      "CMMIは開発などのプロセス、SAMMはソフトウェア保証の成熟度を扱います。"
+    ]
+  },
+  {
+    "id": "samm",
+    "name": "SAMM",
+    "reading": "SAMM",
+    "category": "セキュリティ",
+    "definition": "OWASPによる、ソフトウェア保証活動の成熟度を評価・改善するためのモデルです。",
+    "example": "開発工程で実施するセキュリティ活動を評価して改善計画を立てます。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "ソフトウェア保証活動の成熟度を評価・改善する",
+        "hint": "SAMMの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "cwe",
+    "name": "CWE",
+    "reading": "CWE",
+    "category": "セキュリティ",
+    "definition": "ソフトウェアやハードウェアのセキュリティ上の弱点を種類ごとに分類した一覧です。個別の製品の脆弱性IDとは異なります。",
+    "example": "SQLインジェクションという弱点の種類をCWEで確認します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "セキュリティ上の弱点の種類を分類する",
+        "hint": "CWEの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": [
+      "個別の脆弱性IDを割り当てるCVEや、深刻度を評価するCVSSとは異なります。"
+    ]
+  },
+  {
+    "id": "cpe",
+    "name": "CPE",
+    "reading": "CPE",
+    "category": "セキュリティ",
+    "definition": "IT製品やプラットフォームを識別するための共通の命名体系です。",
+    "example": "脆弱性が影響するOSやアプリケーションの種類とバージョンを指定します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "製品やプラットフォームを共通の名称で識別する",
+        "hint": "CPEの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "shadow-it",
+    "name": "シャドーIT",
+    "reading": "Shadow It",
+    "category": "セキュリティ",
+    "definition": "組織の管理部門の許可や把握を経ずに、従業員などが業務でIT機器やサービスを利用することです。",
+    "example": "個人契約のクラウドストレージへ業務ファイルを保存します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "組織の許可や管理を経ない業務上のIT利用",
+        "hint": "シャドーITの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "enhanced-open",
+    "name": "Enhanced Open",
+    "reading": "Enhanced Open",
+    "category": "セキュリティ",
+    "definition": "パスワードなしの無線LANで、OWEを用いて接続ごとの無線区間の暗号化を行うための仕様です。接続先の認証は提供しません。",
+    "example": "公衆Wi-Fiで共通パスワードを配らずに無線通信を暗号化します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "パスワードなしの無線LANで通信を暗号化する",
+        "hint": "Enhanced Openの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": [
+      "暗号化することと、正規のアクセスポイントだと認証することは別です。"
+    ]
+  },
+  {
+    "id": "owe",
+    "name": "OWE",
+    "reading": "OWE",
+    "category": "セキュリティ",
+    "definition": "認証を行わずに鍵交換で通信の鍵を確立し、無線区間を暗号化する方式です。Enhanced Openで利用します。",
+    "example": "公開Wi-Fiの接続ごとに異なる暗号化鍵を確立します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "事前共有パスワードなしで無線通信の鍵を確立する",
+        "hint": "OWEの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": [
+      "アクセスポイントの身元を認証する仕組みではありません。"
+    ]
+  },
+  {
+    "id": "dns-caa",
+    "name": "DNS CAA",
+    "reading": "DNS CAA",
+    "category": "セキュリティ",
+    "definition": "ドメインの証明書を発行してよい認証局をDNSで指定するレコードです。意図しない証明書発行のリスクを抑えます。",
+    "example": "特定の認証局だけにexample.comの証明書発行を許可します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "証明書発行を許可する認証局をDNSで指定する",
+        "hint": "DNS CAAの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "password-spray",
+    "name": "パスワードスプレー攻撃",
+    "reading": "Password Spray",
+    "category": "セキュリティ",
+    "definition": "少数のよく使われるパスワードを多数の利用者IDに試す攻撃です。単一IDの連続失敗によるロックを避けようとします。",
+    "example": "よくあるパスワードを全社員のIDへ時間を空けて試します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "少数のパスワードを多数のIDへ試す",
+        "hint": "パスワードスプレー攻撃の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": [
+      "一つのIDに多数のパスワードを試す攻撃や、流出済みID・パスワードの組を使う攻撃とは異なります。"
+    ]
+  },
+  {
+    "id": "dictionary-attack",
+    "name": "辞書攻撃",
+    "reading": "Dictionary Attack",
+    "category": "セキュリティ",
+    "definition": "単語や人名、よく使われるパスワードなどの候補を辞書から選び、順に認証へ試す攻撃です。",
+    "example": "辞書の単語と数字を組み合わせてログインを試します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "辞書にある候補をパスワードとして順に試す",
+        "hint": "辞書攻撃の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "brute-force",
+    "name": "総当たり攻撃",
+    "aliases": [
+      "ブルートフォース攻撃"
+    ],
+    "reading": "Brute Force",
+    "category": "セキュリティ",
+    "definition": "可能な候補を網羅的に試してパスワードや鍵などを探す攻撃です。ブルートフォース攻撃とも呼びます。",
+    "example": "4桁の暗証番号を0000から9999まで全て試します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "可能な候補を網羅的に試す",
+        "hint": "総当たり攻撃の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "keylogger",
+    "name": "キーロガー",
+    "reading": "Keylogger",
+    "category": "セキュリティ",
+    "definition": "キーボードの入力内容を記録するソフトウェアや装置です。不正に設置されるとパスワードなどの窃取に使われます。",
+    "example": "入力したIDとパスワードを裏で記録して外部へ送ります。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "キー入力を記録し情報窃取などに使われる",
+        "hint": "キーロガーの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "man-in-the-middle",
+    "name": "中間者攻撃",
+    "reading": "Man In The Middle",
+    "category": "セキュリティ",
+    "definition": "通信する当事者の間へ介入し、相手になりすまして盗聴や改ざんなどを行う攻撃です。",
+    "example": "偽のアクセスポイントを経由させて通信内容を中継・改変します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "当事者間へ介入して盗聴・改ざんなどを行う",
+        "hint": "中間者攻撃の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "password",
+    "name": "パスワード",
+    "reading": "Password",
+    "category": "セキュリティ",
+    "definition": "利用者が知っている秘密の文字列を照合し、身元の確認などに用いる認証情報です。",
+    "example": "ログイン時に入力した文字列をサーバが検証します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "利用者が知る秘密の文字列で認証する",
+        "hint": "パスワードの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "osint",
+    "name": "OSINT",
+    "reading": "OSINT",
+    "category": "セキュリティ",
+    "definition": "公開されている情報を収集・分析し、目的に役立つ知見を得る活動です。",
+    "example": "公式サイトや公開SNSから組織の構成や連絡先を調べます。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "公開情報を収集・分析して知見を得る",
+        "hint": "OSINTの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "security-action",
+    "name": "SECURITY ACTION",
+    "reading": "SECURITY ACTION",
+    "category": "セキュリティ",
+    "definition": "中小企業などが情報セキュリティ対策への取組を自己宣言するIPAの制度です。第三者が安全性を認証する制度ではありません。",
+    "example": "自社の対策への取組を一つ星や二つ星として宣言します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "情報セキュリティ対策への取組を自己宣言する制度",
+        "hint": "SECURITY ACTIONの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": [
+      "取組の自己宣言であり、第三者の審査に合格したという認証ではありません。"
+    ]
+  },
+  {
+    "id": "ipa",
+    "name": "IPA",
+    "reading": "IPA",
+    "category": "セキュリティ",
+    "definition": "情報処理推進機構の略称です。情報セキュリティ対策、デジタル人材育成、情報処理技術者試験などに取り組む独立行政法人です。",
+    "example": "脆弱性対策の情報や中小企業向けのガイドラインを公開します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "日本の情報処理・セキュリティ・人材育成などを支援する機関",
+        "hint": "IPAの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "cybersecurity-management-guidelines",
+    "name": "サイバーセキュリティ経営ガイドライン",
+    "reading": "Cybersecurity Management Guidelines",
+    "category": "セキュリティ",
+    "definition": "経営者が認識すべき原則と、責任者へ指示すべき重要事項などをまとめた経済産業省・IPAの指針です。",
+    "example": "経営者がセキュリティ投資や対応体制の方針を示します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "経営者の責任と指示すべきセキュリティ事項を示す指針",
+        "hint": "サイバーセキュリティ経営ガイドラインの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "cryptrec-project",
+    "name": "CRYPTREC",
+    "reading": "CRYPTREC",
+    "category": "セキュリティ",
+    "definition": "電子政府で使用する暗号などの安全性・実装性能を評価・監視し、暗号の適切な利用を検討する取組です。",
+    "example": "CRYPTREC暗号リストの対象暗号を評価し、安全性の変化を監視します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "暗号技術の評価・監視や適切な運用を検討する",
+        "hint": "CRYPTRECの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "ismap-criteria",
+    "name": "ISMAP管理基準",
+    "reading": "Isms Criteria",
+    "category": "セキュリティ",
+    "definition": "政府向けクラウドサービスのセキュリティ評価で用いる基準です。国際規格やJASAのクラウド情報セキュリティ管理基準などを基礎とします。",
+    "example": "クラウド事業者の管理策が調達要件を満たすか評価します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "ISMAPでクラウドサービスのセキュリティを評価する基準",
+        "hint": "ISMAP管理基準の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "csf-1-1",
+    "name": "CSF 1.1",
+    "reading": "CSF 1.1",
+    "category": "セキュリティ",
+    "definition": "NISTのサイバーセキュリティフレームワークの1.1版です。コアを識別・防御・検知・対応・復旧の五つの機能で整理します。",
+    "example": "五つの機能で現状と目標の差を整理します。",
+    "related": [
+      "csf-2"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "識別・防御・検知・対応・復旧の五機能で整理する",
+        "hint": "CSF 1.1の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "authentication-server",
+    "name": "認証サーバ",
+    "reading": "Authentication Server",
+    "category": "セキュリティ",
+    "definition": "利用者や機器の認証情報を検証し、認証の結果を返すサーバです。",
+    "example": "RADIUSサーバがアクセスポイントからの要求を受け、利用者を認証します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "認証情報を検証して認証結果を返すサーバ",
+        "hint": "認証サーバの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "privileged-id",
+    "name": "特権ID",
+    "reading": "Privileged Id",
+    "category": "セキュリティ",
+    "definition": "通常の利用者より強い管理権限を持ち、システム設定やデータの直接変更などを行えるIDです。",
+    "example": "DB管理者のIDで表の直接修正を行います。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "システムやデータを管理する強い権限を持つID",
+        "hint": "特権IDの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "audit-trail",
+    "name": "監査証跡",
+    "reading": "Audit Trail",
+    "category": "セキュリティ",
+    "definition": "誰がいつ何を行ったかなどを後から追跡・検証するための記録です。",
+    "example": "特権IDによるデータの変更内容と実行者を保存します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "操作や変更を後から追跡・検証できる記録",
+        "hint": "監査証跡の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "segregation-of-duties",
+    "name": "職務の分離",
+    "reading": "Segregation Of Duties",
+    "category": "セキュリティ",
+    "definition": "不正や誤りを抑えるため、相互に牽制すべき業務や権限を別の担当者などへ分けることです。",
+    "example": "データ変更の依頼、承認、実行を一人で完結させません。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "相互に牽制する業務や権限を分ける",
+        "hint": "職務の分離の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "access-management",
+    "name": "アクセス管理",
+    "reading": "Access Management",
+    "category": "セキュリティ",
+    "definition": "利用者の登録・変更・削除や権限の付与・見直しなどを通じ、資源へのアクセスを適切に管理する活動です。",
+    "example": "退職した利用者のIDを無効にし、異動後の権限を見直します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "利用者IDや権限をライフサイクルに沿って管理する",
+        "hint": "アクセス管理の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "access-control",
+    "name": "アクセスコントロール",
+    "aliases": [
+      "アクセス制御"
+    ],
+    "reading": "Access Control",
+    "category": "セキュリティ",
+    "definition": "誰がどの資源にどの操作を行えるかを、決められた規則に従って制御することです。",
+    "example": "担当者だけが顧客情報を更新できるようにします。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "主体と資源と操作に応じてアクセスを制御する",
+        "hint": "アクセスコントロールの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "access-rights",
+    "name": "アクセス権限",
+    "aliases": [
+      "権限"
+    ],
+    "reading": "Access Rights",
+    "category": "セキュリティ",
+    "definition": "利用者やプログラムに許された、資源に対する読取り・更新・実行などの操作の範囲です。",
+    "example": "参照だけできる利用者にはDELETEの権限を付けません。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "資源に対して許可された操作の範囲",
+        "hint": "アクセス権限の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "user-id",
+    "name": "利用者ID",
+    "reading": "User Id",
+    "category": "セキュリティ",
+    "definition": "システムで利用者を識別するための情報です。秘密であることを前提とするパスワードとは役割が異なります。",
+    "example": "社員番号をログイン時の利用者IDとして使います。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "利用者を識別する情報",
+        "hint": "利用者IDの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "penetration-test",
+    "name": "ペネトレーションテスト",
+    "reading": "Penetration Test",
+    "category": "セキュリティ",
+    "definition": "許可された範囲で実際に攻撃や侵入を試み、セキュリティ対策の実効性や侵入可能性を確認するテストです。",
+    "example": "公開サーバの弱点を利用して侵入や権限取得が可能か調べます。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "攻撃・侵入を実際に試みて対策の実効性を確認する",
+        "hint": "ペネトレーションテストの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "shared-responsibility",
+    "name": "責任共有モデル",
+    "reading": "Shared Responsibility",
+    "category": "セキュリティ",
+    "definition": "クラウドサービスの種類などに応じ、利用者と提供者がセキュリティや運用の責任を分担する考え方です。",
+    "example": "PaaSでは提供者がOSを管理し、利用者はアプリケーションの安全性を管理します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "サービス区分に応じて利用者と提供者の責任を分ける",
+        "hint": "責任共有モデルの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "registration-authority",
+    "name": "RA",
+    "aliases": [
+      "登録局"
+    ],
+    "reading": "RA",
+    "category": "セキュリティ",
+    "definition": "PKIの登録局であり、証明書申請者の本人確認や申請審査を行い、発行の承認・却下を担います。",
+    "example": "申請者の確認資料を審査し、認証局へ証明書発行の承認を伝えます。",
+    "related": [
+      "pki",
+      "certificate-authority",
+      "validation-authority"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "本人確認を行い証明書の発行申請を審査する",
+        "hint": "RAの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": [
+      "証明書に署名して発行するのは認証局（CA）です。RAは申請者を審査します。"
+    ]
+  },
+  {
+    "id": "supplicant",
+    "name": "サプリカント",
+    "reading": "Supplicant",
+    "category": "セキュリティ",
+    "definition": "IEEE 802.1Xで認証を要求する端末側の機器やソフトウェアです。",
+    "example": "無線LANへ接続するPCが認証情報を送ります。",
+    "related": [
+      "ieee8021x",
+      "authenticator",
+      "radius"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "802.1Xで認証を要求する端末側の機能",
+        "hint": "サプリカントの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "authenticator",
+    "name": "オーセンティケータ",
+    "reading": "Authenticator",
+    "category": "セキュリティ",
+    "definition": "IEEE 802.1Xで端末と認証サーバの間を仲介し、認証結果に応じて接続を制御する機能です。",
+    "example": "アクセスポイントが認証を仲介し、成功後に端末の通信を許可します。",
+    "related": [
+      "ieee8021x",
+      "supplicant",
+      "authentication-server"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "認証を仲介し結果に応じてネットワーク接続を制御する",
+        "hint": "オーセンティケータの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "radius",
+    "name": "RADIUS",
+    "reading": "RADIUS",
+    "category": "セキュリティ",
+    "definition": "ネットワーク利用者などの認証・認可・アカウンティングを扱うプロトコルです。接続制御装置がクライアントとして認証サーバと連携します。",
+    "example": "アクセスポイントが利用者の認証要求をRADIUSサーバへ送ります。",
+    "related": [
+      "aaa",
+      "ieee8021x"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "接続制御装置と認証サーバ間でAAAを扱う",
+        "hint": "RADIUSの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "eap",
+    "name": "EAP",
+    "reading": "EAP",
+    "category": "セキュリティ",
+    "definition": "様々な認証方式を運ぶための拡張可能な認証の枠組みです。IEEE 802.1Xなどで利用します。",
+    "example": "EAP-TLSで証明書を使った認証を行います。",
+    "related": [
+      "ieee8021x"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "複数の認証方式を共通の枠組みで扱う",
+        "hint": "EAPの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "ocsp",
+    "name": "OCSP",
+    "reading": "OCSP",
+    "category": "セキュリティ",
+    "definition": "公開鍵証明書の失効状態をオンラインで問い合わせるためのプロトコルです。",
+    "example": "証明書のシリアル番号を基に、失効しているか応答を得ます。",
+    "related": [
+      "crl",
+      "validation-authority"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "個々の証明書の失効状態をオンラインで確認する",
+        "hint": "OCSPの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "placeholder",
+    "name": "プレースホルダ",
+    "reading": "Placeholder",
+    "category": "セキュリティ",
+    "definition": "SQLの構造と値を分離するため、値を後から割り当てる位置を示す仕組みです。適切なバインドでSQLインジェクションを防ぎます。",
+    "example": "WHERE id = ?の疑問符へ利用者IDを値として渡します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "SQLの構造と外部入力の値を分離する",
+        "hint": "プレースホルダの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "wireless-lan",
+    "name": "無線LAN",
+    "reading": "Wireless Lan",
+    "category": "セキュリティ",
+    "definition": "電波を使って端末とアクセスポイントなどを接続するLANです。IEEE 802.11系列などが使われます。",
+    "example": "PCをWi-Fiアクセスポイントへ接続します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "電波で端末を接続するLAN",
+        "hint": "無線LANの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "quantum-key-distribution",
+    "name": "量子鍵配送",
+    "reading": "Quantum Key Distribution",
+    "category": "セキュリティ",
+    "definition": "量子状態の性質を利用し、盗聴の影響を検出しながら暗号鍵を共有する技術です。",
+    "example": "量子通信路と認証された古典通信路を用いて共有鍵を確立します。",
+    "related": [
+      "one-time-pad"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "量子状態を使い盗聴を検出しながら鍵を共有する",
+        "hint": "量子鍵配送の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "parallel-simulation",
+    "name": "並行シミュレーション",
+    "aliases": [
+      "並行シミュレーション法"
+    ],
+    "reading": "Parallel Simulation",
+    "category": "セキュリティ",
+    "definition": "監査対象と同じデータを独立した別のプログラムで処理し、結果を比較して正確性を確かめる監査技法です。",
+    "example": "給与データを別の計算プログラムで処理し、実システムの結果と照合します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "独立したプログラムで同じ処理を再現して結果を比較する",
+        "hint": "並行シミュレーションの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "general-it-controls",
+    "name": "IT全般統制",
+    "aliases": [
+      "全般統制"
+    ],
+    "reading": "General It Controls",
+    "category": "セキュリティ",
+    "definition": "業務処理統制を支える、システムの開発・保守、運用、アクセス管理などに関する統制です。",
+    "example": "本番へのプログラム変更の承認手順を組織共通で定めます。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "業務処理を支える開発・運用などの全体の統制",
+        "hint": "IT全般統制の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": [
+      "入力や業務別マスタなど、個々のアプリケーション内の処理の確認は業務処理統制です。"
+    ]
+  },
+  {
+    "id": "cryptographic-module",
+    "name": "暗号モジュール",
+    "reading": "Cryptographic Module",
+    "category": "セキュリティ",
+    "definition": "暗号化、署名、鍵管理などの暗号機能を実装するハードウェア・ソフトウェアなどのまとまりです。",
+    "example": "暗号鍵の保管と署名処理を専用装置の境界内で行います。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "暗号機能と鍵などを扱う実装のまとまり",
+        "hint": "暗号モジュールの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "fips1403",
+    "name": "FIPS 140-3",
+    "reading": "FIPS 140-3",
+    "category": "セキュリティ",
+    "definition": "暗号モジュールの設計・実装・運用などに関するセキュリティ要求事項を定めた米国の連邦標準です。",
+    "example": "暗号装置が鍵の保護や物理的な保護の要求を満たすか評価します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "暗号モジュールのセキュリティ要求事項を定める",
+        "hint": "FIPS 140-3の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "iso15408",
+    "name": "ISO/IEC 15408",
+    "reading": "ISO/IEC 15408",
+    "category": "セキュリティ",
+    "definition": "IT製品などのセキュリティ機能とその保証を評価する共通の基準です。コモンクライテリアとも呼ばれます。",
+    "example": "調達する機器のセキュリティ機能の評価結果を確認します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "IT製品などのセキュリティ機能を共通基準で評価する",
+        "hint": "ISO/IEC 15408の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "iso27002",
+    "name": "ISO/IEC 27002",
+    "reading": "ISO/IEC 27002",
+    "category": "セキュリティ",
+    "definition": "情報セキュリティ管理策と、その実施のための指針を示す国際規格です。",
+    "example": "アクセス管理や人的セキュリティの管理策を検討する際に参照します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "情報セキュリティ管理策の指針を示す",
+        "hint": "ISO/IEC 27002の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "iso27017",
+    "name": "ISO/IEC 27017",
+    "reading": "ISO/IEC 27017",
+    "category": "セキュリティ",
+    "definition": "クラウドサービスの利用者と提供者向けに、情報セキュリティ管理策の実施指針を示す国際規格です。",
+    "example": "クラウド固有の責任分担や仮想環境の分離に関する管理策を確認します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "クラウドサービス固有の情報セキュリティ管理策の指針",
+        "hint": "ISO/IEC 27017の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "jisq15001",
+    "name": "JIS Q 15001",
+    "reading": "JIS Q 15001",
+    "category": "セキュリティ",
+    "definition": "個人情報保護マネジメントシステムの要求事項を定める日本産業規格です。",
+    "example": "組織の個人情報保護の仕組みを整備・改善する基準として用います。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "個人情報保護マネジメントシステムの要求事項",
+        "hint": "JIS Q 15001の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "validation-authority",
+    "name": "VA",
+    "reading": "VA",
+    "category": "セキュリティ",
+    "definition": "公開鍵証明書の失効状態など、有効性の検証に関する問合せに応答する検証局です。",
+    "example": "証明書のシリアル番号に対して失効の有無を返します。",
+    "related": [
+      "crl",
+      "ocsp",
+      "pki"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "証明書の有効性検証に関する問合せへ応答する",
+        "hint": "VAの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "soap",
+    "name": "SOAP",
+    "reading": "SOAP",
+    "category": "開発技術",
+    "definition": "構造化されたメッセージをXMLで表現し、ネットワーク上で交換するための枠組みです。",
+    "example": "WebサービスがSOAPメッセージで処理要求と結果をやり取りします。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "XML形式のメッセージを交換する枠組み",
+        "hint": "SOAPの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "xkms",
+    "name": "XKMS",
+    "reading": "XKMS",
+    "category": "開発技術",
+    "definition": "デジタル署名などで使う公開鍵情報の登録や検証などを、Webサービスで扱うための仕様です。",
+    "example": "利用する公開鍵の情報をサービスに問い合わせて確認します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "公開鍵情報の登録や検証をWebサービスで扱う",
+        "hint": "XKMSの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "cmmi",
+    "name": "CMMI",
+    "reading": "CMMI",
+    "category": "開発技術",
+    "definition": "組織の開発やサービス提供などのプロセスの能力・成熟度を評価し、改善を進めるためのモデルです。",
+    "example": "開発プロセスの管理や標準化の状況を評価します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "組織のプロセスの能力や成熟度を評価・改善する",
+        "hint": "CMMIの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "branch-coverage",
+    "name": "判定条件網羅",
+    "aliases": [
+      "分岐網羅"
+    ],
+    "reading": "Branch Coverage",
+    "category": "開発技術",
+    "definition": "テストで、各判定全体の結果が真と偽になる分岐を少なくとも一度ずつ実行する基準です。分岐網羅とも呼びます。",
+    "example": "A>6 OR B=0の結果が真になるケースと偽になるケースを用意します。",
+    "related": [
+      "white-box-test",
+      "multiple-condition-coverage"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "判定全体の真と偽の分岐を全て通る",
+        "hint": "判定条件網羅の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": [
+      "各条件の全組合せを試す複数条件網羅とは異なり、判定全体の真・偽を確認します。"
+    ]
+  },
+  {
+    "id": "multiple-condition-coverage",
+    "name": "複数条件網羅",
+    "reading": "Multiple Condition Coverage",
+    "category": "開発技術",
+    "definition": "一つの判定を構成する各条件の真偽の組合せを、全て実行するテスト基準です。",
+    "example": "二つの条件なら真真・真偽・偽真・偽偽を確認します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "判定内の個々の条件の真偽の全組合せを実行する",
+        "hint": "複数条件網羅の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "white-box-test",
+    "name": "ホワイトボックステスト",
+    "reading": "White Box Test",
+    "category": "開発技術",
+    "definition": "プログラムの内部構造に着目し、文や分岐などを実行するテストケースを設計する方法です。",
+    "example": "制御フローを見て全分岐を通す入力を作ります。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "内部構造に基づいてテストを設計する",
+        "hint": "ホワイトボックステストの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "black-box-test",
+    "name": "ブラックボックステスト",
+    "reading": "Black Box Test",
+    "category": "開発技術",
+    "definition": "プログラムの内部構造によらず、仕様に基づく入力と期待する出力からテストを設計する方法です。",
+    "example": "入力の同値クラスや境界値からテストケースを選びます。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "仕様と入出力に基づいてテストを設計する",
+        "hint": "ブラックボックステストの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "boundary-value",
+    "name": "境界値",
+    "reading": "Boundary Value",
+    "category": "開発技術",
+    "definition": "条件が切り替わる境界上や、その直前・直後などの値です。条件式の誤りを見つけるテストに使います。",
+    "example": "年齢>28の条件なら28と29などを確かめます。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "条件の境界とその前後の値を確認する",
+        "hint": "境界値の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "tailoring",
+    "name": "テーラリング",
+    "reading": "Tailoring",
+    "category": "開発技術",
+    "definition": "目的や状況に合わせて、ライフサイクルプロセスなどを選択・修正したり、新たに定義したりすることです。",
+    "example": "小規模な開発でも必要な成果を保ちながら手順を調整します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "目的や状況に合わせてプロセスを選択・修正する",
+        "hint": "テーラリングの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "life-cycle-process",
+    "name": "ライフサイクルプロセス",
+    "reading": "Life Cycle Process",
+    "category": "開発技術",
+    "definition": "システムやソフトウェアの構想から開発、利用、保守、廃棄などの期間にわたり実施するプロセスです。",
+    "example": "開発だけでなく、取得や運用、保守の活動も計画します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "構想から廃棄などまでの期間にわたるプロセス",
+        "hint": "ライフサイクルプロセスの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "simulation",
+    "name": "シミュレーション",
+    "reading": "Simulation",
+    "category": "開発技術",
+    "definition": "実際の対象の振る舞いをモデルで模擬し、条件を変えた結果などを調べることです。",
+    "example": "利用者数を変えて待ち時間の変化をモデルで調べます。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "モデルで対象の振る舞いを模擬して調べる",
+        "hint": "シミュレーションの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "chaos-engineering",
+    "name": "カオスエンジニアリング",
+    "reading": "Chaos Engineering",
+    "category": "開発技術",
+    "definition": "制御した条件でシステムへ障害を注入し、挙動を観察して耐障害性を改善する手法です。",
+    "example": "一部のサービスを停止し、利用者への影響と復旧を確認します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "意図的な障害実験から耐障害性を改善する",
+        "hint": "カオスエンジニアリングの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "devops",
+    "name": "DevOps",
+    "reading": "DevOps",
+    "category": "開発技術",
+    "definition": "開発と運用が協調し、自動化やフィードバックなどを通じて継続的にソフトウェアの価値を提供・改善する取組です。",
+    "example": "運用で見つかった課題を開発へ戻し、変更を素早く安全に届けます。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "開発と運用が協調し継続的に提供・改善する",
+        "hint": "DevOpsの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "test-driven-development",
+    "name": "テスト駆動開発",
+    "reading": "Test Driven Development",
+    "category": "開発技術",
+    "definition": "先に失敗するテストを書き、それを通す最小限の実装を作り、リファクタリングするサイクルで開発する手法です。",
+    "example": "計算関数の期待する結果をテストにしてから関数を実装します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "テストを先に書き実装と改善を短いサイクルで行う",
+        "hint": "テスト駆動開発の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "extreme-programming",
+    "name": "XP",
+    "reading": "XP",
+    "category": "開発技術",
+    "definition": "コミュニケーションなどの価値を基礎に、テスト駆動開発やペアプログラミングなどの実践を組み合わせるアジャイル開発手法です。",
+    "example": "短いサイクルでテストを通し、二人でコードを確認しながら実装します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "価値と具体的なプラクティスを組み合わせるアジャイル手法",
+        "hint": "XPの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "product-backlog",
+    "name": "プロダクトバックログ",
+    "reading": "Product Backlog",
+    "category": "開発技術",
+    "definition": "プロダクトを改善するために必要なことを、順序付けてまとめた一覧です。スクラムで今後の作業の源になります。",
+    "example": "利用者の要望や技術的な改善を価値などに応じて並べます。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "プロダクト改善に必要な作業を順序付けた一覧",
+        "hint": "プロダクトバックログの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "gang-of-four",
+    "name": "GoF",
+    "reading": "GoF",
+    "category": "開発技術",
+    "definition": "オブジェクト指向のデザインパターンをまとめた四人の著者の呼称です。パターンは生成・構造・振る舞いの三つに分類されます。",
+    "example": "Factory MethodやObserverなどの設計パターンを参照します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "生成・構造・振る舞いに分類する設計パターンの著者群",
+        "hint": "GoFの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "design-pattern",
+    "name": "デザインパターン",
+    "reading": "Design Pattern",
+    "category": "開発技術",
+    "definition": "ソフトウェアの設計で繰り返し現れる問題に対する、再利用可能な解決の構造を整理したものです。",
+    "example": "Observerで状態変化の通知を疎結合に実現します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "繰り返し現れる設計問題の再利用可能な解決構造",
+        "hint": "デザインパターンの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "architecture-pattern",
+    "name": "アーキテクチャパターン",
+    "reading": "Architecture Pattern",
+    "category": "開発技術",
+    "definition": "システム全体の構成や主要な要素の関係を定める、再利用可能な構造上の解決策です。",
+    "example": "Layersで責任を階層へ分けます。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "システム全体の構成を扱う再利用可能な構造",
+        "hint": "アーキテクチャパターンの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "refactoring",
+    "name": "リファクタリング",
+    "reading": "Refactoring",
+    "category": "開発技術",
+    "definition": "外部から見た振る舞いを保ちながら、コードの内部構造を改善することです。",
+    "example": "重複した処理を共通の関数へまとめます。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "外部の振る舞いを保ちながら内部構造を改善する",
+        "hint": "リファクタリングの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "test-coverage",
+    "name": "カバレージ",
+    "reading": "Test Coverage",
+    "category": "開発技術",
+    "definition": "対象とした文や分岐などのうち、テストで実行・確認した範囲や割合です。基準によって測る対象が異なります。",
+    "example": "全分岐のうちテストで通った分岐の割合を測ります。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "定めた対象をテストでどれだけ通したかの範囲・割合",
+        "hint": "カバレージの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "walkthrough",
+    "name": "ウォークスルー",
+    "reading": "Walkthrough",
+    "category": "開発技術",
+    "definition": "成果物の作成者などと参加者が動作を机上で追い、欠陥や問題点を見つけるレビュー手法です。",
+    "example": "入力例に沿って仕様書やコードの動作を説明し、問題を検討します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "複数人で成果物の動作を机上で追って問題を見つける",
+        "hint": "ウォークスルーの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "formal-methods",
+    "name": "形式手法",
+    "reading": "Formal Methods",
+    "category": "開発技術",
+    "definition": "数学的に厳密な記法やモデルで仕様を表し、満たすべき性質を論理的に検証する手法です。",
+    "example": "状態遷移モデルにデッドロックがないか検証します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "厳密なモデルと論理で仕様の性質を検証する",
+        "hint": "形式手法の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "inspection",
+    "name": "インスペクション",
+    "reading": "Inspection",
+    "category": "開発技術",
+    "definition": "モデレーターや記録役などの役割と手順を定め、複数人で成果物の欠陥を見つける形式的なレビューです。",
+    "example": "事前にコードを確認し、会議で欠陥を記録します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "役割と手順を定めて欠陥を検出するレビュー",
+        "hint": "インスペクションの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "http-referer",
+    "name": "Referer",
+    "reading": "Referer",
+    "category": "セキュリティ",
+    "definition": "要求元のページのURIなどを伝えるHTTPリクエストヘッダーです。ブラウザの方針などで省略・制限される場合があります。",
+    "example": "サーバが重要な要求のリンク元を検査します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "HTTP要求のリンク元を伝えるヘッダー",
+        "hint": "Refererの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "l2tp",
+    "name": "L2TP",
+    "reading": "L2TP",
+    "category": "セキュリティ",
+    "definition": "PPPなどのデータリンク層のフレームをIPネットワーク上でトンネル転送するプロトコルです。暗号化にはIPsecなどを組み合わせます。",
+    "example": "離れた拠点のPPP接続をトンネル化します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "データリンク層のフレームをトンネル転送する",
+        "hint": "L2TPの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "foreign-key",
+    "name": "外部キー",
+    "reading": "Foreign Key",
+    "category": "セキュリティ",
+    "definition": "他の表などの候補キーを参照する列や列の組です。対応する参照先を要求する制約で参照整合性を保ちます。",
+    "example": "受注表の顧客コードから顧客表のキーを参照します。",
+    "related": [
+      "candidate-key",
+      "referential-integrity"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "候補キーを参照する列または列の組",
+        "hint": "外部キーの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": [
+      "外部キーの値は、参照元の表で重複しても構いません。一つの表に複数の外部キーを設けることもできます。"
+    ]
+  },
+  {
+    "id": "candidate-key",
+    "name": "候補キー",
+    "reading": "Candidate Key",
+    "category": "セキュリティ",
+    "definition": "表の各行を一意に識別でき、どの列を除いてもその性質を失う最小の列の組です。主キーは候補キーから選びます。",
+    "example": "社員番号とメールアドレスがそれぞれ一意なら、両方が候補キーになり得ます。",
+    "related": [
+      "primary-key"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "行を一意に識別する最小の列の組",
+        "hint": "候補キーの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": [
+      "候補キーは複数ある場合があり、そのうち一つを主キーに選びます。"
+    ]
+  },
+  {
+    "id": "jisq20000",
+    "name": "JIS Q 20000-1",
+    "reading": "JIS Q 20000-1",
+    "category": "セキュリティ",
+    "definition": "サービスマネジメントシステムの要求事項を定める日本産業規格です。",
+    "example": "サービス提供の仕組みが規格の要求に適合するか内部監査します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "サービスマネジメントシステムの要求事項を定める規格",
+        "hint": "JIS Q 20000-1の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "top-down-test",
+    "name": "トップダウンテスト",
+    "reading": "Top Down Test",
+    "category": "セキュリティ",
+    "definition": "上位のモジュールから下位へ順に結合を進めるテスト方式です。未完成の下位モジュールはスタブで代用します。",
+    "example": "画面側から結合し、呼出し先の未完成処理をスタブにします。",
+    "related": [
+      "integration-test"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "上位から結合を進め下位をスタブで代用する",
+        "hint": "トップダウンテストの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "sandwich-test",
+    "name": "サンドイッチテスト",
+    "reading": "Sandwich Test",
+    "category": "セキュリティ",
+    "definition": "上位からと下位からの結合テストを並行して進め、中間で結び付ける方式です。",
+    "example": "上位はスタブ、下位はドライバを使いながら両方向から結合します。",
+    "related": [
+      "integration-test"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "上位と下位の両方から結合を進める",
+        "hint": "サンドイッチテストの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "detached-signature",
+    "name": "デタッチ署名",
+    "reading": "Detached Signature",
+    "category": "セキュリティ",
+    "definition": "署名要素の外側にあるデータを参照して付ける署名です。XML署名では同じ文書中の別要素も対象にできます。",
+    "example": "署名要素と同じXML文書にある別の要素をIDで参照します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "署名要素の外側にあるデータへ署名する",
+        "hint": "デタッチ署名の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "dns-resolver",
+    "name": "リゾルバ",
+    "reading": "Dns Resolver",
+    "category": "セキュリティ",
+    "definition": "名前解決の要求を行い、DNS情報を取得する機能です。端末側のスタブや再帰問合せを処理するリゾルバなどがあります。",
+    "example": "名前に対応するIPアドレスをDNSから得ます。",
+    "related": [
+      "dns",
+      "dnssec"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "DNSで名前解決の要求を行い情報を取得する機能",
+        "hint": "リゾルバの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "arp",
+    "name": "ARP",
+    "reading": "ARP",
+    "category": "セキュリティ",
+    "definition": "同じリンク上で、IPv4アドレスに対応するMACアドレスを問い合わせるプロトコルです。アドレス重複の確認にも使います。",
+    "example": "ゲートウェイのIPv4アドレスから送信先MACアドレスを調べます。",
+    "related": [
+      "arp-cache",
+      "mac-address"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "IPv4アドレスから同一リンクのMACアドレスを解決する",
+        "hint": "ARPの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "cryptrec-recommended",
+    "name": "電子政府推奨暗号リスト",
+    "reading": "Cryptrec Recommended",
+    "category": "セキュリティ",
+    "definition": "CRYPTREC暗号リストのうち、安全性と実装性能を確認し、市場での利用実績なども踏まえて電子政府での利用を推奨する暗号技術の一覧です。",
+    "example": "新たな政府システムで利用する暗号の候補を確認します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "電子政府での利用を推奨する暗号技術のリスト",
+        "hint": "電子政府推奨暗号リストの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "cryptrec-candidate",
+    "name": "推奨候補暗号リスト",
+    "reading": "Cryptrec Candidate",
+    "category": "セキュリティ",
+    "definition": "CRYPTREC暗号リストのうち、安全性と実装性能が確認され、今後推奨リストへ掲載される可能性がある暗号技術の一覧です。",
+    "example": "安全性が確認された新しい暗号の位置付けを調べます。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "安全性などを確認し今後推奨へ移る可能性がある暗号のリスト",
+        "hint": "推奨候補暗号リストの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "cryptrec-monitored",
+    "name": "運用監視暗号リスト",
+    "reading": "Cryptrec Monitored",
+    "category": "セキュリティ",
+    "definition": "CRYPTREC暗号リストのうち、積極的な推奨からは外れるものの、互換性維持などのために継続利用を扱う暗号技術の一覧です。",
+    "example": "既存システムで使う古い暗号の移行方針を検討します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "互換性維持などのため継続利用を扱う暗号のリスト",
+        "hint": "運用監視暗号リストの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "cryptographic-compromise",
+    "name": "危殆化",
+    "reading": "Cryptographic Compromise",
+    "category": "セキュリティ",
+    "definition": "計算能力や解読技術の進歩、鍵の漏えいなどにより、暗号や鍵の安全性が低下・喪失することです。",
+    "example": "秘密鍵が漏えいした証明書を失効させます。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "暗号や鍵の安全性が低下・喪失すること",
+        "hint": "危殆化の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "hash-value",
+    "name": "ハッシュ値",
+    "reading": "Hash Value",
+    "category": "セキュリティ",
+    "definition": "入力データにハッシュ関数を適用して得られる、一定長の値です。ハッシュ関数そのものとは区別します。",
+    "example": "配布ファイルから計算した値と公開値を比較します。",
+    "related": [
+      "hash"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "ハッシュ関数の計算結果である一定長の値",
+        "hint": "ハッシュ値の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": [
+      "計算規則であるハッシュ関数と、その計算結果のハッシュ値は区別します。"
+    ]
+  },
+  {
+    "id": "ntlm",
+    "name": "NTLM認証",
+    "reading": "Ntlm",
+    "category": "セキュリティ",
+    "definition": "Windowsなどで使われるチャレンジレスポンス型の認証方式です。パスワード由来の秘密に基づいて応答を作ります。",
+    "example": "サーバからのチャレンジに対する応答で利用者を検証します。",
+    "related": [
+      "pass-the-hash"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "パスワード由来の秘密でチャレンジに応答する認証方式",
+        "hint": "NTLM認証の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "plaintext-password",
+    "name": "平文パスワード",
+    "reading": "Plaintext Password",
+    "category": "セキュリティ",
+    "definition": "暗号化やハッシュ化などをしていない、元の文字列のままのパスワードです。",
+    "example": "設定ファイルからそのまま読めるパスワードが漏えいします。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "変換されず元の文字列のままのパスワード",
+        "hint": "平文パスワードの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "xor",
+    "name": "排他的論理和",
+    "aliases": [
+      "XOR"
+    ],
+    "reading": "Xor",
+    "category": "セキュリティ",
+    "definition": "二つの論理値が異なるときに1、同じときに0になる論理演算です。XORとも呼びます。",
+    "example": "同じ鍵ストリームで2回XORを取ると元のデータへ戻ります。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "二つの値が異なるとき1になる論理演算",
+        "hint": "排他的論理和の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "bit",
+    "name": "ビット",
+    "reading": "Bit",
+    "category": "セキュリティ",
+    "definition": "0と1の二つの状態を表す情報量の単位です。通信速度などでは1秒当たりのビット数を使います。",
+    "example": "1Gビット/秒を10の9乗ビット/秒として計算します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "0または1の二状態を表す情報量の単位",
+        "hint": "ビットの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "byte",
+    "name": "バイト",
+    "reading": "Byte",
+    "category": "セキュリティ",
+    "definition": "通常8ビットをひとまとめにしたデータ量の単位です。通信のビット数との換算を区別します。",
+    "example": "6Mバイトを48Mビットへ換算します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "通常8ビットから成るデータ量の単位",
+        "hint": "バイトの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "audit-risk",
+    "name": "監査リスク",
+    "reading": "Audit Risk",
+    "category": "セキュリティ",
+    "definition": "対象の重要な不備などを見逃し、監査人が適切でない結論を示すリスクです。監査の計画と実施により合理的に低く抑えます。",
+    "example": "重要なアクセス権限の不備を発見できず、適切と判断してしまいます。",
+    "related": [
+      "risk-approach"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "不備を見逃すなどして監査の結論を誤るリスク",
+        "hint": "監査リスクの目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "reconnaissance",
+    "name": "偵察",
+    "reading": "Reconnaissance",
+    "category": "セキュリティ",
+    "definition": "攻撃を準備するため、標的の組織や人、システムなどについて情報を収集する段階です。",
+    "example": "公開SNSから攻撃対象の関係者や利用サービスを調べます。",
+    "related": [
+      "cyber-kill-chain"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "攻撃の準備として標的の情報を収集する",
+        "hint": "偵察の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "planned-downtime",
+    "name": "計画停止",
+    "reading": "Planned Downtime",
+    "category": "セキュリティ",
+    "definition": "保守や更新などのため、あらかじめ予定してサービスを止めることです。可用性での扱いは顧客と合意した提供時間などに従います。",
+    "example": "顧客の合意に基づき、更新の停止時間を提供時間から除外します。",
+    "related": [
+      "service-availability",
+      "service-hours"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "保守や更新などのために事前に予定する停止",
+        "hint": "計画停止の目的や仕組みを説明できますか？"
+      }
+    ],
+    "commonMistakes": [
+      "事前に計画したというだけで必ず可用性の計算から除外できるわけではなく、合意した提供時間に従います。"
     ]
   }
 ];

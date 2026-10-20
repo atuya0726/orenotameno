@@ -264,7 +264,7 @@ test('chooses questions by session, field and options like a past-exam dojo, and
   await expect(page.getByRole('heading', { name: /逆ポーランド表記法/ })).toBeVisible();
 });
 
-test('offers 180 A1 and 50 A2 questions and renders their tables', async ({ page }) => {
+test('offers 180 A1 and 200 A2 questions and renders their tables', async ({ page }) => {
   await page.goto('/questions?course=A1');
   await expect(page.locator('.question-row')).toHaveCount(180);
   await expect(page.getByText('2進数と情報量', { exact: true })).toHaveCount(0);
@@ -282,7 +282,7 @@ test('offers 180 A1 and 50 A2 questions and renders their tables', async ({ page
   await expect(page.getByRole('figure', { name: '図1 当初の計画／図2 変更後の計画' }).getByRole('img')).toBeVisible();
   await expect(page.locator('.katex-error')).toHaveCount(0);
   await page.goto('/questions?course=A2');
-  await expect(page.locator('.question-row')).toHaveCount(50);
+  await expect(page.locator('.question-row')).toHaveCount(200);
   await page.goto('/study/A2?question=sc-2025-autumn-a2-24');
   await expect(page.getByRole('table', { name: 'サービス停止状況' })).toBeVisible();
   await page.locator('.question-source summary').click();
@@ -300,5 +300,49 @@ test('offers 180 A1 and 50 A2 questions and renders their tables', async ({ page
   await expect(page.locator('.katex').first()).toBeVisible();
   await expect(page.locator('.katex-error')).toHaveCount(0);
   await page.goto('/study/A2');
-  await expect(page.locator('.study-session-counter')).toContainText('50');
+  await expect(page.locator('.study-session-counter')).toContainText('200');
+});
+
+test('renders the added A2 questions across six sessions with figures and formulas', async ({ page }) => {
+  await page.goto('/study/A2?question=sc-2024-autumn-a2-7');
+  await expect(page.getByRole('heading', { name: /パスキー/ })).toBeVisible();
+  await page.getByRole('button', { name: 'アで回答', exact: true }).click();
+  await expect(page.locator('.answer-outcome').getByText('正解', { exact: true })).toBeVisible();
+
+  await page.goto('/study/A2?question=sc-2024-spring-a2-24');
+  await expect(page.locator('.choice-figure svg')).toHaveCount(4);
+  await page.screenshot({ path: '.cache/past-exam/three-years/tariff-preview.png', fullPage: true });
+  await page.getByRole('button', { name: 'ウで回答', exact: true }).click();
+  await expect(page.locator('.answer-outcome').getByText('正解', { exact: true })).toBeVisible();
+
+  await page.goto('/study/A2?question=sc-2023-autumn-a2-17');
+  await expect(page.getByRole('figure', { name: 'ネットワーク構成の変更' }).getByRole('img')).toBeVisible();
+  await expect(page.getByText('フィルタリングルールは，必要な通信だけを許可する設定にする。', { exact: true })).toBeVisible();
+  await page.screenshot({ path: '.cache/past-exam/three-years/network-preview.png', fullPage: true });
+
+  await page.goto('/study/A2?question=sc-2023-spring-a2-18');
+  await expect(page.locator('.katex').first()).toBeVisible();
+  await page.getByRole('button', { name: 'イで回答', exact: true }).click();
+  await expect(page.getByRole('region', { name: '解答結果と解説' })).toBeVisible();
+  await expect(page.locator('.katex-error')).toHaveCount(0);
+
+  await page.goto('/study/A2?question=sc-2022-autumn-a2-22');
+  await expect(page.getByRole('figure', { name: 'テスト対象の流れ図' }).getByRole('img')).toBeVisible();
+  await page.screenshot({ path: '.cache/past-exam/three-years/branch-preview.png', fullPage: true });
+  await page.goto('/study/A2?question=sc-2022-autumn-a2-21');
+  await expect(page.getByRole('table', { name: /表R（列X・Y）と表S/ })).toBeVisible();
+  await expect(page.getByLabel('SQL文')).toContainText('LEFT OUTER JOIN');
+  await page.goto('/study/A2?question=sc-2022-autumn-a2-24');
+  await expect(page.getByRole('table', { name: 'システム化案（単位：百万円）' })).toBeVisible();
+  await page.getByRole('button', { name: 'エで回答', exact: true }).click();
+  await expect(page.getByRole('region', { name: '解答結果と解説' })).toContainText('175％');
+  await expect(page.locator('.katex-error')).toHaveCount(0);
+
+  await page.goto('/study/A2?question=sc-2022-spring-a2-12');
+  await expect(page.getByRole('table', { name: 'クラウドサービスの責務' })).toBeVisible();
+  await page.goto('/study/A2?question=sc-2022-spring-a2-4');
+  await expect(page.locator('.katex')).toHaveCount(4);
+  await page.getByRole('button', { name: 'アで回答', exact: true }).click();
+  await expect(page.getByRole('region', { name: '解答結果と解説' })).toBeVisible();
+  await expect(page.locator('.katex-error')).toHaveCount(0);
 });
