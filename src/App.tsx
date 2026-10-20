@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { Link, NavLink, Route, Routes, useLocation, useParams, useSearchParams } from 'react-router';
-import { ArrowLeft, ArrowRight, BarChart3, BookMarked, BookOpen, Bookmark, Check, CheckCheck, ChevronRight, CircleHelp, LayoutDashboard, LoaderCircle, Plus, RotateCcw, Search, X } from 'lucide-react';
+import { ArrowDownToLine, ArrowLeft, ArrowRight, ArrowUpFromLine, BarChart3, BookMarked, BookOpen, Bookmark, Check, CheckCheck, ChevronRight, CircleHelp, Database, LayoutDashboard, LoaderCircle, Plus, RotateCcw, Search, Settings2, Target, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { MathText } from '@/components/math-text';
 import { AnswerChoices } from '@/components/answer-choices';
@@ -10,6 +10,7 @@ import { eraLabel } from '@/data/ipa';
 import { useLearning, useNow } from '@/lib/store';
 import { responseConfidenceLabels, attemptConfidenceLabel, createQuickAnswer, cycleOptionMark, isQuickAnswer, optionLabels, selectAnswer, type Attempt, type Course, type Draft, type OptionId, type Question, type QuickAnswerInput, type ResponseConfidence } from '@/lib/model';
 import { activeReviews, reviewPriorityLabel } from '@/lib/scheduler';
+import { exportBackup } from '@/lib/db';
 import { dayKey, formatDate } from '@/lib/date';
 import { cn } from '@/lib/utils';
 import { Mic } from 'lucide-react';
@@ -46,13 +47,14 @@ export default function App() {
             <Route path="/questions" element={<QuestionLibrary />} />
             <Route path="/reviews" element={<ReviewNotebook />} />
             <Route path="/records" element={<Records />} />
+            <Route path="/settings" element={<Preferences />} />
             <Route path="/glossary/*" element={<GlossaryApp />} />
             <Route path="/study/:course" element={<Study key={`${location.pathname}:${location.state?.studyKey ?? location.key}`} />} />
             <Route path="/record/:attemptId" element={<SavedResult />} />
             <Route path="*" element={<Empty icon={<BookOpen />} title="ページが見つかりません" description="学習ホームから続けましょう。"><Button asChild><Link to="/">学習ホームへ</Link></Button></Empty>} />
           </Routes>}
       </main>
-      <footer className="page-footer"><Link to="/" className="footer-brand">俺のための過去問</Link></footer>
+      <footer className="page-footer"><Link to="/" className="footer-brand">俺のための過去問</Link><Link to="/settings">設定・データ管理<ChevronRight size={14} /></Link></footer>
     </div>
   </div>;
 }
@@ -63,6 +65,7 @@ function SiteHeader() {
   return <header className="site-header"><div className="header-inner">
     <Link to="/" className="brand" aria-label="俺のための過去問 学習ホーム"><span className="brand-icon"><BookMarked size={23} strokeWidth={1.8} /></span><span>俺のための過去問</span></Link>
     <nav className="main-nav" aria-label="メインメニュー">{menu.map(item => <NavLink key={item.to} to={item.to} end={item.end} className={({ isActive }) => cn('nav-item', isActive && 'active')}><item.icon size={19} strokeWidth={1.7} /><span>{item.label}</span>{item.to === '/reviews' && dueCount > 0 && <span className="nav-count">{dueCount}</span>}</NavLink>)}</nav>
+    <NavLink to="/settings" className={({ isActive }) => cn('header-settings', isActive && 'active')} aria-label="設定・データ管理"><Settings2 size={20} /></NavLink>
   </div></header>;
 }
 
@@ -73,11 +76,15 @@ function PageIntro({ title, description, children }: { title: string; descriptio
 function Home() {
   const { snapshot } = useLearning();
   const now = useNow();
+  const today = snapshot.attempts.filter(a => dayKey(a.answeredAt) === dayKey(new Date(now)));
   const attempted = new Set(snapshot.attempts.map(a => a.questionId));
   const due = activeReviews(snapshot.cards);
+  const preferredCourse = questions.some(q => q.course === snapshot.settings.defaultCourse) ? snapshot.settings.defaultCourse : 'A1';
+  const startCourse = due.length ? questionById.get(due[0].questionId)?.course ?? preferredCourse : preferredCourse;
   const uncertain = due.length;
   const correct = snapshot.attempts.filter(a => a.correct).length;
   const percent = snapshot.attempts.length ? Math.round(correct / snapshot.attempts.length * 100) : null;
+  const progress = Math.min(100, today.length / snapshot.settings.dailyGoal * 100);
   const date = new Intl.DateTimeFormat('ja-JP', { month: 'long', day: 'numeric', weekday: 'long' }).format(new Date(now));
   const interrupted = snapshot.studySessions.find(session => session.index < session.questionIds.length);
   return <>
@@ -88,6 +95,11 @@ function Home() {
     <PracticeSetup />
     <Link to="/glossary" className="glossary-home-entry"><span className="glossary-home-icon"><Mic size={24} /></span><span><strong>用語学習</strong></span><ArrowRight size={20} /></Link>
     <div className="dashboard-grid">
+      <section className="daily-card">
+        <div className="card-kicker"><Target size={18} /><h2>今日の学習</h2><Link className="text-link" to="/settings">目標を変更<ChevronRight size={14} /></Link></div>
+        <div className="daily-content"><div><p className="daily-greeting">{today.length >= snapshot.settings.dailyGoal ? '目標達成' : '今日の目標'}</p>{due.length > 0 && <p className="daily-sub">要復習 {due.length}問</p>}</div><div className="daily-ring" role="progressbar" aria-label="今日の学習目標" aria-valuemin={0} aria-valuemax={snapshot.settings.dailyGoal} aria-valuenow={Math.min(today.length, snapshot.settings.dailyGoal)} aria-valuetext={`${today.length}問 / 目標${snapshot.settings.dailyGoal}問`} style={{ '--progress': `${progress}%` } as React.CSSProperties}><div><strong>{today.length}<small> / {snapshot.settings.dailyGoal}</small></strong><span>問</span></div></div></div>
+        <Button asChild className="daily-start"><Link to={`/study/${startCourse}${due.length ? '?mode=review' : ''}`}>{due.length ? '復習する' : '学習する'}<ArrowRight size={17} /></Link></Button>
+      </section>
       <section className="overview-card"><div className="section-kicker"><h2>これまでの学習</h2><Link to="/records" aria-label="学習記録を見る"><ArrowRight size={18} /></Link></div><div className="overview-main"><span>取り組んだ問題</span><strong>{attempted.size}<small> / {questions.length} 問</small></strong><div className="progress-track"><i style={{ width: `${attempted.size / questions.length * 100}%` }} /></div></div><div className="overview-bottom"><div><span className="stat-label">正答率</span><strong>{percent ?? '—'}<small>{percent === null ? '' : '%'}</small></strong></div><div><span className="stat-label">要復習</span><strong>{uncertain}<small>問</small></strong></div><div><span className="stat-label">あとで見る</span><strong>{snapshot.bookmarks.length}<small>問</small></strong></div></div></section>
     </div>
     <div className="bottom-grid">
@@ -384,5 +396,17 @@ function Records() {
 }
 
 function Metric({ label, value, unit, icon }: { label: string; value: number | string; unit: string; icon: ReactNode }) { return <div className="metric"><span>{icon}{label}</span><strong>{value}<small>{unit}</small></strong></div>; }
+
+function Preferences() {
+  const { snapshot, updateSettings, restore } = useLearning();
+  const [goal, setGoal] = useState(String(snapshot.settings.dailyGoal));
+  const [course, setCourse] = useState<Course>(snapshot.settings.defaultCourse);
+  const [status, setStatus] = useState(''); const [error, setError] = useState(''); const [saving, setSaving] = useState(false);
+  const fileInput = useRef<HTMLInputElement>(null);
+  async function save(e: React.FormEvent) { e.preventDefault(); setError(''); setStatus(''); const value = Number(goal); if (!Number.isInteger(value) || value < 1 || value > 100) { setError('目標は1〜100の整数で入力してください。'); return; } setSaving(true); try { await updateSettings({ dailyGoal: value, defaultCourse: course }); setStatus('学習設定を保存しました。'); } catch { setError('設定を保存できませんでした。'); } finally { setSaving(false); } }
+  function download() { const url = URL.createObjectURL(new Blob([exportBackup(snapshot)], { type: 'application/json' })); const a = document.createElement('a'); a.href = url; a.download = `orenotameno-${dayKey(new Date())}.json`; a.click(); URL.revokeObjectURL(url); setStatus('学習記録を書き出しました。'); }
+  async function upload(file?: File) { if (!file) return; setStatus(''); setError(''); setSaving(true); try { if (file.size > 10_000_000) throw new Error('ファイルが大きすぎます。10MB以内のバックアップを選んでください。'); await restore(await file.text()); setStatus('学習記録を取り込みました。既存の記録と統合しました。'); } catch (e) { setError(e instanceof Error && !e.message.startsWith('[') ? e.message : 'バックアップの形式が正しくありません。'); } finally { setSaving(false); if (fileInput.current) fileInput.current.value = ''; } }
+  return <><PageIntro title="設定・データ管理" /><div className="settings-grid"><form className="settings-card" onSubmit={save}><h2><Target size={19} />学習の設定</h2><label className="setting-label" htmlFor="daily-goal">1日の学習目標</label><div className="input-unit"><input id="daily-goal" type="number" min="1" max="100" value={goal} onChange={e => setGoal(e.target.value)} required /><span>問 / 日</span></div><label className="setting-label" htmlFor="default-course">ホームからはじめる科目</label><select id="default-course" value={course} onChange={e => setCourse(e.target.value as Course)}><option value="A1">科目A1（共通知識）</option><option value="A2">科目A2（セキュリティ専門知識）</option></select><Button type="submit" disabled={saving}>設定を保存<Check size={15} /></Button></form><section className="settings-card"><h2><Database size={19} />学習記録の保存</h2><p>学習記録はこのブラウザに保存します。</p><div className="storage-detail"><span className="status-dot" />ブラウザに保存済み<strong>{snapshot.attempts.length}件の回答</strong></div><p className="storage-help">端末の変更やブラウザのデータ削除前に書き出してください。</p><div className="data-buttons"><Button type="button" variant="outline" onClick={download}><ArrowDownToLine size={16} />記録を書き出す</Button><Button type="button" variant="outline" disabled={saving} onClick={() => fileInput.current?.click()}><ArrowUpFromLine size={16} />記録を取り込む</Button><input ref={fileInput} type="file" accept=".json,application/json" className="sr-only" aria-label="学習記録のバックアップ" onChange={e => void upload(e.target.files?.[0])} /></div></section></div>{status && <p className="success-message" role="status"><Check size={16} />{status}</p>}{error && <p className="inline-error" role="alert">{error}</p>}</>;
+}
 
 function Empty({ icon, title, description, children }: { icon: ReactNode; title: string; description?: string; children?: ReactNode }) { return <div className="empty-state"><span className="empty-icon">{icon}</span><h2>{title}</h2>{description && <p>{description}</p>}{children && <div className="actions">{children}</div>}</div>; }
