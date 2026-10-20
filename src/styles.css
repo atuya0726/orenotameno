@@ -577,6 +577,7 @@ svg { flex-shrink: 0; }
   .option-review > p { font-size: 14px; }
   .result-actions { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--space-2); }
   .result-actions > .ui-button { padding: 10px 8px; font-size: 13px; line-height: 1.5; white-space: normal; }
+  .result-actions > .ui-button:only-child { grid-column: 2; }
   .library-toolbar { flex-direction: column; align-items: stretch; gap: var(--space-4); }
   .course-tabs { align-self: flex-start; }
   .course-tabs button { padding-inline: var(--space-4); font-size: 13px; }
