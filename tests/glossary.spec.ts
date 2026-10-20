@@ -1,5 +1,8 @@
 import { expect, test, type Page } from '@playwright/test';
 import { termById } from '../src/features/glossary/terms';
+import { mockSpeechRecognition, speakExplanation } from './helpers/glossary-speech';
+
+test.beforeEach(async ({ page }) => { await mockSpeechRecognition(page); });
 
 const term = termById.get('digital-signature')!;
 const text = '署名者の秘密鍵で署名を作り、公開鍵で検証し、改ざんを検知する仕組みです。';
@@ -29,7 +32,7 @@ test('practices certificate purposes separately and shows only one B point when 
     criteria: serverCertificate.criteria.map(c => ({ ...c, level: 'B', status: 'covered', evidence: explanation })),
   } }));
   await page.goto('/glossary/certificates');
-  await page.getByRole('textbox', { name: 'サーバー証明書についての説明' }).fill(explanation);
+  await speakExplanation(page, explanation);
   await check(page).click();
   await expect(page.getByLabel('評価 B', { exact: true })).toBeVisible();
   await expect(page.locator('.rubric-level-heading')).toHaveCount(1);
@@ -68,7 +71,7 @@ test('practices authenticity separately and checks the CIA overview with only on
     criteria: overview.criteria.map(c => ({ ...c, level: 'B', status: 'covered', evidence: explanation })),
   } }));
   await page.goto('/glossary/security-properties');
-  await page.getByRole('textbox', { name: `${overview.name}についての説明` }).fill(explanation);
+  await speakExplanation(page, explanation);
   await check(page).click();
   await expect(page.getByLabel('評価 B', { exact: true })).toBeVisible();
   await expect(page.locator('.rubric-item')).toHaveCount(1);
@@ -82,7 +85,7 @@ test('searches terms and persists drafts without exposing the reference first', 
   await page.getByRole('link', { name: '説明する', exact: true }).click();
   await expect(page.locator('.term-reference')).toHaveCount(0);
   await expect(check(page)).toBeDisabled();
-  await textbox(page).fill(text);
+  await speakExplanation(page, text);
   await expect(check(page)).toBeEnabled();
   await expect.poll(() => page.evaluate(() => JSON.parse(sessionStorage.getItem('orenotameno:glossary-draft:digital-signature') ?? '{}').text)).toBe(text);
   await page.reload(); await expect(textbox(page)).toHaveValue(text);
@@ -101,7 +104,7 @@ test('evaluates once, stores feedback separately from quizzes, and reviews a his
     calls++; expect(route.request().postDataJSON()).toEqual({ termId: term.id, text });
     await route.fulfill({ json: evaluation() });
   });
-  await page.goto('/glossary/digital-signature'); await textbox(page).fill(text); await check(page).click();
+  await page.goto('/glossary/digital-signature'); await speakExplanation(page, text); await check(page).click();
   await expect(page.getByRole('heading', { name: '公開鍵基盤' })).toBeVisible();
   await expect(page.getByRole('heading', { name: '応用の論点まで説明' })).toBeVisible();
   await expect(page.locator('.rubric-level-heading').filter({ hasText: '発展' })).toContainText('めったに問われない');
@@ -122,11 +125,11 @@ test('practices a follow-up term the AI suggested outside the built-in list', as
     expect(body.termId).toBe('extra:Kerberos認証');
     await route.fulfill({ json: { ...evaluation(body.text), criteria: [{ id: 'ca', title: '認証局が証明書を発行する', status: 'missing', evidence: '', hint: '誰が証明書を発行するかが足りません。' }], covered: 0, total: 1, status: 'unconfirmed', definition: '公開鍵とその持ち主を認証局が証明書で結び付ける仕組みです。', followUp: { name: '認証局', reason: '証明書の発行者だからです。' } } });
   });
-  await page.goto('/glossary/digital-signature'); await textbox(page).fill(text); await check(page).click();
+  await page.goto('/glossary/digital-signature'); await speakExplanation(page, text); await check(page).click();
   await page.getByRole('link', { name: 'この用語を説明する' }).click();
   await expect(page.getByRole('heading', { name: 'Kerberos認証', level: 1 })).toBeVisible();
   await expect(page.getByRole('button', { name: '説明例を先に見る' })).toHaveCount(0);
-  await page.getByRole('textbox', { name: 'Kerberos認証についての説明' }).fill('公開鍵が本人のものか確かめるための仕組みです。');
+  await speakExplanation(page, '公開鍵が本人のものか確かめるための仕組みです。');
   await check(page).click();
   await expect(page.getByText('誰が証明書を発行するかが足りません。')).toBeVisible();
   await expect(page.locator('.term-reference')).toContainText('認証局が証明書で結び付ける');
@@ -137,7 +140,7 @@ test('practices a follow-up term the AI suggested outside the built-in list', as
 
 test('opens the collected term when the AI names it by another spelling', async ({ page }) => {
   await page.route('**/api/glossary/evaluate', route => route.fulfill({ json: evaluation() }));
-  await page.goto('/glossary/digital-signature'); await textbox(page).fill(text); await check(page).click();
+  await page.goto('/glossary/digital-signature'); await speakExplanation(page, text); await check(page).click();
   // 公開鍵基盤 is the parenthesized part of 「PKI（公開鍵基盤）」
   await page.getByRole('link', { name: 'この用語を説明する' }).click();
   await expect(page).toHaveURL(/\/glossary\/pki$/);
@@ -148,7 +151,7 @@ test('keeps text and allows retry after an AI failure, with no fabricated feedba
   await page.route('**/api/glossary/evaluate', route => ++calls === 1
     ? route.fulfill({ status: 502, json: { error: 'AIの評価が完了しませんでした。（確認番号: deadbeef）', code: 'AI_INCOMPLETE', reference: 'deadbeef' } })
     : route.fulfill({ json: evaluation() }));
-  await page.goto('/glossary/digital-signature'); await textbox(page).fill(text); await check(page).click();
+  await page.goto('/glossary/digital-signature'); await speakExplanation(page, text); await check(page).click();
   await expect(page.getByRole('alert').filter({ hasText: '確認番号: deadbeef' }).first()).toBeVisible();
   await expect(textbox(page)).toHaveValue(text); await expect(check(page)).toBeEnabled();
   expect(await entries(page)).toEqual([]);
@@ -164,16 +167,73 @@ test('records whether the explanation example was consulted', async ({ page }) =
   await page.route('**/api/glossary/evaluate', route => route.fulfill({ json: evaluation() }));
   await page.goto('/glossary/digital-signature?reference=1');
   await expect(page.locator('.term-reference')).toBeVisible();
-  await textbox(page).fill(text); await check(page).click();
+  await speakExplanation(page, text); await check(page).click();
   await expect(page.getByText('説明例を参照した練習', { exact: true })).toBeVisible();
   expect((await entries(page))[0].referenceViewed).toBe(true);
 });
 
+test('starts with voice and lets the user correct, reload and submit the transcript', async ({ page }) => {
+  const corrected = '秘密鍵で署名を作り、公開鍵で検証して、改ざんを検知する仕組みです。';
+  await page.route('**/api/glossary/evaluate', route => {
+    expect(route.request().postDataJSON()).toEqual({ termId: term.id, text: corrected });
+    return route.fulfill({ json: evaluation(corrected) });
+  });
+  await page.goto('/glossary/digital-signature');
+  await expect(textbox(page)).not.toBeEditable();
+  await textbox(page).focus(); await page.keyboard.type('typing');
+  await expect(textbox(page)).toHaveValue('');
+  await expect(page.getByRole('button', { name: '誤認識を訂正する' })).toHaveCount(0);
+  await expect(page.getByRole('button', { name: '文字で続ける' })).toHaveCount(0);
+  await speakExplanation(page, '秘密鍵で署名を作り、公開鍵で検証します。');
+  await expect(textbox(page)).not.toBeEditable();
+  await page.getByRole('button', { name: '誤認識を訂正する' }).click();
+  await expect(textbox(page)).toBeFocused(); await expect(textbox(page)).toBeEditable();
+  await textbox(page).fill(corrected);
+  await page.getByRole('button', { name: '訂正を終える' }).click();
+  await expect(textbox(page)).not.toBeEditable();
+  await page.reload();
+  await expect(textbox(page)).toHaveValue(corrected); await expect(textbox(page)).not.toBeEditable();
+  await page.getByRole('button', { name: '誤認識を訂正する' }).click();
+  await page.getByRole('button', { name: '押しながら話す' }).hover(); await page.mouse.down();
+  await expect(textbox(page)).not.toBeEditable();
+  await page.mouse.up();
+  await expect(textbox(page)).toHaveValue(corrected); await expect(textbox(page)).not.toBeEditable();
+  await check(page).click();
+  await expect(page.getByRole('region', { name: '説明のチェック結果' })).toBeVisible();
+  expect((await entries(page))[0]).toMatchObject({ text: corrected, usedVoice: true });
+});
+
+for (const failure of ['no-result', 'network', 'not-allowed'] as const) {
+  test(`offers text input after speech fails with ${failure}`, async ({ page }) => {
+    await page.goto('/glossary/digital-signature');
+    if (failure === 'network') await speakExplanation(page, text);
+    await page.getByRole('button', { name: '押しながら話す' }).hover(); await page.mouse.down();
+    if (failure !== 'no-result') await page.evaluate(error => {
+      const speech = (window as unknown as { testSpeech: { onerror: (event: { error: string }) => void } }).testSpeech;
+      speech.onerror({ error });
+    }, failure);
+    await page.mouse.up();
+    await expect(page.getByRole('alert')).toBeVisible();
+    await expect(textbox(page)).toHaveValue(failure === 'network' ? text : '');
+    await expect(textbox(page)).not.toBeEditable();
+    await page.getByRole('button', { name: '文字で続ける' }).click();
+    await expect(textbox(page)).toBeFocused(); await expect(textbox(page)).toBeEditable();
+    await textbox(page).fill(text); await expect(check(page)).toBeEnabled();
+  });
+}
+
 test('falls back to editable text when speech recognition is unavailable', async ({ page }) => {
+  await page.route('**/api/glossary/evaluate', route => route.fulfill({ json: evaluation() }));
   await page.addInitScript(() => { Object.defineProperty(window, 'SpeechRecognition', { value: undefined, configurable: true }); Object.defineProperty(window, 'webkitSpeechRecognition', { value: undefined, configurable: true }); });
   await page.goto('/glossary/digital-signature');
   await expect(page.getByRole('button', { name: '押しながら話す' })).toBeDisabled();
+  await expect(textbox(page)).not.toBeEditable();
+  await page.getByRole('button', { name: '文字で続ける' }).click();
+  await expect(textbox(page)).toBeFocused();
   await expect(textbox(page)).toBeEditable(); await textbox(page).fill(text); await expect(check(page)).toBeEnabled();
+  await check(page).click();
+  await expect(page.getByRole('region', { name: '説明のチェック結果' })).toBeVisible();
+  expect((await entries(page))[0].usedVoice).toBe(false);
 });
 
 test('handles final/interim voice text, prevents checks while listening, and stops the mic on navigation', async ({ page }) => {
@@ -206,7 +266,7 @@ test('handles final/interim voice text, prevents checks while listening, and sto
   });
   await expect(textbox(page)).toHaveValue('秘密鍵で署名を作ります。公開鍵で検証します。');
   await page.mouse.up();
-  await expect(textbox(page)).toBeEditable(); await expect(check(page)).toBeEnabled();
+  await expect(textbox(page)).not.toBeEditable(); await expect(check(page)).toBeEnabled();
   await page.getByRole('button', { name: '全文削除' }).click();
   await expect(textbox(page)).toHaveValue('');
   await page.getByRole('button', { name: '押しながら話す' }).hover(); await page.mouse.down();
@@ -234,7 +294,7 @@ test('limits voice input to 1000 characters including existing text and stops re
   });
   await page.goto('/glossary/digital-signature');
   await expect(textbox(page)).toHaveAttribute('maxlength', '1000');
-  await textbox(page).fill('あ'.repeat(990));
+  await speakExplanation(page, 'あ'.repeat(990));
   await page.getByRole('button', { name: '押しながら話す' }).hover(); await page.mouse.down();
   await page.evaluate(() => {
     const speech = (window as unknown as { testSpeech: { onresult: (e: unknown) => void } }).testSpeech;
@@ -246,7 +306,7 @@ test('limits voice input to 1000 characters including existing text and stops re
     speech.onresult({ results: [{ isFinal: true, 0: { transcript: 'い'.repeat(20) }, length: 1 }] });
   });
   await expect(textbox(page)).toHaveValue(`${'あ'.repeat(990)}\n${'い'.repeat(9)}`);
-  await expect(textbox(page)).toBeEditable();
+  await expect(textbox(page)).not.toBeEditable();
   await expect(page.locator('.explanation-input-meta')).toContainText('1000 / 1,000');
   await page.mouse.up();
   await page.getByRole('button', { name: '押しながら話す' }).click();
@@ -256,7 +316,7 @@ test('limits voice input to 1000 characters including existing text and stops re
 
 test('backs up and merges history without duplicating paid evaluations', async ({ page }) => {
   await page.route('**/api/glossary/evaluate', route => route.fulfill({ json: evaluation() }));
-  await page.goto('/glossary/digital-signature'); await textbox(page).fill(text); await check(page).click();
+  await page.goto('/glossary/digital-signature'); await speakExplanation(page, text); await check(page).click();
   await expect(page.getByText('OpenAI · gpt-6-luna')).toBeVisible();
   await page.getByRole('link', { name: '説明の履歴', exact: true }).click();
   const downloading = page.waitForEvent('download'); await page.getByRole('button', { name: '記録を書き出す' }).click();

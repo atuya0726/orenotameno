@@ -96,7 +96,11 @@ export function useSpeech(onText: (text: string) => void) {
       detach(active); if (heard) s.committed = mergeTranscript(s.committed, heard);
       s.quickEnds = !heard && Date.now() - startedAt < 1000 ? s.quickEnds + 1 : 0;
       if (s.held && session.current === s && s.quickEnds < 3) { setInterim(''); listen(s, Constructor); }
-      else { if (s.quickEnds >= 3) setError('音声認識がすぐに終了してしまいました。マイクの設定を確認してください。'); finish(); }
+      else {
+        if (s.quickEnds >= 3) setError('音声認識がすぐに終了してしまいました。マイクの設定を確認してください。');
+        else if (!s.committed) setError(speechErrorMessage('no-speech'));
+        finish();
+      }
     };
     try { active.start(); }
     catch { finish(); setError('音声入力を開始できませんでした。文字で入力するか、ブラウザのマイク設定を確認してください。'); }

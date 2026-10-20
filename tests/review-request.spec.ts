@@ -1,4 +1,7 @@
 import { test, expect, type Page } from '@playwright/test';
+import { mockSpeechRecognition, speakExplanation } from './helpers/glossary-speech';
+
+test.beforeEach(async ({ page }) => { await mockSpeechRecognition(page); });
 
 async function readRecords(page: Page) {
   return page.evaluate(async () => {
@@ -287,7 +290,7 @@ test('reviews saved words one after another in random order from the review note
   await expect(page.getByText('単語の復習 2 / 2')).toBeVisible();
   const second = new URL(page.url()).searchParams.get('review');
   expect([first, second].sort()).toEqual(['ROC曲線', '偽陽性率'].sort());
-  await page.getByRole('textbox', { name: 'ROC曲線についての説明' }).fill('しきい値を変えたときの偽陽性率と真陽性率の関係を表す曲線です。');
+  await speakExplanation(page, 'しきい値を変えたときの偽陽性率と真陽性率の関係を表す曲線です。');
   await page.getByRole('button', { name: 'AIでチェック' }).click();
   await expect(page.getByRole('status').filter({ hasText: '目標Aに届かなかった' })).toBeVisible();
   expect((await readRecords(page)).reviewWords.sort()).toEqual(['ROC曲線', '偽陽性率'].sort());
@@ -332,7 +335,7 @@ for (const { target, grade, removed } of [
     await startWordReview(page, target);
     await page.reload();
     await expect(page.locator('.review-round-bar')).toContainText(`目標 ${target}`);
-    await page.getByRole('textbox', { name: 'ディジタル署名についての説明' }).fill('秘密鍵で署名を作り、公開鍵で検証して改ざんを検知する仕組みです。');
+    await speakExplanation(page, '秘密鍵で署名を作り、公開鍵で検証して改ざんを検知する仕組みです。');
     await page.getByRole('button', { name: 'AIでチェック' }).click();
     await expect(page.getByRole('status').filter({ hasText: removed ? '復習キューから外しました' : '復習キューに残します' })).toBeVisible();
     const records = await readRecords(page);
@@ -358,7 +361,7 @@ test('retries a failed queue removal without paying for another evaluation', asy
     };
   });
   await startWordReview(page, 'A');
-  await page.getByRole('textbox', { name: 'ディジタル署名についての説明' }).fill('秘密鍵で署名を作り、公開鍵で検証して改ざんを検知する仕組みです。');
+  await speakExplanation(page, '秘密鍵で署名を作り、公開鍵で検証して改ざんを検知する仕組みです。');
   await page.getByRole('button', { name: 'AIでチェック' }).click();
   await expect(page.getByRole('alert')).toContainText('評価は保存されています');
   expect((await readRecords(page)).reviewWords).toEqual(['デジタル署名']);
@@ -379,7 +382,7 @@ test('keeps progress stable as mastered words leave the queue and removes only t
   await page.getByRole('link', { name: '復習を始める' }).click();
   await expect(page.getByText('単語の復習 1 / 2')).toBeVisible();
   const first = new URL(page.url()).searchParams.get('review');
-  await page.getByRole('textbox', { name: 'ROC曲線についての説明' }).fill('しきい値を変えたときの偽陽性率と真陽性率の関係を表す曲線です。');
+  await speakExplanation(page, 'しきい値を変えたときの偽陽性率と真陽性率の関係を表す曲線です。');
   await page.getByRole('button', { name: 'AIでチェック' }).click();
   await expect(page.getByRole('status').filter({ hasText: '復習キューから外しました' })).toBeVisible();
   expect((await readRecords(page)).reviewWords).toEqual(['ROC曲線', '偽陽性率'].filter(word => word !== first));
@@ -387,7 +390,7 @@ test('keeps progress stable as mastered words leave the queue and removes only t
   await page.getByRole('link', { name: '次の単語へ', exact: true }).click();
   await expect(page.getByText('単語の復習 2 / 2')).toBeVisible();
   await expect(page.locator('.review-round-bar')).toContainText('目標 B');
-  await page.getByRole('textbox', { name: 'ROC曲線についての説明' }).fill('しきい値を変えたときの偽陽性率と真陽性率の関係を表す曲線です。');
+  await speakExplanation(page, 'しきい値を変えたときの偽陽性率と真陽性率の関係を表す曲線です。');
   await page.getByRole('button', { name: 'AIでチェック' }).click();
   await expect(page.getByRole('status').filter({ hasText: '復習キューから外しました' })).toBeVisible();
   await page.getByRole('link', { name: '復習を終える' }).click();

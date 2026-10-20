@@ -1,4 +1,7 @@
 import { test, expect } from '@playwright/test';
+import { mockSpeechRecognition, speakExplanation } from './helpers/glossary-speech';
+
+test.beforeEach(async ({ page }) => { await mockSpeechRecognition(page); });
 
 const questionPath = '/study/A1?question=sc-2025-autumn-a1-1';
 const termPath = '/glossary/digital-signature';
@@ -12,7 +15,7 @@ test('keeps notes, calculator work and explanation drafts through reload only in
   await calculation.fill('4+5'); await calculation.press('Enter');
   await calculation.fill('9*2');
   await page.goto(termPath);
-  await page.getByRole('textbox', { name: 'ディジタル署名についての説明' }).fill(explanation);
+  await speakExplanation(page, explanation);
   await page.reload();
   await expect(page.getByRole('textbox', { name: 'ディジタル署名についての説明' })).toHaveValue(explanation);
   await page.goto(questionPath);
