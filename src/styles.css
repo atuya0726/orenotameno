@@ -710,8 +710,11 @@ svg { flex-shrink: 0; }
 .explanation-form-heading h2 { font-size: 16px; }
 .explanation-form-heading > span { font-size: 11px; color: var(--text-secondary); white-space: nowrap; }
 .explanation-prompt { font-size: 13px; color: var(--text-secondary); line-height: 1.9; margin-top: var(--space-3); }
-.speech-controls { display: flex; align-items: center; gap: var(--space-4); flex-wrap: wrap; margin: var(--space-5) 0 var(--space-4); }
-.speech-hold { touch-action: none; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
+.speech-controls { display: flex; flex-direction: column; align-items: center; gap: var(--space-3); margin: var(--space-6) 0; }
+.speech-hold { width: 160px; height: 160px; flex-shrink: 0; flex-direction: column; border-radius: 50%; padding: var(--space-4); gap: var(--space-3); font-size: 13px; touch-action: none; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
+.speech-hold[aria-pressed="true"] { background: var(--success); box-shadow: 0 0 0 8px var(--success-soft); }
+.speech-hold[aria-pressed="true"]:hover:not(:disabled) { background: var(--success); }
+.speech-state:empty { display: none; }
 .speech-state { display: inline-flex; align-items: center; gap: var(--space-2); font-size: 11px; color: var(--text-secondary); }
 .speech-recording { color: var(--success); }
 .speech-recording .status-dot { width: 8px; height: 8px; }
@@ -721,11 +724,10 @@ svg { flex-shrink: 0; }
 .speech-interim { padding: var(--space-3); margin-top: var(--space-2); border-left: 2px solid var(--brand); background: var(--surface-secondary); }
 .speech-interim > span { font-size: 10px; color: var(--text-secondary); }
 .speech-interim p { font-size: 13px; line-height: 1.8; }
-.explanation-input-meta { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--space-3); font-size: 11px; color: var(--text-secondary); margin-top: var(--space-2); }
-.explanation-input-meta > span:last-child { white-space: nowrap; }
+.explanation-input-meta { display: flex; justify-content: space-between; align-items: center; gap: var(--space-3); font-size: 11px; color: var(--text-secondary); margin-top: var(--space-2); }
+.explanation-input-meta > span { white-space: nowrap; font-variant-numeric: tabular-nums; }
 .explanation-submit { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); margin-top: var(--space-5); flex-wrap: wrap; }
 .explanation-submit .ui-button { font-size: 12px; }
-.reference-viewed-note { font-size: 11px; color: var(--caution); margin-top: var(--space-3); }
 .speech-privacy { font-size: 11px; line-height: 1.8; color: var(--text-secondary); margin-top: var(--space-5); padding-top: var(--space-4); border-top: 1px solid var(--border); }
 .term-coach { padding: var(--space-5); border: 1px solid var(--border); border-radius: var(--radius-card); }
 .related-terms { margin: 0; }
