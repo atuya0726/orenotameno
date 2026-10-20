@@ -77,7 +77,10 @@ test('keeps completion totals on reload and starts fresh when solving again', as
   await expect(page.getByRole('heading', { name: '学習完了', exact: true })).toBeVisible();
   await page.reload();
   await expect(page.getByRole('heading', { name: '学習完了', exact: true })).toBeVisible();
-  await expect(page.locator('.completion-stats strong')).toHaveText(['1問', '1問', '1問']);
+  await expect(page.locator('.completion-stats strong')).toHaveText(['1問', '1問', '0問']);
+  await expect(page.getByRole('region', { name: '今回の正答率と目標' })).toContainText('100%');
+  await expect(page.locator('.completion-target')).toHaveText('60%以上を達成');
+  await expect(page.locator('.session-complete')).not.toContainText('自信あり');
   await page.getByRole('link', { name: '学習ホームへ', exact: true }).click();
   await expect(page.getByRole('link', { name: '続きから再開', exact: true })).toHaveCount(0);
   await page.goto(path);

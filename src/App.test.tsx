@@ -15,6 +15,30 @@ beforeEach(() => { snapshot = emptySnapshot(); });
 function render(path: string) { return renderToStaticMarkup(<MemoryRouter initialEntries={[path]}><App /></MemoryRouter>); }
 
 describe('answering and recorded results', () => {
+  it.each([
+    { total: 5, correct: 3, unknown: 1, percent: '60', target: '60%以上を達成', reached: true },
+    { total: 5, correct: 4, unknown: 0, percent: '80', target: '60%以上を達成', reached: true },
+    { total: 5, correct: 2, unknown: 2, percent: '40', target: '60%まであと1問正解', reached: false },
+    { total: 42, correct: 25, unknown: 3, percent: '59.5', target: '60%まであと1問正解', reached: false },
+    { total: 5, correct: 0, unknown: 5, percent: '0', target: '60%まであと3問正解', reached: false },
+  ])('summarizes completion at $correct / $total with $unknown unknown answers', ({ total, correct, unknown, percent, target, reached }) => {
+    const queue = questions.filter(question => question.course === 'A1').slice(0, total);
+    snapshot.attempts = queue.map((question, index) => {
+      const confidence = index >= total - unknown ? 'unknown' : 'high';
+      const selected = index < correct ? question.correct : question.options.find(option => option.id !== question.correct)!.id;
+      return scheduleAnswer(createQuickAnswer({ questionId: question.id, selected, uncertainOptions: [] }, confidence, question), question).attempt;
+    });
+    snapshot.studySessions = [{
+      id: 'completed', path: '/study/A1', questionIds: queue.map(question => question.id),
+      index: total, attemptIds: snapshot.attempts.map(attempt => attempt.id), updatedAt: '2026-10-19T03:00:00.000Z',
+    }];
+    const html = render('/study/A1?session=completed');
+    expect(html).toContain(`<strong>${percent}<small>%</small></strong>`);
+    expect(html).toContain(target);
+    expect(html.includes('completion-score-reached')).toBe(reached);
+    expect(html).toContain(`<strong>${unknown}<small>問</small></strong><span>わからなかった問題</span>`);
+    expect(html).not.toContain('自信あり');
+  });
   it('offers four immediate answer buttons without asking for confidence', () => {
     const html = render('/study/A1?question=sc-2025-autumn-a1-1');
     const buttons = html.match(/<button\b[^>]*>[\s\S]*?<\/button>/g) ?? [];

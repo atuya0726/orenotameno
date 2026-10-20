@@ -174,7 +174,29 @@ function Study() {
   if (!course) return <Empty icon={<BookOpen />} title="科目が見つかりません" description="A1またはA2から学習をはじめてください。"><Button asChild><Link to="/">学習ホームへ</Link></Button></Empty>;
   if (!questions.some(q => q.course === course)) return <Empty icon={<BookOpen />} title={`${courses[course].name}の実問題は未収録です`} description="収録済みの科目から学習をはじめてください。"><Button asChild><Link to="/study/A1">科目A1を解く<ArrowRight size={16} /></Link></Button></Empty>;
   if (!queue.length) return <Empty icon={<CheckCheck />} title={search.get('mode') === 'review' ? '復習する問題はありません' : '条件に合う問題はありません'} description="すべての問題から選んで、好きなタイミングで学習できます。"><Button asChild><Link to={`/study/${course}`}>すべての問題を解く<ArrowRight size={16} /></Link></Button><Button variant="outline" asChild><Link to="/reviews">復習ノートを見る</Link></Button></Empty>;
-  if (index >= queue.length) return <div className="session-complete"><span className="completion-icon"><CheckCheck size={34} /></span><h1>学習完了</h1><div className="completion-stats"><div><strong>{sessionResults.length}<small>問</small></strong><span>取り組んだ問題</span></div><div><strong>{sessionResults.filter(a => a.correct).length}<small>問</small></strong><span>正解した問題</span></div><div><strong>{sessionResults.filter(a => a.confidence === 'high').length}<small>問</small></strong><span>自信あり</span></div></div><div className="actions"><Button asChild><Link to="/reviews">復習ノートを見る<ArrowRight size={16} /></Link></Button><Button variant="outline" asChild><Link to="/">学習ホームへ</Link></Button></div></div>;
+  if (index >= queue.length) {
+    const total = sessionResults.length;
+    const correct = sessionResults.filter(a => a.correct).length;
+    const unknown = sessionResults.filter(a => a.confidence === 'unknown').length;
+    const target = Math.ceil(total * 3 / 5);
+    const reached = correct >= target;
+    // Truncate to one decimal so a score below 60% never displays as 60%.
+    const percent = Math.floor(correct * 1000 / total) / 10;
+    return <div className="session-complete">
+      <span className="completion-icon"><CheckCheck size={34} /></span><h1>学習完了</h1>
+      <section className={cn('completion-score', reached && 'completion-score-reached')} aria-label="今回の正答率と目標">
+        <span>正答率</span><strong>{percent}<small>%</small></strong>
+        <p className="completion-target">{reached ? '60%以上を達成' : `60%まであと${target - correct}問正解`}</p>
+        <span className="completion-score-goal">目標：正答率60%以上</span>
+      </section>
+      <div className="completion-stats">
+        <div><strong>{total}<small>問</small></strong><span>取り組んだ問題</span></div>
+        <div><strong>{correct}<small>問</small></strong><span>正解した問題</span></div>
+        <div><strong>{unknown}<small>問</small></strong><span>わからなかった問題</span></div>
+      </div>
+      <div className="actions"><Button asChild><Link to="/reviews">復習ノートを見る<ArrowRight size={16} /></Link></Button><Button variant="outline" asChild><Link to="/">学習ホームへ</Link></Button></div>
+    </div>;
+  }
   const question = queue[index];
   async function submit(input: QuickAnswerInput) {
     if (busy.current || result) return;

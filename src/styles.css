@@ -519,6 +519,14 @@ svg { flex-shrink: 0; }
 .completion-icon { display: grid; place-items: center; color: var(--success); background: var(--success-soft); width: 72px; height: 72px; border-radius: 50%; margin: 0 auto var(--space-6); }
 .session-complete h1 { font-size: 28px; margin-top: var(--space-3); line-height: 1.6; }
 .session-complete > p { font-size: 14px; color: var(--text-secondary); margin-top: var(--space-3); }
+.completion-score { padding: var(--space-6); margin-top: var(--space-6); border-radius: var(--radius-card); background: var(--surface-secondary); }
+.completion-score > span { display: block; font-size: 13px; color: var(--text-secondary); }
+.completion-score > strong { display: block; font-size: clamp(48px, 10vw, 64px); font-weight: 600; line-height: 1.3; font-variant-numeric: tabular-nums; }
+.completion-score small { font-size: 24px; margin-left: var(--space-1); }
+.completion-target { font-weight: 600; margin-top: var(--space-2); }
+.completion-score .completion-score-goal { margin-top: var(--space-2); font-size: 12px; }
+.completion-score-reached { background: var(--success-soft); }
+.completion-score-reached > strong, .completion-score-reached .completion-target { color: var(--success); }
 .completion-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border: 1px solid var(--border); border-radius: var(--radius-card); padding: var(--space-6) 0; margin: var(--space-8) 0; }
 .completion-stats > div + div { border-left: 1px solid var(--border); }
 .completion-stats strong { display: block; font-size: 32px; font-weight: 600; }
