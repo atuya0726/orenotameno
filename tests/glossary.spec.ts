@@ -112,7 +112,7 @@ test('evaluates once, stores feedback separately from quizzes, and reviews a his
   await expect(page.locator('.rubric-level-heading').filter({ hasText: '応用' })).toContainText('用途・理由・制約・影響');
   await expect(page.locator('.rubric-level-heading').filter({ hasText: '発展' })).toHaveCount(0);
   await expect(page.locator('.rubric-missing')).toHaveCount(0);
-  await expect(page.getByText('OpenAI · gpt-6-luna')).toBeVisible();
+  await expect(page.getByText('OpenAI · gpt-6-luna')).toHaveCount(0);
   expect(calls).toBe(1); expect(await entries(page, 'orenotameno-sc')).toEqual([]);
   expect(await entries(page)).toHaveLength(1);
   await page.getByRole('link', { name: '説明の履歴', exact: true }).click();
@@ -386,7 +386,7 @@ test('limits voice input to 1000 characters including existing text and stops re
 test('backs up and merges history without duplicating paid evaluations', async ({ page }) => {
   await page.route('**/api/glossary/evaluate', route => route.fulfill({ json: evaluation() }));
   await page.goto('/glossary/digital-signature'); await speakExplanation(page, text); await check(page).click();
-  await expect(page.getByText('OpenAI · gpt-6-luna')).toBeVisible();
+  await expect(page.getByRole('region', { name: '説明のチェック結果' })).toBeVisible();
   await page.getByRole('link', { name: '説明の履歴', exact: true }).click();
   const downloading = page.waitForEvent('download'); await page.getByRole('button', { name: '記録を書き出す' }).click();
   const path = await (await downloading).path(); expect(path).toBeTruthy();
