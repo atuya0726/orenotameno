@@ -18,6 +18,7 @@ import { CalculatorToggle } from '@/components/calculator';
 import GlossaryApp from '@/features/glossary/GlossaryApp';
 import { PracticeSetup } from '@/components/practice-setup';
 import { buildPracticeQueue, parsePracticeSearch } from '@/lib/practice';
+import { studyPath, studySessionUrl, type StudySession } from '@/lib/study-session';
 
 const menu = [
   { to: '/', label: '学習ホーム', icon: LayoutDashboard, end: true },
@@ -46,7 +47,7 @@ export default function App() {
             <Route path="/records" element={<Records />} />
             <Route path="/settings" element={<Preferences />} />
             <Route path="/glossary/*" element={<GlossaryApp />} />
-            <Route path="/study/:course" element={<Study key={location.pathname + location.search} />} />
+            <Route path="/study/:course" element={<Study key={`${location.pathname}:${location.state?.studyKey ?? location.key}`} />} />
             <Route path="/record/:attemptId" element={<SavedResult />} />
             <Route path="*" element={<Empty icon={<BookOpen />} title="ページが見つかりません" description="学習ホームから続けましょう。"><Button asChild><Link to="/">学習ホームへ</Link></Button></Empty>} />
           </Routes>}
@@ -83,10 +84,12 @@ function Home() {
   const percent = snapshot.attempts.length ? Math.round(correct / snapshot.attempts.length * 100) : null;
   const progress = Math.min(100, today.length / snapshot.settings.dailyGoal * 100);
   const date = new Intl.DateTimeFormat('ja-JP', { month: 'long', day: 'numeric', weekday: 'long' }).format(new Date(now));
+  const interrupted = snapshot.studySessions.find(session => session.index < session.questionIds.length);
   return <>
     <PageIntro title="学習ホーム">
       <time className="today-date" dateTime={dayKey(new Date(now))}>{date}</time>
     </PageIntro>
+    {interrupted && <section className="quiet-empty" aria-label="途中の学習"><RotateCcw size={28} strokeWidth={1.4} /><div><strong>途中の学習があります</strong><p>{courses[questionById.get(interrupted.questionIds[0])!.course].name} · {interrupted.attemptIds.length} / {interrupted.questionIds.length}問 回答済み</p><Button asChild><Link to={studySessionUrl(interrupted)}>続きから再開<ArrowRight size={16} /></Link></Button></div></section>}
     <PracticeSetup />
     <Link to="/glossary" className="glossary-home-entry"><span className="glossary-home-icon"><Mic size={24} /></span><span><strong>用語学習</strong></span><ArrowRight size={20} /></Link>
     <div className="dashboard-grid">
@@ -107,25 +110,54 @@ function Home() {
 
 function Study() {
   const { course: courseParam } = useParams();
-  const [search] = useSearchParams();
-  const { snapshot, answer } = useLearning();
+  const [search, setSearch] = useSearchParams();
+  const location = useLocation();
+  const { snapshot, answer, updateStudySession } = useLearning();
   const course: Course | undefined = courseParam === 'A1' || courseParam === 'A2' ? courseParam : undefined;
-  const [queue] = useState(() => {
+  const [session, setSession] = useState<StudySession>(() => {
+    const path = studyPath(location.pathname, search);
+    const saved = snapshot.studySessions.find(session => session.id === search.get('session') && session.path === path);
+    if (saved) return saved;
     const list = questions.filter(q => q.course === course);
-    if (search.get('question')) return list.filter(q => q.id === search.get('question'));
     const practice = course && parsePracticeSearch(course, search);
-    if (course && practice) return buildPracticeQueue(course, practice, snapshot);
     const mode = search.get('mode');
-    if (mode === 'new') return list.filter(q => !snapshot.cards.some(c => c.questionId === q.id));
-    if (mode === 'bookmarks') return list.filter(q => snapshot.bookmarks.includes(q.id));
-    if (mode === 'review') return activeReviews(snapshot.cards).map(card => list.find(q => q.id === card.questionId)).filter((q): q is Question => q !== undefined);
-    return list;
+    const queue = search.get('question') ? list.filter(q => q.id === search.get('question'))
+      : course && practice ? buildPracticeQueue(course, practice, snapshot)
+      : mode === 'new' ? list.filter(q => !snapshot.cards.some(c => c.questionId === q.id))
+      : mode === 'bookmarks' ? list.filter(q => snapshot.bookmarks.includes(q.id))
+      : mode === 'review' ? activeReviews(snapshot.cards).map(card => list.find(q => q.id === card.questionId)).filter((q): q is Question => q !== undefined)
+      : list;
+    return { id: crypto.randomUUID(), path, questionIds: queue.map(q => q.id), index: 0, attemptIds: [], updatedAt: new Date().toISOString() };
   });
-  const [index, setIndex] = useState(0);
-  const [result, setResult] = useState<Attempt | null>(null);
-  const [sessionResults, setSessionResults] = useState<Attempt[]>([]);
+  const queue = session.questionIds.map(id => questionById.get(id)!);
+  const index = session.index;
+  const sessionResults = session.attemptIds.map(id => snapshot.attempts.find(attempt => attempt.id === id)!);
+  const result = sessionResults[index] ?? null;
   const [saving, setSaving] = useState(false);
   const [submitError, setSubmitError] = useState('');
+  const initialSave = useRef<Promise<void> | null>(null);
+  const registered = useRef(snapshot.studySessions.some(saved => saved.id === session.id));
+  const busy = useRef(false);
+  const active = useRef(true);
+  async function ensureSession() {
+    if (registered.current) return;
+    if (!initialSave.current) initialSave.current = updateStudySession(session).then(() => {
+      registered.current = true;
+      if (!active.current) return;
+      // Keep this component mounted when attaching its saved-session URL.
+      setSearch(params => { params.set('session', session.id); return params; }, {
+        replace: true, state: { ...location.state, studyKey: location.state?.studyKey ?? location.key },
+      });
+    }).catch(error => { initialSave.current = null; throw error; });
+    await initialSave.current;
+  }
+  useEffect(() => {
+    active.current = true;
+    if (!session.questionIds.length) return;
+    void ensureSession().catch(() => setSubmitError('学習の進行状況を保存できませんでした。もう一度お試しください。'));
+    // The initial queue is saved once, before any answer can be submitted.
+    return () => { active.current = false; };
+  }, []);
   const resultRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (!result) return;
@@ -138,20 +170,32 @@ function Study() {
       window.scrollTo({ top: heading.getBoundingClientRect().top + window.scrollY - header - 16, behavior });
     }, 800);
     return () => window.clearTimeout(timer);
-  }, [result]);
+  }, [result?.id]);
   if (!course) return <Empty icon={<BookOpen />} title="科目が見つかりません" description="A1またはA2から学習をはじめてください。"><Button asChild><Link to="/">学習ホームへ</Link></Button></Empty>;
   if (!questions.some(q => q.course === course)) return <Empty icon={<BookOpen />} title={`${courses[course].name}の実問題は未収録です`} description="収録済みの科目から学習をはじめてください。"><Button asChild><Link to="/study/A1">科目A1を解く<ArrowRight size={16} /></Link></Button></Empty>;
   if (!queue.length) return <Empty icon={<CheckCheck />} title={search.get('mode') === 'review' ? '復習する問題はありません' : '条件に合う問題はありません'} description="すべての問題から選んで、好きなタイミングで学習できます。"><Button asChild><Link to={`/study/${course}`}>すべての問題を解く<ArrowRight size={16} /></Link></Button><Button variant="outline" asChild><Link to="/reviews">復習ノートを見る</Link></Button></Empty>;
   if (index >= queue.length) return <div className="session-complete"><span className="completion-icon"><CheckCheck size={34} /></span><h1>学習完了</h1><div className="completion-stats"><div><strong>{sessionResults.length}<small>問</small></strong><span>取り組んだ問題</span></div><div><strong>{sessionResults.filter(a => a.correct).length}<small>問</small></strong><span>正解した問題</span></div><div><strong>{sessionResults.filter(a => a.confidence === 'high').length}<small>問</small></strong><span>自信あり</span></div></div><div className="actions"><Button asChild><Link to="/reviews">復習ノートを見る<ArrowRight size={16} /></Link></Button><Button variant="outline" asChild><Link to="/">学習ホームへ</Link></Button></div></div>;
   const question = queue[index];
   async function submit(input: QuickAnswerInput) {
-    if (saving || result) return;
+    if (busy.current || result) return;
+    busy.current = true;
     setSaving(true); setSubmitError('');
-    try { const attempt = await answer(question, input); setResult(attempt); setSessionResults(s => [...s, attempt]); }
+    try {
+      await ensureSession();
+      const attempt = await answer(question, input, session);
+      setSession(current => ({ ...current, attemptIds: [...current.attemptIds, attempt.id], updatedAt: attempt.answeredAt }));
+    }
     catch { setSubmitError('回答を保存できませんでした。入力を確認して、もう一度お試しください。'); }
-    finally { setSaving(false); }
+    finally { busy.current = false; setSaving(false); }
   }
-  function next() { setResult(null); setIndex(i => i + 1); window.scrollTo({ top: 0, behavior: 'instant' }); }
+  async function next() {
+    if (busy.current) return;
+    busy.current = true; setSaving(true); setSubmitError('');
+    const progress = { ...session, index: index + 1, updatedAt: new Date().toISOString() };
+    try { await updateStudySession(progress); setSession(progress); window.scrollTo({ top: 0, behavior: 'instant' }); }
+    catch { setSubmitError('学習の進行状況を保存できませんでした。もう一度お試しください。'); }
+    finally { busy.current = false; setSaving(false); }
+  }
   return <>
     <div className="study-breadcrumb">{search.has('by') ? <Link to="/"><ArrowLeft size={15} />学習ホーム</Link> : <Link to="/questions"><ArrowLeft size={15} />問題一覧</Link>}<span>/</span><span>{courses[course].name}</span><span className="study-session-counter"><strong>{index + 1}</strong> / {queue.length}</span></div>
     <div className="study-progress"><i style={{ width: `${(index + (result ? 1 : 0)) / queue.length * 100}%` }} /></div>
@@ -161,7 +205,7 @@ function Study() {
       <AnswerForm key={question.id} question={question} saving={saving} result={result} submitError={submitError} onSubmit={submit} />
       {result && <AnswerFlash key={result.id} attempt={result} />}
       {result && <div ref={resultRef} tabIndex={-1} className="result-focus result-reveal" role="region" aria-label="解答結果と解説">
-        <ResultDetails question={question} attempt={result} action={<Button onClick={next}>{index + 1 === queue.length ? '今回の学習を終える' : '次の問題へ'}<ArrowRight size={17} /></Button>} />
+        <ResultDetails question={question} attempt={result} action={<Button disabled={saving} onClick={() => void next()}>{index + 1 === queue.length ? '今回の学習を終える' : '次の問題へ'}<ArrowRight size={17} /></Button>} />
       </div>}
     </div></div>
   </>;
@@ -209,7 +253,11 @@ function AnswerForm({ question, saving, result, submitError, onSubmit }: { quest
   const { snapshot, updateDraft } = useLearning();
   const submitting = useRef(false);
   // Keep the submitted selection visible after saving removes the persisted draft.
-  const [draft, setDraft] = useState<Draft>(() => snapshot.drafts.find(d => d.questionId === question.id) ?? { questionId: question.id, uncertainOptions: [] });
+  const [draft, setDraft] = useState<Draft>(() => result ? {
+    questionId: question.id, selected: result.selected ?? undefined,
+    uncertainOptions: isQuickAnswer(result) ? result.uncertainOptions : [],
+    optionMarks: isQuickAnswer(result) ? result.optionMarks : undefined,
+  } : snapshot.drafts.find(d => d.questionId === question.id) ?? { questionId: question.id, uncertainOptions: [] });
   const locked = saving || Boolean(result);
   function changeMark(id: OptionId) {
     if (locked || submitting.current) return;

@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { getQuestionTerms } from '@/data/question-terms';
+import type { StudySession } from './study-session';
 
 export const courseSchema = z.enum(['A1', 'A2']);
 export type Course = z.infer<typeof courseSchema>;
@@ -90,8 +91,8 @@ export type ReviewCard = z.infer<typeof reviewCardSchema>;
 export const settingsSchema = z.object({ dailyGoal: z.number().int().min(1).max(100), defaultCourse: courseSchema });
 export type Settings = z.infer<typeof settingsSchema>;
 export const defaultSettings: Settings = { dailyGoal: 5, defaultCourse: 'A1' };
-export type Snapshot = { attempts: Attempt[]; cards: ReviewCard[]; bookmarks: string[]; drafts: Draft[]; reviewWords: string[]; settings: Settings };
-export const emptySnapshot = (): Snapshot => ({ attempts: [], cards: [], bookmarks: [], drafts: [], reviewWords: [], settings: defaultSettings });
+export type Snapshot = { attempts: Attempt[]; cards: ReviewCard[]; bookmarks: string[]; drafts: Draft[]; reviewWords: string[]; settings: Settings; studySessions: StudySession[] };
+export const emptySnapshot = (): Snapshot => ({ attempts: [], cards: [], bookmarks: [], drafts: [], reviewWords: [], settings: defaultSettings, studySessions: [] });
 export function collectReviewWords(attempts: Pick<Attempt, 'reviewTerms'>[]): string[] {
   return [...new Set(attempts.flatMap(attempt => attempt.reviewTerms ?? []))];
 }

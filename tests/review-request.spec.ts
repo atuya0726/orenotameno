@@ -176,9 +176,10 @@ test('shares a saved word between questions and removes it globally from the rev
   await page.getByRole('button', { name: 'アで回答', exact: true }).click();
   await expect(word).toHaveAttribute('aria-pressed', 'true');
   await page.reload();
-  await page.getByRole('button', { name: 'アで回答', exact: true }).click();
+  await expect(page.getByRole('button', { name: 'アで回答', exact: true })).toBeDisabled();
   await expect(word).toHaveAttribute('aria-pressed', 'true');
   const saved = await readRecords(page);
+  expect(saved.attempts).toHaveLength(2);
   expect(saved.reviewWords).toEqual(['デジタル署名']);
   expect(saved.cards.every(card => card.remainingReviews === 2)).toBe(true);
   await page.goto('/reviews');
@@ -373,6 +374,7 @@ test('keeps progress stable as mastered words leave the queue and removes only t
   await page.getByRole('button', { name: 'イで回答', exact: true }).click();
   await page.getByRole('button', { name: 'ROC曲線を復習する', exact: true }).click();
   await page.getByRole('button', { name: '偽陽性率を復習する', exact: true }).click();
+  await expect(page.getByRole('button', { name: '偽陽性率を復習する', exact: true })).toHaveAttribute('aria-pressed', 'true');
   await page.goto('/glossary/review');
   await page.getByRole('link', { name: '復習を始める' }).click();
   await expect(page.getByText('単語の復習 1 / 2')).toBeVisible();
