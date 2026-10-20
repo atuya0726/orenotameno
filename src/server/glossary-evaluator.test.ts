@@ -87,6 +87,14 @@ describe('LLM評価の検証と集計', () => {
     expect(result.criteria).toHaveLength(1);
     expect(result.criteria[0].title).not.toContain('真正性');
   });
+  it('accepts the quantum computing overview without requiring specialist topics', () => {
+    const quantum = termById.get('quantum-computer')!;
+    const explanation = '量子ビットの重ね合わせを利用して計算するコンピュータです。';
+    const raw = { ...assessment(), criteria: [{ id: 'qubit', title: '', level: 'B', status: 'covered', evidence: explanation, feedback: '基本を説明できています。' }] };
+    const result = parseAssessment(raw, quantum, explanation, 'gpt-6-luna');
+    expect(result).toMatchObject({ status: 'covered', grade: 'B', covered: 1, total: 1 });
+    expect(result.criteria).toHaveLength(1);
+  });
   it('rejects invented quotes, empty evidence, unknown and duplicated criteria', () => {
     const invented = assessment(); invented.criteria[0].evidence = '公開鍵で署名を作る';
     expect(() => parseAssessment(invented, term, text, 'gpt-6-luna')).toThrow('引用');
