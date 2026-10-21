@@ -339,7 +339,11 @@ for (const { target, grade, removed } of [
     await expect(page.locator('.review-round-bar')).toContainText(`目標 ${target}`);
     await speakExplanation(page, '秘密鍵で署名を作り、公開鍵で検証して改ざんを検知する仕組みです。');
     await page.getByRole('button', { name: 'AIでチェック' }).click();
-    await expect(page.getByRole('status').filter({ hasText: removed ? '復習キューから外しました' : '復習キューに残します' })).toBeVisible();
+    const queueStatus = page.getByRole('status').filter({ hasText: removed ? '復習キューから外しました' : '復習キューに残します' });
+    await expect(queueStatus).toBeVisible();
+    await expect(page.locator('.glossary-result-heading').getByRole('status')).toHaveText(await queueStatus.innerText());
+    await expect(page.locator('.review-goal-result')).toHaveCount(1);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     const records = await readRecords(page);
     expect(records.reviewWords).toEqual(removed ? [] : ['デジタル署名']);
     expect(records.cards[0].remainingReviews).toBe(removed ? 0 : 2);
@@ -365,7 +369,7 @@ test('retries a failed queue removal without paying for another evaluation', asy
   await startWordReview(page, 'A');
   await speakExplanation(page, '秘密鍵で署名を作り、公開鍵で検証して改ざんを検知する仕組みです。');
   await page.getByRole('button', { name: 'AIでチェック' }).click();
-  await expect(page.getByRole('alert')).toContainText('評価は保存されています');
+  await expect(page.locator('.glossary-result-heading').getByRole('alert')).toContainText('評価は保存されています');
   expect((await readRecords(page)).reviewWords).toEqual(['デジタル署名']);
   await page.getByRole('button', { name: 'キューから外す処理を再試行' }).click();
   await expect(page.getByRole('status').filter({ hasText: '復習キューから外しました' })).toBeVisible();

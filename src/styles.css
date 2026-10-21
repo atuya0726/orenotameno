@@ -736,7 +736,7 @@ svg { flex-shrink: 0; }
 .related-terms a:hover { text-decoration: underline; }
 .glossary-feedback-focus { outline: 0; }
 .glossary-feedback { margin-top: var(--space-6); }
-.glossary-result-heading { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3) var(--space-4); margin-bottom: var(--space-5); background: var(--caution-soft); border: 1px solid var(--border); border-radius: var(--radius-control); }
+.glossary-result-heading { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); padding: var(--space-3) var(--space-4); margin-bottom: var(--space-5); background: var(--caution-soft); border: 1px solid var(--border); border-radius: var(--radius-control); }
 .glossary-result-covered { background: var(--success-soft); }
 .glossary-result-heading h2 { font-size: 12px; font-weight: 500; color: var(--text-secondary); }
 .glossary-result-value { color: var(--caution); font-size: 14px; font-weight: 700; }
@@ -816,4 +816,6 @@ svg { flex-shrink: 0; }
 .review-goal-option input { margin-top: 4px; accent-color: var(--brand); }
 .review-goal-option strong, .review-goal-option small { display: block; }
 .review-goal-option small { margin-top: var(--space-1); font-size: 12px; line-height: 1.8; color: var(--text-secondary); }
-.review-goal-result { margin: var(--space-4) 0; font-size: 13px; line-height: 1.9; }
+.review-goal-result { flex: 1 1 260px; min-width: 0; font-size: 13px; line-height: 1.9; }
+.review-goal-result > p { margin: 0; padding: 0; background: none; }
+.review-goal-result > .ui-button { margin-top: var(--space-2); }
