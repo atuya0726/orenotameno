@@ -186,7 +186,7 @@ export const terms: Term[] = [
   {
     "id": "sql-injection",
     "name": "SQLインジェクション",
-    "reading": "SQL injection",
+    "reading": "Structured Query Language injection",
     "category": "Webセキュリティ",
     "definition": "入力値などがSQLの命令として解釈され、意図しない問合せやデータ操作を起こす攻撃です。プレースホルダとパラメータバインドでSQLの構造とデータを分離します。",
     "example": "検索語をSQL文へ直接連結すると、入力に含まれる記号や命令でSQLの意味を変えられる場合があります。",
@@ -827,7 +827,7 @@ export const terms: Term[] = [
   {
     "id": "cryptrec",
     "name": "CRYPTREC暗号リスト",
-    "reading": "CRYPTREC Ciphers List",
+    "reading": "Cryptography Research and Evaluation Committees Ciphers List",
     "category": "暗号・認証",
     "definition": "電子政府での調達のために参照すべき暗号を示すリストです。電子政府推奨暗号リスト・推奨候補暗号リスト・運用監視暗号リストの三つから成ります。",
     "example": "政府のシステムで暗号を選ぶとき、電子政府推奨暗号リストに載っているAESやSHA-256を使い、運用監視暗号リストの暗号は互換性維持の目的に限ります。",
@@ -942,7 +942,7 @@ export const terms: Term[] = [
     "aliases": [
       "XML Signature"
     ],
-    "reading": "XML Signature",
+    "reading": "Extensible Markup Language Signature",
     "category": "暗号・認証",
     "definition": "XML文書に対するデジタル署名の規格です。文書全体だけでなく一部の要素も署名対象にでき、署名の情報もXMLで記述します。署名と対象の位置関係により、エンベロープ署名、エンベローピング署名、デタッチ署名があります。",
     "example": "SAMLのアサーションのうち必要な要素にXMLデジタル署名を付け、受け取ったサービスがIdPの公開鍵で検証します。",
@@ -1021,7 +1021,7 @@ export const terms: Term[] = [
       "SYN/ACK",
       "バックスキャッタ"
     ],
-    "reading": "SYN flood",
+    "reading": "Synchronize flood",
     "category": "攻撃手法",
     "definition": "TCPの接続開始要求（SYN）を大量に送り、サーバに応答待ちの接続を溜めさせて、正規の接続を受け付けられなくするサービス妨害攻撃です。送信元IPアドレスを偽装することが多く、偽の送信元へサーバのSYN/ACKが返ります。",
     "example": "未使用のIPアドレス宛てに、あるWebサーバからのSYN/ACKが大量に届くのが観測された場合、そのWebサーバがSYNフラッド攻撃を受けていると推定します（バックスキャッタ）。",
@@ -1215,7 +1215,7 @@ export const terms: Term[] = [
       "MITRE",
       "ATT&CK"
     ],
-    "reading": "MITRE ATT&CK",
+    "reading": "MITRE Adversarial Tactics, Techniques, and Common Knowledge",
     "category": "セキュリティ運用",
     "definition": "米国の非営利団体MITREが公開する、実際の攻撃で観測された攻撃者の戦術（Tactics）と技術（Techniques）の知識ベースです。MITREは脆弱性の識別番号CVEの運営も行っています。",
     "example": "SOCが検知した不審な動きをATT&CKの技術に対応付け、どの段階の攻撃をまだ検知できていないかを洗い出します。",
@@ -1372,7 +1372,7 @@ export const terms: Term[] = [
     "aliases": [
       "認証VLAN"
     ],
-    "reading": "IEEE 802.1X",
+    "reading": "Port-Based Network Access Control",
     "category": "ネットワークセキュリティ",
     "definition": "有線・無線LANで、接続しようとする機器を認証してからネットワークの利用を許可するポート単位のアクセス制御の規格です。端末（サプリカント）、アクセスポイントやスイッチ（オーセンティケータ）、認証サーバがEAPでやり取りします。",
     "example": "社内の無線LANで、端末がEAP-TLSのクライアント証明書を提示し、RADIUSサーバが認証に成功した端末だけを接続させます。",
@@ -1854,7 +1854,7 @@ export const terms: Term[] = [
     "aliases": [
       "シェル"
     ],
-    "reading": "OS command injection",
+    "reading": "Operating system command injection",
     "category": "Webセキュリティ",
     "definition": "Webアプリケーションに入力した値にOSのコマンドを紛れ込ませ、サーバ上でシェル経由で実行させる攻撃です。",
     "example": "ファイル名の入力欄に「a.txt; rm -rf /」のような文字列を入れ、アプリケーションがそれをシェルに渡すとコマンドが実行されてしまいます。",
@@ -1898,7 +1898,7 @@ export const terms: Term[] = [
   {
     "id": "ipsec",
     "name": "IPsec",
-    "reading": "IP Security",
+    "reading": "Internet Protocol Security",
     "category": "ネットワークセキュリティ",
     "definition": "ネットワーク層でIPパケットの暗号化や認証を行うプロトコル群です。上位のアプリケーションを変えずに通信を保護でき、VPNで使われます。",
     "example": "拠点間をインターネットで結ぶとき、ルータどうしでIPsecのトンネルを張って通信を暗号化します。",
@@ -1979,7 +1979,7 @@ export const terms: Term[] = [
   {
     "id": "dns-cache-poisoning",
     "name": "DNSキャッシュポイズニング",
-    "reading": "DNS cache poisoning",
+    "reading": "Domain Name System cache poisoning",
     "category": "攻撃手法",
     "definition": "キャッシュDNSサーバに偽の応答を受け入れさせ、誤った名前解決の情報をキャッシュさせる攻撃です。利用者を偽のサーバに誘導できます。",
     "example": "攻撃者が正規の応答より先に、銀行のドメイン名に対して攻撃者のIPアドレスを返す偽の応答を送り込みます。",
@@ -2379,7 +2379,7 @@ export const terms: Term[] = [
     "aliases": [
       "IT業務処理統制"
     ],
-    "reading": "IT application controls",
+    "reading": "Information technology application controls",
     "category": "システム監査",
     "definition": "販売や会計など個々の業務システムに組み込まれ、データが正確・網羅的に処理されることを確保する統制です。その基盤となる運用・開発・アクセス管理などは全般統制です。",
     "example": "受注入力時の値のチェック機能や、入力結果の一覧（プルーフリスト）と元の伝票との照合は業務処理統制です。",
@@ -2850,7 +2850,7 @@ export const terms: Term[] = [
   {
     "id": "generative-ai",
     "name": "生成AI",
-    "reading": "Generative AI",
+    "reading": "Generative artificial intelligence",
     "category": "AI・機械学習",
     "definition": "学習したデータの傾向をもとに、文章・画像・音声などの新しいコンテンツを生成するAIです。もっともらしい誤り（ハルシネーション）や、著作権・情報漏えいへの配慮が必要です。",
     "example": "指示文から報告書の下書きを作ったり、説明文から画像を作ったりします。",
@@ -3535,7 +3535,7 @@ export const terms: Term[] = [
     "aliases": [
       "NAND"
     ],
-    "reading": "NAND gate",
+    "reading": "NOT AND gate",
     "category": "基礎理論",
     "definition": "論理積（AND）の結果を反転する論理素子です。二つの入力がともに1のときだけ出力が0になり、それ以外は1になります。NAND素子の組合せで様々な論理回路を構成できます。",
     "example": "A NAND A は NOT A になり、(A NAND A) NAND (B NAND B) は A OR B になります。",
@@ -3784,7 +3784,7 @@ export const terms: Term[] = [
   {
     "id": "sax",
     "name": "SAX",
-    "reading": "Simple API for XML",
+    "reading": "Simple Application Programming Interface for Extensible Markup Language",
     "category": "マルチメディア",
     "definition": "XMLを先頭から順番に読み、要素の開始や終了などをイベントとして通知して処理する仕組みです。文書全体を木構造として保持せずに処理できます。",
     "example": "大量のXMLを読みながら、必要な要素の値を順次集計します。",
@@ -4483,7 +4483,7 @@ export const terms: Term[] = [
   {
     "id": "plc",
     "name": "PLC",
-    "reading": "PLC",
+    "reading": "Programmable Logic Controller",
     "category": "システム構成",
     "definition": "工場の機械や設備などを制御するためのプログラム可能な装置です。入力信号や設定した手順に従って出力を制御します。ここではProgrammable Logic Controllerを扱います。",
     "example": "生産ラインのベルトコンベアの動きはPLCが制御し、MESはその上位で作業指示を出します。",
@@ -5197,7 +5197,7 @@ export const terms: Term[] = [
       "周期タスク",
       "スケジューリング"
     ],
-    "reading": "Real-time OS",
+    "reading": "Real-time operating system",
     "category": "ソフトウェア",
     "definition": "処理を決められた時間内に確実に終えることを重視したOSです。優先度に基づくプリエンプティブなスケジューリングで、優先度の高いタスクが来たら実行中のタスクを中断して切り替えます。",
     "example": "エアバッグ制御では、衝突の検知から数ミリ秒以内に展開の処理を必ず実行します。",
@@ -5814,7 +5814,7 @@ export const terms: Term[] = [
     "aliases": [
       "ネットワーク層"
     ],
-    "reading": "OSI reference model",
+    "reading": "Open Systems Interconnection reference model",
     "category": "ネットワーク",
     "definition": "通信の機能を7つの層に分けたモデルです。下から物理層、データリンク層、ネットワーク層、トランスポート層、セション層、プレゼンテーション層、アプリケーション層です。",
     "example": "IPはネットワーク層、TCPはトランスポート層、イーサネットはデータリンク層の規約です。",
@@ -5888,7 +5888,7 @@ export const terms: Term[] = [
   {
     "id": "mac-address",
     "name": "MACアドレス",
-    "reading": "MAC address",
+    "reading": "Media Access Control address",
     "category": "ネットワーク",
     "definition": "ネットワーク機器のインタフェースに割り当てる48ビットの物理アドレスです。同じLAN内での通信に使い、IPアドレスからMACアドレスを調べるのがARPです。調べた結果はARPキャッシュに保存され、arpコマンドで確認できます。",
     "example": "PCは宛先IPに対応するMACアドレスをARPで問い合わせ、そのMACアドレス宛てにフレームを送ります。",
@@ -5916,7 +5916,7 @@ export const terms: Term[] = [
     "aliases": [
       "グローバルIPアドレス"
     ],
-    "reading": "IP address",
+    "reading": "Internet Protocol address",
     "category": "ネットワーク",
     "definition": "ネットワーク層で通信相手を識別するアドレスです。IPv4は32ビットで、ネットワーク部とホスト部に分かれます。インターネットで一意なグローバルIPアドレスと、組織内で使うプライベートIPアドレスがあります。",
     "example": "192.168.1.10 はプライベートIPアドレスで、インターネットへはNATでグローバルIPアドレスに変換して出ます。",
@@ -6353,7 +6353,7 @@ export const terms: Term[] = [
       "NSレコード",
       "CNAMEレコード"
     ],
-    "reading": "DNS resource records",
+    "reading": "Domain Name System resource records",
     "category": "ネットワーク",
     "definition": "DNSで名前に対応する情報を保持するデータです。IPアドレス、メールの配送先、別名など、情報の用途に応じた種類のレコードを設定します。",
     "example": "example.jp 宛てのメールは、MXレコードに書かれたメールサーバに届けられます。",
@@ -6384,7 +6384,7 @@ export const terms: Term[] = [
       "クライアントエラー",
       "サーバエラー"
     ],
-    "reading": "HTTP status codes",
+    "reading": "Hypertext Transfer Protocol status codes",
     "category": "Webセキュリティ",
     "definition": "HTTP応答で、リクエストの処理結果を示す3桁のコードです。先頭の数字によって成功・リダイレクト・エラーなどに分類されます。",
     "example": "存在しないページは404 Not Found、ログインが必要なページへは302で誘導、サーバ内部の異常は500になります。",
@@ -6410,7 +6410,7 @@ export const terms: Term[] = [
     "aliases": [
       "非同期通信"
     ],
-    "reading": "Asynchronous JavaScript and XML",
+    "reading": "Asynchronous JavaScript and Extensible Markup Language",
     "category": "Webセキュリティ",
     "definition": "ブラウザ上のJavaScriptが、ページ全体を読み直さずにサーバと非同期に通信し、受け取ったデータでDOMを書き換えて画面の一部を更新する技術です。",
     "example": "地図をドラッグすると、ページを読み直さずに周辺の地図画像だけが読み込まれます。",
@@ -6478,7 +6478,7 @@ export const terms: Term[] = [
     "aliases": [
       "スタティックVLAN"
     ],
-    "reading": "Virtual LAN",
+    "reading": "Virtual Local Area Network",
     "category": "ネットワークセキュリティ",
     "definition": "物理的な配線とは別に、スイッチの設定で論理的にLANを分割する技術です。ポートごとに固定でVLANを割り当てるのがスタティックVLAN、利用者の認証結果に応じて割り当てるのが認証VLANです。",
     "example": "同じフロアでも経理部のPCだけを別のVLANにして、他部署から直接通信できないようにします。",
@@ -6512,7 +6512,7 @@ export const terms: Term[] = [
     "aliases": [
       "NAPT"
     ],
-    "reading": "IP masquerade (NAPT)",
+    "reading": "Internet Protocol masquerade / Network Address Port Translation",
     "category": "ネットワークセキュリティ",
     "definition": "複数の端末のプライベートIPアドレスとポート番号を、1つのグローバルIPアドレスと別のポート番号に変換してインターネットに接続する技術（NAPT）です。外部から内部の端末に直接アクセスされにくくなります。",
     "example": "家庭のルータが、スマートフォンとPCの通信を1つのグローバルIPアドレスでまとめて送ります。",
@@ -7124,7 +7124,7 @@ export const terms: Term[] = [
   {
     "id": "smime",
     "name": "S/MIME",
-    "reading": "Secure/MIME",
+    "reading": "Secure/Multipurpose Internet Mail Extensions",
     "category": "メールセキュリティ",
     "definition": "公開鍵暗号とデジタル証明書を使って、電子メールの本文を暗号化したり、デジタル署名を付けたりする規格です。送信者のなりすましや改ざん、盗聴を防げます。",
     "example": "取引先の公開鍵（証明書）でメールを暗号化し、自分の秘密鍵で署名して送ります。",
@@ -7399,7 +7399,7 @@ export const terms: Term[] = [
   {
     "id": "captcha",
     "name": "CAPTCHA",
-    "reading": "CAPTCHA",
+    "reading": "Completely Automated Public Turing test to tell Computers and Humans Apart",
     "category": "暗号・認証",
     "definition": "ゆがんだ文字の読取りや画像の選択など、人間には簡単でプログラムには難しい課題を出して、操作しているのが人間かどうかを判定する仕組みです。自動化されたアカウント作成や不正ログインの試行を防ぎます。",
     "example": "ログインに5回失敗したら、信号機の写っている画像を選ぶ課題を表示します。",
@@ -8057,7 +8057,7 @@ export const terms: Term[] = [
   {
     "id": "dns-reflection",
     "name": "DNSリフレクション攻撃",
-    "reading": "DNS reflection attack",
+    "reading": "Domain Name System reflection attack",
     "category": "攻撃手法",
     "definition": "送信元IPアドレスを攻撃対象に偽装して、オープンリゾルバなどのDNSサーバに問合せを送り、大きな応答を攻撃対象に集中させるDDoS攻撃です。小さな問合せで大きな応答を返させるため、通信量が増幅されます（DNSアンプ攻撃）。",
     "example": "60バイトの問合せで4,000バイトの応答を返させ、攻撃対象の回線をあふれさせます。",
@@ -8192,7 +8192,7 @@ export const terms: Term[] = [
   {
     "id": "rsa",
     "name": "RSA暗号",
-    "reading": "RSA",
+    "reading": "Rivest–Shamir–Adleman",
     "category": "暗号・認証",
     "definition": "大きな整数の素因数分解の難しさを安全性の基礎とする公開鍵暗号方式です。公開鍵と秘密鍵を使い分けて暗号化や署名に利用します。",
     "example": "公開鍵で暗号化したデータを、対応する秘密鍵で復号します。",
@@ -8247,7 +8247,7 @@ export const terms: Term[] = [
       "接触型ICカード",
       "非接触型ICカード"
     ],
-    "reading": "IC card",
+    "reading": "Integrated circuit card",
     "category": "暗号・認証",
     "definition": "ICチップを埋め込んだカードです。端子を読取り機に接触させる接触型と、電波で通信する非接触型があります。ICチップ内で秘密鍵の処理を行えるため、磁気カードより偽造が困難です。",
     "example": "交通系ICカードは非接触型、クレジットカードのICチップは接触型が一般的です。",
@@ -8722,7 +8722,7 @@ export const terms: Term[] = [
       "変更要求",
       "リリース"
     ],
-    "reading": "IT service management",
+    "reading": "Information technology service management",
     "category": "サービス管理",
     "definition": "ITサービスを計画・提供・管理・改善し、利用者や事業に価値を届けるための活動の体系です。要求に合ったサービスを提供し、その達成状況を評価して改善します。",
     "example": "サービスの目標と実績を比べ、利用者への応答時間が目標を超えていれば運用や構成の改善を検討します。",
@@ -9186,7 +9186,7 @@ export const terms: Term[] = [
       "IT投資",
       "PDCAサイクル"
     ],
-    "reading": "IT governance",
+    "reading": "Information technology governance",
     "category": "システム戦略",
     "definition": "経営陣が、ITの活用について方針を示し、IT投資や利用が組織の目標に沿っているかを評価・指示・モニタリングする仕組みです。ガバナンスは経営陣による方向付け、マネジメントはその方針に沿った計画と実行、コントロールは目標どおりに進むよう管理する仕組みを指します。",
     "example": "経営会議がIT投資の優先順位を決め、その効果を定期的に評価するのはITガバナンスの活動です。",
@@ -10306,7 +10306,7 @@ export const terms: Term[] = [
       "デジタルガバナンス・コード",
       "経営ビジョン"
     ],
-    "reading": "DX certification",
+    "reading": "Digital transformation certification",
     "category": "システム戦略",
     "definition": "経済産業省が、デジタルガバナンス・コードに沿って、DXに取り組む準備ができている（DX-Ready）事業者を認定する制度です。経営ビジョンやDX戦略の策定・公表、推進体制、成果指標、経営者のメッセージ、課題の把握などが基準になっています。",
     "example": "経営ビジョンとDX戦略を取締役会で承認して公表し、認定を申請します。",
@@ -10342,7 +10342,7 @@ export const terms: Term[] = [
       "全社最適",
       "個別最適"
     ],
-    "reading": "DX promotion index",
+    "reading": "Digital transformation promotion index",
     "category": "システム戦略",
     "definition": "経済産業省が示した、企業がDXの取組み状況を自己診断するための指標です。経営のあり方・仕組みと、ITシステムの構築の2つの枠組みで構成されます。ITシステムには、データを活用できること、変化に迅速に対応できること（スピード・アジリティ）、部門ごとの個別最適ではなく全社最適であることなどが求められます。",
     "example": "各部門が別々に作ったシステムを、全社でデータを共有できる構成に見直します。",
@@ -10726,7 +10726,7 @@ export const terms: Term[] = [
   {
     "id": "qc-tools",
     "name": "QC七つ道具",
-    "reading": "QC tools",
+    "reading": "Seven quality control tools",
     "category": "経営管理",
     "definition": "品質に関するデータや原因を、図表などで整理して改善に役立てる七つの基本的な道具の総称です。不良の多さや分布、原因の関係などを調べるために使います。",
     "example": "品質データを図表に整理し、件数の多い問題や、原因として調べるべき項目を見つけます。",
@@ -11158,7 +11158,7 @@ export const terms: Term[] = [
   {
     "id": "sha-512-256",
     "name": "SHA-512/256",
-    "reading": "SHA-512/256",
+    "reading": "Secure Hash Algorithm 512/256",
     "category": "暗号・認証",
     "definition": "SHA-512に基づくハッシュ計算を行い、最終的な512ビットの値を256ビットに切り詰める方式です。通常のSHA-512とは異なる初期値を使います。",
     "example": "ファイルから256ビットのダイジェストを計算します。同じ入力でも、通常のSHA-512を半分に切った値やSHA-256の値とは異なります。",
@@ -11323,7 +11323,7 @@ export const terms: Term[] = [
   {
     "id": "x509",
     "name": "X.509",
-    "reading": "ITU-T X.509",
+    "reading": "Information technology — Open Systems Interconnection — The Directory: Public-key and attribute certificate frameworks",
     "category": "暗号・認証",
     "definition": "公開鍵証明書などの形式を定める規格です。証明書には主体、公開鍵、発行者、有効期間、発行者の署名などが含まれます。",
     "example": "TLSで使うサーバー証明書は、X.509の形式で公開鍵や有効期間を表します。",
@@ -11638,7 +11638,7 @@ export const terms: Term[] = [
   {
     "id": "csf-2",
     "name": "CSF 2.0",
-    "reading": "NIST Cybersecurity Framework 2.0",
+    "reading": "National Institute of Standards and Technology Cybersecurity Framework 2.0",
     "category": "セキュリティ運用",
     "definition": "組織のサイバーセキュリティリスクを管理するためのNISTのフレームワークです。コアを統治、特定、防御、検知、対応、復旧の六つの機能で整理します。",
     "example": "現在の対策と目標の状態を六つの機能に沿って整理し、改善の優先順位を決めます。",
@@ -11835,7 +11835,7 @@ export const terms: Term[] = [
   {
     "id": "oauth2",
     "name": "OAuth 2.0",
-    "reading": "OAuth 2.0",
+    "reading": "The OAuth 2.0 Authorization Framework",
     "category": "暗号・認証",
     "definition": "リソースオーナーの許可に基づき、クライアントへリソースへのアクセス権限を委譲するための認可の枠組みです。権限はアクセストークンで表します。",
     "example": "写真編集アプリに、利用者のクラウド上の写真を読み出す権限だけを付与します。",
@@ -12059,7 +12059,7 @@ export const terms: Term[] = [
   {
     "id": "http-get",
     "name": "GETメソッド",
-    "reading": "HTTP GET method",
+    "reading": "Hypertext Transfer Protocol GET method",
     "category": "ネットワーク",
     "definition": "指定したリソースの表現を取得するHTTPメソッドです。通常のHTMLフォームをGETで送信すると、入力値はURIのクエリに付加されます。",
     "example": "検索フォームの入力値が/search?q=wordというURIに含まれます。",
@@ -12081,7 +12081,7 @@ export const terms: Term[] = [
   {
     "id": "http-post",
     "name": "POSTメソッド",
-    "reading": "HTTP POST method",
+    "reading": "Hypertext Transfer Protocol POST method",
     "category": "ネットワーク",
     "definition": "対象リソースにデータを送って処理を依頼するHTTPメソッドです。通常のHTMLフォームでは、入力値をリクエストのメッセージボディに含めます。",
     "example": "申込フォームの内容をメッセージボディへ格納してWebサーバに送ります。",
@@ -12104,7 +12104,7 @@ export const terms: Term[] = [
   {
     "id": "not-exists",
     "name": "NOT EXISTS",
-    "reading": "SQL NOT EXISTS",
+    "reading": "Structured Query Language NOT EXISTS",
     "category": "データベース",
     "definition": "副問合せの結果に行が一つも存在しないときに真となるSQLの条件です。相関副問合せと組み合わせて、対応する行がないデータを抽出できます。",
     "example": "上司として参照する従業員が存在しない行を選び、部下のいない従業員を抽出します。",
@@ -12147,7 +12147,7 @@ export const terms: Term[] = [
   {
     "id": "sql-null",
     "name": "NULL",
-    "reading": "SQL NULL",
+    "reading": "Structured Query Language NULL",
     "category": "データベース",
     "definition": "SQLで値が存在しない、または不明であることを表すものです。0や空文字とは区別し、判定にはIS NULLなどを使います。",
     "example": "上司が設定されていない従業員の「上司」列をNULLにします。",
@@ -12389,7 +12389,7 @@ export const terms: Term[] = [
   {
     "id": "arp-cache",
     "name": "ARPキャッシュ",
-    "reading": "ARP cache",
+    "reading": "Address Resolution Protocol cache",
     "category": "ネットワーク",
     "definition": "ARPによって得たIPv4アドレスとMACアドレスの対応を一時的に保持する情報です。一定時間で更新・削除されるため、証拠保全では早めに取得します。",
     "example": "同じLAN内のゲートウェイのIPv4アドレスとMACアドレスの対応を保存します。",
@@ -12434,7 +12434,7 @@ export const terms: Term[] = [
   {
     "id": "smtp-auth",
     "name": "SMTP-AUTH",
-    "reading": "SMTP Authentication",
+    "reading": "Simple Mail Transfer Protocol Authentication",
     "category": "メールセキュリティ",
     "definition": "SMTPでメールを投稿する利用者を認証する拡張です。許可された利用者だけがメール送信サービスを使えるようにします。",
     "example": "メールクライアントが認証情報を提示してから投稿用サーバにメールを送信します。",
@@ -12547,7 +12547,7 @@ export const terms: Term[] = [
   {
     "id": "it-control-reliability",
     "name": "信頼性（ITの統制目標）",
-    "reading": "Reliability in IT control objectives",
+    "reading": "Reliability in information technology control objectives",
     "category": "システム監査",
     "definition": "財務報告に係る内部統制のITの統制目標では、情報が組織の意図どおりに承認され、漏れや重複なく正確に記録・処理されることです。",
     "example": "売上取引を二重計上せず、全件を正しい金額と科目で記録します。",
@@ -12688,7 +12688,7 @@ export const terms: Term[] = [
   {
     "id": "tls13",
     "name": "TLS 1.3",
-    "reading": "TLS 1.3",
+    "reading": "Transport Layer Security 1.3",
     "category": "暗号・認証",
     "definition": "通信の暗号化・認証・完全性保護を提供するTLSの版です。古い暗号方式を除き、暗号スイートにはAEADとハッシュを含め、鍵交換や署名の方式は別に選びます。",
     "example": "TLS_AES_128_GCM_SHA256でWeb通信を保護します。",
@@ -12723,7 +12723,7 @@ export const terms: Term[] = [
   {
     "id": "aead",
     "name": "AEAD",
-    "reading": "AEAD",
+    "reading": "Authenticated Encryption with Associated Data",
     "category": "暗号・認証",
     "definition": "平文の暗号化と認証を一体で行い、暗号化しない付加データも改ざん検知の対象にできる方式です。",
     "example": "AES-GCMで本文を暗号化し、ヘッダーの一部も認証します。",
@@ -12810,7 +12810,7 @@ export const terms: Term[] = [
   {
     "id": "ctr-mode",
     "name": "CTRモード",
-    "reading": "Ctr Mode",
+    "reading": "Counter mode",
     "category": "暗号・認証",
     "definition": "カウンタ値をブロック暗号で暗号化して鍵ストリームを作り、データとXORを取る暗号利用モードです。同じ鍵でカウンタを再利用しません。",
     "example": "各ブロックのカウンタを独立に処理し、暗号化を並列化します。",
@@ -12872,7 +12872,7 @@ export const terms: Term[] = [
   {
     "id": "cprm",
     "name": "CPRM",
-    "reading": "CPRM",
+    "reading": "Content Protection for Recordable Media",
     "category": "暗号・認証",
     "definition": "記録可能な媒体上のコンテンツを保護する技術です。SDメモリカードなどで利用されます。",
     "example": "SDカードに記録した映像の不正なコピーを制限します。",
@@ -12889,7 +12889,7 @@ export const terms: Term[] = [
   {
     "id": "cppm",
     "name": "CPPM",
-    "reading": "CPPM",
+    "reading": "Content Protection for Pre-recorded Media",
     "category": "暗号・認証",
     "definition": "記録済みの媒体のコンテンツを保護する技術です。DVD-Audioなどで利用されます。",
     "example": "販売される記録済み音楽メディアの内容を保護します。",
@@ -12906,7 +12906,7 @@ export const terms: Term[] = [
   {
     "id": "dtcp",
     "name": "DTCP",
-    "reading": "DTCP",
+    "reading": "Digital Transmission Content Protection",
     "category": "暗号・認証",
     "definition": "デジタル機器間で伝送するコンテンツを、機器認証や暗号化などで保護する技術です。",
     "example": "対応する映像機器間で録画番組を保護して転送します。",
@@ -12923,7 +12923,7 @@ export const terms: Term[] = [
   {
     "id": "hdcp",
     "name": "HDCP",
-    "reading": "HDCP",
+    "reading": "High-bandwidth Digital Content Protection",
     "category": "暗号・認証",
     "definition": "HDMIなどのデジタル映像・音声の伝送路で、機器認証と暗号化によってコンテンツを保護する技術です。",
     "example": "プレーヤーからディスプレイへ送る映像を保護します。",
@@ -12996,7 +12996,7 @@ export const terms: Term[] = [
   {
     "id": "sql-or",
     "name": "OR条件",
-    "reading": "Sql Or",
+    "reading": "Structured Query Language OR",
     "category": "データベース",
     "definition": "複数の条件のうち、少なくとも一つが真なら全体を真とする条件です。SQLではNULLによる不明の扱いも考慮します。",
     "example": "勤続年数>10 OR 年齢>28で、どちらかを満たす社員を選びます。",
@@ -13013,7 +13013,7 @@ export const terms: Term[] = [
   {
     "id": "sql-and",
     "name": "AND条件",
-    "reading": "Sql And",
+    "reading": "Structured Query Language AND",
     "category": "データベース",
     "definition": "複数の条件が全て真のときに全体を真とする条件です。SQLではNULLによる不明の扱いも考慮します。",
     "example": "条件を満たし、かつ所属が総務部の社員を選びます。",
@@ -13081,7 +13081,7 @@ export const terms: Term[] = [
   {
     "id": "odbc",
     "name": "ODBC",
-    "reading": "ODBC",
+    "reading": "Open Database Connectivity",
     "category": "データベース",
     "definition": "アプリケーションからドライバーを介し、様々なDBMSへ共通のインタフェースでアクセスするための仕組みです。",
     "example": "対応ドライバーを使って業務アプリからDBへSQLを送ります。",
@@ -13217,7 +13217,7 @@ export const terms: Term[] = [
   {
     "id": "sql",
     "name": "SQL",
-    "reading": "SQL",
+    "reading": "Structured Query Language",
     "category": "データベース",
     "definition": "関係データベースの定義、検索、更新、権限管理などを行うための言語です。",
     "example": "SELECTで検索し、GRANTで利用者に権限を与えます。",
@@ -13394,7 +13394,7 @@ export const terms: Term[] = [
   {
     "id": "saas",
     "name": "SaaS",
-    "reading": "SaaS",
+    "reading": "Software as a Service",
     "category": "サービス管理",
     "definition": "提供者が運用するアプリケーションをネットワーク経由で利用するクラウドサービスの区分です。",
     "example": "ブラウザで事業者の会計サービスを使います。",
@@ -13413,7 +13413,7 @@ export const terms: Term[] = [
   {
     "id": "paas",
     "name": "PaaS",
-    "reading": "PaaS",
+    "reading": "Platform as a Service",
     "category": "サービス管理",
     "definition": "アプリケーションの開発・実行に使う基盤を提供するクラウドサービスの区分です。利用者は主にアプリケーションやデータを管理します。",
     "example": "OSの管理を提供者へ任せ、自作アプリを実行します。",
@@ -13432,7 +13432,7 @@ export const terms: Term[] = [
   {
     "id": "iaas",
     "name": "IaaS",
-    "reading": "IaaS",
+    "reading": "Infrastructure as a Service",
     "category": "サービス管理",
     "definition": "仮想サーバやストレージ、ネットワークなどの基盤資源を提供するクラウドサービスの区分です。利用者は通常OSやアプリケーションを管理します。",
     "example": "仮想マシンに自分でOSやDBMSを導入します。",
@@ -13483,7 +13483,7 @@ export const terms: Term[] = [
   {
     "id": "sms",
     "name": "SMS",
-    "reading": "SMS",
+    "reading": "Service Management System",
     "category": "サービス管理",
     "definition": "サービスを指揮・管理する方針や目標、プロセスなどから成るサービスマネジメントシステムです。",
     "example": "サービスの計画・提供・測定・改善の仕組みを整備します。",
@@ -13500,7 +13500,7 @@ export const terms: Term[] = [
   {
     "id": "ooda",
     "name": "OODAループ",
-    "reading": "Ooda",
+    "reading": "Observe / Orient / Decide / Act",
     "category": "サービス管理",
     "definition": "観察、状況判断、意思決定、行動を繰り返し、状況の変化へ適応して判断・行動する枠組みです。",
     "example": "現場の変化を把握して対応を選び、実行結果から次の行動を変えます。",
@@ -13655,7 +13655,7 @@ export const terms: Term[] = [
   {
     "id": "icmp",
     "name": "ICMP",
-    "reading": "ICMP",
+    "reading": "Internet Control Message Protocol",
     "category": "ネットワーク",
     "definition": "IP通信のエラーや制御情報を通知するプロトコルです。エコー要求・応答による到達性の確認にも使います。",
     "example": "ルータが時間切れや宛先への到達不能を送信元へ通知します。",
@@ -13672,7 +13672,7 @@ export const terms: Term[] = [
   {
     "id": "ipv4",
     "name": "IPv4",
-    "reading": "IPv4",
+    "reading": "Internet Protocol version 4",
     "category": "ネットワーク",
     "definition": "32ビットのIPアドレスを使うインターネットプロトコルです。通常アドレスを8ビットずつの四つの十進数で表します。",
     "example": "192.0.2.1というアドレスを端末へ設定します。",
@@ -13689,7 +13689,7 @@ export const terms: Term[] = [
   {
     "id": "udp",
     "name": "UDP",
-    "reading": "UDP",
+    "reading": "User Datagram Protocol",
     "category": "ネットワーク",
     "definition": "コネクション確立や再送制御を行わず、ポート番号を用いてデータグラムを送受信するトランスポート層のプロトコルです。",
     "example": "遅延を抑えたい通信で、必要な損失対策をアプリケーション側に実装します。",
@@ -13706,7 +13706,7 @@ export const terms: Term[] = [
   {
     "id": "tcp",
     "name": "TCP",
-    "reading": "TCP",
+    "reading": "Transmission Control Protocol",
     "category": "ネットワーク",
     "definition": "コネクションを確立し、再送や順序制御、フロー制御などによって信頼性のあるバイト列の通信を提供するプロトコルです。",
     "example": "Web通信のデータを欠落や順序の乱れから回復して受信します。",
@@ -13723,7 +13723,7 @@ export const terms: Term[] = [
   {
     "id": "txt-record",
     "name": "TXTレコード",
-    "reading": "Txt Record",
+    "reading": "Text record",
     "category": "ネットワーク",
     "definition": "DNSに文字列情報を公開するためのリソースレコードです。SPFやDKIMの公開情報などにも使います。",
     "example": "ドメインの送信許可方針をSPFの文字列として登録します。",
@@ -13740,7 +13740,7 @@ export const terms: Term[] = [
   {
     "id": "pgp",
     "name": "PGP",
-    "reading": "PGP",
+    "reading": "Pretty Good Privacy",
     "category": "ネットワーク",
     "definition": "公開鍵暗号と共通鍵暗号などを組み合わせ、電子メールやファイルの暗号化・署名を行う仕組みです。",
     "example": "受信者の公開鍵を使ってメールの暗号鍵を保護します。",
@@ -13757,7 +13757,7 @@ export const terms: Term[] = [
   {
     "id": "smtp-over-tls",
     "name": "SMTP over TLS",
-    "reading": "SMTP over TLS",
+    "reading": "Simple Mail Transfer Protocol over Transport Layer Security",
     "category": "ネットワーク",
     "definition": "SMTPの通信路をTLSで暗号化し、メール転送や投稿時の盗聴・改ざんを防ぐ方式です。",
     "example": "メールサーバ同士の接続でTLSを使い通信を保護します。",
@@ -13796,7 +13796,7 @@ export const terms: Term[] = [
   {
     "id": "ssid",
     "name": "SSID",
-    "reading": "SSID",
+    "reading": "Service Set Identifier",
     "category": "ネットワーク",
     "definition": "無線LANのネットワークを識別するための識別子です。秘密の暗号鍵ではありません。",
     "example": "端末のWi-Fi設定で接続するネットワークのSSIDを選びます。",
@@ -13813,7 +13813,7 @@ export const terms: Term[] = [
   {
     "id": "mac-filtering",
     "name": "MACアドレスフィルタリング",
-    "reading": "Mac Filtering",
+    "reading": "Media Access Control address filtering",
     "category": "ネットワーク",
     "definition": "端末のMACアドレスに基づいて通信や接続を許可・拒否する機能です。MACアドレスは偽装され得るため強い認証の代わりにはなりません。",
     "example": "登録された端末のMACアドレスだけ接続を許可します。",
@@ -13881,7 +13881,7 @@ export const terms: Term[] = [
   {
     "id": "vrrp",
     "name": "VRRP",
-    "reading": "VRRP",
+    "reading": "Virtual Router Redundancy Protocol",
     "category": "ネットワーク",
     "definition": "複数のルータで仮想ルータを構成し、障害時にゲートウェイ機能を引き継ぐためのプロトコルです。",
     "example": "端末のゲートウェイ設定を変えずに稼働中のルータを切り替えます。",
@@ -13915,7 +13915,7 @@ export const terms: Term[] = [
   {
     "id": "rstp",
     "name": "RSTP",
-    "reading": "RSTP",
+    "reading": "Rapid Spanning Tree Protocol",
     "category": "ネットワーク",
     "definition": "スパニングツリープロトコルを改良し、L2ネットワークのループ防止と障害後の素早い経路切替えを行うプロトコルです。",
     "example": "冗長スイッチのリンク障害時に代替経路へ収束します。",
@@ -13932,7 +13932,7 @@ export const terms: Term[] = [
   {
     "id": "rarp",
     "name": "RARP",
-    "reading": "RARP",
+    "reading": "Reverse Address Resolution Protocol",
     "category": "ネットワーク",
     "definition": "MACアドレスなどの情報から、自分のIPv4アドレスをサーバへ問い合わせるための旧来のプロトコルです。",
     "example": "ディスクを持たない端末が起動時に自分のIPアドレスを得ます。",
@@ -13949,7 +13949,7 @@ export const terms: Term[] = [
   {
     "id": "isp",
     "name": "ISP",
-    "reading": "ISP",
+    "reading": "Internet Service Provider",
     "category": "ネットワーク",
     "definition": "利用者へインターネットへの接続サービスを提供する事業者です。",
     "example": "自宅の回線をインターネットへ接続し、割り当てるIPアドレスなどを管理します。",
@@ -13966,7 +13966,7 @@ export const terms: Term[] = [
   {
     "id": "https",
     "name": "HTTPS",
-    "reading": "HTTPS",
+    "reading": "Hypertext Transfer Protocol Secure",
     "category": "ネットワーク",
     "definition": "HTTPの通信をTLSで保護する方式です。サーバの認証、通信内容の暗号化や改ざん検知を提供します。",
     "example": "ブラウザでhttpsから始まるURLへ接続します。",
@@ -13983,7 +13983,7 @@ export const terms: Term[] = [
   {
     "id": "imaps",
     "name": "IMAPS",
-    "reading": "IMAPS",
+    "reading": "Internet Message Access Protocol over Transport Layer Security",
     "category": "ネットワーク",
     "definition": "メールボックスへアクセスするIMAPの通信をTLSで保護する方式です。認証情報やメール本文などを暗号化します。",
     "example": "スマートフォンがメールサーバ上の受信箱を安全に参照します。",
@@ -14002,7 +14002,7 @@ export const terms: Term[] = [
   {
     "id": "apop",
     "name": "APOP",
-    "reading": "APOP",
+    "reading": "Authenticated Post Office Protocol",
     "category": "ネットワーク",
     "definition": "POP3で平文パスワードをそのまま送らず、チャレンジに応じた値で認証する旧来の方式です。通信全体を暗号化するものではありません。",
     "example": "サーバのチャレンジと秘密から認証用のダイジェストを計算します。",
@@ -14019,7 +14019,7 @@ export const terms: Term[] = [
   {
     "id": "pop3",
     "name": "POP3",
-    "reading": "POP3",
+    "reading": "Post Office Protocol version 3",
     "category": "ネットワーク",
     "definition": "メールサーバのメールボックスから電子メールを取り出すためのプロトコルです。暗号化にはTLSなどが別途必要です。",
     "example": "メールクライアントがサーバのメールをダウンロードします。",
@@ -14036,7 +14036,7 @@ export const terms: Term[] = [
   {
     "id": "sntp",
     "name": "SNTP",
-    "reading": "SNTP",
+    "reading": "Simple Network Time Protocol",
     "category": "ネットワーク",
     "definition": "NTPの仕組みを簡易な形で利用してネットワーク越しに時刻を同期するためのプロトコルです。",
     "example": "端末が時刻サーバへ問い合わせて時計を合わせます。",
@@ -14053,7 +14053,7 @@ export const terms: Term[] = [
   {
     "id": "ntp",
     "name": "NTP",
-    "reading": "NTP",
+    "reading": "Network Time Protocol",
     "category": "ネットワーク",
     "definition": "ネットワーク上の時刻サーバと情報を交換し、通信遅延などを考慮して時計を同期するプロトコルです。",
     "example": "複数の時刻源を使ってサーバ群の時刻を合わせます。",
@@ -14070,7 +14070,7 @@ export const terms: Term[] = [
   {
     "id": "nntp",
     "name": "NNTP",
-    "reading": "NNTP",
+    "reading": "Network News Transfer Protocol",
     "category": "ネットワーク",
     "definition": "ネットニュースの記事をサーバ間で配送したり、クライアントが取得・投稿したりするためのプロトコルです。",
     "example": "ニュースグループの記事を別のニュースサーバへ転送します。",
@@ -14087,7 +14087,7 @@ export const terms: Term[] = [
   {
     "id": "tftp",
     "name": "TFTP",
-    "reading": "TFTP",
+    "reading": "Trivial File Transfer Protocol",
     "category": "ネットワーク",
     "definition": "UDPを使う簡易なファイル転送プロトコルです。FTPのような利用者認証の機能は持ちません。",
     "example": "ネットワーク機器の起動用ファイルを転送します。",
@@ -14104,7 +14104,7 @@ export const terms: Term[] = [
   {
     "id": "igmp",
     "name": "IGMP",
-    "reading": "IGMP",
+    "reading": "Internet Group Management Protocol",
     "category": "ネットワーク",
     "definition": "IPv4で、端末と近隣ルータとの間でマルチキャストグループへの参加情報などを交換するプロトコルです。",
     "example": "ルータへ受信したいマルチキャストグループを知らせます。",
@@ -14121,7 +14121,7 @@ export const terms: Term[] = [
   {
     "id": "sip",
     "name": "SIP",
-    "reading": "SIP",
+    "reading": "Session Initiation Protocol",
     "category": "ネットワーク",
     "definition": "音声通話などのセッションを確立・変更・終了するための制御用プロトコルです。",
     "example": "IP電話で相手を呼び出して通話セッションを開始します。",
@@ -14138,7 +14138,7 @@ export const terms: Term[] = [
   {
     "id": "ldap",
     "name": "LDAP",
-    "reading": "LDAP",
+    "reading": "Lightweight Directory Access Protocol",
     "category": "ネットワーク",
     "definition": "利用者や組織、機器などを階層的に管理するディレクトリへアクセスするためのプロトコルです。",
     "example": "社内のディレクトリから利用者の属性を検索します。",
@@ -14155,7 +14155,7 @@ export const terms: Term[] = [
   {
     "id": "dmz",
     "name": "DMZ",
-    "reading": "DMZ",
+    "reading": "Demilitarized zone",
     "category": "ネットワーク",
     "definition": "内部ネットワークとインターネットの間などに設ける、公開サーバ用の隔離されたネットワーク領域です。",
     "example": "公開WebサーバをDMZへ置き、内部DBへの通信をFWで制限します。",
@@ -14172,7 +14172,7 @@ export const terms: Term[] = [
   {
     "id": "pptp",
     "name": "PPTP",
-    "reading": "PPTP",
+    "reading": "Point-to-Point Tunneling Protocol",
     "category": "ネットワーク",
     "definition": "PPPのフレームをIPネットワークでトンネル転送するための旧来のプロトコルです。",
     "example": "離れた拠点間でPPP接続の内容を運びます。",
@@ -14257,7 +14257,7 @@ export const terms: Term[] = [
   {
     "id": "wpa3-enterprise",
     "name": "WPA3-Enterprise",
-    "reading": "WPA3-Enterprise",
+    "reading": "Wi-Fi Protected Access 3 Enterprise",
     "category": "ネットワーク",
     "definition": "IEEE 802.1Xの認証基盤を用いる、組織向けのWPA3のセキュリティ方式です。利用者ごとの認証と動的な鍵の確立を行います。",
     "example": "社員ごとの認証情報で無線LANへ接続します。",
@@ -14410,7 +14410,7 @@ export const terms: Term[] = [
   {
     "id": "ttl",
     "name": "TTL",
-    "reading": "TTL",
+    "reading": "Time To Live",
     "category": "ネットワーク",
     "definition": "IPv4パケットがネットワーク内で無限に循環することを防ぐ値です。ルータで減らされ、0になったパケットは破棄されます。",
     "example": "転送のたびにTTLを減らしてループするパケットを止めます。",
@@ -14588,7 +14588,7 @@ export const terms: Term[] = [
   {
     "id": "aaa",
     "name": "AAA",
-    "reading": "AAA",
+    "reading": "Authentication / Authorization / Accounting",
     "category": "セキュリティ",
     "definition": "認証・認可・アカウンティングをまとめた、ネットワークの利用を管理する枠組みです。RADIUSやDiameterなどで扱います。",
     "example": "利用者の身元、利用を許すサービス、接続時間の記録を一つの認証基盤で管理します。",
@@ -14666,7 +14666,7 @@ export const terms: Term[] = [
   {
     "id": "cvss",
     "name": "CVSS",
-    "reading": "CVSS",
+    "reading": "Common Vulnerability Scoring System",
     "category": "セキュリティ",
     "definition": "脆弱性の深刻度を共通の指標と計算方法で評価する仕組みです。環境や脅威の状況と併せて対応の優先度を判断します。",
     "example": "遠隔から認証なしで悪用できる脆弱性のスコアを確認します。",
@@ -14685,7 +14685,7 @@ export const terms: Term[] = [
   {
     "id": "stix",
     "name": "STIX",
-    "reading": "STIX",
+    "reading": "Structured Threat Information Expression",
     "category": "セキュリティ",
     "definition": "サイバー脅威に関する情報を構造化して表現するための仕様です。攻撃手法や侵害指標などの関係も記述できます。",
     "example": "悪性IPアドレスと攻撃キャンペーンの関係を機械処理できる形で共有します。",
@@ -14704,7 +14704,7 @@ export const terms: Term[] = [
   {
     "id": "taxii",
     "name": "TAXII",
-    "reading": "TAXII",
+    "reading": "Trusted Automated Exchange of Intelligence Information",
     "category": "セキュリティ",
     "definition": "STIXなどで表現したサイバー脅威情報を交換するためのアプリケーション層のプロトコルです。",
     "example": "組織間で脅威情報のコレクションを取得し、検知ルールの更新に使います。",
@@ -14723,7 +14723,7 @@ export const terms: Term[] = [
   {
     "id": "ntp-reflection",
     "name": "NTPリフレクション攻撃",
-    "reading": "Ntp Reflection",
+    "reading": "Network Time Protocol reflection attack",
     "category": "セキュリティ",
     "definition": "送信元を標的のIPアドレスに偽装した要求をNTPサーバへ送り、その応答を標的へ集中させる攻撃です。大きな応答で通信量を増幅する場合があります。",
     "example": "小さなNTP要求に対する大きな応答を、多数のサーバから標的へ送らせます。",
@@ -14785,7 +14785,7 @@ export const terms: Term[] = [
   {
     "id": "fido",
     "name": "FIDO",
-    "reading": "FIDO",
+    "reading": "Fast IDentity Online",
     "category": "セキュリティ",
     "definition": "パスワードへの依存を減らすため、認証器内の秘密鍵とサービス側の公開鍵を使って認証する仕様群です。",
     "example": "指紋で端末の鍵を使用可能にし、署名した応答をサーバで検証します。",
@@ -14808,7 +14808,7 @@ export const terms: Term[] = [
   {
     "id": "proxy-authentication-sso",
     "name": "代理認証方式",
-    "reading": "Proxy Authentication Sso",
+    "reading": "Proxy authentication single sign-on",
     "category": "セキュリティ",
     "definition": "シングルサインオンで、利用者に代わって対象システムのログイン画面へ認証情報を入力する方式です。",
     "example": "端末のソフトウェアが業務アプリのログイン画面を検出してIDとパスワードを入力します。",
@@ -14825,7 +14825,7 @@ export const terms: Term[] = [
   {
     "id": "soar",
     "name": "SOAR",
-    "reading": "SOAR",
+    "reading": "Security Orchestration, Automation and Response",
     "category": "セキュリティ",
     "definition": "複数のセキュリティツールを連携し、調査や対応のワークフローを自動化・効率化する技術です。",
     "example": "SIEMの通知を受けて関連情報を収集し、承認後に端末を隔離します。",
@@ -14844,7 +14844,7 @@ export const terms: Term[] = [
   {
     "id": "waf",
     "name": "WAF",
-    "reading": "WAF",
+    "reading": "Web Application Firewall",
     "category": "セキュリティ",
     "definition": "WebアプリケーションへのHTTP通信を検査し、SQLインジェクションやXSSなどの攻撃を検出・遮断する仕組みです。",
     "example": "公開Webサイトの前段で不正な入力を含むリクエストを遮断します。",
@@ -15032,7 +15032,7 @@ export const terms: Term[] = [
   {
     "id": "hsts",
     "name": "HSTS",
-    "reading": "HSTS",
+    "reading": "Hypertext Transfer Protocol Strict Transport Security",
     "category": "セキュリティ",
     "definition": "ブラウザに一定期間そのホストへHTTPSでのみ接続するよう要求する仕組みです。Strict-Transport-Securityヘッダーなどで設定します。",
     "example": "HTTPのURLを開いてもブラウザが送信前にHTTPSへ変更します。",
@@ -15051,7 +15051,7 @@ export const terms: Term[] = [
   {
     "id": "dtls",
     "name": "DTLS",
-    "reading": "DTLS",
+    "reading": "Datagram Transport Layer Security",
     "category": "セキュリティ",
     "definition": "TLSの保護をUDPなどのデータグラム通信に適用するプロトコルです。暗号化や改ざん検知を行い、損失や順序の変化を考慮します。",
     "example": "UDPで送るリアルタイム通信の内容を保護します。",
@@ -15102,7 +15102,7 @@ export const terms: Term[] = [
   {
     "id": "csrf-token",
     "name": "CSRFトークン",
-    "reading": "Csrf Token",
+    "reading": "Cross-site request forgery token",
     "category": "セキュリティ",
     "definition": "正規の画面からの要求であることをサーバが確認するため、フォームなどに含めて照合する推測困難な値です。",
     "example": "送信されたトークンをセッション側の値と照合し、不一致なら更新を拒否します。",
@@ -15121,7 +15121,7 @@ export const terms: Term[] = [
   {
     "id": "http-header-injection",
     "name": "HTTPヘッダインジェクション",
-    "reading": "Http Header Injection",
+    "reading": "Hypertext Transfer Protocol header injection",
     "category": "セキュリティ",
     "definition": "外部入力に改行などを混入し、HTTP応答のヘッダーや本文の構成を不正に変える攻撃です。",
     "example": "Locationヘッダーの値に改行を混入し、別のヘッダーを追加します。",
@@ -15155,7 +15155,7 @@ export const terms: Term[] = [
   {
     "id": "mitb",
     "name": "MITB攻撃",
-    "reading": "Mitb",
+    "reading": "Man-in-the-Browser attack",
     "category": "セキュリティ",
     "definition": "ブラウザに侵入したマルウェアが、正規サイトとの通信内容や表示を改ざんする攻撃です。",
     "example": "送金先口座を送信直前に別の口座へ置き換えます。",
@@ -15195,7 +15195,7 @@ export const terms: Term[] = [
   {
     "id": "notice",
     "name": "NOTICE",
-    "reading": "NOTICE",
+    "reading": "National Operation Towards IoT Clean Environment (IoT: Internet of Things)",
     "category": "セキュリティ",
     "definition": "インターネット上のIoT機器などを調査し、悪用のおそれのある機器の利用者へISPなどを通じて注意喚起する取組です。",
     "example": "推測しやすい認証情報を使う機器の利用者へ対策を促します。",
@@ -15214,7 +15214,7 @@ export const terms: Term[] = [
   {
     "id": "nict",
     "name": "NICT",
-    "reading": "NICT",
+    "reading": "National Institute of Information and Communications Technology",
     "category": "セキュリティ",
     "definition": "情報通信分野の研究開発を行う国立研究開発法人情報通信研究機構です。IoT機器の調査やサイバー攻撃の観測などにも取り組みます。",
     "example": "NOTICEでセキュリティ上の問題がある機器を調査します。",
@@ -15231,7 +15231,7 @@ export const terms: Term[] = [
   {
     "id": "scap",
     "name": "SCAP",
-    "reading": "SCAP",
+    "reading": "Security Content Automation Protocol",
     "category": "セキュリティ",
     "definition": "セキュリティ設定や脆弱性情報を標準化して表現・交換・処理し、管理や評価の自動化を支えるNISTの仕様群です。",
     "example": "機器の設定を基準と照合し、結果を共通形式で交換します。",
@@ -15250,7 +15250,7 @@ export const terms: Term[] = [
   {
     "id": "dnssec",
     "name": "DNSSEC",
-    "reading": "DNSSEC",
+    "reading": "Domain Name System Security Extensions",
     "category": "セキュリティ",
     "definition": "DNSのデータにデジタル署名を付け、検証側が作成元の正当性と改ざんの有無を確認できるようにする拡張です。",
     "example": "信頼の連鎖をたどって応答レコードの署名を検証します。",
@@ -15272,7 +15272,7 @@ export const terms: Term[] = [
   {
     "id": "ismap-liu",
     "name": "ISMAP-LIU",
-    "reading": "ISMAP-LIU",
+    "reading": "Information system Security Management and Assessment Program for Low-Impact Use",
     "category": "セキュリティ",
     "definition": "ISMAPのうち、セキュリティ上のリスクの小さな業務・情報の処理に使うSaaSを対象とする仕組みです。",
     "example": "低リスクの業務向けSaaSの登録状況を調達時に確認します。",
@@ -15289,7 +15289,7 @@ export const terms: Term[] = [
   {
     "id": "sim3",
     "name": "SIM3",
-    "reading": "SIM3",
+    "reading": "Security Incident Management Maturity Model",
     "category": "セキュリティ",
     "definition": "Open CSIRT Foundationが開発した、セキュリティインシデント管理の成熟度を評価するモデルです。組織、人材、ツール、プロセスを扱います。",
     "example": "CSIRTの体制や対応手順を評価して改善項目を見つけます。",
@@ -15308,7 +15308,7 @@ export const terms: Term[] = [
   {
     "id": "samm",
     "name": "SAMM",
-    "reading": "SAMM",
+    "reading": "Software Assurance Maturity Model",
     "category": "セキュリティ",
     "definition": "OWASPによる、ソフトウェア保証活動の成熟度を評価・改善するためのモデルです。",
     "example": "開発工程で実施するセキュリティ活動を評価して改善計画を立てます。",
@@ -15325,7 +15325,7 @@ export const terms: Term[] = [
   {
     "id": "cwe",
     "name": "CWE",
-    "reading": "CWE",
+    "reading": "Common Weakness Enumeration",
     "category": "セキュリティ",
     "definition": "ソフトウェアやハードウェアのセキュリティ上の弱点を種類ごとに分類した一覧です。個別の製品の脆弱性IDとは異なります。",
     "example": "SQLインジェクションという弱点の種類をCWEで確認します。",
@@ -15344,7 +15344,7 @@ export const terms: Term[] = [
   {
     "id": "cpe",
     "name": "CPE",
-    "reading": "CPE",
+    "reading": "Common Platform Enumeration",
     "category": "セキュリティ",
     "definition": "IT製品やプラットフォームを識別するための共通の命名体系です。",
     "example": "脆弱性が影響するOSやアプリケーションの種類とバージョンを指定します。",
@@ -15361,7 +15361,7 @@ export const terms: Term[] = [
   {
     "id": "shadow-it",
     "name": "シャドーIT",
-    "reading": "Shadow It",
+    "reading": "Shadow information technology",
     "category": "セキュリティ",
     "definition": "組織の管理部門の許可や把握を経ずに、従業員などが業務でIT機器やサービスを利用することです。",
     "example": "個人契約のクラウドストレージへ業務ファイルを保存します。",
@@ -15397,7 +15397,7 @@ export const terms: Term[] = [
   {
     "id": "owe",
     "name": "OWE",
-    "reading": "OWE",
+    "reading": "Opportunistic Wireless Encryption",
     "category": "セキュリティ",
     "definition": "認証を行わずに鍵交換で通信の鍵を確立し、無線区間を暗号化する方式です。Enhanced Openで利用します。",
     "example": "公開Wi-Fiの接続ごとに異なる暗号化鍵を確立します。",
@@ -15416,7 +15416,7 @@ export const terms: Term[] = [
   {
     "id": "dns-caa",
     "name": "DNS CAA",
-    "reading": "DNS CAA",
+    "reading": "Domain Name System Certification Authority Authorization",
     "category": "セキュリティ",
     "definition": "ドメインの証明書を発行してよい認証局をDNSで指定するレコードです。意図しない証明書発行のリスクを抑えます。",
     "example": "特定の認証局だけにexample.comの証明書発行を許可します。",
@@ -15540,7 +15540,7 @@ export const terms: Term[] = [
   {
     "id": "osint",
     "name": "OSINT",
-    "reading": "OSINT",
+    "reading": "Open-source intelligence",
     "category": "セキュリティ",
     "definition": "公開されている情報を収集・分析し、目的に役立つ知見を得る活動です。",
     "example": "公式サイトや公開SNSから組織の構成や連絡先を調べます。",
@@ -15576,7 +15576,7 @@ export const terms: Term[] = [
   {
     "id": "ipa",
     "name": "IPA",
-    "reading": "IPA",
+    "reading": "Information-technology Promotion Agency, Japan",
     "category": "セキュリティ",
     "definition": "情報処理推進機構の略称です。情報セキュリティ対策、デジタル人材育成、情報処理技術者試験などに取り組む独立行政法人です。",
     "example": "脆弱性対策の情報や中小企業向けのガイドラインを公開します。",
@@ -15610,7 +15610,7 @@ export const terms: Term[] = [
   {
     "id": "cryptrec-project",
     "name": "CRYPTREC",
-    "reading": "CRYPTREC",
+    "reading": "Cryptography Research and Evaluation Committees",
     "category": "セキュリティ",
     "definition": "電子政府で使用する暗号などの安全性・実装性能を評価・監視し、暗号の適切な利用を検討する取組です。",
     "example": "CRYPTREC暗号リストの対象暗号を評価し、安全性の変化を監視します。",
@@ -15627,7 +15627,7 @@ export const terms: Term[] = [
   {
     "id": "ismap-criteria",
     "name": "ISMAP管理基準",
-    "reading": "Isms Criteria",
+    "reading": "Information system Security Management and Assessment Program Control Criteria",
     "category": "セキュリティ",
     "definition": "政府向けクラウドサービスのセキュリティ評価で用いる基準です。国際規格やJASAのクラウド情報セキュリティ管理基準などを基礎とします。",
     "example": "クラウド事業者の管理策が調達要件を満たすか評価します。",
@@ -15644,7 +15644,7 @@ export const terms: Term[] = [
   {
     "id": "csf-1-1",
     "name": "CSF 1.1",
-    "reading": "CSF 1.1",
+    "reading": "National Institute of Standards and Technology Cybersecurity Framework 1.1",
     "category": "セキュリティ",
     "definition": "NISTのサイバーセキュリティフレームワークの1.1版です。コアを識別・防御・検知・対応・復旧の五つの機能で整理します。",
     "example": "五つの機能で現状と目標の差を整理します。",
@@ -15680,7 +15680,7 @@ export const terms: Term[] = [
   {
     "id": "privileged-id",
     "name": "特権ID",
-    "reading": "Privileged Id",
+    "reading": "Privileged identifier",
     "category": "セキュリティ",
     "definition": "通常の利用者より強い管理権限を持ち、システム設定やデータの直接変更などを行えるIDです。",
     "example": "DB管理者のIDで表の直接修正を行います。",
@@ -15788,7 +15788,7 @@ export const terms: Term[] = [
   {
     "id": "user-id",
     "name": "利用者ID",
-    "reading": "User Id",
+    "reading": "User identifier",
     "category": "セキュリティ",
     "definition": "システムで利用者を識別するための情報です。秘密であることを前提とするパスワードとは役割が異なります。",
     "example": "社員番号をログイン時の利用者IDとして使います。",
@@ -15842,7 +15842,7 @@ export const terms: Term[] = [
     "aliases": [
       "登録局"
     ],
-    "reading": "RA",
+    "reading": "Registration Authority",
     "category": "セキュリティ",
     "definition": "PKIの登録局であり、証明書申請者の本人確認や申請審査を行い、発行の承認・却下を担います。",
     "example": "申請者の確認資料を審査し、認証局へ証明書発行の承認を伝えます。",
@@ -15907,7 +15907,7 @@ export const terms: Term[] = [
   {
     "id": "radius",
     "name": "RADIUS",
-    "reading": "RADIUS",
+    "reading": "Remote Authentication Dial-In User Service",
     "category": "セキュリティ",
     "definition": "ネットワーク利用者などの認証・認可・アカウンティングを扱うプロトコルです。接続制御装置がクライアントとして認証サーバと連携します。",
     "example": "アクセスポイントが利用者の認証要求をRADIUSサーバへ送ります。",
@@ -15927,7 +15927,7 @@ export const terms: Term[] = [
   {
     "id": "eap",
     "name": "EAP",
-    "reading": "EAP",
+    "reading": "Extensible Authentication Protocol",
     "category": "セキュリティ",
     "definition": "様々な認証方式を運ぶための拡張可能な認証の枠組みです。IEEE 802.1Xなどで利用します。",
     "example": "EAP-TLSで証明書を使った認証を行います。",
@@ -15946,7 +15946,7 @@ export const terms: Term[] = [
   {
     "id": "ocsp",
     "name": "OCSP",
-    "reading": "OCSP",
+    "reading": "Online Certificate Status Protocol",
     "category": "セキュリティ",
     "definition": "公開鍵証明書の失効状態をオンラインで問い合わせるためのプロトコルです。",
     "example": "証明書のシリアル番号を基に、失効しているか応答を得ます。",
@@ -15983,7 +15983,7 @@ export const terms: Term[] = [
   {
     "id": "wireless-lan",
     "name": "無線LAN",
-    "reading": "Wireless Lan",
+    "reading": "Wireless Local Area Network",
     "category": "セキュリティ",
     "definition": "電波を使って端末とアクセスポイントなどを接続するLANです。IEEE 802.11系列などが使われます。",
     "example": "PCをWi-Fiアクセスポイントへ接続します。",
@@ -16042,7 +16042,7 @@ export const terms: Term[] = [
     "aliases": [
       "全般統制"
     ],
-    "reading": "General It Controls",
+    "reading": "General information technology controls",
     "category": "セキュリティ",
     "definition": "業務処理統制を支える、システムの開発・保守、運用、アクセス管理などに関する統制です。",
     "example": "本番へのプログラム変更の承認手順を組織共通で定めます。",
@@ -16078,7 +16078,7 @@ export const terms: Term[] = [
   {
     "id": "fips1403",
     "name": "FIPS 140-3",
-    "reading": "FIPS 140-3",
+    "reading": "Federal Information Processing Standard 140-3",
     "category": "セキュリティ",
     "definition": "暗号モジュールの設計・実装・運用などに関するセキュリティ要求事項を定めた米国の連邦標準です。",
     "example": "暗号装置が鍵の保護や物理的な保護の要求を満たすか評価します。",
@@ -16095,7 +16095,7 @@ export const terms: Term[] = [
   {
     "id": "iso15408",
     "name": "ISO/IEC 15408",
-    "reading": "ISO/IEC 15408",
+    "reading": "Evaluation criteria for information technology security",
     "category": "セキュリティ",
     "definition": "IT製品などのセキュリティ機能とその保証を評価する共通の基準です。コモンクライテリアとも呼ばれます。",
     "example": "調達する機器のセキュリティ機能の評価結果を確認します。",
@@ -16112,7 +16112,7 @@ export const terms: Term[] = [
   {
     "id": "iso27002",
     "name": "ISO/IEC 27002",
-    "reading": "ISO/IEC 27002",
+    "reading": "Information security, cybersecurity and privacy protection — Information security controls",
     "category": "セキュリティ",
     "definition": "情報セキュリティ管理策と、その実施のための指針を示す国際規格です。",
     "example": "アクセス管理や人的セキュリティの管理策を検討する際に参照します。",
@@ -16129,7 +16129,7 @@ export const terms: Term[] = [
   {
     "id": "iso27017",
     "name": "ISO/IEC 27017",
-    "reading": "ISO/IEC 27017",
+    "reading": "Code of practice for information security controls based on ISO/IEC 27002 for cloud services",
     "category": "セキュリティ",
     "definition": "クラウドサービスの利用者と提供者向けに、情報セキュリティ管理策の実施指針を示す国際規格です。",
     "example": "クラウド固有の責任分担や仮想環境の分離に関する管理策を確認します。",
@@ -16146,7 +16146,7 @@ export const terms: Term[] = [
   {
     "id": "jisq15001",
     "name": "JIS Q 15001",
-    "reading": "JIS Q 15001",
+    "reading": "Personal information protection management systems — Requirements",
     "category": "セキュリティ",
     "definition": "個人情報保護マネジメントシステムの要求事項を定める日本産業規格です。",
     "example": "組織の個人情報保護の仕組みを整備・改善する基準として用います。",
@@ -16163,7 +16163,7 @@ export const terms: Term[] = [
   {
     "id": "validation-authority",
     "name": "VA",
-    "reading": "VA",
+    "reading": "Validation Authority",
     "category": "セキュリティ",
     "definition": "公開鍵証明書の失効状態など、有効性の検証に関する問合せに応答する検証局です。",
     "example": "証明書のシリアル番号に対して失効の有無を返します。",
@@ -16184,7 +16184,7 @@ export const terms: Term[] = [
   {
     "id": "soap",
     "name": "SOAP",
-    "reading": "SOAP",
+    "reading": "SOAP (originally Simple Object Access Protocol)",
     "category": "開発技術",
     "definition": "構造化されたメッセージをXMLで表現し、ネットワーク上で交換するための枠組みです。",
     "example": "WebサービスがSOAPメッセージで処理要求と結果をやり取りします。",
@@ -16201,7 +16201,7 @@ export const terms: Term[] = [
   {
     "id": "xkms",
     "name": "XKMS",
-    "reading": "XKMS",
+    "reading": "Extensible Markup Language Key Management Specification",
     "category": "開発技術",
     "definition": "デジタル署名などで使う公開鍵情報の登録や検証などを、Webサービスで扱うための仕様です。",
     "example": "利用する公開鍵の情報をサービスに問い合わせて確認します。",
@@ -16218,7 +16218,7 @@ export const terms: Term[] = [
   {
     "id": "cmmi",
     "name": "CMMI",
-    "reading": "CMMI",
+    "reading": "Capability Maturity Model Integration",
     "category": "開発技術",
     "definition": "組織の開発やサービス提供などのプロセスの能力・成熟度を評価し、改善を進めるためのモデルです。",
     "example": "開発プロセスの管理や標準化の状況を評価します。",
@@ -16396,7 +16396,7 @@ export const terms: Term[] = [
   {
     "id": "devops",
     "name": "DevOps",
-    "reading": "DevOps",
+    "reading": "Development and Operations",
     "category": "開発技術",
     "definition": "開発と運用が協調し、自動化やフィードバックなどを通じて継続的にソフトウェアの価値を提供・改善する取組です。",
     "example": "運用で見つかった課題を開発へ戻し、変更を素早く安全に届けます。",
@@ -16430,7 +16430,7 @@ export const terms: Term[] = [
   {
     "id": "extreme-programming",
     "name": "XP",
-    "reading": "XP",
+    "reading": "Extreme Programming",
     "category": "開発技術",
     "definition": "コミュニケーションなどの価値を基礎に、テスト駆動開発やペアプログラミングなどの実践を組み合わせるアジャイル開発手法です。",
     "example": "短いサイクルでテストを通し、二人でコードを確認しながら実装します。",
@@ -16464,7 +16464,7 @@ export const terms: Term[] = [
   {
     "id": "gang-of-four",
     "name": "GoF",
-    "reading": "GoF",
+    "reading": "Gang of Four",
     "category": "開発技術",
     "definition": "オブジェクト指向のデザインパターンをまとめた四人の著者の呼称です。パターンは生成・構造・振る舞いの三つに分類されます。",
     "example": "Factory MethodやObserverなどの設計パターンを参照します。",
@@ -16617,7 +16617,7 @@ export const terms: Term[] = [
   {
     "id": "l2tp",
     "name": "L2TP",
-    "reading": "L2TP",
+    "reading": "Layer Two Tunneling Protocol",
     "category": "セキュリティ",
     "definition": "PPPなどのデータリンク層のフレームをIPネットワーク上でトンネル転送するプロトコルです。暗号化にはIPsecなどを組み合わせます。",
     "example": "離れた拠点のPPP接続をトンネル化します。",
@@ -16677,7 +16677,7 @@ export const terms: Term[] = [
   {
     "id": "jisq20000",
     "name": "JIS Q 20000-1",
-    "reading": "JIS Q 20000-1",
+    "reading": "Information technology — Service management — Part 1: Service management system requirements",
     "category": "セキュリティ",
     "definition": "サービスマネジメントシステムの要求事項を定める日本産業規格です。",
     "example": "サービス提供の仕組みが規格の要求に適合するか内部監査します。",
@@ -16749,7 +16749,7 @@ export const terms: Term[] = [
   {
     "id": "dns-resolver",
     "name": "リゾルバ",
-    "reading": "Dns Resolver",
+    "reading": "Domain Name System resolver",
     "category": "セキュリティ",
     "definition": "名前解決の要求を行い、DNS情報を取得する機能です。端末側のスタブや再帰問合せを処理するリゾルバなどがあります。",
     "example": "名前に対応するIPアドレスをDNSから得ます。",
@@ -16769,7 +16769,7 @@ export const terms: Term[] = [
   {
     "id": "arp",
     "name": "ARP",
-    "reading": "ARP",
+    "reading": "Address Resolution Protocol",
     "category": "セキュリティ",
     "definition": "同じリンク上で、IPv4アドレスに対応するMACアドレスを問い合わせるプロトコルです。アドレス重複の確認にも使います。",
     "example": "ゲートウェイのIPv4アドレスから送信先MACアドレスを調べます。",
@@ -16789,7 +16789,7 @@ export const terms: Term[] = [
   {
     "id": "cryptrec-recommended",
     "name": "電子政府推奨暗号リスト",
-    "reading": "Cryptrec Recommended",
+    "reading": "e-Government Recommended Ciphers List",
     "category": "セキュリティ",
     "definition": "CRYPTREC暗号リストのうち、安全性と実装性能を確認し、市場での利用実績なども踏まえて電子政府での利用を推奨する暗号技術の一覧です。",
     "example": "新たな政府システムで利用する暗号の候補を確認します。",
@@ -16806,7 +16806,7 @@ export const terms: Term[] = [
   {
     "id": "cryptrec-candidate",
     "name": "推奨候補暗号リスト",
-    "reading": "Cryptrec Candidate",
+    "reading": "Candidate Recommended Ciphers List",
     "category": "セキュリティ",
     "definition": "CRYPTREC暗号リストのうち、安全性と実装性能が確認され、今後推奨リストへ掲載される可能性がある暗号技術の一覧です。",
     "example": "安全性が確認された新しい暗号の位置付けを調べます。",
@@ -16823,7 +16823,7 @@ export const terms: Term[] = [
   {
     "id": "cryptrec-monitored",
     "name": "運用監視暗号リスト",
-    "reading": "Cryptrec Monitored",
+    "reading": "Monitored Ciphers List",
     "category": "セキュリティ",
     "definition": "CRYPTREC暗号リストのうち、積極的な推奨からは外れるものの、互換性維持などのために継続利用を扱う暗号技術の一覧です。",
     "example": "既存システムで使う古い暗号の移行方針を検討します。",
@@ -16878,7 +16878,7 @@ export const terms: Term[] = [
   {
     "id": "ntlm",
     "name": "NTLM認証",
-    "reading": "Ntlm",
+    "reading": "NT LAN Manager (LAN: Local Area Network)",
     "category": "セキュリティ",
     "definition": "Windowsなどで使われるチャレンジレスポンス型の認証方式です。パスワード由来の秘密に基づいて応答を作ります。",
     "example": "サーバからのチャレンジに対する応答で利用者を検証します。",
@@ -16917,7 +16917,7 @@ export const terms: Term[] = [
     "aliases": [
       "XOR"
     ],
-    "reading": "Xor",
+    "reading": "Exclusive OR",
     "category": "セキュリティ",
     "definition": "二つの論理値が異なるときに1、同じときに0になる論理演算です。XORとも呼びます。",
     "example": "同じ鍵ストリームで2回XORを取ると元のデータへ戻ります。",
@@ -17047,7 +17047,7 @@ export const terms: Term[] = [
   {
     "id": "nosql",
     "name": "NoSQL",
-    "reading": "Not only SQL",
+    "reading": "Not only Structured Query Language",
     "category": "データベース",
     "definition": "関係データベース以外のモデルを用いるデータベースの総称です。",
     "example": "キーと値の組や文書などの形式でデータを保存します。",
@@ -17123,7 +17123,7 @@ export const terms: Term[] = [
   {
     "id": "quantum-bit",
     "name": "量子ビット",
-    "reading": "Qubit",
+    "reading": "Quantum bit",
     "category": "基礎理論",
     "definition": "量子計算で情報を表す単位で、0と1の重ね合わせ状態を取れるものです。",
     "example": "通常のビットとは異なり、重ね合わせ状態を計算に利用します。",
@@ -17408,7 +17408,7 @@ export const terms: Term[] = [
   {
     "id": "nor",
     "name": "NOR素子",
-    "reading": "NOR",
+    "reading": "NOT OR gate",
     "category": "基礎理論",
     "definition": "論理和の結果を反転し、入力がともに0のときだけ1を出力する論理素子です。",
     "example": "二つの入力のどちらかが1なら、出力は0になります。",
@@ -17772,7 +17772,7 @@ export const terms: Term[] = [
   {
     "id": "ipconfig",
     "name": "ipconfig",
-    "reading": "IP configuration",
+    "reading": "Internet Protocol configuration",
     "category": "ネットワーク",
     "definition": "Windowsで、自端末のIPアドレスなどのネットワーク設定を確認するコマンドです。",
     "example": "自端末のIPアドレスやデフォルトゲートウェイを確認します。",
@@ -18019,7 +18019,7 @@ export const terms: Term[] = [
   {
     "id": "swot",
     "name": "SWOT分析",
-    "reading": "SWOT analysis",
+    "reading": "Strengths / Weaknesses / Opportunities / Threats analysis",
     "category": "経営戦略",
     "definition": "内部の強み・弱みと、外部の機会・脅威を整理する分析手法です。",
     "example": "自社の技術という強みを、市場の機会にどう生かすか検討します。",
@@ -18041,7 +18041,7 @@ export const terms: Term[] = [
   {
     "id": "three-c",
     "name": "3C分析",
-    "reading": "3C analysis",
+    "reading": "Customer / Competitor / Company analysis",
     "category": "経営戦略",
     "definition": "顧客・競合・自社という三つの視点で事業環境を分析する手法です。",
     "example": "顧客の要求、競合の提供内容、自社の強みを整理します。",
@@ -18063,7 +18063,7 @@ export const terms: Term[] = [
   {
     "id": "pest",
     "name": "PEST分析",
-    "reading": "PEST analysis",
+    "reading": "Political / Economic / Social / Technological analysis",
     "category": "経営戦略",
     "definition": "政治・経済・社会・技術という外部のマクロ環境を分析する手法です。",
     "example": "法規制や景気、社会の変化、技術動向を整理します。",
@@ -18082,7 +18082,7 @@ export const terms: Term[] = [
   {
     "id": "vrio",
     "name": "VRIO分析",
-    "reading": "VRIO analysis",
+    "reading": "Value / Rarity / Imitability / Organization analysis",
     "category": "経営戦略",
     "definition": "経営資源を、経済価値・希少性・模倣困難性・組織の観点で評価する手法です。",
     "example": "自社の技術が競争上の優位につながるかを評価します。",
