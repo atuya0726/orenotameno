@@ -123,8 +123,6 @@ test('removes a mastered review word only after its evaluation is saved', async 
   const word = page.getByRole('button', { name: 'デジタル署名を復習する', exact: true });
   await word.click(); await expect(word).toHaveAttribute('aria-pressed', 'true');
   await page.goto('/glossary/review');
-  await page.getByRole('radio', { name: /^深掘り/ }).check();
-  await page.getByRole('link', { name: '復習を始める' }).click();
   await speakExplanation(page, text); await check(page).click();
   await expect(page.getByLabel('評価 合格 ＋ 深掘りできた', { exact: true })).toBeVisible();
   await expect(page.getByRole('button', { name: '保存を再試行', exact: true })).toBeVisible();

@@ -177,10 +177,12 @@ for (const deeperStatus of ['missing', 'review']) {
   });
 }
 
-test('opens historical B/A/S review URLs using the two current goals', async ({ page }) => {
-  for (const [old, current] of [['B', '基本'], ['A', '深掘り'], ['S', '深掘り']]) {
+test('opens review URLs directly and ignores historical goals', async ({ page }) => {
+  for (const old of ['B', 'A', 'S', 'basic', 'deep']) {
     await page.goto(`/glossary/digital-signature?review=デジタル署名&target=${old}`);
-    await expect(page.locator('.review-round-bar')).toContainText(`目標 ${current}`);
+    await expect(page.locator('.review-round-count')).toHaveText('単語の復習 1 / 1');
+    await expect(page.locator('.review-round-bar')).not.toContainText('目標');
+    await expect(page.getByRole('radio')).toHaveCount(0);
   }
 });
 
@@ -297,8 +299,6 @@ test('skips uncollected saved words in review rounds and allows removing older w
   await expect(older).toBeVisible();
   await expect(older.getByRole('link')).toHaveCount(0);
   await page.getByRole('link', { name: '単語を復習', exact: true }).click();
-  await expect(page.locator('.review-goal')).toContainText('1語を復習します');
-  await page.getByRole('link', { name: '復習を始める', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'ディジタル署名', level: 1 })).toBeVisible();
   await expect(page.locator('.review-round-count')).toHaveText('単語の復習 1 / 1');
   await page.goto('/glossary?filter=words');

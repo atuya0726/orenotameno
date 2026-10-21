@@ -1,11 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import { criterionLevel, gradeOf, meetsReviewTarget, outcomeOf, evaluationSchema, type CriterionResult, type Level, type Term } from './model';
+import { criterionLevel, gradeOf, outcomeOf, evaluationSchema, type CriterionResult } from './model';
 
 function point(level?: CriterionResult['level'], status: CriterionResult['status'] = 'covered'): CriterionResult {
   return { id: `${level ?? 'basic'}-${status}`, title: '要点', level, status, evidence: '', hint: '' };
 }
 const evaluation = (criteria: CriterionResult[]) => evaluationSchema.parse({ version: 1, status: 'covered', covered: 1, total: 1, criteria, summary: '', engine: 'openai', model: 'test', grade: gradeOf(criteria) });
-const term = (deeper = true): Term => ({ id: 'test', name: '用語', reading: '', category: '', definition: '', example: '', related: [], commonMistakes: [], criteria: [{ id: 'core', title: '基本', hint: '' }, ...(deeper ? [{ id: 'detail', title: '深掘り', hint: '', level: 'deep' as Level }] : [])] });
 
 describe('基本と深掘りの判定', () => {
   it('passes when all basic points are covered, including a basic-only term', () => {
@@ -39,16 +38,5 @@ describe('基本と深掘りの判定', () => {
       expect(outcomeOf(historical)).toBe(outcome);
       expect(historical.grade).toBe(grade);
     }
-  });
-
-  it('uses the selected review goal and falls back to basic for terms without deeper points', () => {
-    const basic = evaluation([point('basic'), point('deep', 'missing')]);
-    const deep = evaluation([point('basic'), point('deep')]);
-    const retry = evaluation([point('basic', 'missing')]);
-    expect(meetsReviewTarget(term(), basic, 'basic')).toBe(true);
-    expect(meetsReviewTarget(term(), basic, 'deep')).toBe(false);
-    expect(meetsReviewTarget(term(), deep, 'deep')).toBe(true);
-    expect(meetsReviewTarget(term(false), basic, 'deep')).toBe(true);
-    expect(meetsReviewTarget(term(false), retry, 'deep')).toBe(false);
   });
 });

@@ -816,17 +816,7 @@ svg { flex-shrink: 0; }
 .review-round-bar > .back-link { margin-bottom: 0; }
 .review-round-count { font-size: 13px; font-weight: 600; color: var(--text-secondary); }
 .review-round-bar > .text-link { margin-left: auto; }
-.review-goal { max-width: 640px; padding: var(--space-6); border: 1px solid var(--border); border-radius: var(--radius-card); }
-.review-goal > p { font-size: 14px; line-height: 1.9; color: var(--text-secondary); }
-.review-goal fieldset { margin: var(--space-5) 0; padding: 0; border: 0; display: grid; gap: var(--space-3); }
-.review-goal legend { margin-bottom: var(--space-3); font-size: 14px; font-weight: 600; }
-.review-goal-option { display: flex; align-items: flex-start; gap: var(--space-3); padding: var(--space-4); border: 1px solid var(--border); border-radius: var(--radius-control); cursor: pointer; }
-.review-goal-selected { border-color: var(--brand); background: var(--surface-secondary); }
-.review-goal-option input { margin-top: 4px; accent-color: var(--brand); }
-.review-goal-option strong, .review-goal-option small { display: block; }
-.review-goal-option strong { display: flex; align-items: center; gap: var(--space-2); }
-.review-goal-option small { margin-top: var(--space-1); font-size: 12px; line-height: 1.8; color: var(--text-secondary); }
-.review-goal-result { flex: 1 1 160px; min-width: 0; font-size: 12px; color: var(--text-secondary); line-height: 1.9; }
-.review-goal-result > p { margin: 0; padding: 0; background: none; }
-.review-goal-result > .success-message { color: var(--text-secondary); }
-.review-goal-result > .ui-button { margin-top: var(--space-2); }
+.review-queue-result { flex: 1 1 160px; min-width: 0; font-size: 12px; color: var(--text-secondary); line-height: 1.9; }
+.review-queue-result > p { margin: 0; padding: 0; background: none; }
+.review-queue-result > .success-message { color: var(--text-secondary); }
+.review-queue-result > .ui-button { margin-top: var(--space-2); }

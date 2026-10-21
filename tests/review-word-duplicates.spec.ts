@@ -42,8 +42,6 @@ test('reviews EVM and each saved measure once with distinct headings across a re
   await expect(page.locator('.term-card')).toHaveCount(words.length);
   for (const heading of headings) await expect(page.getByRole('heading', { name: heading, exact: true })).toHaveCount(1);
   await page.goto('/glossary/review');
-  await expect(page.locator('.review-goal')).toContainText('7語を復習します');
-  await page.getByRole('link', { name: '復習を始める', exact: true }).click();
   const seen: string[] = [];
   for (let i = 0; i < words.length; i++) {
     await expect(page.locator('.review-round-count')).toHaveText(`単語の復習 ${i + 1} / 7`);
@@ -81,8 +79,6 @@ test('clears all aliases after mastery and does not repeat the concept within th
   } }));
   await seedWords(page, ['ディジタル署名', 'デジタル署名']);
   await page.goto('/glossary/review');
-  await expect(page.locator('.review-goal')).toContainText('1語を復習します');
-  await page.getByRole('link', { name: '復習を始める', exact: true }).click();
   await expect(page.locator('.review-round-count')).toHaveText('単語の復習 1 / 1');
   await speakExplanation(page, '秘密鍵で署名を作り、公開鍵で検証して改ざんを検知する仕組みです。');
   await page.getByRole('button', { name: 'AIでチェック' }).click();

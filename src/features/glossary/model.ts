@@ -49,10 +49,6 @@ export function outcomeOf(evaluation: Evaluation): Outcome {
   if (evaluation.grade === 'C') return 'retry';
   return evaluation.grade ?? (evaluation.status === 'covered' ? 'pass' : 'retry');
 }
-export function meetsReviewTarget(term: Term, evaluation: Evaluation, target: Level): boolean {
-  const outcome = outcomeOf(evaluation);
-  return evaluation.grade !== undefined && outcome !== 'retry' && (target === 'basic' || outcome === 'pass-plus' || !term.criteria.some(c => c.level === 'deep'));
-}
 // Retain earlier AI suggestions when reading historical attempts/backups.
 export const followUpSchema = z.object({ name: z.string().min(1).max(40), reason: z.string(), termId: z.string().optional() });
 export const evaluationSchema = z.object({
