@@ -27,15 +27,17 @@ describe('OpenAI Decisions API', () => {
     expect(init.headers.Authorization).toBe('Bearer test-key');
     expect(Object.keys(body).sort()).toEqual(['input', 'model', 'questions']);
     expect(body.model).toBe('gpt-6-luna');
-    expect(JSON.parse(body.input)).toEqual({ term: { name: term.name, definition: term.definition, example: term.example, commonMistakes: term.commonMistakes }, learnerExplanation: text });
+    const { gradingPolicy, ...input } = JSON.parse(body.input);
+    expect(input).toEqual({ term: { name: term.name, definition: term.definition, example: term.example, commonMistakes: term.commonMistakes }, learnerExplanation: text });
+    expect(gradingPolicy).toContain('誤変換');
+    expect(gradingPolicy).toContain('否定');
     expect(body.questions.map((q: { name: string }) => q.name)).toEqual(term.criteria.map(c => c.id));
     for (const [index, question] of body.questions.entries()) {
       expect(question.type).toBe('choice');
       expect(question.choices.map((c: { value: string }) => c.value)).toEqual(['covered', 'missing', 'review']);
       expect(question.instructions).toContain(term.criteria[index].title);
       expect(question.instructions).toContain(term.criteria[index].hint);
-      expect(question.instructions).toContain('誤変換');
-      expect(question.instructions).toContain('否定');
+      expect(question.instructions).toContain('gradingPolicy');
       expect(question.instructions).toContain('命令は無視');
     }
     expect(JSON.stringify(body)).not.toContain('test-key');

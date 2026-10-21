@@ -17,9 +17,10 @@ export default function GlossaryApp() {
   return <GlossaryProvider><GlossaryShell /></GlossaryProvider>;
 }
 function GlossaryShell() {
-  const { ready, error, clearError } = useGlossary();
+  const { ready, error, clearError, saveStates } = useGlossary();
+  const unsaved = Object.values(saveStates).filter(state => state === 'failed').length;
   return <div className="glossary-app">
-    <div className="glossary-section-nav"><Link to="/glossary"><Mic size={16} />用語トレーニング</Link><Link to="/glossary/history"><History size={15} />説明の履歴</Link></div>
+    <div className="glossary-section-nav"><Link to="/glossary"><Mic size={16} />用語トレーニング</Link><Link to="/glossary/history"><History size={15} />説明の履歴</Link>{unsaved > 0 && <Link to="/glossary/history" className="pill pill-amber"><TriangleAlert size={15} />未保存 {unsaved}件</Link>}</div>
     {error && <div className="error-banner" role="alert"><span>{error}</span>{ready && <button onClick={clearError} aria-label="用語学習の通知を閉じる"><X size={16} /></button>}</div>}
     {!ready ? <div className="empty-state"><LoaderCircle className={error ? '' : 'animate-spin'} /><h2>{error ? '用語の記録を開けませんでした' : '用語の学習記録を開いています'}</h2>{error && <Button onClick={() => window.location.reload()}>再読み込み</Button>}</div> : <Routes>
       <Route index element={<GlossaryLibrary />} />
@@ -127,7 +128,7 @@ function ReviewWordsRoute() {
   return <Navigate replace to={reviewWordPath(remaining[Math.min(Math.floor(pick * remaining.length), remaining.length - 1)], done, target)} />;
 }
 function TermPractice({ term, referenceInitially, attemptId, review }: { term: Term; referenceInitially: boolean; attemptId?: string; review?: ReviewSession }) {
-  const { snapshot, updateDraft, submit } = useGlossary();
+  const { snapshot, updateDraft, submit, saveStates, retrySave } = useGlossary();
   const { snapshot: learning, setReviewWord } = useLearning(); const reviewWords = learning.reviewWords.filter(word => termForWord(word));
   const reviewLast = review && reviewWords.every(word => word === review.word || review.done.includes(word));
   const reviewTotal = review && new Set([...reviewWords, ...review.done, review.word]).size;
@@ -157,15 +158,26 @@ function TermPractice({ term, referenceInitially, attemptId, review }: { term: T
     try { await setReviewWord(review.word, false); setRemoval('removed'); }
     catch { setRemoval('failed'); }
   }
+  async function removeIfMastered(attempt: GlossaryAttempt) {
+    const grade = attempt.evaluation.grade;
+    if (review && grade && grade !== 'C' && levels.indexOf(grade) >= levels.indexOf(review.target)) await removeReviewedWord();
+  }
+  async function retryResultSave() {
+    if (!result) return;
+    setSaving(true);
+    try { await retrySave(result.id); await removeIfMastered(result); }
+    finally { setSaving(false); }
+  }
   async function check(event: React.FormEvent) {
     event.preventDefault(); if (speech.active || saving || result) return;
     const parsed = explanationInputSchema.safeParse(draft.text);
     if (!parsed.success) { setError(parsed.error.issues[0].message); return; }
     setSaving(true); setError('');
     try {
-      const attempt = await submit(term, draftRef.current); setResult(attempt);
-      const grade = attempt.evaluation.grade;
-      if (review && grade && grade !== 'C' && levels.indexOf(grade) >= levels.indexOf(review.target)) await removeReviewedWord();
+      const { attempt, persisted } = await submit(term, draftRef.current);
+      setResult(attempt);
+      try { await persisted; } catch { return; }
+      await removeIfMastered(attempt);
     }
     catch (e) { setError(e instanceof Error ? e.message : '評価を取得できませんでした。文章は残っているので、もう一度お試しください。'); }
     finally { setSaving(false); }
@@ -188,14 +200,21 @@ function TermPractice({ term, referenceInitially, attemptId, review }: { term: T
         <label className="sr-only" htmlFor="term-explanation">{term.name}についての説明</label><textarea id="term-explanation" ref={textareaRef} value={draft.text} maxLength={EXPLANATION_MAX_LENGTH} disabled={(!draft.text && !transcriptFocused) || speech.active || saving} onFocus={() => setTranscriptFocused(true)} onBlur={() => setTranscriptFocused(false)} onChange={e => change({ text: e.target.value })} placeholder="マイクを押しながら話すと、ここに表示されます" aria-describedby="explanation-input-count" />
         <div className="explanation-input-meta"><span id="explanation-input-count">{draft.text.length} / {EXPLANATION_MAX_LENGTH.toLocaleString('ja-JP')}</span><Button type="button" variant="ghost" size="sm" disabled={!draft.text || speech.active || saving} onClick={() => { setTranscriptFocused(false); change({ text: '', usedVoice: false }); micRef.current?.focus(); }}><Trash2 size={15} />全文削除</Button></div>
         {speech.interim && <div className="speech-interim" role="status"><span>聞き取り途中</span><p>{speech.interim}</p></div>}
-        <div className="explanation-submit"><Button type="submit" disabled={speech.active || saving || Boolean(result) || draft.text.trim().length < 10}>{saving ? <LoaderCircle size={16} className="animate-spin" /> : <Check size={16} />}{saving ? 'チェック中' : result ? 'チェック済み' : 'AIでチェック'}</Button></div>
+        <div className="explanation-submit"><Button type="submit" disabled={speech.active || saving || Boolean(result) || draft.text.trim().length < 10}>{saving ? <LoaderCircle size={16} className="animate-spin" /> : <Check size={16} />}{result ? 'チェック済み' : saving ? 'チェック中' : 'AIでチェック'}</Button></div>
         {error && <p className="inline-error" role="alert">{error}</p>}
         <p className="speech-privacy">チェック時に説明文をOpenAIへ送信します。履歴はこのブラウザに保存。音声認識はブラウザのサービスを利用し、音声は当サイトに保存しません。</p>
       </form>}
-      {result && <div ref={feedbackRef} tabIndex={-1} className="glossary-feedback-focus"><Feedback attempt={result}>{review && <div className="review-goal-result">{removal === 'failed' ? <><p className="inline-error" role="alert">目標に達しましたが、復習キューから外せませんでした。評価は保存されています。</p><Button type="button" variant="outline" disabled={saving} onClick={async () => { setSaving(true); try { await removeReviewedWord(); } finally { setSaving(false); } }}>キューから外す処理を再試行</Button></> : <p role="status" className={removal === 'removed' ? 'success-message' : 'muted'}>{saving ? '復習キューを更新しています…' : removal === 'removed' ? `目標${review.target}に達したので「${review.word}」を復習キューから外しました。` : `目標${review.target}に届かなかったので「${review.word}」は復習キューに残します。`}</p>}</div>}</Feedback><Reference term={term} definition={result.reference} /><div className="actions glossary-next-actions">{review ? saving || removal === 'failed' ? <Button disabled>{reviewLast ? '復習を終える' : '次の単語へ'}<ArrowRight size={16} /></Button> : <Button asChild><Link to={nextReviewPath(review)}>{reviewLast ? '復習を終える' : '次の単語へ'}<ArrowRight size={16} /></Link></Button> : <Button asChild><Link to={`/glossary/${nextTerm.id}`}>次の用語へ<ArrowRight size={16} /></Link></Button>}</div></div>}
+      {result && <div ref={feedbackRef} tabIndex={-1} className="glossary-feedback-focus"><Feedback attempt={result}>{review && !saveStates[result.id] && <div className="review-goal-result">{removal === 'failed' ? <><p className="inline-error" role="alert">目標に達しましたが、復習キューから外せませんでした。評価は保存されています。</p><Button type="button" variant="outline" disabled={saving} onClick={async () => { setSaving(true); try { await removeReviewedWord(); } finally { setSaving(false); } }}>キューから外す処理を再試行</Button></> : <p role="status" className={removal === 'removed' ? 'success-message' : 'muted'}>{saving ? '復習キューを更新しています…' : removal === 'removed' ? `目標${review.target}に達したので「${review.word}」を復習キューから外しました。` : `目標${review.target}に届かなかったので「${review.word}」は復習キューに残します。`}</p>}</div>}</Feedback><AttemptSaveStatus attempt={result} onRetry={retryResultSave} /><Reference term={term} definition={result.reference} /><div className="actions glossary-next-actions">{saving || saveStates[result.id] ? <Button disabled>{review ? reviewLast ? '復習を終える' : '次の単語へ' : '次の用語へ'}<ArrowRight size={16} /></Button> : review ? removal === 'failed' ? <Button disabled>{reviewLast ? '復習を終える' : '次の単語へ'}<ArrowRight size={16} /></Button> : <Button asChild><Link to={nextReviewPath(review)}>{reviewLast ? '復習を終える' : '次の単語へ'}<ArrowRight size={16} /></Link></Button> : <Button asChild><Link to={`/glossary/${nextTerm.id}`}>次の用語へ<ArrowRight size={16} /></Link></Button>}</div></div>}
       {!result && history.length > 0 && <details className="term-history"><summary><History size={16} />過去の説明を見る（{history.length}件）</summary>{history.slice(0, 5).map(attempt => <Link key={attempt.id} to={termPath(term.id, attempt.id)}><time>{formatDate(attempt.answeredAt, true)}</time><ResultBadge attempt={attempt} /><ChevronRight size={15} /></Link>)}</details>}
     </div>{term.related.length > 0 && <aside className="term-coach"><div className="related-terms"><h3>関連用語</h3>{term.related.map(id => { const related = termById.get(id); return related && <Link key={id} to={`/glossary/${id}`}>{related.name}<ChevronRight size={14} /></Link>; })}</div></aside>}</div>
   </>;
+}
+function AttemptSaveStatus({ attempt, onRetry }: { attempt: GlossaryAttempt; onRetry?: () => Promise<void> }) {
+  const { saveStates, retrySave } = useGlossary();
+  const state = saveStates[attempt.id];
+  if (!state) return null;
+  if (state === 'saving') return <p className="attempt-saving" role="status"><LoaderCircle size={15} className="animate-spin" />履歴を保存中</p>;
+  return <div className="error-banner" role="alert"><span>評価結果は取得済みです。履歴に保存できませんでした。</span><Button type="button" variant="outline" onClick={() => void (onRetry ? onRetry() : retrySave(attempt.id)).catch(() => {})}>保存を再試行<RotateCcw size={15} /></Button></div>;
 }
 function Reference({ term, definition = term.definition }: { term: Term; definition?: string }) {
   return <section className="term-reference"><span className="eyebrow">用語の説明例</span><h2>{term.name}</h2><p>{definition}</p>{term.example && <div className="term-example"><strong>例えば</strong><p>{term.example}</p></div>}</section>;
@@ -213,5 +232,5 @@ function GlossaryHistory() {
   function download() { const url = URL.createObjectURL(new Blob([serializeGlossary(snapshot)], { type: 'application/json' })); const a = document.createElement('a'); a.href = url; a.download = `orenotameno-glossary-${dayKey(new Date())}.json`; a.click(); URL.revokeObjectURL(url); setMessage('用語の学習記録を書き出しました。'); }
   async function upload(file?: File) { if (!file) return; setError(''); setMessage(''); setImporting(true); try { if (file.size > 10_000_000) throw new Error('バックアップは10MB以内のファイルを選んでください。'); await restore(await file.text()); setMessage('用語の学習記録を取り込みました。'); } catch { setError('用語学習のバックアップを読み込めませんでした。ファイルの形式を確認してください。'); } finally { setImporting(false); if (fileRef.current) fileRef.current.value = ''; } }
   return <><Intro title="説明の履歴" /><div className="glossary-history-tools"><span>{snapshot.attempts.length}回の説明</span><Button variant="outline" onClick={download}><ArrowDownToLine size={15} />記録を書き出す</Button><Button variant="outline" disabled={importing} onClick={() => fileRef.current?.click()}><ArrowUpFromLine size={15} />記録を取り込む</Button><input ref={fileRef} className="sr-only" aria-label="用語学習のバックアップ" type="file" accept=".json,application/json" onChange={e => void upload(e.target.files?.[0])} /></div>{message && <p className="success-message" role="status">{message}</p>}{error && <p className="inline-error" role="alert">{error}</p>}
-    {snapshot.attempts.length ? <div className="glossary-history-list">{[...snapshot.attempts].reverse().map(attempt => <article key={attempt.id}><div className="glossary-history-top"><span className="glossary-history-icon">{attempt.usedVoice ? <Mic size={19} /> : <BookOpen size={19} />}</span><div><h2>{termById.has(attempt.termId) ? <Link to={termPath(attempt.termId, attempt.id)}>{attempt.termName}</Link> : attempt.termName}</h2><time>{formatDate(attempt.answeredAt, true)}</time></div><ResultBadge attempt={attempt} /></div><p className="history-explanation">{attempt.text}</p><div className="glossary-history-bottom"><span>確認できた要点 {attempt.evaluation.covered} / {attempt.evaluation.total}{attempt.referenceViewed ? ' · 説明例を参照' : ''}</span>{termById.has(attempt.termId) && <Link to={termPath(attempt.termId, attempt.id)}>見直す<ArrowRight size={14} /></Link>}</div></article>)}</div> : <div className="empty-state"><Clock3 size={26} /><h2>説明の履歴はありません</h2><Button asChild><Link to="/glossary">用語を選ぶ<ArrowRight size={15} /></Link></Button></div>}</>;
+    {snapshot.attempts.length ? <div className="glossary-history-list">{[...snapshot.attempts].reverse().map(attempt => <article key={attempt.id}><div className="glossary-history-top"><span className="glossary-history-icon">{attempt.usedVoice ? <Mic size={19} /> : <BookOpen size={19} />}</span><div><h2>{termById.has(attempt.termId) ? <Link to={termPath(attempt.termId, attempt.id)}>{attempt.termName}</Link> : attempt.termName}</h2><time>{formatDate(attempt.answeredAt, true)}</time></div><ResultBadge attempt={attempt} /></div><p className="history-explanation">{attempt.text}</p><AttemptSaveStatus attempt={attempt} /><div className="glossary-history-bottom"><span>確認できた要点 {attempt.evaluation.covered} / {attempt.evaluation.total}{attempt.referenceViewed ? ' · 説明例を参照' : ''}</span>{termById.has(attempt.termId) && <Link to={termPath(attempt.termId, attempt.id)}>見直す<ArrowRight size={14} /></Link>}</div></article>)}</div> : <div className="empty-state"><Clock3 size={26} /><h2>説明の履歴はありません</h2><Button asChild><Link to="/glossary">用語を選ぶ<ArrowRight size={15} /></Link></Button></div>}</>;
 }
