@@ -7,7 +7,7 @@ export type Env = {
   OPENAI_API_KEY?: string; OPENAI_MODEL?: string;
   ASSETS?: { fetch: (request: Request) => Promise<Response> };
 };
-const inputSchema = z.object({ termId: z.string(), text: explanationInputSchema }).strict();
+const inputSchema = z.object({ termId: z.string(), text: explanationInputSchema, usedVoice: z.boolean().default(false) }).strict();
 const json = (body: unknown, status = 200) => Response.json(body, { status, headers: { 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff', 'X-Glossary-Policy': GRADING_POLICY_VERSION } });
 
 export default {
@@ -37,7 +37,7 @@ export default {
       if (!term) return json({ error: '用語が見つかりません。' }, 404);
       evaluatedTermId = term.id;
       if (!env.OPENAI_API_KEY?.trim()) return json({ error: 'AI評価の接続設定がまだありません。説明はブラウザに保存されているので、設定後に続けられます。' }, 503);
-      return json(await evaluateWithOpenAI(term, input.data.text, env.OPENAI_API_KEY, env.OPENAI_MODEL || DEFAULT_MODEL));
+      return json(await evaluateWithOpenAI(term, input.data.text, env.OPENAI_API_KEY, env.OPENAI_MODEL || DEFAULT_MODEL, undefined, input.data.usedVoice));
     } catch (error) {
       const status = error instanceof EvaluationError ? error.status : 500;
       const code = error instanceof EvaluationError ? error.code : 'AI_INTERNAL_ERROR';

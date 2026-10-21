@@ -3,36 +3,81 @@
     "name": "reported-typos-and-fragment",
     "termId": "pass-the-hash",
     "text": "パスワードのハッシュ時だけをみて認証する仕組みは悪用して",
-    "expected": { "hash-auth": "covered", "no-crack": "missing", "lateral": "missing", "mitigation": "missing" }
+    "expected": {
+      "hash-auth": "covered",
+      "no-crack": "missing",
+      "lateral": "missing",
+      "mitigation": "missing"
+    },
+    "usedVoice": true
   },
   {
     "name": "corrected-fragment",
     "termId": "pass-the-hash",
     "text": "パスワードのハッシュ値だけをみて認証する仕組みを悪用して",
-    "expected": { "hash-auth": "covered", "no-crack": "missing", "lateral": "missing", "mitigation": "missing" }
+    "expected": {
+      "hash-auth": "covered",
+      "no-crack": "missing",
+      "lateral": "missing",
+      "mitigation": "missing"
+    },
+    "usedVoice": false
   },
   {
     "name": "complete-with-typos",
     "termId": "pass-the-hash",
     "text": "パスワードのハッシュ時だけをみて認証する仕組みは悪用して、盗んだハッシュ時を解読せずそのまま認証に使う",
-    "expected": { "hash-auth": "covered", "no-crack": "covered", "lateral": "missing", "mitigation": "missing" }
+    "expected": {
+      "hash-auth": "covered",
+      "no-crack": "covered",
+      "lateral": "missing",
+      "mitigation": "missing"
+    },
+    "usedVoice": true
   },
   {
     "name": "complete-corrected",
     "termId": "pass-the-hash",
     "text": "パスワードのハッシュ値だけをみて認証する仕組みを悪用して、盗んだハッシュ値を解読せずそのまま認証に使う",
-    "expected": { "hash-auth": "covered", "no-crack": "covered", "lateral": "missing", "mitigation": "missing" }
+    "expected": {
+      "hash-auth": "covered",
+      "no-crack": "covered",
+      "lateral": "missing",
+      "mitigation": "missing"
+    },
+    "usedVoice": false
   },
   {
     "name": "factual-error",
     "termId": "pass-the-hash",
     "text": "盗んだハッシュ値を必ず解読して、元の平文パスワードを割り出して認証する攻撃です",
-    "expected": { "no-crack": "review" }
+    "expected": {
+      "no-crack": "review"
+    },
+    "usedVoice": true
   },
   {
     "name": "unexplained",
     "termId": "pass-the-hash",
     "text": "パスワードとハッシュ値に関係する攻撃です",
-    "expected": { "hash-auth": "missing", "no-crack": "missing", "lateral": "missing", "mitigation": "missing" }
+    "expected": {
+      "hash-auth": "missing",
+      "no-crack": "missing",
+      "lateral": "missing",
+      "mitigation": "missing"
+    },
+    "usedVoice": true
+  },
+  {
+    "name": "similar-pronunciation",
+    "termId": "pass-the-hash",
+    "usedVoice": true,
+    "text": "パスワードのハシュちだけで認証できる仕組みを悪用し、盗んだハシュちを解読せずそのまま認証に使う",
+    "expected": {
+      "hash-auth": "covered",
+      "no-crack": "covered",
+      "lateral": "missing",
+      "mitigation": "missing"
+    }
   }
 ]

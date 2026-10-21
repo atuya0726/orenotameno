@@ -14,12 +14,12 @@ const evaluation: Evaluation = {
 };
 afterEach(() => vi.unstubAllGlobals());
 describe('AI評価のクライアント', () => {
-  it('sends only term ID and current explanation; no credentials or history', async () => {
+  it.each([false, true])('sends current explanation and voice context (%s), without credentials or history', async usedVoice => {
     const fetcher = vi.fn().mockResolvedValue(Response.json(evaluation)); vi.stubGlobal('fetch', fetcher);
-    expect(await evaluateExplanation(term, ` ${text} `)).toEqual(evaluation);
+    expect(await evaluateExplanation(term, ` ${text} `, usedVoice)).toEqual(evaluation);
     const [url, init] = fetcher.mock.calls[0];
     expect(url).toBe('/api/glossary/evaluate');
-    expect(JSON.parse(init.body)).toEqual({ termId: term.id, text });
+    expect(JSON.parse(init.body)).toEqual({ termId: term.id, text, usedVoice });
     expect(init.headers).toEqual({ 'Content-Type': 'application/json' });
   });
   it('rejects invalid input before making a paid request', async () => {

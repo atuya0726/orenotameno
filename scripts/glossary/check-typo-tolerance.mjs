@@ -1,4 +1,4 @@
-// Explicit live check: six paid assessments, no retries. Not part of npm test.
+// Explicit live check: one paid assessment per fixture, no retries. Not part of npm test.
 import { readFile } from 'node:fs/promises';
 
 const [origin, expectedPolicy] = process.argv.slice(2);
@@ -17,7 +17,7 @@ const samples = JSON.parse(await readFile(new URL('./typo-cases.json', import.me
 const results = await Promise.allSettled(samples.map(async sample => {
   const response = await fetch(endpoint, {
     method: 'POST', headers: { 'Content-Type': 'application/json', Origin: endpoint.origin },
-    body: JSON.stringify({ termId: sample.termId, text: sample.text }), signal: AbortSignal.timeout(60_000),
+    body: JSON.stringify({ termId: sample.termId, text: sample.text, usedVoice: sample.usedVoice ?? false }), signal: AbortSignal.timeout(60_000),
   });
   const body = await response.json();
   if (!response.ok) throw new Error(`${sample.name}: HTTP ${response.status} ${body.code ?? ''}`);

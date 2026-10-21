@@ -179,6 +179,14 @@ describe('OpenAI Decisions API', () => {
 });
 
 describe('Worker API boundary', () => {
+  it.each([undefined, false, true])('forwards voice context (%s) into the provider instructions, keeping the learner text intact', async usedVoice => {
+    const fetcher = fetchDecision(); vi.stubGlobal('fetch', fetcher);
+    const res = await worker.fetch(request({ termId: term.id, text, usedVoice }), { OPENAI_API_KEY: 'key' });
+    expect(res.status).toBe(200);
+    const input = JSON.parse(JSON.parse(fetcher.mock.calls[0][1].body).input);
+    expect(input.learnerExplanation).toBe(text);
+    expect(input.gradingPolicy.includes('この学習者は音声入力を利用している')).toBe(usedVoice === true);
+  });
   it('correlates failures without logging learner text or provider secrets', async () => {
     const logger = vi.spyOn(console, 'error').mockImplementation(() => {});
     vi.stubGlobal('fetch', fetchDecision({ model: 'gpt-6-luna', answers: [] }));
@@ -208,6 +216,7 @@ describe('Worker API boundary', () => {
     const tooLong = await worker.fetch(request({ termId: term.id, text: 'あ'.repeat(1001) }), { OPENAI_API_KEY: 'key' });
     expect(tooLong.status).toBe(400); expect(await tooLong.json()).toEqual({ error: '用語と10〜1,000文字の説明を送信してください。' });
     expect((await worker.fetch(request({ termId: term.id, text, model: 'expensive' }), { OPENAI_API_KEY: 'key' })).status).toBe(400);
+    expect((await worker.fetch(request({ termId: term.id, text, usedVoice: 'true' }), { OPENAI_API_KEY: 'key' })).status).toBe(400);
     expect(fetcher).not.toHaveBeenCalled();
   });
   it('rejects cross-origin and oversized requests before using the provider', async () => {

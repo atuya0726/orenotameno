@@ -102,7 +102,7 @@ test('searches terms and persists drafts without exposing the reference first', 
 test('evaluates once, stores feedback separately from quizzes, and reviews a historical explanation', async ({ page }) => {
   let calls = 0;
   await page.route('**/api/glossary/evaluate', async route => {
-    calls++; expect(route.request().postDataJSON()).toEqual({ termId: term.id, text });
+    calls++; expect(route.request().postDataJSON()).toEqual({ termId: term.id, text, usedVoice: true });
     await route.fulfill({ json: evaluation() });
   });
   await page.goto('/glossary/digital-signature'); await speakExplanation(page, text); await check(page).click();
@@ -318,7 +318,7 @@ test('opens the example directly below its toggle outside the form and remembers
 test('blocks focus while empty and allows direct corrections after speech, including full replacement', async ({ page }) => {
   const corrected = '秘密鍵で署名を作り、公開鍵で検証して、改ざんを検知する仕組みです。';
   await page.route('**/api/glossary/evaluate', route => {
-    expect(route.request().postDataJSON()).toEqual({ termId: term.id, text: corrected });
+    expect(route.request().postDataJSON()).toEqual({ termId: term.id, text: corrected, usedVoice: true });
     return route.fulfill({ json: evaluation(corrected) });
   });
   await page.goto('/glossary/digital-signature');

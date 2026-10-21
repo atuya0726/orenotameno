@@ -1,13 +1,13 @@
 import { evaluationSchema, explanationInputSchema, type Evaluation, type Term } from './model';
 
-// Only the current explanation leaves the browser. Credentials and model selection stay on the server.
-export async function evaluateExplanation(term: Term, input: string): Promise<Evaluation> {
+// Send current text and input method, never audio/history. Credentials and model selection stay on the server.
+export async function evaluateExplanation(term: Term, input: string, usedVoice = false): Promise<Evaluation> {
   const text = explanationInputSchema.parse(input);
   let response: Response;
   try {
     response = await fetch('/api/glossary/evaluate', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ termId: term.id, text }), signal: AbortSignal.timeout(60_000),
+      body: JSON.stringify({ termId: term.id, text, usedVoice }), signal: AbortSignal.timeout(60_000),
     });
   } catch {
     throw new Error('AIの評価を受け取れませんでした。入力した説明は残っています。通信状態を確認して再試行してください。');

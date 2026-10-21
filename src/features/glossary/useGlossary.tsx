@@ -52,7 +52,7 @@ function useGlossaryStore() {
     const text = explanationInputSchema.parse(draft.text);
     pending.current = true;
     try {
-      const evaluation = await evaluateExplanation(term, text);
+      const evaluation = await evaluateExplanation(term, text, draft.usedVoice);
       const attempt: GlossaryAttempt = { id: crypto.randomUUID(), termId: term.id, termName: term.name, text, answeredAt: new Date().toISOString(), usedVoice: draft.usedVoice, referenceViewed: draft.referenceViewed, evaluation, reference: evaluation.definition || term.definition };
       pendingSaves.current.set(attempt.id, { attempt, draft });
       setSnapshot(s => ({ ...s, attempts: [...s.attempts, attempt] }));
