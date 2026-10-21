@@ -110,6 +110,19 @@ test('evaluates once, stores feedback separately from quizzes, and reviews a his
   await expect(page.getByRole('heading', { name: '判定', exact: true })).toBeVisible();
   await expect(page.getByLabel('評価 A', { exact: true })).toBeVisible();
   await expect(page.locator('.glossary-result-heading')).toHaveText('判定A');
+  const resultRegion = page.getByRole('region', { name: '説明のチェック結果' });
+  const resultBox = await resultRegion.boundingBox();
+  const formBox = await page.locator('.explanation-form').boundingBox();
+  expect(resultBox!.y + resultBox!.height).toBeLessThan(formBox!.y);
+  await expect(page.locator('.term-reference')).toHaveCount(0);
+  const exampleToggle = page.getByRole('button', { name: '説明例を見る', exact: true });
+  await expect(exampleToggle).toHaveAttribute('aria-expanded', 'false');
+  await exampleToggle.click();
+  await expect(page.locator('#term-reference-panel .term-reference')).toBeVisible();
+  await expect(resultRegion).toBeVisible();
+  await page.getByRole('button', { name: '説明例を閉じる', exact: true }).click();
+  await expect(page.locator('.term-reference')).toHaveCount(0);
+  await expect(page.locator('.glossary-result-heading')).toHaveText('判定A');
   await expect(page.getByText(evaluation().summary, { exact: true })).toHaveCount(0);
   await expect(page.locator('.rubric-level-heading').filter({ hasText: /^B/ })).toContainText('用語の意味・目的・基本の仕組み');
   await expect(page.locator('.rubric-level-heading').filter({ hasText: '応用' })).toContainText('用途・理由・制約・影響');
@@ -121,6 +134,8 @@ test('evaluates once, stores feedback separately from quizzes, and reviews a his
   await page.getByRole('link', { name: '説明の履歴', exact: true }).click();
   await page.reload(); await page.getByRole('link', { name: '見直す', exact: true }).click();
   await expect(page.locator('.saved-explanation')).toContainText(text);
+  await expect(page.getByRole('button', { name: '説明例を見る', exact: true })).toHaveAttribute('aria-expanded', 'false');
+  await expect(page.locator('.term-reference')).toHaveCount(0);
   await expect(page.locator('.glossary-result-heading')).toHaveText('判定A');
   await expect(page.getByRole('link', { name: '次の用語へ' })).toBeVisible();
 });
@@ -155,6 +170,10 @@ test('shows compact decision results and allows another spoken attempt', async (
   await page.goto('/glossary/digital-signature');
   await speakExplanation(page, text); await check(page).click();
   await expect(page.getByLabel('評価 C', { exact: true })).toBeVisible();
+  const gradeBox = await page.getByLabel('評価 C', { exact: true }).boundingBox();
+  const headerBox = await page.locator('.site-header').boundingBox();
+  expect(gradeBox!.y).toBeGreaterThanOrEqual(headerBox!.y + headerBox!.height);
+  expect(gradeBox!.y + gradeBox!.height).toBeLessThan(844);
   await expect(page.locator('.rubric-compact .rubric-item')).toHaveCount(term.criteria.length);
   await expect(page.getByRole('img', { name: '内容に誤り', exact: true })).toHaveCount(1);
   await expect(page.getByRole('img', { name: '未説明', exact: true })).toHaveCount(1);
@@ -232,6 +251,8 @@ test('records whether the explanation example was consulted', async ({ page }) =
   await expect(page.locator('.term-reference')).toBeVisible();
   await speakExplanation(page, text); await check(page).click();
   await expect(page.getByRole('region', { name: '説明のチェック結果' })).toBeVisible();
+  await expect(page.getByRole('button', { name: '説明例を見る', exact: true })).toHaveAttribute('aria-expanded', 'false');
+  await expect(page.locator('.term-reference')).toHaveCount(0);
   expect((await entries(page))[0].referenceViewed).toBe(true);
 });
 
@@ -262,6 +283,8 @@ test('opens the example directly below its toggle outside the form and remembers
   await expect(textbox(page)).toHaveValue(text);
   await check(page).click();
   await expect(page.getByRole('region', { name: '説明のチェック結果' })).toBeVisible();
+  await expect(page.getByRole('button', { name: '説明例を見る', exact: true })).toHaveAttribute('aria-expanded', 'false');
+  await expect(page.locator('.term-reference')).toHaveCount(0);
   expect((await entries(page))[0].referenceViewed).toBe(true);
 });
 
