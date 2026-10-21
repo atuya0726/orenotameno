@@ -193,6 +193,33 @@ test('shows compact decision results and allows another spoken attempt', async (
   await expect(page.locator('.rubric-compact')).toBeVisible();
 });
 
+test('shows a low-probability covered choice as pending and preserves its probabilities in history', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  const result = {
+    ...evaluation(), api: 'decisions', coveredProbabilityThreshold: 0.9, grade: 'C', status: 'partial', covered: 2, summary: '', followUp: undefined,
+    criteria: term.criteria.map((c, index) => ({
+      id: c.id, title: c.title, level: c.level ?? 'B', status: index === 0 ? 'missing' : 'covered', evidence: '', hint: '',
+      decision: { choice: 'covered', confidence: 0.99, probabilities: { covered: index === 0 ? 0.8999 : 0.95, missing: index === 0 ? 0.0751 : 0.025, review: 0.025 } },
+    })),
+  };
+  await page.route('**/api/glossary/evaluate', route => route.fulfill({ json: result }));
+  await page.goto('/glossary/digital-signature'); await speakExplanation(page, text); await check(page).click();
+  await expect(page.getByLabel('評価 C', { exact: true })).toBeVisible();
+  await expect(page.getByRole('img', { name: '判定保留', exact: true })).toHaveCount(1);
+  await expect(page.getByRole('img', { name: '内容に誤り', exact: true })).toHaveCount(0);
+  await expect(page.getByRole('img', { name: '説明できた', exact: true })).toHaveCount(term.criteria.length - 1);
+  await expect(page.locator('.rubric-missing')).toContainText('判定保留 · 89.9% / 90%');
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await expect.poll(async () => (await entries(page)).length).toBe(1);
+  const stored = (await entries(page))[0].evaluation as typeof result;
+  expect(stored.coveredProbabilityThreshold).toBe(0.9);
+  expect(stored.criteria[0].decision).toEqual(result.criteria[0].decision);
+  await page.getByRole('link', { name: '説明の履歴', exact: true }).click();
+  await page.reload(); await page.getByRole('link', { name: '見直す', exact: true }).click();
+  await expect(page.getByRole('img', { name: '判定保留', exact: true })).toHaveCount(1);
+  await expect(page.locator('.rubric-missing')).toContainText('89.9% / 90%');
+});
+
 test('does not display historical follow-up suggestions or allow uncollected term practice', async ({ page }) => {
   await page.route('**/api/glossary/evaluate', route => route.fulfill({ json: evaluation() }));
   await page.goto('/glossary/digital-signature'); await speakExplanation(page, text); await check(page).click();

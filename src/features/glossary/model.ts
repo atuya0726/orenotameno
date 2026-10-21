@@ -15,10 +15,20 @@ export type Term = {
   id: string; name: string; aliases?: string[]; reading: string; category: string; definition: string; example: string;
   criteria: Criterion[]; commonMistakes: string[]; related: string[];
 };
+const criterionStatusSchema = z.enum(['covered', 'missing', 'review']);
+export const probabilitySchema = z.number().finite().min(0).max(1);
+export const criterionDecisionSchema = z.object({
+  choice: criterionStatusSchema, confidence: probabilitySchema,
+  probabilities: z.object({ covered: probabilitySchema, missing: probabilitySchema, review: probabilitySchema }),
+});
 export const criterionResultSchema = z.object({
-  id: z.string(), title: z.string(), status: z.enum(['covered', 'missing', 'review']), evidence: z.string(), hint: z.string(), level: z.enum(levels).optional(),
+  id: z.string(), title: z.string(), status: criterionStatusSchema, evidence: z.string(), hint: z.string(), level: z.enum(levels).optional(),
+  decision: criterionDecisionSchema.optional(),
 });
 export type CriterionResult = z.infer<typeof criterionResultSchema>;
+export function isUncertainCriterion(criterion: CriterionResult) {
+  return criterion.status === 'missing' && criterion.decision?.choice === 'covered';
+}
 export const grades = ['S', 'A', 'B', 'C'] as const;
 export type Grade = typeof grades[number];
 // Only levels present in the rubric count. A B-only rubric can earn B, even with just one point.
@@ -41,6 +51,7 @@ export const evaluationSchema = z.object({
   covered: z.number().int().nonnegative(), total: z.number().int().positive(),
   criteria: z.array(criterionResultSchema), summary: z.string(),
   engine: z.literal('openai'), api: z.literal('decisions').optional(), model: z.string().min(1),
+  coveredProbabilityThreshold: probabilitySchema.optional(),
   followUp: followUpSchema.optional(), definition: z.string().optional(), grade: z.enum(grades).optional(),
   // Older evaluations stored these before wording feedback was dropped.
   concerns: z.array(z.object({ message: z.string(), evidence: z.string() })).optional(), improvedExplanation: z.string().optional(),

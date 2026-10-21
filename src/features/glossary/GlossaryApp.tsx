@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils';
 import { formatDate, dayKey } from '@/lib/date';
 import { GlossaryProvider, useGlossary } from './useGlossary';
 import { normalizeTermWord as normalize, termForWord, terms, termById, termCategories } from './terms';
-import { EXPLANATION_MAX_LENGTH, explanationInputSchema, levelInfo, levels, type Evaluation, type Grade, type GlossaryAttempt, type GlossaryDraft, type Level, type Term } from './model';
+import { EXPLANATION_MAX_LENGTH, explanationInputSchema, isUncertainCriterion, levelInfo, levels, type CriterionResult, type Evaluation, type Grade, type GlossaryAttempt, type GlossaryDraft, type Level, type Term } from './model';
 import { serializeGlossary } from './db';
 import { useLearning } from '@/lib/store';
 import { useSpeech } from './useSpeech';
@@ -226,8 +226,20 @@ function Feedback({ attempt, children }: { attempt: GlossaryAttempt; children?: 
   const evaluation = attempt.evaluation; const { grade } = evaluation; const compact = evaluation.api === 'decisions';
   const passed = grade ? grade !== 'C' : evaluation.status === 'covered';
   return <section className={cn('glossary-feedback', compact && 'rubric-compact')} aria-label="説明のチェック結果"><div className={cn('glossary-result-heading', passed && 'glossary-result-covered')}><div className="glossary-grade-summary"><h2>判定</h2><span className={cn('glossary-result-value', grade && 'glossary-grade')} aria-label={grade ? `評価 ${grade}` : undefined}>{grade ?? statusLabels[evaluation.status]}</span></div>{children}</div>
-    {levels.map(level => { const items = evaluation.criteria.filter(c => (c.level ?? 'B') === level); return items.length > 0 && <div className="rubric-level" key={level}>{grade && <h3 className="rubric-level-heading"><span>{level}</span>{levelInfo[level].name}<small>{levelInfo[level].description}</small></h3>}<div className="rubric-results">{items.map(criterion => <div className={cn('rubric-item', `rubric-${criterion.status}`)} key={criterion.id}><span className="rubric-icon" role="img" aria-label={criterion.status === 'covered' ? '説明できた' : criterion.status === 'review' ? '内容に誤り' : '未説明'}>{criterion.status === 'covered' ? <Check size={17} /> : criterion.status === 'review' ? <TriangleAlert size={17} /> : <CircleHelp size={17} />}</span><div>{!compact && <span className="rubric-state">{criterion.status === 'covered' ? '説明に含まれています' : criterion.status === 'review' ? '内容に誤りがあります' : level === 'B' ? 'この説明では未確認' : 'まだ触れていません'}</span>}<h3>{criterion.title}</h3>{criterion.evidence && <blockquote>{criterion.evidence}</blockquote>}{criterion.hint && <p>{criterion.hint}</p>}</div></div>)}</div></div>; })}
+    {levels.map(level => { const items = evaluation.criteria.filter(c => (c.level ?? 'B') === level); return items.length > 0 && <div className="rubric-level" key={level}>{grade && <h3 className="rubric-level-heading"><span>{level}</span>{levelInfo[level].name}<small>{levelInfo[level].description}</small></h3>}<div className="rubric-results">{items.map(criterion => <CriterionFeedback key={criterion.id} criterion={criterion} level={level} compact={compact} threshold={evaluation.coveredProbabilityThreshold} />)}</div></div>; })}
   </section>;
+}
+function CriterionFeedback({ criterion, level, compact, threshold }: { criterion: CriterionResult; level: Level; compact: boolean; threshold?: number }) {
+  const uncertain = isUncertainCriterion(criterion);
+  const label = uncertain ? '判定保留' : criterion.status === 'covered' ? '説明できた' : criterion.status === 'review' ? '内容に誤り' : '未説明';
+  // Truncate so a probability just below 90% never appears to meet the 90% cutoff.
+  const percent = criterion.decision && Math.floor(criterion.decision.probabilities.covered * 1000) / 10;
+  return <div className={cn('rubric-item', `rubric-${criterion.status}`)}>
+    <span className="rubric-icon" role="img" aria-label={label}>{uncertain ? <Clock3 size={17} /> : criterion.status === 'covered' ? <Check size={17} /> : criterion.status === 'review' ? <TriangleAlert size={17} /> : <CircleHelp size={17} />}</span>
+    <div>{uncertain ? <span className="rubric-state" title="「説明できた」とするモデルの推定確率です。正答率の保証ではありません。">判定保留 · {percent}%{threshold !== undefined && ` / ${threshold * 100}%`}</span> : !compact && <span className="rubric-state">{criterion.status === 'covered' ? '説明に含まれています' : criterion.status === 'review' ? '内容に誤りがあります' : level === 'B' ? 'この説明では未確認' : 'まだ触れていません'}</span>}
+      <h3>{criterion.title}</h3>{criterion.evidence && <blockquote>{criterion.evidence}</blockquote>}{criterion.hint && <p>{criterion.hint}</p>}
+    </div>
+  </div>;
 }
 function GlossaryHistory() {
   const { snapshot, restore } = useGlossary();
