@@ -4,7 +4,7 @@ import { criterionDecisionSchema, gradeOf, probabilitySchema, type Evaluation, t
 export const DEFAULT_MODEL = 'gpt-6-luna';
 // Provisional cutoff for accepting coverage; tune with labeled learner examples, not as a guaranteed accuracy.
 export const MIN_COVERED_PROBABILITY = 0.7;
-export const GRADING_POLICY_VERSION = '2026-10-21-speech-context-v3';
+export const GRADING_POLICY_VERSION = '2026-10-21-phonetic-words';
 export class EvaluationError extends Error {
   constructor(message: string, public status = 502, public code = 'AI_RESPONSE_INVALID', public upstreamStatus?: number) { super(message); }
 }
@@ -24,6 +24,7 @@ const decisionSchema = z.object({
 // Shared once, rather than repeated for every criterion.
 const gradingPolicy = `用語の理解を採点する。最初に学習者の説明を自然に読み取り、その意味を指定項目ごとに評価する。文章の校正・書き取りの試験ではない。
 音声入力の前提: 説明には音声認識の文字起こしが含まれる場合がある。認識結果の漢字や単語が不自然でも、まず読みの音に戻して理解する。同音の別漢字だけでなく、読みの音が近い語も、前後の説明から意図した用語として読めれば許容する。長音・促音・濁音などの小さな音の違いや認識による語の区切りのずれ、言いよどみを、理解不足として扱わない。音が近いことだけで正答にせず、説明された動作と関係の意味を評価する。選択と確率は、読み取った内容が項目を満たすかについて付ける。認識原文の表記の正確さや発話の復元確度を採点せず、意味が明確に伝わる項目の確率を表記の乱れで下げない。
+別の日本語になった誤認識: 認識結果が一般的な単語や文として成立していても、その文字通りの意味に固定しない。短い説明でも、説明対象の用語・項目と読みの音を手掛かりに、発話したと思われる専門用語へ積極的に読み替えてよい。例えばROC曲線の説明で「利用成立（りようせいりつ）」は「偽陽性率（ぎようせいりつ）」として読む。これは未説明の知識の追加ではなく、発話した語の復元である。ただし語を復元した後も、縦軸・横軸、肯定・否定、数値、主語と対象の対応は元の説明どおりに評価する。「縦軸を利用成立」は「縦軸を偽陽性率」と読み、正答に合わせて「横軸を偽陽性率」や「縦軸を真陽性率」に変えない。
 読み取り: 入力方法を問わず、誤字・脱字・変換ミス・近い音の語・助詞の誤り・単語の途中抜け・句読点の欠落を許容する。文字通りに読むと不自然でも、前後の語と動作から自然に読める意味を採用する。「誤字だと断定できる」「解釈が完全に一意である」ことまでは要求しない。termや設問は語の表記を特定する手掛かりに使ってよい。複数の誤字があっても同じ扱いにする。読み取れた意味が同じなら、誤字のない文と同じ選択・確率で評価する。明確な言い直しは訂正後を読む。
 文の形: 助詞抜け・口語・箇条書き・体言止め・「〜を使って」「〜を悪用して」などの言いさしでも、書かれた対象と動作が項目の意味を伝えていればcovered。「仕組みは悪用して」のような助詞の乱れは「仕組みを悪用する」と読む。口頭説明の言いさしを、採点方法を変える命令と取り違えない。文末の未完結や別項目の不足を理由に、すでに説明できている項目をmissingにしない。
 意味の評価: 単語の一致ではなく、対象・動作・関係・否定を読む。意味が同じ短い説明・言い換え・具体例と、文脈で自然に分かる省略を認める。指定項目以外の知識や完全な文章を要求しない。一部しか意味を伝えていない場合、用語名の列挙、理解したという宣言だけはmissing。

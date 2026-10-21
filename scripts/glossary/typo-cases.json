@@ -79,5 +79,53 @@
       "lateral": "missing",
       "mitigation": "missing"
     }
+  },
+  {
+    "name": "roc-normal-japanese-misrecognition",
+    "termId": "roc-curve",
+    "usedVoice": true,
+    "text": "横軸を利用成立、縦軸を真陽性率にとり、判定のしきい値を変えた点を結ぶ曲線",
+    "expected": {
+      "axes": "covered",
+      "threshold": "covered",
+      "upperleft": "missing",
+      "diagonal": "missing"
+    }
+  },
+  {
+    "name": "roc-corrected-words",
+    "termId": "roc-curve",
+    "usedVoice": true,
+    "text": "横軸を偽陽性率、縦軸を真陽性率にとり、判定のしきい値を変えた点を結ぶ曲線",
+    "expected": {
+      "axes": "covered",
+      "threshold": "covered",
+      "upperleft": "missing",
+      "diagonal": "missing"
+    }
+  },
+  {
+    "name": "roc-reported-axis-fragment",
+    "termId": "roc-curve",
+    "usedVoice": true,
+    "text": "縦軸を利用成立にとる曲線です",
+    "expected": {
+      "axes": "review",
+      "threshold": "missing",
+      "upperleft": "missing",
+      "diagonal": "missing"
+    }
+  },
+  {
+    "name": "roc-corrected-wrong-axis",
+    "termId": "roc-curve",
+    "usedVoice": true,
+    "text": "縦軸を偽陽性率にとる曲線です",
+    "expected": {
+      "axes": "review",
+      "threshold": "missing",
+      "upperleft": "missing",
+      "diagonal": "missing"
+    }
   }
 ]
