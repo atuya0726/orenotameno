@@ -24,7 +24,7 @@ for (const term of incoming) {
   ids.add(term.id);
 }
 for (const term of incoming) {
-  for (const key of ['id', 'name', 'reading', 'category', 'definition', 'example']) if (!term[key]) errors.push(`${term.id}: missing ${key}`);
+  for (const key of ['id', 'name', 'reading', 'category', 'definition']) if (!term[key]) errors.push(`${term.id}: missing ${key}`);
   if (!term.criteria?.some(c => !c.level || c.level === 'basic')) errors.push(`${term.id}: needs at least one basic criterion`);
   const criterionIds = term.criteria?.map(c => c.id) ?? [];
   if (new Set(criterionIds).size !== criterionIds.length || criterionIds.some(id => !id)) errors.push(`${term.id}: criterion ids must be unique`);
@@ -38,6 +38,6 @@ if (errors.length) {
 
 const marker = '\n];\n\nexport const termById';
 if (!source.includes(marker)) throw new Error('terms.ts layout changed; update add-terms.mjs');
-const body = incoming.map(term => JSON.stringify({ ...term, aliases: term.aliases?.length ? term.aliases : undefined, commonMistakes: term.commonMistakes ?? [], related: term.related ?? [] }, ['id', 'name', 'aliases', 'reading', 'category', 'definition', 'example', 'related', 'criteria', 'title', 'hint', 'level', 'commonMistakes'], 2).replace(/^/gm, '  ')).join(',\n');
+const body = incoming.map(term => JSON.stringify({ ...term, aliases: term.aliases?.length ? term.aliases : undefined, commonMistakes: term.commonMistakes ?? [], related: term.related ?? [] }, ['id', 'name', 'aliases', 'reading', 'category', 'definition', 'related', 'criteria', 'title', 'hint', 'level', 'commonMistakes'], 2).replace(/^/gm, '  ')).join(',\n');
 writeFileSync(file, source.replace(marker, `,\n${body}${marker}`));
 console.log(`added ${incoming.length} terms (${existing.length + incoming.length} total)`);

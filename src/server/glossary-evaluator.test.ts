@@ -39,10 +39,14 @@ describe('OpenAI Decisions API', () => {
     expect(Object.keys(body).sort()).toEqual(['input', 'model', 'questions']);
     expect(body.model).toBe('gpt-6-luna');
     const { gradingPolicy, ...input } = JSON.parse(body.input);
-    expect(input).toEqual({ term: { name: term.name, definition: term.definition, example: term.example, commonMistakes: term.commonMistakes }, learnerExplanation: text });
+    expect(input).toEqual({ term: { name: term.name, definition: term.definition, commonMistakes: term.commonMistakes }, learnerExplanation: text });
     expect(gradingPolicy).toContain('誤認識');
     expect(gradingPolicy).toContain('否定');
     expect(gradingPolicy).toContain('合格は基本だけ');
+    expect(gradingPolicy).toContain('採点範囲は項目の本文に限り');
+    expect(gradingPolicy).toContain('hintは理解を助ける問いであって追加の必須条件ではない');
+    expect(gradingPolicy).toContain('列挙を全て要求せず');
+    expect(input.term).not.toHaveProperty('example');
     expect(body.questions.map((q: { name: string }) => q.name)).toEqual(term.criteria.map(c => c.id));
     for (const [index, question] of body.questions.entries()) {
       expect(question.type).toBe('choice');

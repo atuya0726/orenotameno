@@ -4,8 +4,8 @@ import { z } from 'zod';
 export const levels = ['basic', 'deep'] as const;
 export type Level = typeof levels[number];
 export const levelInfo: Record<Level, { name: string; description: string }> = {
-  basic: { name: '基本', description: '用語の意味・目的・基本の仕組み。ここまでで合格' },
-  deep: { name: '深掘り', description: '理由・使いどころ・条件まで。できた分だけプラス' },
+  basic: { name: '基本', description: '試験で押さえる意味・仕組み。ここまでで合格' },
+  deep: { name: '深掘り', description: '使いどころ・注意点・tips。できた分だけプラス' },
 };
 const legacyLevels = ['B', 'A', 'S'] as const;
 // Historical attempts/backups retain their original levels and grades.
@@ -15,7 +15,7 @@ export function criterionLevel(level?: Level | typeof legacyLevels[number]): Lev
 export type Criterion = { id: string; title: string; hint: string; level?: Level };
 export type Term = {
   // Aliases are other spellings of the same concept; related concepts get their own terms.
-  id: string; name: string; aliases?: string[]; reading: string; category: string; definition: string; example: string;
+  id: string; name: string; aliases?: string[]; reading: string; category: string; definition: string;
   criteria: Criterion[]; commonMistakes: string[]; related: string[];
 };
 const criterionStatusSchema = z.enum(['covered', 'missing', 'review']);

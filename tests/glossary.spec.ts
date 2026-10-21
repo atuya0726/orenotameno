@@ -99,6 +99,38 @@ test('searches terms and persists drafts without exposing the reference first', 
   await page.reload(); await expect(textbox(page)).toHaveValue('');
 });
 
+test('shows the definition and the same basic/deeper points used for grading without an example block', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  for (const id of ['digital-signature', 'sql-injection', 'incremental-backup', 'certificates']) {
+    const current = termById.get(id)!;
+    await page.goto(`/glossary/${id}`);
+    await page.getByRole('button', { name: '説明を見る', exact: true }).click();
+    const reference = page.locator('.term-reference');
+    await expect(reference.locator(':scope > p')).toHaveText(current.definition);
+    await expect(reference.getByText('例えば', { exact: true })).toHaveCount(0);
+    await expect(reference.locator('.term-example')).toHaveCount(0);
+    await reference.locator('summary').click();
+    await expect(reference.locator('.term-reference-points li')).toHaveText(current.criteria.filter(c => c.level !== 'deep').map(c => c.title));
+    await expect(reference.locator('.term-reference-deep li')).toHaveText(current.criteria.filter(c => c.level === 'deep').map(c => c.title));
+    await expect(reference.getByRole('heading', { name: '深掘り・tips', exact: true })).toHaveCount(current.criteria.some(c => c.level === 'deep') ? 1 : 0);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+    if (id === 'digital-signature') await reference.screenshot({ path: '/private/tmp/orenotameno-glossary-reference.png' });
+    await expect(check(page)).toBeDisabled();
+  }
+});
+
+test('uses saved rubric points with a saved reference after evaluation', async ({ page }) => {
+  const savedCriteria = evaluation().criteria.map(c => ({ ...c, title: `保存時の観点: ${c.id}` }));
+  await page.route('**/api/glossary/evaluate', route => route.fulfill({ json: { ...evaluation(), criteria: savedCriteria, definition: '保存時の基本の説明です。' } }));
+  await page.goto('/glossary/digital-signature');
+  await speakExplanation(page, text);
+  await check(page).click();
+  await page.getByRole('button', { name: '説明を見る', exact: true }).click();
+  const reference = page.locator('.term-reference');
+  await expect(reference.locator(':scope > p')).toHaveText('保存時の基本の説明です。');
+  await expect(reference.locator('.term-reference-deep li')).toHaveText(savedCriteria.filter(c => c.level === 'deep').map(c => c.title));
+});
+
 test('evaluates once and preserves learning progress separately from quizzes', async ({ page }) => {
   let calls = 0;
   await page.route('**/api/glossary/evaluate', async route => {
@@ -115,17 +147,17 @@ test('evaluates once and preserves learning progress separately from quizzes', a
   const formBox = await page.locator('.explanation-form').boundingBox();
   expect(formBox!.y + formBox!.height).toBeLessThan(resultBox!.y);
   await expect(page.locator('.term-reference')).toHaveCount(0);
-  const exampleToggle = page.getByRole('button', { name: '説明例を見る', exact: true });
+  const exampleToggle = page.getByRole('button', { name: '説明を見る', exact: true });
   await expect(exampleToggle).toHaveAttribute('aria-expanded', 'false');
   await exampleToggle.click();
   await expect(page.locator('#term-reference-panel .term-reference')).toBeVisible();
   await expect(resultRegion).toBeVisible();
-  await page.getByRole('button', { name: '説明例を閉じる', exact: true }).click();
+  await page.getByRole('button', { name: '説明を閉じる', exact: true }).click();
   await expect(page.locator('.term-reference')).toHaveCount(0);
   await expect(page.locator('.glossary-result-heading')).toHaveText('判定合格深掘りできた');
   await expect(page.getByText(evaluation().summary, { exact: true })).toHaveCount(0);
-  await expect(page.locator('.rubric-level-heading').filter({ hasText: /^基本/ })).toContainText('用語の意味・目的・基本の仕組み');
-  await expect(page.locator('.rubric-level-heading').filter({ hasText: '深掘り' })).toContainText('理由・使いどころ・条件');
+  await expect(page.locator('.rubric-level-heading').filter({ hasText: /^基本/ })).toContainText('試験で押さえる意味・仕組み');
+  await expect(page.locator('.rubric-level-heading').filter({ hasText: '深掘り' })).toContainText('使いどころ・注意点・tips');
   await expect(page.locator('.rubric-level-heading').filter({ hasText: '発展' })).toHaveCount(0);
   await expect(page.locator('.rubric-missing')).toHaveCount(0);
   await expect(page.getByText('OpenAI · gpt-6-luna')).toHaveCount(0);
@@ -167,7 +199,7 @@ for (const deeperStatus of ['missing', 'review']) {
     await speakExplanation(page, text); await check(page).click();
     await expect(page.getByLabel('評価 合格', { exact: true })).toBeVisible();
     await expect(page.locator('.glossary-deep-badge')).toHaveCount(0);
-    await expect(page.locator('.rubric-deep .rubric-' + deeperStatus)).toHaveCount(2);
+    await expect(page.locator('.rubric-deep .rubric-' + deeperStatus)).toHaveCount(term.criteria.filter(c => c.level === 'deep').length);
     await expect(page.getByLabel('基本 3 / 3')).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     await page.screenshot({ path: `/private/tmp/orenotameno-basic-pass-${deeperStatus}.png`, fullPage: true });
@@ -317,7 +349,7 @@ test('records whether the explanation example was consulted', async ({ page }) =
   await expect(page.locator('.term-reference')).toBeVisible();
   await speakExplanation(page, text); await check(page).click();
   await expect(page.getByRole('region', { name: '説明のチェック結果' })).toBeVisible();
-  await expect(page.getByRole('button', { name: '説明例を見る', exact: true })).toHaveAttribute('aria-expanded', 'false');
+  await expect(page.getByRole('button', { name: '説明を見る', exact: true })).toHaveAttribute('aria-expanded', 'false');
   await expect(page.locator('.term-reference')).toHaveCount(0);
   expect((await entries(page))[0].referenceViewed).toBe(true);
 });
@@ -328,13 +360,13 @@ test('opens the example directly below its toggle outside the form and remembers
   await page.goto('/glossary/digital-signature');
   await speakExplanation(page, text);
   const toggle = page.locator('.term-reference-toggle');
-  await expect(toggle).toHaveAccessibleName('説明例を見る');
+  await expect(toggle).toHaveAccessibleName('説明を見る');
   await expect(toggle).toHaveAttribute('aria-expanded', 'false');
   await expect(page.locator('.explanation-form .term-reference-toggle')).toHaveCount(0);
   await toggle.scrollIntoViewIfNeeded();
   const before = await toggle.boundingBox();
   await toggle.click();
-  await expect(toggle).toHaveAccessibleName('説明例を閉じる');
+  await expect(toggle).toHaveAccessibleName('説明を閉じる');
   await expect(toggle).toHaveAttribute('aria-expanded', 'true');
   await expect(page.locator('#term-reference-panel .term-reference')).toBeVisible();
   const after = await toggle.boundingBox();
@@ -349,7 +381,7 @@ test('opens the example directly below its toggle outside the form and remembers
   await expect(textbox(page)).toHaveValue(text);
   await check(page).click();
   await expect(page.getByRole('region', { name: '説明のチェック結果' })).toBeVisible();
-  await expect(page.getByRole('button', { name: '説明例を見る', exact: true })).toHaveAttribute('aria-expanded', 'false');
+  await expect(page.getByRole('button', { name: '説明を見る', exact: true })).toHaveAttribute('aria-expanded', 'false');
   await expect(page.locator('.term-reference')).toHaveCount(0);
   expect((await entries(page))[0].referenceViewed).toBe(true);
 });

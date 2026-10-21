@@ -6,8 +6,7 @@ export const terms: Term[] = [
     "name": "ディジタル署名",
     "reading": "Digital signature",
     "category": "暗号・認証",
-    "definition": "署名者の秘密鍵で署名を作り、対応する公開鍵で検証する仕組みです。データの改ざんの検知と署名者の確認に使います。署名だけでは本文の秘密は守れません。",
-    "example": "ソフトウェアの配布元が秘密鍵で署名し、利用者が配布元の公開鍵で署名を検証して、改ざんされていないかを確認します。",
+    "definition": "署名者の秘密鍵で署名を作り、対応する公開鍵で検証する仕組みです。データの改ざんの検知と署名者の確認に使います。",
     "related": [
       "hash",
       "tls"
@@ -25,8 +24,8 @@ export const terms: Term[] = [
       },
       {
         "id": "purpose",
-        "title": "改ざんの検知・署名者の確認・否認防止に使う",
-        "hint": "署名があると、何を確認でき、署名者は何を否定できなくなりますか？"
+        "title": "改ざんの検知と署名者の確認に使う",
+        "hint": "署名と検証によって、データと署名者について何を確認できますか？"
       },
       {
         "id": "digest",
@@ -36,8 +35,20 @@ export const terms: Term[] = [
       },
       {
         "id": "certificate",
-        "title": "公開鍵が本人のものであることは認証局の証明書（PKI）で保証する",
+        "title": "認証局の証明書を使って、公開鍵と署名者の対応を確認できる",
         "hint": "検証に使う公開鍵が本当に署名者のものだと、どうやって確かめますか？",
+        "level": "deep"
+      },
+      {
+        "id": "confidentiality",
+        "title": "署名だけでは本文を秘密にできず、秘匿には暗号化を組み合わせる",
+        "hint": "署名を付ければ、本文を読まれなくなりますか？",
+        "level": "deep"
+      },
+      {
+        "id": "non-repudiation",
+        "title": "署名鍵の適切な管理などを前提に、署名者による否認を防ぐ証拠になる",
+        "hint": "署名した事実を後から確認するために、どのように役立ちますか？",
         "level": "deep"
       }
     ],
@@ -56,7 +67,6 @@ export const terms: Term[] = [
     "reading": "Hash function",
     "category": "暗号・認証",
     "definition": "任意長の入力から一定長のハッシュ値を計算する関数です。暗号学的ハッシュでは、値から元の入力を求めることや、同じ値になる異なる入力を見つけることが計算上困難な性質を求めます。",
-    "example": "配布ファイルのハッシュ値を再計算して公開済みの値と比較すると、内容が変わっていないかを確認できます。",
     "related": [
       "salt",
       "digital-signature"
@@ -100,8 +110,7 @@ export const terms: Term[] = [
     "name": "ソルト",
     "reading": "Salt",
     "category": "暗号・認証",
-    "definition": "パスワードのハッシュ計算などに加える、利用者ごとに異なるランダムな値です。同じパスワードでも保存値が同じになるのを避け、事前計算の使い回しを難しくします。ソルト自体は秘密にする必要はありません。",
-    "example": "同じパスワードを使う二人でも別々のソルトを使えば、保存するハッシュ値は異なります。",
+    "definition": "パスワードに加えてハッシュ値を計算する、利用者ごとに異なるランダムな値です。同じパスワードでも保存するハッシュ値が同じになるのを避けます。",
     "related": [
       "hash"
     ],
@@ -140,7 +149,6 @@ export const terms: Term[] = [
     "reading": "Transport Layer Security",
     "category": "暗号・認証",
     "definition": "通信相手の認証、通信内容の暗号化、改ざんの検知などを提供するプロトコルです。HTTPSはHTTPをTLSで保護した通信です。",
-    "example": "HTTPSでWebサイトを開くと、サーバ証明書などで相手を確認し、ブラウザとサーバ間の通信を保護します。",
     "related": [
       "digital-signature"
     ],
@@ -189,7 +197,6 @@ export const terms: Term[] = [
     "reading": "Structured Query Language injection",
     "category": "Webセキュリティ",
     "definition": "入力値などがSQLの命令として解釈され、意図しない問合せやデータ操作を起こす攻撃です。プレースホルダとパラメータバインドでSQLの構造とデータを分離します。",
-    "example": "検索語をSQL文へ直接連結すると、入力に含まれる記号や命令でSQLの意味を変えられる場合があります。",
     "related": [
       "xss",
       "csrf"
@@ -209,8 +216,7 @@ export const terms: Term[] = [
       {
         "id": "defense",
         "title": "パラメータ化して命令と値を分離する",
-        "hint": "安全にSQLを組み立てる方法を説明できますか？",
-        "level": "deep"
+        "hint": "安全にSQLを組み立てる方法を説明できますか？"
       },
       {
         "id": "mitigation",
@@ -233,7 +239,6 @@ export const terms: Term[] = [
     "reading": "Cross-site scripting",
     "category": "Webセキュリティ",
     "definition": "信頼できない入力などに含まれるスクリプトが、Webページの一部として利用者のブラウザで実行される攻撃です。出力先に応じたエスケープなどでデータをコードとして実行させないようにします。",
-    "example": "掲示板の投稿をそのままHTMLに埋め込むと、投稿に仕込まれたスクリプトが閲覧者のブラウザで動く場合があります。",
     "related": [
       "csrf",
       "sql-injection"
@@ -252,8 +257,7 @@ export const terms: Term[] = [
       {
         "id": "defense",
         "title": "出力先に応じてエスケープする",
-        "hint": "入力内容を画面に出すとき、どう処理しますか？",
-        "level": "deep"
+        "hint": "入力内容を画面に出すとき、どう処理しますか？"
       },
       {
         "id": "impact",
@@ -288,7 +292,6 @@ export const terms: Term[] = [
     "reading": "Cross-site request forgery",
     "category": "Webセキュリティ",
     "definition": "ログイン済みの利用者のブラウザを通じて、本人が意図しないリクエストを送らせる攻撃です。CSRFトークンの検証などで対策します。",
-    "example": "ログイン中のサービスに対して、別のページから本人の意図しない設定変更リクエストを送らせるような攻撃です。",
     "related": [
       "xss"
     ],
@@ -306,8 +309,7 @@ export const terms: Term[] = [
       {
         "id": "defense",
         "title": "CSRFトークンなどで正当な要求か検証する",
-        "hint": "正規画面からの要求かを確認する対策は何ですか？",
-        "level": "deep"
+        "hint": "正規画面からの要求かを確認する対策は何ですか？"
       },
       {
         "id": "token-reason",
@@ -338,7 +340,6 @@ export const terms: Term[] = [
     "reading": "Multi-factor authentication",
     "category": "暗号・認証",
     "definition": "知識情報・所持情報・生体情報のうち、異なる種類の要素を二つ以上組み合わせる認証です。認証を二回するだけでは多要素とは限りません。",
-    "example": "知っているパスワードと、持っているセキュリティキーを組み合わせてログインします。",
     "related": [
       "least-privilege"
     ],
@@ -380,7 +381,6 @@ export const terms: Term[] = [
     "reading": "Principle of least privilege",
     "category": "アクセス制御",
     "definition": "利用者やプログラムに、業務や処理に必要な最小限の権限だけを与える原則です。不要な権限や過剰なアクセスを減らし、誤操作・侵害時の被害を限定します。",
-    "example": "参照だけが必要なアプリには、データベースの読取り権限を与え、書込みや管理者権限は与えません。",
     "related": [
       "mfa",
       "zero-trust"
@@ -423,7 +423,6 @@ export const terms: Term[] = [
     "reading": "Domain Name System",
     "category": "ネットワーク",
     "definition": "ドメイン名に対応するIPアドレスなどを調べるための分散した名前解決の仕組みです。A・AAAA・MXなど、用途ごとに異なるレコードを扱います。",
-    "example": "ブラウザがexample.comへ接続するとき、DNSで接続先のIPアドレスを調べます。",
     "related": [
       "spf",
       "dkim"
@@ -457,7 +456,6 @@ export const terms: Term[] = [
     "reading": "Reverse proxy",
     "category": "ネットワーク",
     "definition": "公開サーバの代理としてクライアントからの要求を受け付け、内部のサーバへ中継する仕組みです。負荷分散やTLSの終端、キャッシュなどにも利用されます。",
-    "example": "外部からのWebアクセスを一度受け付け、複数のアプリケーションサーバへ振り分けます。",
     "related": [
       "tls",
       "forward-proxy"
@@ -502,7 +500,6 @@ export const terms: Term[] = [
     "reading": "DomainKeys Identified Mail",
     "category": "メールセキュリティ",
     "definition": "メールに送信ドメインの秘密鍵で署名し、受信側がDNSに公開された鍵を使って検証する送信ドメイン認証技術です。署名対象部分の改ざんも検知できます。",
-    "example": "送信側がDKIM-Signatureヘッダーを付け、受信側はドメインのDNSから公開鍵を取得して検証します。",
     "related": [
       "spf",
       "digital-signature"
@@ -540,7 +537,6 @@ export const terms: Term[] = [
     "reading": "Sender Policy Framework",
     "category": "メールセキュリティ",
     "definition": "ドメインがメール送信を許可するサーバのIPアドレスなどをDNSに公開し、受信側が実際の接続元と照合する送信ドメイン認証技術です。メール本文の改ざんは検知しません。",
-    "example": "受信サーバが接続元IPアドレスを確認し、送信ドメインのSPFレコードで許可されているか調べます。",
     "related": [
       "dkim",
       "dns"
@@ -588,7 +584,6 @@ export const terms: Term[] = [
     "reading": "Basically Available / Soft state / Eventually consistent",
     "category": "データベース",
     "definition": "分散システムで可用性を重視し、一時的な状態の不一致を許容しつつ、最終的には更新が行き渡る結果整合性を目指す考え方です。",
-    "example": "複数ノードの参照結果が更新直後に一時的に異なっても、更新が伝播すれば一致するようにします。",
     "related": [
       "acid",
       "nosql",
@@ -627,7 +622,6 @@ export const terms: Term[] = [
     "reading": "Atomicity / Consistency / Isolation / Durability",
     "category": "データベース",
     "definition": "トランザクションに求める原子性（全部成功するか全部取り消す）・一貫性・独立性（隔離性）・耐久性の四つの性質です。一貫性は整合性制約を保つこと、独立性は並行実行の干渉を防ぐこと、耐久性はコミットした結果を障害後も保持することを指します。",
-    "example": "送金で出金だけが確定するのを防ぎ、同時操作でも整合性を保ち、コミットした結果を障害後も保持する、といった性質です。",
     "related": [
       "base"
     ],
@@ -680,13 +674,18 @@ export const terms: Term[] = [
     "reading": "Least Recently Used",
     "category": "コンピュータ構成",
     "definition": "キャッシュなどの置換対象として、最後に参照されてから最も長い時間が経ったデータを選ぶ方式です。ロード順や参照回数とは区別します。",
-    "example": "最後の利用が10:05、10:10、10:20の三つのデータなら、最も長く使われていない10:05のデータを置き換えます。",
     "related": [],
     "criteria": [
       {
         "id": "oldest",
         "title": "キャッシュなどで、最後の参照から最も長い時間が経ったデータを置換対象にする",
         "hint": "参照された時刻に注目すると、どのデータを置き換えますか？"
+      },
+      {
+        "id": "scan",
+        "title": "一度しか使わない大量のデータを順に読むと、よく使うデータまで追い出されることがある",
+        "hint": "直近に読んだデータが、今後も使われるとは限りますか？",
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -700,7 +699,6 @@ export const terms: Term[] = [
     "reading": "Zero trust",
     "category": "アクセス制御",
     "definition": "ネットワークの内側にいることだけで信頼せず、利用者・端末・要求の状態などに基づいてアクセスを検証し、必要最小限の権限で許可する考え方です。",
-    "example": "社内ネットワークからのアクセスでも、利用者の認証、端末の状態、対象資源への権限を確認します。",
     "related": [
       "least-privilege",
       "mfa"
@@ -747,7 +745,6 @@ export const terms: Term[] = [
     "reading": "Intrusion Detection System",
     "category": "ネットワークセキュリティ",
     "definition": "通信やホストの動作を監視して、不正アクセスや攻撃の兆候を検知し、管理者に警告する仕組みです。",
-    "example": "不審な通信を検知して管理者に通知します。",
     "related": [
       "ips",
       "reverse-proxy"
@@ -757,6 +754,12 @@ export const terms: Term[] = [
         "id": "meaning",
         "title": "不正な通信や動作を検知し、警告・通知する",
         "hint": "不正を見つけた後、何をしますか？"
+      },
+      {
+        "id": "visibility",
+        "title": "検知・通知が中心なので、通知後の対応手順や担当を決めておく",
+        "hint": "検知した後に誰が何をするかも必要ですか？",
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -770,7 +773,6 @@ export const terms: Term[] = [
     "reading": "Intrusion Prevention System",
     "category": "ネットワークセキュリティ",
     "definition": "不正な通信や攻撃を検知し、通信の遮断などによって侵入を防止する仕組みです。",
-    "example": "攻撃と判断したパケットを遮断します。",
     "related": [
       "ids-ips",
       "reverse-proxy"
@@ -780,6 +782,12 @@ export const terms: Term[] = [
         "id": "meaning",
         "title": "不正な通信を検知し、遮断などによって侵入を防止する",
         "hint": "検知するだけでなく、どのように対処しますか？"
+      },
+      {
+        "id": "false-positive",
+        "title": "誤検知で正常な通信も止まり得るため、遮断ルールを調整する",
+        "hint": "自動遮断が業務へ与える影響は何ですか？",
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -789,8 +797,7 @@ export const terms: Term[] = [
     "name": "PKI（公開鍵基盤）",
     "reading": "Public Key Infrastructure",
     "category": "暗号・認証",
-    "definition": "公開鍵とその持ち主の対応を、認証局（CA）が発行するデジタル証明書で保証する仕組みです。登録局（RA）が本人確認と申請の審査を行い、CAが証明書に署名して発行し、失効した証明書はCRLやOCSPで確認できるようにします。",
-    "example": "Webサーバの証明書をブラウザが検証し、信頼するルート証明書までの署名の連鎖をたどって、接続先の公開鍵が本物かを確かめます。",
+    "definition": "公開鍵とその持ち主の対応を、認証局（CA）が発行するデジタル証明書で保証する仕組みです。CAは自身の秘密鍵で証明書に署名します。",
     "related": [
       "digital-signature",
       "tls"
@@ -830,7 +837,6 @@ export const terms: Term[] = [
     "reading": "Cryptography Research and Evaluation Committees Ciphers List",
     "category": "暗号・認証",
     "definition": "電子政府での調達のために参照すべき暗号を示すリストです。電子政府推奨暗号リスト・推奨候補暗号リスト・運用監視暗号リストの三つから成ります。",
-    "example": "政府のシステムで暗号を選ぶとき、電子政府推奨暗号リストに載っているAESやSHA-256を使い、運用監視暗号リストの暗号は互換性維持の目的に限ります。",
     "related": [
       "pqc"
     ],
@@ -843,7 +849,8 @@ export const terms: Term[] = [
       {
         "id": "lists",
         "title": "電子政府推奨暗号リスト・推奨候補暗号リスト・運用監視暗号リストから成る",
-        "hint": "どのようなリストで構成されていますか？"
+        "hint": "どのようなリストで構成されていますか？",
+        "level": "deep"
       },
       {
         "id": "transition",
@@ -863,7 +870,6 @@ export const terms: Term[] = [
     "reading": "Post-Quantum Cryptography",
     "category": "暗号・認証",
     "definition": "量子コンピュータによる攻撃にも耐えるよう設計された暗号です。格子問題など量子コンピュータでも解くのが難しい問題に基づき、従来のコンピュータで実装・運用します。",
-    "example": "量子コンピュータで解読されるおそれのあるRSA暗号や楕円曲線暗号による鍵交換を、ML-KEMなどのPQCの方式へ置き換えます。",
     "related": [
       "one-time-pad",
       "cryptrec",
@@ -904,7 +910,6 @@ export const terms: Term[] = [
     "reading": "One-time pad",
     "category": "暗号・認証",
     "definition": "平文と同じ長さの真の乱数を鍵とし、一度だけ使う暗号です。条件を守れば、攻撃者の計算能力に関係なく解読できない情報理論的安全性を持ちます。",
-    "example": "平文の各ビットと乱数の鍵の各ビットの排他的論理和を取って暗号文を作り、使った鍵は二度と使いません。",
     "related": [
       "pqc"
     ],
@@ -944,8 +949,7 @@ export const terms: Term[] = [
     ],
     "reading": "Extensible Markup Language Signature",
     "category": "暗号・認証",
-    "definition": "XML文書に対するデジタル署名の規格です。文書全体だけでなく一部の要素も署名対象にでき、署名の情報もXMLで記述します。署名と対象の位置関係により、エンベロープ署名、エンベローピング署名、デタッチ署名があります。",
-    "example": "SAMLのアサーションのうち必要な要素にXMLデジタル署名を付け、受け取ったサービスがIdPの公開鍵で検証します。",
+    "definition": "XML文書全体や一部の要素を対象にできるデジタル署名の規格です。署名の情報もXMLで記述します。",
     "related": [
       "digital-signature",
       "pki",
@@ -960,13 +964,14 @@ export const terms: Term[] = [
       },
       {
         "id": "xml-syntax",
-        "title": "署名の情報をXMLで記述する（CMSやASN.1は使わない）",
-        "hint": "署名対象やアルゴリズムは、どんな形式で書きますか？"
+        "title": "署名の情報もXMLで記述する",
+        "hint": "署名の情報はどの形式で表されますか？",
+        "level": "deep"
       },
       {
         "id": "types",
-        "title": "エンベロープ署名は対象の中に署名、エンベローピング署名は署名の中に対象、デタッチ署名は対象と署名が別の要素",
-        "hint": "署名と署名対象の位置関係で、どんな種類がありますか？",
+        "title": "署名と対象データの位置関係に応じて、署名の配置方法を選ぶ",
+        "hint": "対象データを変更せず、署名を外側に置く方法もありますか？",
         "level": "deep"
       }
     ],
@@ -981,7 +986,6 @@ export const terms: Term[] = [
     "reading": "Pass the Hash",
     "category": "攻撃手法",
     "definition": "パスワードのハッシュ値だけで認証が成立する仕組みを悪用し、盗んだハッシュ値を解読せずにそのまま使ってログインする攻撃です。WindowsのNTLM認証などが狙われます。",
-    "example": "侵入した端末のメモリから管理者アカウントのハッシュ値を取り出し、そのハッシュ値で別のサーバへ認証して横展開します。",
     "related": [
       "hash",
       "mfa"
@@ -1024,7 +1028,6 @@ export const terms: Term[] = [
     "reading": "Synchronize flood",
     "category": "攻撃手法",
     "definition": "TCPの接続開始要求（SYN）を大量に送り、サーバに応答待ちの接続を溜めさせて、正規の接続を受け付けられなくするサービス妨害攻撃です。送信元IPアドレスを偽装することが多く、偽の送信元へサーバのSYN/ACKが返ります。",
-    "example": "未使用のIPアドレス宛てに、あるWebサーバからのSYN/ACKが大量に届くのが観測された場合、そのWebサーバがSYNフラッド攻撃を受けていると推定します（バックスキャッタ）。",
     "related": [
       "ids-ips"
     ],
@@ -1062,7 +1065,6 @@ export const terms: Term[] = [
     "reading": "Domain fronting",
     "category": "攻撃手法",
     "definition": "CDNなどで、外から見える接続先（DNSやTLSのSNI）には正規のドメインを示し、暗号化されたHTTPのHostヘッダーで別の宛先を指定して、実際の通信先を隠す手法です。マルウェアのC&C通信の隠蔽に悪用されます。",
-    "example": "マルウェアが有名サイトのドメイン名でCDNにHTTPS接続し、Hostヘッダーに攻撃者のサーバを指定して命令を受け取ります。",
     "related": [
       "tls",
       "dns"
@@ -1110,7 +1112,6 @@ export const terms: Term[] = [
     "reading": "Model inversion attack",
     "category": "攻撃手法",
     "definition": "AIモデルへの入力と出力を繰り返し観察・解析し、学習に使われた元のデータを推測する攻撃です。学習データに個人情報が含まれると、プライバシーの侵害につながります。",
-    "example": "顔認識モデルに入力を少しずつ変えながら問い合わせ、出力の確信度を手掛かりに、学習に使われた人物の顔画像を復元します。",
     "related": [],
     "criteria": [
       {
@@ -1121,7 +1122,8 @@ export const terms: Term[] = [
       {
         "id": "query",
         "title": "入力を調整しながら、出力の取得を繰り返して解析する",
-        "hint": "どのような手順で推測しますか？"
+        "hint": "どのような手順で推測しますか？",
+        "level": "deep"
       },
       {
         "id": "defense",
@@ -1143,7 +1145,6 @@ export const terms: Term[] = [
     "reading": "Biometric authentication",
     "category": "暗号・認証",
     "definition": "指紋、静脈、虹彩、顔などの身体的特徴や、署名などの行動的特徴を使う本人確認です。忘れたり失くしたりしない一方、情報が漏れても変更できず、本人を拒否したり他人を受け入れたりする誤りが起こり得ます。",
-    "example": "入退室管理に静脈認証を使い、本人拒否率と他人受入率のバランスを見てしきい値を調整します。",
     "related": [
       "mfa"
     ],
@@ -1187,7 +1188,6 @@ export const terms: Term[] = [
     "reading": "Identity proofing",
     "category": "暗号・認証",
     "definition": "利用者の登録時などに、身分証明書などの証拠で、申請者が主張する実在の人物であることを確かめる手続です。",
-    "example": "口座開設の申請時に、本人の顔と写真付きの身分証を照合してから、アカウントを作成します。",
     "related": [
       "mfa",
       "pki"
@@ -1196,7 +1196,8 @@ export const terms: Term[] = [
       {
         "id": "timing",
         "title": "利用者の登録時に行う",
-        "hint": "ログインのたびに行うものですか？"
+        "hint": "ログインのたびに行うものですか？",
+        "level": "deep"
       },
       {
         "id": "evidence",
@@ -1217,8 +1218,7 @@ export const terms: Term[] = [
     ],
     "reading": "MITRE Adversarial Tactics, Techniques, and Common Knowledge",
     "category": "セキュリティ運用",
-    "definition": "米国の非営利団体MITREが公開する、実際の攻撃で観測された攻撃者の戦術（Tactics）と技術（Techniques）の知識ベースです。MITREは脆弱性の識別番号CVEの運営も行っています。",
-    "example": "SOCが検知した不審な動きをATT&CKの技術に対応付け、どの段階の攻撃をまだ検知できていないかを洗い出します。",
+    "definition": "実際の攻撃で観測された、攻撃者の戦術（目的）と技術（実現方法）を体系化した知識ベースです。MITREが公開しています。",
     "related": [
       "psirt",
       "ids-ips"
@@ -1257,7 +1257,6 @@ export const terms: Term[] = [
     "reading": "Product Security Incident Response Team",
     "category": "セキュリティ運用",
     "definition": "自社が提供する製品やサービスの脆弱性に対応する組織です。脆弱性の報告の受付、調査、修正版の提供、利用者への公表を行います。自社の情報システムのインシデントに対応するCSIRTとは対象が異なります。",
-    "example": "外部の研究者から自社製ルーターの脆弱性の報告を受け、修正したファームウェアとセキュリティ情報を公開します。",
     "related": [
       "mitre-attack"
     ],
@@ -1270,7 +1269,8 @@ export const terms: Term[] = [
       {
         "id": "flow",
         "title": "脆弱性の報告の受付、調査、修正版の提供、利用者への公表を行う",
-        "hint": "脆弱性の報告を受けてから、どんな対応をしますか？"
+        "hint": "脆弱性の報告を受けてから、どんな対応をしますか？",
+        "level": "deep"
       },
       {
         "id": "cvd",
@@ -1298,7 +1298,6 @@ export const terms: Term[] = [
     "reading": "User and Entity Behavior Analytics",
     "category": "セキュリティ運用",
     "definition": "ログなどから利用者や端末・サーバの通常の振る舞いを学習し、そこから外れた異常な振る舞いを検知する技術です。内部不正や、窃取されたアカウントの悪用の発見に役立ちます。",
-    "example": "普段は日中に少量のファイルしか扱わない社員のアカウントが、深夜に大量のファイルをダウンロードしたことを検知して警告します。",
     "related": [
       "ids-ips",
       "zero-trust"
@@ -1339,7 +1338,6 @@ export const terms: Term[] = [
     "reading": "Cloud Security Posture Management",
     "category": "クラウドセキュリティ",
     "definition": "クラウドサービスの設定を継続的に監視し、基準やベストプラクティスと照合して、不適切な設定を検知する仕組みです。設定ミスによる情報漏えいを防ぎます。",
-    "example": "誰でも閲覧できる公開設定になったストレージや、過大な権限を持つアカウントを自動で検出し、管理者に通知します。",
     "related": [
       "least-privilege",
       "zero-trust"
@@ -1375,7 +1373,6 @@ export const terms: Term[] = [
     "reading": "Port-Based Network Access Control",
     "category": "ネットワークセキュリティ",
     "definition": "有線・無線LANで、接続しようとする機器を認証してからネットワークの利用を許可するポート単位のアクセス制御の規格です。端末（サプリカント）、アクセスポイントやスイッチ（オーセンティケータ）、認証サーバがEAPでやり取りします。",
-    "example": "社内の無線LANで、端末がEAP-TLSのクライアント証明書を提示し、RADIUSサーバが認証に成功した端末だけを接続させます。",
     "related": [
       "pki",
       "mfa"
@@ -1426,7 +1423,6 @@ export const terms: Term[] = [
     "reading": "Write-Ahead Logging",
     "category": "データベース",
     "definition": "データベース本体を更新する前に、更新内容をログへ書き込む方式です。コミット情報が不揮発のログファイルに書き込まれた時点でコミット完了とし、障害時にはログから回復します。",
-    "example": "コミット直後にDBMSが停止しても、ログファイルに残った更新情報を使って、再起動時にロールフォワードで反映します。",
     "related": [
       "acid"
     ],
@@ -1474,7 +1470,6 @@ export const terms: Term[] = [
     "reading": "Open Shortest Path First",
     "category": "ネットワーク",
     "definition": "リンクステート型のルーティングプロトコルです。各ルータがネットワーク全体のリンク状態のデータベースを持ち、コストを基に最短経路を計算します。変化があったときに更新を送るため、収束が速くなります。",
-    "example": "回線の帯域からコストを決め、障害で回線が切れると、リンク状態の変化を受けて各ルータが迂回経路を計算し直します。",
     "related": [],
     "criteria": [
       {
@@ -1509,7 +1504,6 @@ export const terms: Term[] = [
     "reading": "Risk-based audit approach",
     "category": "システム監査",
     "definition": "リスクの大きさを評価し、重要なリスクのある監査対象に監査資源を重点的に配分して、監査リスクを合理的に低い水準に抑える監査の考え方です。環境の変化でリスクが変われば、監査計画を見直します。",
-    "example": "個人情報を大量に扱う新システムの監査に多くの工数を割き、変更のない安定したシステムは手続を絞ります。",
     "related": [],
     "criteria": [
       {
@@ -1541,7 +1535,6 @@ export const terms: Term[] = [
     "reading": "M/M/1 queue",
     "category": "基礎理論",
     "definition": "到着がポアソン過程、サービス時間が指数分布に従い、窓口が一つである待ち行列モデルです。到着率と処理時間から利用率や平均待ち時間を見積もります。",
-    "example": "平均サービス時間Tsの窓口で利用率が0.5なら、平均待ち時間は0.5÷(1−0.5)×Ts＝Tsです。",
     "related": [],
     "criteria": [
       {
@@ -1585,17 +1578,16 @@ export const terms: Term[] = [
     "reading": "Availability",
     "category": "システム構成",
     "definition": "システムや機器が利用可能な状態にある割合です。修理可能な機器の定常的な稼働率は、MTBF÷（MTBF＋MTTR）で求めます。",
-    "example": "MTBFが990時間、MTTRが10時間なら、稼働率は990÷1,000＝0.99です。",
     "related": [],
     "criteria": [
       {
         "id": "formula",
-        "title": "稼働率＝MTBF÷(MTBF＋MTTR)",
-        "hint": "MTBFとMTTRを使うと、稼働率はどう表せますか？"
+        "title": "利用可能な時間の割合で、MTBF÷（MTBF＋MTTR）で求める",
+        "hint": "何の割合を表し、MTBFとMTTRからどう求めますか？"
       },
       {
         "id": "series-parallel",
-        "title": "直列は稼働率の積、並列は1−(1−稼働率)の積で求める",
+        "title": "故障が独立なら、直列構成は各稼働率の積、並列構成は1−各停止率の積で求める",
         "hint": "装置を直列・並列につないだとき、全体の稼働率はどう計算しますか？",
         "level": "deep"
       },
@@ -1621,7 +1613,6 @@ export const terms: Term[] = [
     "reading": "Normalization",
     "category": "データベース",
     "definition": "関係データベースの表を、関数従属性などに基づいて整理することです。データの重複と、更新・挿入・削除に伴う不整合を減らします。",
-    "example": "受注表に顧客名を持たせると、顧客名を変えるときに全ての受注行を直す必要があります。顧客表に分けると1行の更新で済みます。",
     "related": [],
     "criteria": [
       {
@@ -1668,7 +1659,6 @@ export const terms: Term[] = [
     "reading": "Deadlock",
     "category": "ソフトウェア",
     "definition": "複数のプロセスが互いに相手の占有する資源の解放を待ち、どちらも処理を進められなくなる状態です。",
-    "example": "プロセスAが資源Xを持ってYを待ち、プロセスBがYを持ってXを待つと、両方とも止まってしまいます。",
     "related": [],
     "criteria": [
       {
@@ -1690,8 +1680,8 @@ export const terms: Term[] = [
       },
       {
         "id": "conditions",
-        "title": "相互排他・保持と待ち・横取り不可・循環待ちの4条件がそろうと発生する",
-        "hint": "デッドロックが起きるための条件は何ですか？",
+        "title": "発生には相互排他・保持と待ち・横取り不可・循環待ちの4条件が必要",
+        "hint": "どの条件を崩すとデッドロックを防げますか？",
         "level": "deep"
       },
       {
@@ -1716,7 +1706,6 @@ export const terms: Term[] = [
     "reading": "Hamming code",
     "category": "基礎理論",
     "definition": "情報ビットに複数の検査ビットを付け、1ビットの誤りの位置を特定して訂正できる誤り訂正符号です。",
-    "example": "4ビットの情報に3ビットの検査ビットを付けた7ビットの符号では、検査結果を2進数として読むと誤りのビット位置が分かります。",
     "related": [],
     "criteria": [
       {
@@ -1746,7 +1735,6 @@ export const terms: Term[] = [
     "reading": "Fault tolerance",
     "category": "システム構成",
     "definition": "一部の機器などが故障しても、必要な機能を維持できるようにする設計の考え方です。冗長化などを用いて実現します。",
-    "example": "サーバを二重化しておき、一方が故障しても他方で処理を続けます。",
     "related": [
       "availability",
       "fault-avoidance"
@@ -1780,7 +1768,6 @@ export const terms: Term[] = [
     "reading": "Overfitting",
     "category": "AI・機械学習",
     "definition": "機械学習のモデルが訓練データに過剰に適合し、未知のデータに対する予測精度（汎化性能）が下がる状態です。",
-    "example": "訓練データでは正答率99％なのに、テストデータでは70％しか当たらないモデルは過学習が疑われます。",
     "related": [],
     "criteria": [
       {
@@ -1815,7 +1802,6 @@ export const terms: Term[] = [
     "reading": "Software Bill of Materials",
     "category": "セキュリティ運用",
     "definition": "ソフトウェアを構成するコンポーネント（OSSなど）とそのバージョン、ライセンス、依存関係を一覧にした部品表です。脆弱性管理やライセンス管理に使います。",
-    "example": "あるライブラリの脆弱性が公表されたとき、SBOMを検索して、そのライブラリを含む自社製品をすぐに特定します。",
     "related": [
       "psirt"
     ],
@@ -1857,7 +1843,6 @@ export const terms: Term[] = [
     "reading": "Operating system command injection",
     "category": "Webセキュリティ",
     "definition": "Webアプリケーションに入力した値にOSのコマンドを紛れ込ませ、サーバ上でシェル経由で実行させる攻撃です。",
-    "example": "ファイル名の入力欄に「a.txt; rm -rf /」のような文字列を入れ、アプリケーションがそれをシェルに渡すとコマンドが実行されてしまいます。",
     "related": [
       "sql-injection"
     ],
@@ -1900,8 +1885,7 @@ export const terms: Term[] = [
     "name": "IPsec",
     "reading": "Internet Protocol Security",
     "category": "ネットワークセキュリティ",
-    "definition": "ネットワーク層でIPパケットの暗号化や認証を行うプロトコル群です。上位のアプリケーションを変えずに通信を保護でき、VPNで使われます。",
-    "example": "拠点間をインターネットで結ぶとき、ルータどうしでIPsecのトンネルを張って通信を暗号化します。",
+    "definition": "ネットワーク層でIPパケットを暗号化したり、認証によって改ざんを検知したりするプロトコル群です。",
     "related": [
       "tls"
     ],
@@ -1950,7 +1934,6 @@ export const terms: Term[] = [
     "reading": "Common Vulnerabilities and Exposures",
     "category": "セキュリティ運用",
     "definition": "製品に含まれる個々の脆弱性に付けられる共通の識別子です。「CVE-年-番号」の形式で、異なる情報源でも同じ脆弱性を指していると分かります。",
-    "example": "JVNの脆弱性情報やベンダーのセキュリティ情報に同じCVE番号が載っていれば、同じ脆弱性の情報だと判断できます。",
     "related": [
       "psirt"
     ],
@@ -1982,7 +1965,6 @@ export const terms: Term[] = [
     "reading": "Domain Name System cache poisoning",
     "category": "攻撃手法",
     "definition": "キャッシュDNSサーバに偽の応答を受け入れさせ、誤った名前解決の情報をキャッシュさせる攻撃です。利用者を偽のサーバに誘導できます。",
-    "example": "攻撃者が正規の応答より先に、銀行のドメイン名に対して攻撃者のIPアドレスを返す偽の応答を送り込みます。",
     "related": [
       "dns"
     ],
@@ -2024,7 +2006,6 @@ export const terms: Term[] = [
     "reading": "Rainbow table attack",
     "category": "攻撃手法",
     "definition": "平文とハッシュ値の対応をチェーンにして圧縮した表を事前に作っておき、盗んだハッシュ値から元のパスワードを効率よく求める攻撃です。",
-    "example": "漏えいしたパスワードのハッシュ値を、事前に作ったレインボーテーブルで照合し、元のパスワードを割り出します。",
     "related": [
       "salt",
       "hash"
@@ -2059,8 +2040,7 @@ export const terms: Term[] = [
     ],
     "reading": "Domain-based Message Authentication, Reporting and Conformance",
     "category": "メールセキュリティ",
-    "definition": "SPFやDKIMの認証結果を基に、認証に失敗したメールの扱い（そのまま・隔離・拒否）を送信ドメイン側がDNSで宣言し、結果の報告を受け取る仕組みです。",
-    "example": "自社ドメインのDMARCポリシーをrejectにしておくと、なりすましメールを受信側で拒否してもらえます。",
+    "definition": "メールのヘッダーFromのドメインと、SPFまたはDKIMで認証されたドメインの対応を確認する仕組みです。認証に失敗したメールの扱いを送信ドメイン側がDNSで宣言できます。",
     "related": [
       "spf",
       "dkim"
@@ -2078,8 +2058,8 @@ export const terms: Term[] = [
       },
       {
         "id": "alignment",
-        "title": "ヘッダーFromのドメインとSPF・DKIMで認証されたドメインの一致（アライメント）を確認する",
-        "hint": "SPFやDKIMだけでは防げない点を、DMARCはどう補いますか？"
+        "title": "ヘッダーFromと、認証に成功したSPFまたはDKIMのドメインの対応を確認する",
+        "hint": "画面に表示されるFromと認証されたドメインは、どう対応している必要がありますか？"
       },
       {
         "id": "report",
@@ -2107,7 +2087,6 @@ export const terms: Term[] = [
     "reading": "Submission port",
     "category": "メールセキュリティ",
     "definition": "メールクライアントからメールサーバへの送信に使うポート587番です。SMTP-AUTHで送信者を認証してからメールを受け付けます。",
-    "example": "OP25Bでポート25の外向き通信が止められていても、利用者はポート587にSMTP-AUTHで接続してメールを送れます。",
     "related": [
       "spf"
     ],
@@ -2139,7 +2118,6 @@ export const terms: Term[] = [
     "reading": "Deepfake",
     "category": "攻撃手法",
     "definition": "深層学習などのAI技術で、実在の人物の映像や音声を本物と見分けにくいように合成・加工する技術、又はその生成物です。なりすましや詐欺に悪用されます。",
-    "example": "AIで合成した経営者の声で経理担当者に電話をかけ、送金を指示する詐欺が報告されています。",
     "related": [
       "biometrics"
     ],
@@ -2177,7 +2155,6 @@ export const terms: Term[] = [
     "reading": "Botnet",
     "category": "攻撃手法",
     "definition": "マルウェア（ボット）に感染した多数の端末が、攻撃者のC&Cサーバからの指令で一斉に動くネットワークです。DDoS攻撃やスパム送信、情報窃取に使われます。",
-    "example": "感染した数万台のIoT機器が、C&Cサーバの指示で特定のWebサイトに大量のリクエストを送ります。",
     "related": [
       "syn-flood"
     ],
@@ -2215,7 +2192,6 @@ export const terms: Term[] = [
     "reading": "Digital forensics",
     "category": "セキュリティ運用",
     "definition": "インシデントや犯罪の後に、コンピュータなどに残る電子的な証拠を収集・検査・分析し、法的にも通用する形で報告する手法です。",
-    "example": "不正アクセスを受けたサーバのディスクを複製して解析し、削除されたログを復元して侵入経路を明らかにします。",
     "related": [
       "mitre-attack"
     ],
@@ -2252,7 +2228,6 @@ export const terms: Term[] = [
     "reading": "Earned Value Management",
     "category": "プロジェクト管理",
     "definition": "計画価値（PV）、出来高（EV）、実コスト（AC）を同じ金額の尺度で比べ、プロジェクトのコストとスケジュールの状況を評価する手法です。",
-    "example": "PV 100、EV 80、AC 90なら、EV＜PVで進捗が遅れ、AC＞EVでコストが超過しています。",
     "related": [
       "evm-pv",
       "evm-ev",
@@ -2265,8 +2240,8 @@ export const terms: Term[] = [
     "criteria": [
       {
         "id": "three",
-        "title": "PV（計画価値）・EV（出来高）・AC（実コスト）を使う",
-        "hint": "EVMで使う三つの値は何ですか？"
+        "title": "PV・EV・ACを金額の尺度で比べ、コストと進捗を管理する",
+        "hint": "三つの値をどんな共通の尺度で比べ、何を管理しますか？"
       },
       {
         "id": "cost",
@@ -2301,7 +2276,6 @@ export const terms: Term[] = [
     "reading": "Planned Value",
     "category": "プロジェクト管理",
     "definition": "ある時点までに完了する予定の作業に割り当てた予算額です。実際の支出ではなく、計画上の作業量を金額で表します。",
-    "example": "総予算200万円の作業を半分まで終える計画なら、その時点のPVは100万円です。",
     "related": [
       "evm",
       "evm-ev"
@@ -2325,7 +2299,6 @@ export const terms: Term[] = [
     "reading": "Earned Value",
     "category": "プロジェクト管理",
     "definition": "実際に完了した作業を、その作業に割り当てた予算額で評価した値です。実際に支払った金額とは区別します。",
-    "example": "総予算200万円の作業が40％完了していれば、EVは80万円です。",
     "related": [
       "evm",
       "evm-pv",
@@ -2350,7 +2323,6 @@ export const terms: Term[] = [
     "reading": "Actual Cost",
     "category": "プロジェクト管理",
     "definition": "ある時点までに実施した作業のために、実際に発生した費用です。計画上の予算や、完了した作業の予算額とは区別します。",
-    "example": "完了した作業の予算額が80万円でも、実際に90万円かかっていればACは90万円です。",
     "related": [
       "evm",
       "evm-ev"
@@ -2373,7 +2345,6 @@ export const terms: Term[] = [
     "reading": "Cost Performance Index",
     "category": "プロジェクト管理",
     "definition": "出来高を実コストで割って求める、コストの効率を示す指標です。CPI＝EV÷ACで、1未満なら完了した作業の予算額より実際の費用が大きく、コスト超過を示します。",
-    "example": "EVが80万円、ACが100万円ならCPIは0.8で、コスト超過と判断します。",
     "related": [
       "evm",
       "evm-ev",
@@ -2405,7 +2376,6 @@ export const terms: Term[] = [
     "reading": "Schedule Performance Index",
     "category": "プロジェクト管理",
     "definition": "出来高を計画価値で割って求める、スケジュールの効率を示す指標です。SPI＝EV÷PVで、1未満なら予定より作業が遅れ、1より大きければ予定より進んでいます。",
-    "example": "EVが80万円、PVが100万円ならSPIは0.8で、予定より作業が遅れています。",
     "related": [
       "evm",
       "evm-ev",
@@ -2436,7 +2406,6 @@ export const terms: Term[] = [
     "reading": "To-Complete Performance Index",
     "category": "プロジェクト管理",
     "definition": "目標の総コスト内で完成させるために、残りの作業で必要となるコスト効率です。完成時総予算BACを目標にする場合、（BAC－EV）÷（BAC－AC）で求めます。",
-    "example": "BACが200万円、EVが80万円、ACが100万円ならTCPIは1.2で、残りの費用1円当たり1.2円分の予算上の作業を進める必要があります。",
     "related": [
       "evm",
       "evm-bac",
@@ -2469,7 +2438,6 @@ export const terms: Term[] = [
     "reading": "Budget at Completion",
     "category": "プロジェクト管理",
     "definition": "プロジェクトの計画された全作業に割り当てた予算の総額です。完了時の実コストや、現時点での完成までのコスト予測とは区別します。",
-    "example": "計画された全作業の予算が200万円なら、途中の実支出にかかわらず、その計画のBACは200万円です。",
     "related": [
       "evm",
       "evm-tcpi"
@@ -2483,14 +2451,12 @@ export const terms: Term[] = [
     ],
     "commonMistakes": []
   },
-
   {
     "id": "critical-path",
     "name": "クリティカルパス",
     "reading": "Critical path",
     "category": "プロジェクト管理",
     "definition": "作業の順序関係をつないだ経路のうち、所要日数の合計が最も長い経路です。この経路上の作業が遅れると、プロジェクト全体が遅れます。",
-    "example": "A→B→Eが28日、A→B→Dが27日なら、A→B→Eがクリティカルパスで、全体の期間は28日です。",
     "related": [
       "schedule-compression",
       "fast-tracking",
@@ -2535,7 +2501,6 @@ export const terms: Term[] = [
     "reading": "Recovery Time Objective",
     "category": "サービス管理",
     "definition": "障害などで業務やサービスが中断してから、復旧するまでに許容する時間の目標です。復旧目標時間とも呼びます。",
-    "example": "障害発生から4時間以内に業務を再開する、と定めます。",
     "related": [
       "rpo"
     ],
@@ -2544,6 +2509,12 @@ export const terms: Term[] = [
         "id": "meaning",
         "title": "中断から復旧までの目標時間を表す",
         "hint": "「いつまでに復旧するか」を表す指標は？"
+      },
+      {
+        "id": "restore-test",
+        "title": "バックアップの取得だけでなく、復元と業務再開までの時間を測って目標を確かめる",
+        "hint": "復旧目標を満たせるか、何を実測しますか？",
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -2557,7 +2528,6 @@ export const terms: Term[] = [
     "reading": "Recovery Point Objective",
     "category": "サービス管理",
     "definition": "障害から復旧するとき、どの時点のデータまで戻せるようにするかの目標です。復旧目標時点とも呼びます。",
-    "example": "障害発生の1時間前の時点までのデータを復旧できるようにします。",
     "related": [
       "rto-rpo"
     ],
@@ -2566,6 +2536,12 @@ export const terms: Term[] = [
         "id": "meaning",
         "title": "どの時点のデータまで復旧するかの目標を表す",
         "hint": "復旧までの時間ではなく、何の時点を表しますか？"
+      },
+      {
+        "id": "backup-interval",
+        "title": "バックアップ間隔が長いほど、障害時に失い得る更新の範囲が広がる",
+        "hint": "取得間隔を短くすると、復旧できる時点はどう変わりますか？",
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -2579,7 +2555,6 @@ export const terms: Term[] = [
     "reading": "Information technology application controls",
     "category": "システム監査",
     "definition": "販売や会計など個々の業務システムに組み込まれ、データが正確・網羅的に処理されることを確保する統制です。その基盤となる運用・開発・アクセス管理などは全般統制です。",
-    "example": "受注入力時の値のチェック機能や、入力結果の一覧（プルーフリスト）と元の伝票との照合は業務処理統制です。",
     "related": [
       "risk-approach"
     ],
@@ -2621,7 +2596,6 @@ export const terms: Term[] = [
     "reading": "Service Oriented Architecture",
     "category": "システム戦略",
     "definition": "業務の機能をサービスという独立した部品にし、それらを組み合わせてシステムを構築する設計の考え方です。業務プロセスとの対応付けや他システムとの連携がしやすくなります。",
-    "example": "在庫照会や与信チェックをサービスとして公開し、受注システムやECサイトから共通に呼び出します。",
     "related": [],
     "criteria": [
       {
@@ -2654,8 +2628,7 @@ export const terms: Term[] = [
     ],
     "reading": "Product Portfolio Management",
     "category": "経営戦略",
-    "definition": "市場成長率と相対的市場シェアの二つの軸で事業や製品を四つに分類し、経営資源の配分を考える手法です。",
-    "example": "成長率が低くシェアの高い「金のなる木」で得た資金を、成長率が高い「問題児」に投資して「花形」に育てます。",
+    "definition": "市場成長率と相対的市場シェアの二軸で、事業や製品を花形・金のなる木・問題児・負け犬の四つに分類し、経営資源の配分を考える手法です。",
     "related": [],
     "criteria": [
       {
@@ -2705,8 +2678,7 @@ export const terms: Term[] = [
     ],
     "reading": "Break-even point",
     "category": "経営管理",
-    "definition": "売上高と費用が等しくなり、利益がちょうど0になる売上高です。固定費÷(1−変動費率)で求めます。",
-    "example": "固定費180、変動費率0.6なら、損益分岐点売上高は180÷0.4＝450です。",
+    "definition": "売上高と費用が等しくなり、利益がちょうど0になる売上高です。固定費÷（1−変動費率）で求めます。",
     "related": [],
     "criteria": [
       {
@@ -2717,8 +2689,7 @@ export const terms: Term[] = [
       {
         "id": "formula",
         "title": "固定費÷(1−変動費率)で求める",
-        "hint": "損益分岐点売上高の式は何ですか？",
-        "level": "deep"
+        "hint": "損益分岐点売上高の式は何ですか？"
       },
       {
         "id": "split",
@@ -2749,7 +2720,6 @@ export const terms: Term[] = [
     "reading": "Five forces analysis",
     "category": "経営戦略",
     "definition": "業界の収益性を、新規参入の脅威、代替品の脅威、売り手（供給者）の交渉力、買い手の交渉力、既存企業間の競争の五つの要因から分析する手法です。",
-    "example": "代替品が多く、買い手の交渉力が強い業界では、価格を上げにくく収益性が低くなりやすいと分析します。",
     "related": [
       "ppm"
     ],
@@ -2783,7 +2753,6 @@ export const terms: Term[] = [
     "reading": "Worker dispatching",
     "category": "法務",
     "definition": "派遣元が雇用する労働者を、派遣先の指揮命令の下で働かせる形態です。雇用関係は派遣元、指揮命令関係は派遣先にあります。",
-    "example": "B社に雇用されたエンジニアが、A社の指示を受けてA社のシステム開発に従事します。",
     "related": [],
     "criteria": [
       {
@@ -2822,7 +2791,6 @@ export const terms: Term[] = [
     "reading": "Module coupling",
     "category": "ソフトウェア設計",
     "definition": "モジュール間の結び付きの強さです。結合度が低いほどモジュールの独立性が高く、変更の影響が広がりにくくなります。",
-    "example": "必要なデータ項目だけを引数で渡すデータ結合は、共通域のデータを参照し合う共通結合より結合度が低くなります。",
     "related": [],
     "criteria": [
       {
@@ -2833,8 +2801,7 @@ export const terms: Term[] = [
       {
         "id": "low-good",
         "title": "結合度は低いほど望ましい",
-        "hint": "結合度は高い方と低い方、どちらが望ましいですか？",
-        "level": "deep"
+        "hint": "結合度は高い方と低い方、どちらが望ましいですか？"
       },
       {
         "id": "data",
@@ -2862,7 +2829,6 @@ export const terms: Term[] = [
     "reading": "Edge computing",
     "category": "技術戦略",
     "definition": "データの発生源（端末やセンサー）の近くに処理の資源を置き、そこでデータを処理する方式です。応答の遅延と通信量を抑えられます。",
-    "example": "工場のカメラ映像をクラウドに送らず、近くのエッジサーバで学習済みモデルによる推論を行い、不良品をすぐに判定します。",
     "related": [],
     "criteria": [
       {
@@ -2899,7 +2865,6 @@ export const terms: Term[] = [
     "reading": "Poisson distribution",
     "category": "基礎理論",
     "definition": "事象が一定の割合で独立して発生するとき、一定時間や一定範囲で発生する回数を表す確率分布です。",
-    "example": "1時間に平均6人がランダムに到着する窓口で、1時間に到着する人数を扱います。",
     "related": [
       "exponential-distribution",
       "mm1-queue"
@@ -2919,7 +2884,6 @@ export const terms: Term[] = [
     "reading": "Exponential distribution",
     "category": "基礎理論",
     "definition": "事象が一定の割合で独立して発生するとき、次の事象が起きるまでの時間などを表す確率分布です。",
-    "example": "平均10分間隔でランダムに到着する窓口で、次の人が来るまでの時間を扱います。",
     "related": [
       "poisson-exponential",
       "mm1-queue"
@@ -2943,7 +2907,6 @@ export const terms: Term[] = [
     "reading": "Receiver Operating Characteristic curve",
     "category": "AI・機械学習",
     "definition": "2クラス分類器のしきい値を変えながら、横軸に偽陽性率、縦軸に真陽性率をとって描いた曲線です。左上に近いほど性能が良く、曲線下の面積（AUC）で比較します。",
-    "example": "迷惑メール判定のしきい値を下げると、迷惑メールの検出率（真陽性率）は上がるが、普通のメールの誤判定（偽陽性率）も増えます。",
     "related": [
       "overfitting",
       "false-positive-rate",
@@ -2987,7 +2950,6 @@ export const terms: Term[] = [
     "reading": "False Positive Rate",
     "category": "AI・機械学習",
     "definition": "実際には陰性であるもののうち、誤って陽性と判定したものの割合です。偽陽性の件数を、実際に陰性であるものの総数で割って求めます。",
-    "example": "通常のメール100件のうち5件を迷惑メールと誤判定した場合、偽陽性率は5％です。",
     "related": [
       "roc-curve",
       "false-positive",
@@ -3011,8 +2973,7 @@ export const terms: Term[] = [
     ],
     "reading": "Binary classification",
     "category": "AI・機械学習",
-    "definition": "入力されたデータを、二つのクラスのいずれかに分類することです。例えば、メールを迷惑メールと通常のメールに分けます。",
-    "example": "メールの特徴から、迷惑メールか通常のメールかを判定します。",
+    "definition": "入力されたデータを、二つのクラスのいずれかに分類することです。",
     "related": [
       "machine-learning",
       "roc-curve",
@@ -3027,14 +2988,12 @@ export const terms: Term[] = [
     ],
     "commonMistakes": []
   },
-
   {
     "id": "machine-learning",
     "name": "機械学習",
     "reading": "Machine learning",
     "category": "AI・機械学習",
     "definition": "データから規則やパターンを学び、未知のデータの予測や分類などに利用する手法です。学習済みのモデルを新しいデータに適用することを推論と呼びます。",
-    "example": "過去の販売データから傾向を学習し、新しい条件での販売数を予測します。",
     "related": [
       "overfitting",
       "supervised-learning",
@@ -3071,7 +3030,6 @@ export const terms: Term[] = [
     "reading": "Deep learning",
     "category": "AI・機械学習",
     "definition": "多層のニューラルネットワークを使う機械学習です。特徴量を人が設計しなくても、データから段階的に特徴を学習できる点が特徴で、画像認識や生成AIの基盤になっています。",
-    "example": "大量の顔画像から、輪郭→目鼻→顔全体と特徴を段階的に学び、本人を見分けます。",
     "related": [
       "machine-learning"
     ],
@@ -3103,7 +3061,6 @@ export const terms: Term[] = [
     "reading": "Generative artificial intelligence",
     "category": "AI・機械学習",
     "definition": "学習したデータの傾向をもとに、文章・画像・音声などの新しいコンテンツを生成するAIです。もっともらしい誤り（ハルシネーション）や、著作権・情報漏えいへの配慮が必要です。",
-    "example": "指示文から報告書の下書きを作ったり、説明文から画像を作ったりします。",
     "related": [
       "deep-learning"
     ],
@@ -3128,7 +3085,6 @@ export const terms: Term[] = [
     "reading": "Cross validation",
     "category": "AI・機械学習",
     "definition": "データを複数のグループに分け、学習用と検証用を入れ替えながら評価を繰り返し、その平均でモデルの汎化性能を見積もる方法です。k分割交差検証が代表です。",
-    "example": "データを5分割し、4つで学習・1つで検証を5回繰り返して平均の正解率を求めます。",
     "related": [
       "overfitting"
     ],
@@ -3167,7 +3123,6 @@ export const terms: Term[] = [
     "reading": "Ensemble learning",
     "category": "AI・機械学習",
     "definition": "複数の学習モデルの予測を組み合わせて、単独のモデルより精度や安定性を高める手法です。バギング（ランダムフォレストなど）やブースティングがあります。",
-    "example": "100本の決定木の多数決で分類するランダムフォレストは、アンサンブル学習の例です。",
     "related": [
       "machine-learning",
       "multitask-learning"
@@ -3202,7 +3157,6 @@ export const terms: Term[] = [
     "reading": "Linear search",
     "category": "基礎理論",
     "definition": "データを先頭から順番に調べ、目的の値を探す方法です。データが整列されていなくても使えます。",
-    "example": "名簿を上から1件ずつ確認して名前を探します。",
     "related": [
       "binary-search",
       "average-comparisons",
@@ -3213,6 +3167,12 @@ export const terms: Term[] = [
         "id": "meaning",
         "title": "データを先頭から順に比較して目的の値を探す",
         "hint": "どの順番でデータを調べますか？"
+      },
+      {
+        "id": "cost",
+        "title": "先頭から一つずつ調べるため、最悪の比較回数はデータ件数に比例する",
+        "hint": "目的の値が末尾にあると、何件を調べますか？",
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -3226,7 +3186,6 @@ export const terms: Term[] = [
     "reading": "Binary search",
     "category": "基礎理論",
     "definition": "整列済みのデータの中央と目的の値を比較し、探索範囲を半分ずつに絞って探す方法です。",
-    "example": "昇順の配列で中央の値と比較し、大きければ後半だけを探します。",
     "related": [
       "search-linear-binary",
       "average-comparisons",
@@ -3237,6 +3196,12 @@ export const terms: Term[] = [
         "id": "meaning",
         "title": "整列済みのデータで、比較のたびに探索範囲を半分にする",
         "hint": "データの前提条件と、探索範囲の絞り方は？"
+      },
+      {
+        "id": "sorted-input",
+        "title": "探索前にデータの整列が必要で、整列のコストも含めて使いどころを考える",
+        "hint": "一度だけ探す場合にも、事前の整列は得でしょうか？",
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -3247,7 +3212,6 @@ export const terms: Term[] = [
     "reading": "Average number of comparisons",
     "category": "基礎理論",
     "definition": "探索などの処理で、1回の処理当たりに値を比較する回数の平均です。入力や探索位置ごとの比較回数を、その起こりやすさも考慮して求めます。",
-    "example": "n件から等確率で見つかる線形探索では、平均比較回数は(n＋1)÷2回です。",
     "related": [
       "search-linear-binary",
       "binary-search",
@@ -3268,7 +3232,6 @@ export const terms: Term[] = [
     "reading": "Ascending order",
     "category": "基礎理論",
     "definition": "値を小さいものから大きいものへ順に並べることです。",
-    "example": "数値の1、3、5、8という並びは昇順です。",
     "related": [
       "search-linear-binary",
       "binary-search",
@@ -3292,7 +3255,6 @@ export const terms: Term[] = [
     "reading": "Bisection method",
     "category": "基礎理論",
     "definition": "方程式の解を含む区間を半分ずつ狭めて近似値を求める方法です。区間の両端で関数の符号が異なることを利用し、1回ごとに区間の幅が半分になります。",
-    "example": "幅1の区間から誤差0.001以下まで狭めるには、2¹⁰=1024なので10回繰り返します。",
     "related": [],
     "criteria": [
       {
@@ -3324,7 +3286,6 @@ export const terms: Term[] = [
     "reading": "Stack",
     "category": "基礎理論",
     "definition": "最後に入れたデータを最初に取り出す後入れ先出し（LIFO）のデータ構造です。入れる操作をプッシュ、取り出す操作をポップと呼び、関数呼出しや逆ポーランド表記法の計算に使います。",
-    "example": "1,2,3の順にプッシュしてからポップすると、3,2,1の順に取り出されます。",
     "related": [],
     "criteria": [
       {
@@ -3363,7 +3324,6 @@ export const terms: Term[] = [
     "reading": "First In First Out",
     "category": "コンピュータ構成",
     "definition": "最初に入れたものを最初に取り出す先入れ先出しの方式です。データ構造ではキュー、ページやキャッシュの置換では「最も古く読み込んだもの」を追い出す方式を指します。",
-    "example": "ページ置換をFIFOで行うと、よく使うページでも読み込みが最も古ければ追い出されます。",
     "related": [
       "lru"
     ],
@@ -3396,7 +3356,6 @@ export const terms: Term[] = [
     "reading": "Least Frequently Used",
     "category": "コンピュータ構成",
     "definition": "キャッシュやページの置換で、参照された回数が最も少ないものを追い出す方式です。最後に参照された時刻で選ぶLRUとは基準が異なります。",
-    "example": "参照回数が10回・3回・7回のデータなら、3回のものを置き換えます。",
     "related": [
       "lru",
       "fifo"
@@ -3427,7 +3386,6 @@ export const terms: Term[] = [
     "reading": "Reverse Polish notation",
     "category": "基礎理論",
     "definition": "演算子をオペランド（演算対象）の後ろに書く後置記法です。かっこが不要で、スタックを使って左から順に計算できます。通常の書き方は中置記法、演算子を前に書くのは前置記法です。",
-    "example": "(A+B)×C は逆ポーランド表記法で AB+C× と書きます。",
     "related": [
       "stack",
       "prefix-notation",
@@ -3442,7 +3400,8 @@ export const terms: Term[] = [
       {
         "id": "noparen",
         "title": "かっこを使わずに計算順序を表せる",
-        "hint": "かっこは必要ですか？"
+        "hint": "かっこは必要ですか？",
+        "level": "deep"
       },
       {
         "id": "stack",
@@ -3468,7 +3427,6 @@ export const terms: Term[] = [
     "reading": "Hash table",
     "category": "基礎理論",
     "definition": "キーをハッシュ関数で変換した値を格納位置として使う表です。データ量によらずほぼ一定時間で探索できますが、異なるキーが同じ位置になる衝突（シノニム）への対処が必要です。",
-    "example": "キーを13で割った余りを位置とする表で、14と27はどちらも1になり衝突します。",
     "related": [
       "hash"
     ],
@@ -3514,8 +3472,7 @@ export const terms: Term[] = [
     ],
     "reading": "Binary tree",
     "category": "基礎理論",
-    "definition": "各ノード（節）が最大二つの子を持つ木構造です。最上位のノードを根と呼びます。左右の部分木をたどる順番（前順・中順・後順）で、出力の並びが変わります。",
-    "example": "中順（左→根→右）でたどると、2分探索木の値は昇順に出力されます。",
+    "definition": "各ノード（節）が最大二つの子を持つ木構造です。最上位のノードを根、子のないノードを葉と呼びます。",
     "related": [],
     "criteria": [
       {
@@ -3526,7 +3483,8 @@ export const terms: Term[] = [
       {
         "id": "root",
         "title": "最上位のノードを根、子のないノードを葉と呼ぶ",
-        "hint": "木の頂点を何と呼びますか？"
+        "hint": "木の頂点を何と呼びますか？",
+        "level": "deep"
       },
       {
         "id": "traverse",
@@ -3543,7 +3501,6 @@ export const terms: Term[] = [
     "reading": "Recursion",
     "category": "基礎理論",
     "definition": "関数が自分自身を呼び出して、問題を同じ形の小さな問題に分けて解く処理です。必ず呼出しを止める終了条件が必要で、木構造のたどりや階乗の計算に使います。",
-    "example": "n! を n×(n−1)! と定義し、0! = 1 を終了条件にして計算します。",
     "related": [
       "binary-tree",
       "stack"
@@ -3579,8 +3536,7 @@ export const terms: Term[] = [
     "name": "量子コンピュータ",
     "reading": "Quantum computer",
     "category": "基礎理論",
-    "definition": "量子ビットの重ね合わせなど、量子の性質を利用して計算するコンピュータです。特定の問題で高速化が期待され、十分な規模になればRSAなど一部の公開鍵暗号の安全性に影響する可能性があります。",
-    "example": "量子ビットの重ね合わせを計算に使います。特定の問題を高速に解けることは、計算の難しさに依存する暗号への脅威にもなります。",
+    "definition": "量子ビットの重ね合わせなど、量子の性質を利用して計算するコンピュータです。",
     "related": [
       "pqc",
       "quantum-bit",
@@ -3613,7 +3569,6 @@ export const terms: Term[] = [
     "reading": "Quicksort",
     "category": "基礎理論",
     "definition": "基準値（ピボット）を選び、それより小さい要素と大きい要素に分割する操作を再帰的に繰り返して整列する方法です。平均計算量はO(n log n)ですが、基準値の選び方が悪いと最悪O(n²)になります。",
-    "example": "[5,3,8,1,9] で5を基準にすると [3,1] と [8,9] に分け、それぞれをまた分割します。",
     "related": [
       "recursion"
     ],
@@ -3649,7 +3604,6 @@ export const terms: Term[] = [
     "reading": "Sorting algorithms",
     "category": "基礎理論",
     "definition": "データを値などの基準に従って昇順・降順に並べるアルゴリズムの総称です。手法によって計算時間、必要な記憶領域、同じ値の順序を保つ性質などが異なります。",
-    "example": "利用者を年齢順に並べ、同年齢の人の元の並び順も残したいときは、安定性のある手法を選びます。",
     "related": [
       "quicksort",
       "bubble-sort",
@@ -3681,8 +3635,7 @@ export const terms: Term[] = [
     ],
     "reading": "Normal distribution",
     "category": "基礎理論",
-    "definition": "平均を中心に左右対称な釣鐘型の確率分布です。平均±1標準偏差の範囲に約68%、±2標準偏差に約95%が入り、平均±1標準偏差の位置が曲線の変曲点になります。",
-    "example": "平均60点・標準偏差10点の試験では、約68%の人が50〜70点に入ります。",
+    "definition": "平均を中心に左右対称な釣鐘型の確率分布です。平均と標準偏差で分布の形が決まります。",
     "related": [],
     "criteria": [
       {
@@ -3719,8 +3672,7 @@ export const terms: Term[] = [
     ],
     "reading": "Bit error rate",
     "category": "基礎理論",
-    "definition": "送ったビットのうち誤って届くビットの割合です。パケットのビット数と誤り率を掛ければ、1パケットに含まれる誤りの期待値（平均個数）が求まり、誤りを含むパケットの数も見積もれます。",
-    "example": "誤り率10⁻⁶で1パケット1,000ビットなら、1パケット当たりの誤りの期待値は0.001個です。",
+    "definition": "送ったビットのうち、誤って届くビットの割合です。誤りビット数を送信ビット数で割って求めます。",
     "related": [],
     "criteria": [
       {
@@ -3736,8 +3688,8 @@ export const terms: Term[] = [
       },
       {
         "id": "packet",
-        "title": "誤りを含むパケットの確率は 1−(1−p)^n、pが小さければ約n×p",
-        "hint": "誤りを含むパケットの割合は？",
+        "title": "各ビットの誤りが独立なら、誤りを含む確率は1−(1−p)^n。n×pが十分小さければ約n×p",
+        "hint": "ビット数nと誤り率pから、誤りを含むパケットの確率をどう見積もりますか？",
         "level": "deep"
       }
     ],
@@ -3753,7 +3705,6 @@ export const terms: Term[] = [
     "reading": "Logical operations",
     "category": "基礎理論",
     "definition": "真偽値やビットに対して、論理積・論理和・否定・排他的論理和などを行う演算です。条件の判定や、ビット列の一部を取り出す処理などに使います。",
-    "example": "2進数の下位3ビットを取り出すには、00000111との論理積（マスク）をとります。",
     "related": [
       "logical-and",
       "logical-or"
@@ -3788,7 +3739,6 @@ export const terms: Term[] = [
     "reading": "NOT AND gate",
     "category": "基礎理論",
     "definition": "論理積（AND）の結果を反転する論理素子です。二つの入力がともに1のときだけ出力が0になり、それ以外は1になります。NAND素子の組合せで様々な論理回路を構成できます。",
-    "example": "A NAND A は NOT A になり、(A NAND A) NAND (B NAND B) は A OR B になります。",
     "related": [
       "logic-operation",
       "nor",
@@ -3820,7 +3770,6 @@ export const terms: Term[] = [
     "reading": "Combinational circuit",
     "category": "基礎理論",
     "definition": "出力がその時点の入力だけで決まる論理回路です。過去の状態を記憶する順序回路（フリップフロップなど）と区別します。真理値表やタイムチャートから回路を求められます。",
-    "example": "3入力のうち2つ以上が1なら1を出す多数決回路は AB + BC + CA で作れます。",
     "related": [
       "logic-operation",
       "nand"
@@ -3850,7 +3799,6 @@ export const terms: Term[] = [
     "reading": "Parity check",
     "category": "基礎理論",
     "definition": "データに1のビットの数が偶数（または奇数）になるようパリティビットを付けて誤りを検出する方法です。1ビットの誤りは検出できますが訂正はできません。水平垂直パリティでは行と列のパリティから誤りの位置を特定して1ビットを訂正できます。",
-    "example": "1011001の1の数は4なので、偶数パリティならパリティビットは0です。",
     "related": [
       "hamming-code"
     ],
@@ -3884,7 +3832,6 @@ export const terms: Term[] = [
     "reading": "Rendering",
     "category": "マルチメディア",
     "definition": "3次元モデルなどのデータから、画面に表示する画像を生成する処理です。光や材質、視点などを反映し、目的に応じた見え方の画像を作ります。",
-    "example": "3次元の建物モデルに光や材質の条件を与え、完成時の見え方を画像にします。",
     "related": [
       "ray-tracing",
       "radiosity",
@@ -3913,7 +3860,6 @@ export const terms: Term[] = [
     "reading": "Virtual reality (VR)",
     "category": "マルチメディア",
     "definition": "コンピュータが作った仮想空間を、あたかも現実のように体験させる技術です。頭の動きに合わせて映像をすぐ描き直す（低遅延のレンダリング）ことが没入感と酔いの防止に重要です。",
-    "example": "ヘッドマウントディスプレイで、頭を右に向けると右側の景色が表示されます。",
     "related": [
       "rendering"
     ],
@@ -3943,8 +3889,7 @@ export const terms: Term[] = [
     "name": "SVG",
     "reading": "Scalable Vector Graphics",
     "category": "マルチメディア",
-    "definition": "W3Cが標準化した、XMLで記述するベクター形式の画像フォーマットです。図形を座標と命令で表すため、拡大しても画質が劣化しません。点（ピクセル）の集まりで表すラスタ形式（PNG・TIFFなど）と対になります。",
-    "example": "ロゴやアイコンをSVGで作ると、スマートフォンでも大画面でもくっきり表示されます。",
+    "definition": "XMLで図形の座標や形を記述する、ベクター形式の画像フォーマットです。",
     "related": [
       "raster-format",
       "vector-format",
@@ -3960,19 +3905,19 @@ export const terms: Term[] = [
       },
       {
         "id": "xml",
-        "title": "XMLで記述され、W3Cが標準化した",
-        "hint": "何の言語で書かれますか？"
+        "title": "XMLで図形を記述する",
+        "hint": "どの形式で図形の情報を記述しますか？"
       },
       {
         "id": "scale",
-        "title": "拡大しても画質が劣化しない",
+        "title": "図形を座標で表すため、拡大しても輪郭が粗くなりにくい",
         "hint": "拡大するとどうなりますか？",
         "level": "deep"
       },
       {
         "id": "script",
-        "title": "テキストなのでスクリプトを埋め込め、アップロードを許すとXSSの原因になり得る",
-        "hint": "セキュリティ上の注意点は？",
+        "title": "スクリプトや外部参照を含められるため、信頼できないSVGの表示方法に注意する",
+        "hint": "受け取ったSVGをそのままページに組み込むと、どのような危険がありますか？",
         "level": "deep"
       }
     ],
@@ -3985,8 +3930,7 @@ export const terms: Term[] = [
     "name": "XML",
     "reading": "Extensible Markup Language",
     "category": "マルチメディア",
-    "definition": "タグを利用者が定義できるマークアップ言語です。データの構造を表すのに使われ、SVGやXMLデジタル署名、各種設定ファイルの基盤になっています。",
-    "example": "<order><item>ペン</item></order> のように、意味を持つタグでデータを表します。",
+    "definition": "タグを利用者が定義できるマークアップ言語です。データの構造を表すテキストとして、保存や交換に使います。",
     "related": [
       "xml-signature",
       "svg"
@@ -4000,7 +3944,8 @@ export const terms: Term[] = [
       {
         "id": "structured",
         "title": "データ交換用の構造化テキストとして使われる",
-        "hint": "何に使われますか？"
+        "hint": "何に使われますか？",
+        "level": "deep"
       },
       {
         "id": "xxe",
@@ -4017,7 +3962,6 @@ export const terms: Term[] = [
     "reading": "Document Object Model",
     "category": "マルチメディア",
     "definition": "XMLやHTMLの文書を木構造のオブジェクトとして扱い、要素などをプログラムから参照・変更するための仕組みです。",
-    "example": "JavaScriptから文書中の要素を取得して表示を書き換えます。",
     "related": [
       "sax",
       "xml"
@@ -4037,7 +3981,6 @@ export const terms: Term[] = [
     "reading": "Simple Application Programming Interface for Extensible Markup Language",
     "category": "マルチメディア",
     "definition": "XMLを先頭から順番に読み、要素の開始や終了などをイベントとして通知して処理する仕組みです。文書全体を木構造として保持せずに処理できます。",
-    "example": "大量のXMLを読みながら、必要な要素の値を順次集計します。",
     "related": [
       "dom-sax",
       "xml"
@@ -4057,7 +4000,6 @@ export const terms: Term[] = [
     "reading": "Outline font",
     "category": "マルチメディア",
     "definition": "文字の形を輪郭線（座標と曲線）で表すフォントです。拡大・縮小しても滑らかに表示できます。点の集まりで表すビットマップフォントは、拡大するとギザギザになります。",
-    "example": "同じフォントで見出しを72ポイントにしても、アウトラインフォントなら輪郭が滑らかです。",
     "related": [
       "svg",
       "bitmap-font"
@@ -4087,7 +4029,6 @@ export const terms: Term[] = [
     "reading": "Bandwidth",
     "category": "ネットワーク",
     "definition": "回線が単位時間に送れるデータ量（ビット/秒）です。動画配信では「1フレームのデータ量×1秒当たりのフレーム数」で必要な帯域幅を見積もります。",
-    "example": "1フレーム1Mビットを30フレーム/秒で送るには、30Mビット/秒が必要です。",
     "related": [],
     "criteria": [
       {
@@ -4122,7 +4063,6 @@ export const terms: Term[] = [
     "reading": "Reduced Instruction Set Computer",
     "category": "コンピュータ構成",
     "definition": "単純な命令を中心に構成するCPUの設計方式です。命令の実行をそろえやすく、パイプライン処理などによる高速化に適しています。",
-    "example": "単純なロード命令や演算命令を組み合わせて処理します。",
     "related": [
       "cisc",
       "instruction-set"
@@ -4142,7 +4082,6 @@ export const terms: Term[] = [
     "reading": "Complex Instruction Set Computer",
     "category": "コンピュータ構成",
     "definition": "複雑で多機能な命令を含む命令セットを採用するCPUの設計方式です。1命令で複数の操作を行える命令などを持ちます。",
-    "example": "メモリのデータを読み出して演算する処理を、一つの命令で指定します。",
     "related": [
       "risc-cisc",
       "instruction-set"
@@ -4162,7 +4101,6 @@ export const terms: Term[] = [
     "reading": "Instruction set",
     "category": "コンピュータ構成",
     "definition": "CPUが実行できる機械語命令の集合です。演算やデータ転送、分岐などの命令の種類や形式を定めます。",
-    "example": "CPUごとに、実行できる加算命令や分岐命令の形式が決まっています。",
     "related": [
       "risc-cisc",
       "cisc"
@@ -4182,7 +4120,6 @@ export const terms: Term[] = [
     "reading": "Very Long Instruction Word",
     "category": "コンピュータ構成",
     "definition": "同時に実行できる複数の命令を、コンパイル時に1つの長い命令語にまとめておき、CPUがそれを並列に実行する方式です。並列化をハードウェアではなくコンパイラが行う点が特徴です。",
-    "example": "加算・乗算・ロードを1つの長い命令に詰め、3つの演算器で同時に実行します。",
     "related": [
       "risc-cisc"
     ],
@@ -4212,7 +4149,6 @@ export const terms: Term[] = [
     "reading": "Flynn's taxonomy",
     "category": "コンピュータ構成",
     "definition": "コンピュータの並列処理方式を、命令の流れとデータの流れが単一か複数かという二つの軸で整理する分類です。SISD・SIMD・MISD・MIMDの四つの区分があります。",
-    "example": "GPUのように1つの命令で多数のデータを処理するのはSIMD、マルチコアCPUが別々の命令を実行するのはMIMDです。",
     "related": [],
     "criteria": [
       {
@@ -4240,7 +4176,6 @@ export const terms: Term[] = [
     "reading": "Capacity planning",
     "category": "システム構成",
     "definition": "将来の業務量を予測し、それを処理するために必要なCPU・メモリ・ディスク・回線などのリソースを計画することです。現状の性能を測ってボトルネックを見つけ、増強やチューニングの時期と規模を決めます。",
-    "example": "来年の注文が1.5倍になる予測から、CPU使用率が上限を超える時期を見積もり、サーバを増やします。",
     "related": [],
     "criteria": [
       {
@@ -4281,7 +4216,6 @@ export const terms: Term[] = [
     "reading": "Throughput",
     "category": "システム構成",
     "definition": "システムが単位時間当たりに処理できる仕事やデータの量を表す性能指標です。",
-    "example": "1秒間に500件の注文を処理するなら、500件/秒です。",
     "related": [
       "response-time",
       "turnaround-time",
@@ -4305,7 +4239,6 @@ export const terms: Term[] = [
     "reading": "Response time",
     "category": "システム構成",
     "definition": "要求を出してから、その要求に対する応答が返るまでにかかる時間を表す性能指標です。測定では応答開始や完了などの終点を定めます。",
-    "example": "検索ボタンを押してから結果が返るまでの時間を測ります。",
     "related": [
       "throughput",
       "turnaround-time",
@@ -4326,7 +4259,6 @@ export const terms: Term[] = [
     "reading": "Turnaround time",
     "category": "システム構成",
     "definition": "ジョブなどを依頼してから、処理が完了して結果をすべて受け取るまでにかかる時間です。",
-    "example": "夜間バッチを依頼してから、出力結果を受け取るまでの時間を測ります。",
     "related": [
       "throughput",
       "response-time",
@@ -4352,8 +4284,7 @@ export const terms: Term[] = [
     ],
     "reading": "Cache memory",
     "category": "コンピュータ構成",
-    "definition": "CPUと主記憶の速度差を埋めるために置く、小容量で高速なメモリです。必要なデータがキャッシュにある割合をヒット率といい、実効メモリアクセス時間は「キャッシュの時間×ヒット率＋主記憶の時間×(1−ヒット率)」で求めます。",
-    "example": "キャッシュ10ns、主記憶60ns、ヒット率90%なら、実効アクセス時間は10×0.9＋60×0.1＝15nsです。",
+    "definition": "CPUと主記憶の速度差を埋めるために置く、小容量で高速なメモリです。よく参照するデータを保持し、主記憶へのアクセスを減らします。",
     "related": [
       "lru"
     ],
@@ -4371,8 +4302,8 @@ export const terms: Term[] = [
       },
       {
         "id": "effective",
-        "title": "ヒット時とミス時の所要時間を、それぞれの発生割合で加重平均して実効アクセス時間を求める",
-        "hint": "ミス時に必要な処理も含め、平均時間をどう求めますか？",
+        "title": "ヒット時とミス時それぞれの総所要時間を、発生割合で加重平均する",
+        "hint": "ミス時にキャッシュを調べる時間もかかるなら、どちらの時間に含めますか？",
         "level": "deep"
       },
       {
@@ -4390,7 +4321,6 @@ export const terms: Term[] = [
     "reading": "Embedded system",
     "category": "システム構成",
     "definition": "家電・自動車・産業機器などに組み込まれ、特定の機能を実現するコンピュータシステムです。限られた資源で、決められた時間内に確実に応答するリアルタイム性が求められます。",
-    "example": "炊飯器のマイコンが温度センサーの値を読み、ヒーターを制御します。",
     "related": [
       "rtos"
     ],
@@ -4427,7 +4357,6 @@ export const terms: Term[] = [
     "reading": "Chattering",
     "category": "システム構成",
     "definition": "機械式スイッチを押したり離したりした直後に、接点が細かく振動して信号がON/OFFを短時間に繰り返す現象です。一定時間待ってから状態を読み直す（ソフトウェアでの待ち、またはハードウェアの回路）ことで対策します。",
-    "example": "ボタンを1回押しただけなのに、カウンタが3回増えてしまう原因になります。",
     "related": [
       "embedded-system"
     ],
@@ -4457,7 +4386,6 @@ export const terms: Term[] = [
     "reading": "Cycles Per Instruction",
     "category": "コンピュータ構成",
     "definition": "1命令の実行に平均何クロックかかるかを表す値です。処理時間は「命令数×CPI×クロック周期」、クロック周期は動作周波数の逆数です。逆数のIPCは1クロックに実行できる命令数です。",
-    "example": "2GHz（周期0.5ns）でCPI=4なら、1命令に2ns、1秒に5億命令を実行します。",
     "related": [],
     "criteria": [
       {
@@ -4497,7 +4425,6 @@ export const terms: Term[] = [
     "reading": "Mean Time Between Failures",
     "category": "システム構成",
     "definition": "修理して使用するシステムなどが、故障と故障の間に正常に稼働する時間の平均です。平均故障間隔とも呼び、信頼性の指標になります。",
-    "example": "合計990時間稼働する間に10回故障したなら、MTBFは99時間です。",
     "related": [
       "mttr",
       "availability"
@@ -4520,7 +4447,6 @@ export const terms: Term[] = [
     "reading": "Mean Time To Repair",
     "category": "システム構成",
     "definition": "故障したシステムなどの修理にかかる時間の平均です。平均修理時間とも呼び、保守性の指標になります。",
-    "example": "10回の修理に合計20時間かかったなら、MTTRは2時間です。",
     "related": [
       "mtbf-mttr",
       "availability"
@@ -4546,7 +4472,6 @@ export const terms: Term[] = [
     "reading": "Virtual memory",
     "category": "ソフトウェア",
     "definition": "主記憶より大きなアドレス空間を、補助記憶を使って仮想的に提供する仕組みです。ページング方式では固定長のページ単位で、セグメンテーション方式では可変長の論理的なまとまり単位で管理し、必要なページを主記憶に読み込み（ページイン）、足りなければページ置換えで追い出します。",
-    "example": "8GBのメモリしかないPCでも、使っていないページをディスクに退避して大きなプログラムを動かせます。",
     "related": [
       "lru",
       "fifo"
@@ -4594,7 +4519,6 @@ export const terms: Term[] = [
     "reading": "Fragmentation",
     "category": "ソフトウェア",
     "definition": "メモリの割当てと解放を繰り返すうちに、使えない小さな空きができる現象です。空き領域が細切れになって大きな領域を確保できない外部断片化と、割り当てた領域の内部に使われない余りが出る内部断片化があります。",
-    "example": "固定長4KBのページに1KBのデータを置くと3KBが無駄になる（内部断片化）。",
     "related": [
       "virtual-memory"
     ],
@@ -4634,7 +4558,6 @@ export const terms: Term[] = [
     "reading": "Internet of Things",
     "category": "システム構成",
     "definition": "センサーや機器など様々なモノをネットワークにつなぎ、データを収集・活用したり遠隔から制御したりする仕組みです。センサーノードのデータはゲートウェイを経由してクラウドなどに送られます。",
-    "example": "工場の機械の振動センサーのデータを集め、故障の予兆を検知します。",
     "related": [
       "edge-computing"
     ],
@@ -4674,7 +4597,6 @@ export const terms: Term[] = [
     "reading": "Intermittent operation",
     "category": "システム構成",
     "definition": "機器を常に動かさず、必要なときだけ動作させて残りは休止（スリープ）させ、消費電力を抑える方法です。平均電流は「動作時の電流×動作時間の割合＋休止時の電流×休止時間の割合」で求めます。",
-    "example": "10秒ごとに1秒だけ20mAで動き、残り9秒は0.1mAなら、平均電流は2.09mAです。",
     "related": [
       "iot"
     ],
@@ -4705,7 +4627,6 @@ export const terms: Term[] = [
     "reading": "Power over Ethernet",
     "category": "ネットワーク",
     "definition": "LANケーブルを通じて、データと一緒に電力を供給する技術です。無線LANのアクセスポイントやネットワークカメラなど、電源を取りにくい場所の機器に使います。",
-    "example": "天井の無線LANアクセスポイントに、PoE対応スイッチからLANケーブル1本で給電します。",
     "related": [],
     "criteria": [
       {
@@ -4736,7 +4657,6 @@ export const terms: Term[] = [
     "reading": "Programmable Logic Controller",
     "category": "システム構成",
     "definition": "工場の機械や設備などを制御するためのプログラム可能な装置です。入力信号や設定した手順に従って出力を制御します。ここではProgrammable Logic Controllerを扱います。",
-    "example": "生産ラインのベルトコンベアの動きはPLCが制御し、MESはその上位で作業指示を出します。",
     "related": [],
     "criteria": [
       {
@@ -4759,7 +4679,6 @@ export const terms: Term[] = [
     "reading": "Uninterruptible Power Supply",
     "category": "システム構成",
     "definition": "停電や瞬断のときに、内蔵バッテリーから一定時間電力を供給する無停電電源装置です。その間にシステムを安全に停止したり、自家発電に切り替えたりします。",
-    "example": "停電時、UPSが10分間給電している間にサーバを正常にシャットダウンします。",
     "related": [],
     "criteria": [
       {
@@ -4798,7 +4717,6 @@ export const terms: Term[] = [
     "reading": "Cluster",
     "category": "システム構成",
     "definition": "複数のサーバを連携させて1つのシステムとして動かし、可用性や処理能力を高める構成です。待機系の状態により、ホットスタンバイ（すぐ切替え）、ウォームスタンバイ、コールドスタンバイ（停止状態から起動）に分かれます。",
-    "example": "2台のWebサーバでセッション情報を共有しておけば、1台が止まっても利用者は再ログインせずに続けられます。",
     "related": [
       "fault-tolerance"
     ],
@@ -4836,15 +4754,14 @@ export const terms: Term[] = [
     ],
     "reading": "Compiler",
     "category": "ソフトウェア",
-    "definition": "ソースプログラムを、機械語などの目的プログラムへ翻訳するソフトウェアです。字句解析・構文解析などを経てコードを生成し、必要に応じて最適化します。",
-    "example": "C言語のソースをコンパイルして実行ファイルを作り、その後は翻訳なしで実行します。",
+    "definition": "ソースプログラムを機械語などの目的プログラムへ翻訳するソフトウェアです。",
     "related": [
       "ide"
     ],
     "criteria": [
       {
         "id": "translate",
-        "title": "ソースプログラムを一括して目的プログラムに翻訳する",
+        "title": "ソースプログラムを機械語などの目的プログラムへ翻訳する",
         "hint": "何をするソフトウェアですか？"
       },
       {
@@ -4871,20 +4788,19 @@ export const terms: Term[] = [
     ],
     "reading": "Integrated Development Environment",
     "category": "開発技術",
-    "definition": "ソースコードの編集、ビルド、実行、デバッグなどを一つの環境で行えるようにした開発支援ソフトウェアです。",
-    "example": "IDEでソースを書き、ボタン一つでビルドし、ブレークポイントで止めて変数を確認します。",
+    "definition": "ソースコードの編集、ビルド、実行、デバッグなどの開発機能を一つにまとめた開発環境です。",
     "related": [
       "compiler"
     ],
     "criteria": [
       {
         "id": "integrate",
-        "title": "エディタ・コンパイラ・デバッガなどを統合した環境",
+        "title": "コード編集・ビルド・デバッグなどの開発機能を一つにまとめる",
         "hint": "何をまとめていますか？"
       },
       {
         "id": "flow",
-        "title": "編集・ビルド・実行・デバッグを1つの環境で行える",
+        "title": "編集からビルド・実行・デバッグへ同じ環境で移れ、問題箇所の確認を進めやすい",
         "hint": "IDEで何ができますか？",
         "level": "deep"
       }
@@ -4897,7 +4813,6 @@ export const terms: Term[] = [
     "reading": "Actuator",
     "category": "システム構成",
     "definition": "コンピュータからの電気信号を、回転・移動などの物理的な動きに変換する装置です。モーターや電磁弁が代表です。逆に、温度や光など物理量を電気信号に変えるのがセンサーです。",
-    "example": "エアコンは温度センサーで室温を測り、アクチュエーターのファンや弁を動かして調整します。",
     "related": [
       "feedback-control",
       "sensor"
@@ -4929,7 +4844,6 @@ export const terms: Term[] = [
     "reading": "Feedback control",
     "category": "システム構成",
     "definition": "制御した結果をセンサーで測って目標値と比べ、その差をなくすように操作量を調整し続ける制御方式です。外乱があっても目標に近づけられます。",
-    "example": "エアコンが室温を測り、設定温度より高ければ冷房を強めます。",
     "related": [
       "actuator"
     ],
@@ -4953,7 +4867,6 @@ export const terms: Term[] = [
     "reading": "Fail-safe",
     "category": "システム構成",
     "definition": "装置やシステムが故障したとき、安全な状態に移行するように設計する考え方です。",
-    "example": "制御装置が故障したら機械を停止して、事故を防ぐようにします。",
     "related": [
       "fail-soft",
       "foolproof",
@@ -4965,6 +4878,12 @@ export const terms: Term[] = [
         "id": "meaning",
         "title": "故障したときに安全な状態になるよう設計する",
         "hint": "故障時にどのような状態へ移しますか？"
+      },
+      {
+        "id": "safe-state",
+        "title": "何を安全な状態とするかは装置の用途ごとに決める",
+        "hint": "停止することが常に安全ですか？",
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -4975,7 +4894,6 @@ export const terms: Term[] = [
     "reading": "Fail-soft",
     "category": "システム構成",
     "definition": "システムの一部が故障しても、機能や性能を縮小して動作を継続できるようにする考え方です。",
-    "example": "故障した装置を切り離し、残りの装置でサービスを続けます。",
     "related": [
       "fail-safe",
       "foolproof",
@@ -4997,7 +4915,6 @@ export const terms: Term[] = [
     "reading": "Foolproof",
     "category": "システム構成",
     "definition": "人が誤操作をしにくくし、誤操作をしても危険な状態にならないように設計する考え方です。",
-    "example": "扉が開いている間は機械が動かないようにします。",
     "related": [
       "fail-safe",
       "fail-soft",
@@ -5019,7 +4936,6 @@ export const terms: Term[] = [
     "reading": "Fail-secure",
     "category": "システム構成",
     "definition": "故障などの異常が起きても、アクセスを拒否するなどしてセキュリティを維持する設計の考え方です。",
-    "example": "認証機能が故障したとき、認証できない利用者のアクセスを拒否します。",
     "related": [
       "fail-safe",
       "fail-soft",
@@ -5046,7 +4962,6 @@ export const terms: Term[] = [
     "reading": "Pipeline",
     "category": "コンピュータ構成",
     "definition": "命令の実行を取出し・解読・実行などの段階に分け、複数の命令を少しずつずらして並行に処理する方式です。分岐命令などで流れが乱れる（ハザード）と効率が落ちるため、分岐予測や投機実行、遅延分岐で対処します。",
-    "example": "5段のパイプラインでは、理想的には毎クロック1命令ずつ完了します。",
     "related": [
       "risc-cisc"
     ],
@@ -5080,7 +4995,6 @@ export const terms: Term[] = [
     "reading": "Out-of-order execution",
     "category": "コンピュータ構成",
     "definition": "命令をプログラムの順序どおりではなく、実行できるものから順に実行してCPUの演算器を有効に使う方式です。レジスタリネーミングで見かけ上の依存をなくし、結果はプログラムの順序で確定させます。",
-    "example": "メモリ読込みを待っている命令を後回しにして、後ろの独立した加算命令を先に実行します。",
     "related": [
       "pipeline"
     ],
@@ -5105,7 +5019,6 @@ export const terms: Term[] = [
     "reading": "Scale out",
     "category": "システム構成",
     "definition": "サーバーなどの台数を増やして、システム全体の処理能力を高める方法です。",
-    "example": "Webサーバーを4台から8台に増やして負荷を分散します。",
     "related": [
       "scale-up",
       "scale-in",
@@ -5116,6 +5029,12 @@ export const terms: Term[] = [
         "id": "meaning",
         "title": "サーバーなどの台数を増やして処理能力を高める",
         "hint": "増やすのは1台の性能ですか、台数ですか？"
+      },
+      {
+        "id": "state",
+        "title": "台数を増やすには、セッションやデータを複数台で扱える構成が必要になる",
+        "hint": "どのサーバに振り分けられても処理を続けるには、何を共有しますか？",
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -5126,7 +5045,6 @@ export const terms: Term[] = [
     "reading": "Scale up",
     "category": "システム構成",
     "definition": "CPUやメモリなどを増強し、1台のサーバーなどの処理能力を高める方法です。",
-    "example": "サーバーのメモリを増やして処理能力を高めます。",
     "related": [
       "scaling",
       "scale-in",
@@ -5137,6 +5055,12 @@ export const terms: Term[] = [
         "id": "meaning",
         "title": "1台の機器の性能を上げて処理能力を高める",
         "hint": "台数ではなく、何を増強しますか？"
+      },
+      {
+        "id": "limit",
+        "title": "一台で増強できる資源には上限があり、増強時に停止が必要な場合もある",
+        "hint": "性能を上げ続ける際に、どのような限界がありますか？",
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -5147,7 +5071,6 @@ export const terms: Term[] = [
     "reading": "Scale in",
     "category": "システム構成",
     "definition": "サーバーなどの台数を減らし、必要な規模にシステムを縮小する方法です。",
-    "example": "アクセスが減ったのでWebサーバーを8台から4台に減らします。",
     "related": [
       "scaling",
       "scale-up",
@@ -5168,7 +5091,6 @@ export const terms: Term[] = [
     "reading": "Scale down",
     "category": "システム構成",
     "definition": "CPUやメモリなどの割当てを減らし、1台のサーバーなどの性能を下げる方法です。",
-    "example": "負荷の小さい仮想サーバーのメモリ割当てを減らします。",
     "related": [
       "scaling",
       "scale-up",
@@ -5189,7 +5111,6 @@ export const terms: Term[] = [
     "reading": "Grid computing",
     "category": "システム構成",
     "definition": "ネットワーク上の多数のコンピュータの計算資源を結び付け、1つの大きな計算機のように使って大規模な計算を行う方式です。",
-    "example": "世界中のPCの空き時間を使って、たんぱく質の構造解析を分担して計算します。",
     "related": [
       "edge-computing"
     ],
@@ -5220,7 +5141,6 @@ export const terms: Term[] = [
     "reading": "Energy harvesting",
     "category": "システム構成",
     "definition": "周囲の光・振動・熱・電波などのわずかなエネルギーを集めて電力に変える技術です。電池交換や配線が難しいIoTのセンサーなどの電源に使います。",
-    "example": "橋に付けたセンサーが、車の通行による振動で発電して計測データを送ります。",
     "related": [
       "iot",
       "intermittent"
@@ -5252,7 +5172,6 @@ export const terms: Term[] = [
     "reading": "Wearable device",
     "category": "システム構成",
     "definition": "腕時計や眼鏡のように身に着けて使うコンピュータ機器です。心拍や歩数などを常時計測し、スマートフォンやクラウドと連携します。",
-    "example": "スマートウォッチが睡眠中の心拍を記録し、アプリで睡眠の質を表示します。",
     "related": [
       "iot"
     ],
@@ -5286,7 +5205,6 @@ export const terms: Term[] = [
     "reading": "Provisioning",
     "category": "システム構成",
     "definition": "利用者や業務の需要に応じて、サーバ・ネットワーク・アカウントなどの資源を準備し、すぐ使える状態に設定することです。サーバプロビジョニングツールを使うと、OSやソフトウェアの設定を自動で行えます。",
-    "example": "クラウドで新しい開発環境を申請すると、数分でサーバとアカウントが用意されます。",
     "related": [
       "iac"
     ],
@@ -5327,7 +5245,6 @@ export const terms: Term[] = [
     "reading": "Infrastructure as Code",
     "category": "システム構成",
     "definition": "サーバやネットワークなどのインフラの構成をコードとして記述し、そのコードから自動で構築・変更する手法です。手作業による設定のばらつきを防ぎ、同じ環境を何度でも再現できます。",
-    "example": "構成ファイルを実行するだけで、本番と同じ構成の検証環境を作ります。",
     "related": [
       "provisioning",
       "ci"
@@ -5365,7 +5282,6 @@ export const terms: Term[] = [
     "reading": "Alive monitoring",
     "category": "システム構成",
     "definition": "サーバや機器、サービスが動いているかどうかを定期的に確認する監視です。pingの応答やポートへの接続、プロセスの有無などで判断し、停止を検知したら通知します。",
-    "example": "1分ごとにWebサーバへアクセスし、3回続けて応答がなければ担当者に通知します。",
     "related": [],
     "criteria": [
       {
@@ -5404,7 +5320,6 @@ export const terms: Term[] = [
     "reading": "Cloud deployment models",
     "category": "システム構成",
     "definition": "クラウドの利用者の範囲や、設備を共有する方法による分類です。パブリック・プライベート・コミュニティ・ハイブリッドなどの配置モデルがあります。",
-    "example": "複数の自治体が共同で利用する行政システム基盤は、コミュニティクラウドの例です。",
     "related": [],
     "criteria": [
       {
@@ -5426,8 +5341,7 @@ export const terms: Term[] = [
     "name": "システムインテグレーション",
     "reading": "System integration",
     "category": "システム戦略",
-    "definition": "顧客の要望に合わせて、システムの企画・設計・開発・構築・運用までを一括して請け負うサービスです。請け負う事業者をSIerと呼びます。",
-    "example": "銀行の新しい勘定系システムを、ハードウェアの選定から運用まで一括で請け負います。",
+    "definition": "複数のハードウェアやソフトウェアを組み合わせ、顧客の要望に合う一つのシステムとして構築することです。これを請け負う事業者をSIerと呼びます。",
     "related": [],
     "criteria": [
       {
@@ -5449,16 +5363,15 @@ export const terms: Term[] = [
     ],
     "reading": "Real-time operating system",
     "category": "ソフトウェア",
-    "definition": "処理を決められた時間内に確実に終えることを重視したOSです。優先度に基づくプリエンプティブなスケジューリングで、優先度の高いタスクが来たら実行中のタスクを中断して切り替えます。",
-    "example": "エアバッグ制御では、衝突の検知から数ミリ秒以内に展開の処理を必ず実行します。",
+    "definition": "決められた期限までに処理を終えられるよう、タスクの実行や割込みの応答を制御するOSです。単に平均の処理速度が速いこととは異なります。",
     "related": [
       "embedded-system"
     ],
     "criteria": [
       {
         "id": "deadline",
-        "title": "決められた時間内に処理を終えることを保証する",
-        "hint": "何を重視したOSですか？"
+        "title": "タスクの期限を守れるよう、実行や割込みの応答を制御する",
+        "hint": "単なる処理速度と、期限内に応答することはどう違いますか？"
       },
       {
         "id": "preemptive",
@@ -5481,7 +5394,6 @@ export const terms: Term[] = [
     "reading": "Continuous Integration (CI)",
     "category": "開発技術",
     "definition": "開発者が変更したコードを頻繁に共有のリポジトリに統合し、そのたびに自動でビルドとテストを行う開発手法です。不具合を早く見つけ、統合時の手戻りを減らします。",
-    "example": "コードを登録するたびに自動テストが走り、失敗したらすぐ開発者に通知されます。",
     "related": [
       "iac"
     ],
@@ -5511,7 +5423,6 @@ export const terms: Term[] = [
     "reading": "Two-phase commit",
     "category": "データベース",
     "definition": "分散データベースで、複数のサイトにまたがるトランザクションを全体としてコミットするか、全体として取り消すかをそろえるための手順です。第1相で各サイトにコミット可能かを問い合わせ、全員が可能なら第2相でコミットを指示します。",
-    "example": "支店Aと支店Bの口座を同時に更新するとき、両方が準備完了と答えた場合だけ確定します。",
     "related": [
       "acid",
       "base"
@@ -5553,7 +5464,6 @@ export const terms: Term[] = [
     "reading": "Primary key",
     "category": "データベース",
     "definition": "表の中で行を一意に識別するために選んだ列（の組合せ）です。値の重複とNULLが許されません。行を一意に識別できる列の候補を候補キーといい、その中から1つを主キーに選びます。",
-    "example": "顧客表では、同姓同名がいても重ならない顧客IDを主キーにします。",
     "related": [
       "normalization"
     ],
@@ -5581,8 +5491,7 @@ export const terms: Term[] = [
     ],
     "reading": "Relational database",
     "category": "データベース",
-    "definition": "データを行と列からなる表（関係）で表し、表どうしを共通の値で関連付けて扱うデータベースです。DBMSがSQLによる検索や更新、整合性の維持、同時実行の制御を行います。",
-    "example": "顧客表と注文表を顧客IDで結び付け、顧客ごとの注文一覧を取り出します。",
+    "definition": "データを行と列からなる表（関係）で表し、表どうしを共通の列の値で関連付けて扱うデータベースです。列は属性とも呼びます。",
     "related": [
       "normalization",
       "primary-key"
@@ -5613,7 +5522,6 @@ export const terms: Term[] = [
     "reading": "View",
     "category": "データベース",
     "definition": "1つ以上の表から必要な行や列を取り出して定義した仮想的な表です。実体のデータは持たず、参照するたびに元の表から求めます。利用者に見せる範囲を限定するアクセス制御にも使えます。",
-    "example": "社員表から給与の列を除いたビューを作り、一般社員にはそのビューだけを参照させます。",
     "related": [
       "relational-database"
     ],
@@ -5651,7 +5559,6 @@ export const terms: Term[] = [
     "reading": "Relational algebra",
     "category": "データベース",
     "definition": "表で表す関係に対して操作を行い、新しい関係を得るための演算体系です。選択・射影・結合・集合演算などを扱います。",
-    "example": "東京支店の顧客表と大阪支店の顧客表を UNION で1つの一覧にします。",
     "related": [
       "relational-database"
     ],
@@ -5663,8 +5570,8 @@ export const terms: Term[] = [
       },
       {
         "id": "compatible",
-        "title": "和・差・積には列の数と型が対応する和両立が必要",
-        "hint": "UNIONできる条件は？",
+        "title": "和・差・共通部分を求めるには、列の数と型が対応する和両立が必要",
+        "hint": "集合演算で表を比べるために、列の数と型はどう対応している必要がありますか？",
         "level": "deep"
       }
     ],
@@ -5679,8 +5586,7 @@ export const terms: Term[] = [
     ],
     "reading": "Functional dependency",
     "category": "データベース",
-    "definition": "ある列Aの値が決まると列Bの値が1つに決まる関係（A→B）です。主キーの一部だけに従属する部分関数従属を除くと第2正規形、主キー以外の列を介して従属する推移的関数従属を除くと第3正規形になります。",
-    "example": "{受注番号, 商品番号}→数量 のとき、商品番号→商品名 は部分関数従属です。",
+    "definition": "ある列や列の組Aの値が決まると、列Bの値が一意に決まる関係（A→B）です。表の正規化を考える手掛かりになります。",
     "related": [
       "normalization"
     ],
@@ -5692,13 +5598,13 @@ export const terms: Term[] = [
       },
       {
         "id": "partial",
-        "title": "部分関数従属は主キーの一部に従属すること（除くと第2正規形）",
+        "title": "候補キーの一部だけで非キー属性が決まる部分関数従属は、第2正規形への分解の対象になる",
         "hint": "第2正規形で除くのは？",
         "level": "deep"
       },
       {
         "id": "transitive",
-        "title": "推移的関数従属は非キー列を介して従属すること（除くと第3正規形）",
+        "title": "候補キーから別の非キー属性を介して値が決まる従属は、第3正規形への分解で扱う",
         "hint": "第3正規形で除くのは？",
         "level": "deep"
       },
@@ -5721,8 +5627,7 @@ export const terms: Term[] = [
     ],
     "reading": "Referential integrity constraint",
     "category": "データベース",
-    "definition": "外部キーの値が、参照先の表の主キーに必ず存在するようにする制約です。参照先の行を削除・更新したときの動作として、CASCADE（連動して削除）、RESTRICT（拒否）、SET NULL（NULLにする）を指定できます。",
-    "example": "部署を削除すると、ON DELETE CASCADE なら所属する社員の行も削除されます。",
+    "definition": "外部キーの値に対応する候補キーが参照先に存在するようにして、表どうしの整合性を保つ制約です。NULLを許す外部キーでは、参照先を持たない状態も認められます。",
     "related": [
       "primary-key"
     ],
@@ -5757,7 +5662,6 @@ export const terms: Term[] = [
     "reading": "Stored procedure",
     "category": "データベース",
     "definition": "一連のSQL処理をまとめてDBMSに登録しておき、名前を指定して呼び出す仕組みです。クライアントとサーバ間の通信量が減り、構文解析や実行計画の作成を事前に済ませられるため、処理が速くなります。",
-    "example": "「月末締め処理」を登録しておき、アプリからは1回の呼出しで数十のSQLを実行します。",
     "related": [],
     "criteria": [
       {
@@ -5786,7 +5690,6 @@ export const terms: Term[] = [
     "reading": "Database recovery",
     "category": "データベース",
     "definition": "障害によって失われたり不整合になったりしたデータベースを、バックアップやログなどを用いて正しい状態に戻すことです。",
-    "example": "ディスク障害後、バックアップと更新ログを使ってデータを復元します。",
     "related": [
       "rollback",
       "rollforward",
@@ -5811,7 +5714,6 @@ export const terms: Term[] = [
     "reading": "Rollback",
     "category": "データベース",
     "definition": "トランザクションの処理による更新を取り消し、処理前の状態に戻すことです。障害回復では更新前のログなどを使います。",
-    "example": "振込処理の途中で失敗したので、口座残高の更新を取り消します。",
     "related": [
       "db-recovery",
       "rollforward",
@@ -5836,7 +5738,6 @@ export const terms: Term[] = [
     "reading": "Rollforward",
     "category": "データベース",
     "definition": "バックアップなどから戻したデータに更新後のログを適用し、確定済みの更新を再現することです。",
-    "example": "前日のバックアップを戻し、その後の確定済みの更新ログを適用します。",
     "related": [
       "db-recovery",
       "rollback",
@@ -5861,7 +5762,6 @@ export const terms: Term[] = [
     "reading": "Checkpoint",
     "category": "データベース",
     "definition": "障害回復を効率よく行うために、データベースの更新状況を記録する処理上の区切りです。回復時に確認するログの範囲を絞る基準になります。",
-    "example": "障害回復では、チェックポイントの情報を基に必要なログを確認します。",
     "related": [
       "db-recovery",
       "rollback",
@@ -5886,7 +5786,6 @@ export const terms: Term[] = [
     "reading": "Commit",
     "category": "データベース",
     "definition": "トランザクションの処理結果を確定し、データベースへの更新を正式に反映させることです。",
-    "example": "振込元と振込先の残高更新が両方終わったら、コミットして確定します。",
     "related": [
       "db-recovery",
       "rollback",
@@ -5911,7 +5810,6 @@ export const terms: Term[] = [
     "reading": "Transaction",
     "category": "データベース",
     "definition": "データベースなどで、関連する複数の処理を一まとまりの仕事として扱う単位です。",
-    "example": "振込元の残高減少と振込先の残高増加を、一つの処理単位として扱います。",
     "related": [
       "db-recovery",
       "rollback",
@@ -5939,7 +5837,6 @@ export const terms: Term[] = [
     "reading": "Packet",
     "category": "ネットワーク",
     "definition": "ネットワークで送るデータを一定の大きさに分割し、宛先などの制御情報（ヘッダー）を付けたものです。送信時間はデータ量（ビット数）を回線速度で割って求め、1バイトは8ビットです。",
-    "example": "1,500バイトのパケットを100Mビット/秒で送ると、1,500×8÷10⁸＝120マイクロ秒かかります。",
     "related": [],
     "criteria": [
       {
@@ -5968,7 +5865,6 @@ export const terms: Term[] = [
     "reading": "Local Area Network",
     "category": "ネットワーク",
     "definition": "建物やフロアなど限られた範囲のコンピュータを結ぶネットワークです。有線LANは主にイーサネット、無線LANはIEEE 802.11で構成し、広い範囲を結ぶWANと区別します。",
-    "example": "社内のPCとプリンタをスイッチにつなぎ、ファイルや印刷を共有します。",
     "related": [
       "ethernet"
     ],
@@ -5993,7 +5889,6 @@ export const terms: Term[] = [
     "reading": "Web server",
     "category": "ネットワーク",
     "definition": "HTTP（HTTPS）でブラウザからの要求を受け、HTMLや画像などのコンテンツを返すサーバです。前段にリバースプロキシや負荷分散装置を置くことがあります。",
-    "example": "ブラウザで社外向けサイトを開くと、Webサーバがトップページを返します。",
     "related": [
       "reverse-proxy"
     ],
@@ -6033,7 +5928,6 @@ export const terms: Term[] = [
     "reading": "Virtual Private Network",
     "category": "ネットワークセキュリティ",
     "definition": "インターネットなどの共有の回線上に、暗号化や認証を使って仮想的な専用回線を作る技術です。元のパケットを別のパケットで包むトンネリングを使います。IPsecはネットワーク層、L2TPはデータリンク層のフレームを運び、SSL/TLSを使うものもあります。",
-    "example": "在宅勤務のPCからVPNで社内ネットワークにつなぎ、社内システムを使います。",
     "related": [
       "ipsec"
     ],
@@ -6067,7 +5961,6 @@ export const terms: Term[] = [
     "reading": "Open Systems Interconnection reference model",
     "category": "ネットワーク",
     "definition": "通信の機能を7つの層に分けたモデルです。下から物理層、データリンク層、ネットワーク層、トランスポート層、セション層、プレゼンテーション層、アプリケーション層です。",
-    "example": "IPはネットワーク層、TCPはトランスポート層、イーサネットはデータリンク層の規約です。",
     "related": [],
     "criteria": [
       {
@@ -6104,7 +5997,6 @@ export const terms: Term[] = [
     "reading": "Ethernet",
     "category": "ネットワーク",
     "definition": "有線LANの代表的な規格（IEEE 802.3）です。データをフレームという単位で送り、宛先はMACアドレスで指定します。上位のIPパケットはフレームの中にカプセル化されます。",
-    "example": "イーサネットフレームの中にIPパケット、その中にTCPセグメントが入っています。",
     "related": [
       "mac-address"
     ],
@@ -6141,7 +6033,6 @@ export const terms: Term[] = [
     "reading": "Media Access Control address",
     "category": "ネットワーク",
     "definition": "ネットワーク機器のインタフェースに割り当てる48ビットの物理アドレスです。同じLAN内での通信に使い、IPアドレスからMACアドレスを調べるのがARPです。調べた結果はARPキャッシュに保存され、arpコマンドで確認できます。",
-    "example": "PCは宛先IPに対応するMACアドレスをARPで問い合わせ、そのMACアドレス宛てにフレームを送ります。",
     "related": [
       "ethernet"
     ],
@@ -6169,7 +6060,6 @@ export const terms: Term[] = [
     "reading": "Internet Protocol address",
     "category": "ネットワーク",
     "definition": "ネットワーク層で通信相手を識別するアドレスです。IPv4は32ビットで、ネットワーク部とホスト部に分かれます。インターネットで一意なグローバルIPアドレスと、組織内で使うプライベートIPアドレスがあります。",
-    "example": "192.168.1.10 はプライベートIPアドレスで、インターネットへはNATでグローバルIPアドレスに変換して出ます。",
     "related": [
       "subnet-mask"
     ],
@@ -6202,8 +6092,7 @@ export const terms: Term[] = [
     ],
     "reading": "Subnet mask",
     "category": "ネットワーク",
-    "definition": "IPアドレスのうち、どこまでがネットワーク（サブネットワーク）部かを示す値です。IPアドレスとの論理積をとるとサブネットワークのアドレスが求まります。サブネットごとに長さを変えるのが可変長サブネットマスクです。",
-    "example": "172.16.35.20 と 255.255.240.0 の論理積をとると、サブネットワークアドレスは 172.16.32.0 です。",
+    "definition": "IPv4アドレスのネットワーク部を1、ホスト部を0で示す値です。どこまでがネットワーク部かを判別するために使います。",
     "related": [
       "ip-address"
     ],
@@ -6249,7 +6138,6 @@ export const terms: Term[] = [
     "reading": "Port number",
     "category": "ネットワーク",
     "definition": "TCPやUDPで、同じコンピュータ上の通信相手のアプリケーションを識別する番号です。Webは80や443、メール送信は25や587のように、よく使うサービスには決まった番号があります。",
-    "example": "Webブラウザは宛先ポート443でHTTPSサーバにつなぎ、送信元ポートには空いている番号を使います。",
     "related": [],
     "criteria": [
       {
@@ -6287,7 +6175,6 @@ export const terms: Term[] = [
     "reading": "Handover",
     "category": "ネットワーク",
     "definition": "移動中も通信を継続するため、端末が接続する基地局などを切り替える仕組みです。",
-    "example": "電車で移動しながら通話していても、ハンドオーバーで途切れずに話し続けられます。",
     "related": [
       "roaming",
       "tethering",
@@ -6308,7 +6195,6 @@ export const terms: Term[] = [
     "reading": "Network commands",
     "category": "ネットワーク",
     "definition": "ネットワークの設定・到達性・接続状態などを確認し、通信障害の切り分けに使うコマンドの総称です。確認したい対象によって使うコマンドを選びます。",
-    "example": "接続できない原因を調べるため、自端末の設定と相手への到達性をそれぞれ確認します。",
     "related": [
       "mac-address",
       "ping",
@@ -6334,7 +6220,6 @@ export const terms: Term[] = [
     "reading": "Carrier Sense Multiple Access with Collision Detection",
     "category": "ネットワーク",
     "definition": "共有型のイーサネットで使われたアクセス制御方式です。送信前に回線が空いているか確認し、送信中に衝突を検知したら、ランダムな時間待って再送します。トークンを持つ端末だけが送信するトークンリング・トークンバスとは方式が異なります。",
-    "example": "2台が同時に送信して衝突すると、それぞれ乱数で決めた時間待ってから再送します。",
     "related": [],
     "criteria": [
       {
@@ -6364,7 +6249,6 @@ export const terms: Term[] = [
     "reading": "Carrier Sense Multiple Access with Collision Avoidance",
     "category": "ネットワーク",
     "definition": "無線LANで使うアクセス制御方式です。無線では送信中に衝突を検知できないため、回線が空いても一定時間とランダムな時間待ってから送信して衝突を避け、受信側からのACKで届いたことを確認します。",
-    "example": "複数のスマートフォンが同じアクセスポイントに送るとき、それぞれ待ち時間をずらして送信します。",
     "related": [
       "csma-cd"
     ],
@@ -6395,7 +6279,6 @@ export const terms: Term[] = [
     "reading": "Internet Protocol version 6",
     "category": "ネットワーク",
     "definition": "128ビットのアドレスを使うインターネットプロトコルです。IPv4のアドレス枯渇を解消し、ヘッダーを簡素化しました。IPsecの利用を前提に設計された点も特徴です。",
-    "example": "2001:db8::1 のように16ビットずつ16進数で表し、0の連続は::で省略します。",
     "related": [
       "ip-address",
       "ipsec"
@@ -6427,7 +6310,6 @@ export const terms: Term[] = [
     "reading": "Point-to-Point Protocol",
     "category": "ネットワーク",
     "definition": "2点間を結んでデータを送るデータリンク層のプロトコルです。リンクの確立や認証（PAP・CHAP）、IPアドレスの割当てなどを行い、ダイヤルアップやPPPoEによるインターネット接続で使われました。",
-    "example": "PPPoEでは、イーサネットの上でPPPを使って利用者を認証し、接続します。",
     "related": [
       "osi-model"
     ],
@@ -6452,7 +6334,6 @@ export const terms: Term[] = [
     "reading": "Secure Shell",
     "category": "ネットワークセキュリティ",
     "definition": "ネットワーク越しにほかのコンピュータへ安全にログインし、コマンドを実行するためのプロトコルです。通信を暗号化し、サーバとの間で公開鍵認証などを行います。アプリケーション層で動作し、ポート22を使います。",
-    "example": "管理者は自分のPCからSSHでサーバに接続し、公開鍵認証でログインして設定を変更します。",
     "related": [],
     "criteria": [
       {
@@ -6489,7 +6370,6 @@ export const terms: Term[] = [
     "reading": "Multicast",
     "category": "ネットワーク",
     "definition": "特定のグループに属する複数の宛先に、1回の送信でデータを届ける通信です。1対1はユニキャスト、ネットワーク内の全員に送るのはブロードキャストです。RIP-2やOSPFは経路情報の交換にマルチキャストを使います。",
-    "example": "社内の会議映像を、視聴を申し込んだPCのグループにだけマルチキャストで配信します。",
     "related": [],
     "criteria": [
       {
@@ -6522,7 +6402,6 @@ export const terms: Term[] = [
     "reading": "Routing Information Protocol",
     "category": "ネットワーク",
     "definition": "ホップ数（経由するルータの数）で経路を選ぶディスタンスベクタ型のルーティングプロトコルです。30秒ごとに経路表を隣接ルータに送ります。RIP-2では可変長サブネットマスクや認証、マルチキャストでの送信に対応しました。",
-    "example": "宛先までのルータが3台の経路と5台の経路があれば、3台の経路を選びます。",
     "related": [
       "ospf"
     ],
@@ -6566,7 +6445,6 @@ export const terms: Term[] = [
     "reading": "Dynamic Host Configuration Protocol",
     "category": "ネットワーク",
     "definition": "ネットワークに接続した端末に、IPアドレスやデフォルトゲートウェイ、DNSサーバなどの設定を自動で配布するプロトコルです。端末は最初にブロードキャストでDHCPサーバを探します。",
-    "example": "社内LANにPCをつなぐと、DHCPサーバから自動でIPアドレスが割り当てられます。",
     "related": [],
     "criteria": [
       {
@@ -6606,7 +6484,6 @@ export const terms: Term[] = [
     "reading": "Domain Name System resource records",
     "category": "ネットワーク",
     "definition": "DNSで名前に対応する情報を保持するデータです。IPアドレス、メールの配送先、別名など、情報の用途に応じた種類のレコードを設定します。",
-    "example": "example.jp 宛てのメールは、MXレコードに書かれたメールサーバに届けられます。",
     "related": [
       "dns"
     ],
@@ -6637,7 +6514,6 @@ export const terms: Term[] = [
     "reading": "Hypertext Transfer Protocol status codes",
     "category": "Webセキュリティ",
     "definition": "HTTP応答で、リクエストの処理結果を示す3桁のコードです。先頭の数字によって成功・リダイレクト・エラーなどに分類されます。",
-    "example": "存在しないページは404 Not Found、ログインが必要なページへは302で誘導、サーバ内部の異常は500になります。",
     "related": [],
     "criteria": [
       {
@@ -6663,7 +6539,6 @@ export const terms: Term[] = [
     "reading": "Asynchronous JavaScript and Extensible Markup Language",
     "category": "Webセキュリティ",
     "definition": "ブラウザ上のJavaScriptが、ページ全体を読み直さずにサーバと非同期に通信し、受け取ったデータでDOMを書き換えて画面の一部を更新する技術です。",
-    "example": "地図をドラッグすると、ページを読み直さずに周辺の地図画像だけが読み込まれます。",
     "related": [
       "dom-sax"
     ],
@@ -6699,7 +6574,6 @@ export const terms: Term[] = [
     "reading": "Cascading Style Sheets",
     "category": "Webセキュリティ",
     "definition": "HTMLで記述した文書の見た目（色・大きさ・配置など）を指定する言語です。文書の構造（HTML）と見た目（CSS）を分けて管理できます。",
-    "example": "h1 { color: navy; } と書くと、見出しがすべて紺色になります。",
     "related": [],
     "criteria": [
       {
@@ -6731,7 +6605,6 @@ export const terms: Term[] = [
     "reading": "Virtual Local Area Network",
     "category": "ネットワークセキュリティ",
     "definition": "物理的な配線とは別に、スイッチの設定で論理的にLANを分割する技術です。ポートごとに固定でVLANを割り当てるのがスタティックVLAN、利用者の認証結果に応じて割り当てるのが認証VLANです。",
-    "example": "同じフロアでも経理部のPCだけを別のVLANにして、他部署から直接通信できないようにします。",
     "related": [
       "ieee8021x"
     ],
@@ -6765,7 +6638,6 @@ export const terms: Term[] = [
     "reading": "Internet Protocol masquerade / Network Address Port Translation",
     "category": "ネットワークセキュリティ",
     "definition": "複数の端末のプライベートIPアドレスとポート番号を、1つのグローバルIPアドレスと別のポート番号に変換してインターネットに接続する技術（NAPT）です。外部から内部の端末に直接アクセスされにくくなります。",
-    "example": "家庭のルータが、スマートフォンとPCの通信を1つのグローバルIPアドレスでまとめて送ります。",
     "related": [
       "ip-address"
     ],
@@ -6795,7 +6667,6 @@ export const terms: Term[] = [
     "reading": "Free address",
     "category": "経営管理",
     "definition": "社員の固定席を設けず、出社した人が空いている席を自由に使う働き方です。座席の利用効率が上がり部署を超えた交流が増える一方、どの席からでも所属部署のネットワークに安全につながる仕組み（認証VLANなど）が必要です。",
-    "example": "出社率が6割の部署では、席数を人数より減らしてフリーアドレス制にします。",
     "related": [
       "vlan"
     ],
@@ -6826,7 +6697,6 @@ export const terms: Term[] = [
     "reading": "Domain name",
     "category": "ネットワーク",
     "definition": "インターネット上の組織やサービスを識別する名前です。DNSでIPアドレスなどに対応づけられます。不正な利益を得る目的で他人の商品名などと同一・類似のドメイン名を取得・使用することは、不正競争防止法で禁止されています。",
-    "example": "有名ブランドに似たドメイン名を取って高値で売りつける行為は、不正競争に当たります。",
     "related": [
       "dns"
     ],
@@ -6860,7 +6730,6 @@ export const terms: Term[] = [
     "reading": "Cyber Kill Chain",
     "category": "セキュリティ運用",
     "definition": "標的型攻撃の流れを、偵察→武器化→デリバリ（配送）→エクスプロイト（攻撃）→インストール→C&C（遠隔操作）→目的の実行の7段階に分けたモデルです。どこかの段階で連鎖を断ち切れば被害を防げる、という考え方で対策を整理します。",
-    "example": "メールの添付ファイルでマルウェアを送り込む段階がデリバリ、脆弱性を突いて実行させる段階がエクスプロイトです。",
     "related": [
       "mitre-attack"
     ],
@@ -6894,7 +6763,6 @@ export const terms: Term[] = [
     "reading": "Exploit",
     "category": "攻撃手法",
     "definition": "ソフトウェアの脆弱性を突いて、攻撃者の意図した動作（任意コードの実行や権限昇格など）を起こさせる攻撃、またはそのためのコード（エクスプロイトコード）です。",
-    "example": "公開された脆弱性のエクスプロイトコードが出回ると、修正プログラムを当てていないサーバが次々に攻撃されます。",
     "related": [
       "vulnerability"
     ],
@@ -6907,7 +6775,8 @@ export const terms: Term[] = [
       {
         "id": "code",
         "title": "そのための攻撃コードをエクスプロイトコードという",
-        "hint": "エクスプロイトコードとは？"
+        "hint": "エクスプロイトコードとは？",
+        "level": "deep"
       },
       {
         "id": "patch",
@@ -6927,7 +6796,6 @@ export const terms: Term[] = [
     "reading": "Vulnerability",
     "category": "セキュリティ運用",
     "definition": "ソフトウェアの不具合や設定の不備など、攻撃に悪用され得るセキュリティ上の弱点です。発見・公表・修正・適用の流れで管理し、CVEなどの識別子で共有されます。",
-    "example": "Webアプリの入力チェック漏れは、SQLインジェクションの脆弱性になります。",
     "related": [
       "cve",
       "sbom"
@@ -6965,7 +6833,6 @@ export const terms: Term[] = [
     "reading": "Malware",
     "category": "攻撃手法",
     "definition": "ウイルス、ワーム、トロイの木馬、ランサムウェア、スパイウェアなど、悪意を持って作られたソフトウェアの総称です。メールの添付ファイルや不正なWebサイト、脆弱性を通じて感染します。",
-    "example": "請求書を装った添付ファイルを開くと、マルウェアが情報を外部に送信し始めます。",
     "related": [
       "ransomware",
       "botnet"
@@ -6991,7 +6858,6 @@ export const terms: Term[] = [
     "reading": "Ransomware",
     "category": "攻撃手法",
     "definition": "感染したコンピュータのファイルを暗号化して使えなくし、元に戻すことと引き換えに身代金を要求するマルウェアです。近年は暗号化の前にデータを盗み、公開すると脅す二重恐喝が主流です。",
-    "example": "VPN装置の脆弱性から侵入され、社内のファイルサーバがすべて暗号化されました。",
     "related": [
       "malware"
     ],
@@ -7022,7 +6888,6 @@ export const terms: Term[] = [
     "reading": "Business Email Compromise",
     "category": "攻撃手法",
     "definition": "取引先や経営者になりすました電子メールで、偽の口座に送金させる詐欺です。マルウェアを使わず、事前に盗み見たメールのやり取りなどを利用するため、技術的な検知が難しいのが特徴です。",
-    "example": "取引先を装って「振込先口座が変わりました」というメールが届き、偽の口座に代金を振り込んでしまいます。",
     "related": [
       "deepfake"
     ],
@@ -7047,7 +6912,6 @@ export const terms: Term[] = [
     "reading": "Deep web",
     "category": "攻撃手法",
     "definition": "認証が必要なページや検索結果に登録されないページなど、一般的な検索エンジンでは見つけられないWeb上の情報の領域です。",
-    "example": "会員制サイトのマイページはディープウェブ、Torでしか開けない闇市場はダークウェブです。",
     "related": [],
     "criteria": [
       {
@@ -7069,7 +6933,6 @@ export const terms: Term[] = [
     "reading": "Server certificate",
     "category": "暗号・認証",
     "definition": "TLS通信で接続先のサーバーを認証するために、サーバーが提示するデジタル証明書です。サーバーのドメイン名などと公開鍵を結び付け、認証局の署名によってその対応を確認できるようにします。",
-    "example": "HTTPSのWebサイトを開くと、ブラウザは提示された証明書の署名・有効期限・接続先ドメイン名などを検証して、接続先を確認します。",
     "related": [
       "pki",
       "tls",
@@ -7093,7 +6956,6 @@ export const terms: Term[] = [
     "reading": "Client certificate",
     "category": "暗号・認証",
     "definition": "接続してきた利用者や端末を認証するために、クライアント側が提示するデジタル証明書です。対応する秘密鍵を持っていることを示して、サービスへのアクセスなどで本人や端末を確認してもらいます。",
-    "example": "社内システムへの接続時に、会社が配布したクライアント証明書を端末から提示して、その端末や利用者であることを認証してもらいます。",
     "related": [
       "certificates",
       "pki"
@@ -7115,7 +6977,6 @@ export const terms: Term[] = [
     "reading": "Code signing certificate",
     "category": "暗号・認証",
     "definition": "ソフトウェアへのディジタル署名を検証し、発行元を確認するための証明書です。対応する秘密鍵でプログラムに署名し、利用者は証明書の公開鍵で検証して、発行元と署名後の改ざんの有無を確認します。",
-    "example": "配布するインストーラに署名し、ダウンロードした利用者が発行元と改ざんの有無を確認できるようにします。",
     "related": [
       "digital-signature",
       "pki"
@@ -7140,7 +7001,6 @@ export const terms: Term[] = [
     "reading": "Extended Validation certificate",
     "category": "暗号・認証",
     "definition": "申請した組織の法的な実在性やドメインの利用権限などを、認証局が厳格に確認して発行するサーバー証明書です。EVはExtended Validationの略で、発行前の組織確認を重視した証明書です。",
-    "example": "企業がWebサイト用のEV SSL証明書を取得するとき、認証局は組織の登記情報や申請者の権限なども確認します。",
     "related": [
       "certificates",
       "pki"
@@ -7165,7 +7025,6 @@ export const terms: Term[] = [
     "reading": "Confidentiality, Integrity, Availability",
     "category": "セキュリティ運用",
     "definition": "情報を守るための基本的な3つの性質である、機密性・完全性・可用性の総称です。英語の頭文字からCIAとも呼びます。",
-    "example": "情報を秘密に保つこと、正確な状態を守ること、必要なときに利用できることの3つを考えます。",
     "related": [
       "confidentiality",
       "integrity",
@@ -7191,7 +7050,6 @@ export const terms: Term[] = [
     "reading": "Confidentiality",
     "category": "セキュリティ運用",
     "definition": "許可されていない人や組織、処理などに、情報を使わせたり開示したりしない性質です。",
-    "example": "顧客情報を閲覧できる担当者を限定します。",
     "related": [
       "security-properties",
       "least-privilege"
@@ -7211,7 +7069,6 @@ export const terms: Term[] = [
     "reading": "Integrity",
     "category": "セキュリティ運用",
     "definition": "情報が正確で欠落のない状態に保たれる性質です。不正な変更や破壊などによって、情報が損なわれるのを防ぎます。",
-    "example": "売上データが不正に書き換えられたり、一部欠けたりしないようにします。",
     "related": [
       "security-properties",
       "hash",
@@ -7232,7 +7089,6 @@ export const terms: Term[] = [
     "reading": "Availability",
     "category": "セキュリティ運用",
     "definition": "認可された利用者などが、必要なときに情報やシステムへアクセスし、利用できる性質です。",
-    "example": "必要な業務時間にシステムを使えるように備えます。",
     "related": [
       "security-properties",
       "availability"
@@ -7252,7 +7108,6 @@ export const terms: Term[] = [
     "reading": "Authenticity",
     "category": "セキュリティ運用",
     "definition": "人や機器、情報などが、それ自身の主張するとおりのものであるという性質です。名乗っている主体が本物であることなどを指します。",
-    "example": "利用者が他人を名乗っているのではなく、本人であることを確かめます。",
     "related": [
       "entity",
       "reliability",
@@ -7273,7 +7128,6 @@ export const terms: Term[] = [
     "reading": "Reliability",
     "category": "セキュリティ運用",
     "definition": "意図した行動と結果が一貫しているという性質です。ここでは、情報セキュリティの用語としての信頼性を扱います。",
-    "example": "同じ条件で処理すると、意図した動作と結果が一貫して得られます。",
     "related": [
       "authenticity"
     ],
@@ -7292,7 +7146,6 @@ export const terms: Term[] = [
     "reading": "Accountability",
     "category": "セキュリティ運用",
     "definition": "ある主体が行った動作を、その主体に一意にたどれる性質です。誰がどの操作をしたかを特定できるようにします。",
-    "example": "利用者IDと操作内容をログに記録し、実行した利用者を特定できるようにします。",
     "related": [
       "entity",
       "non-repudiation"
@@ -7312,7 +7165,6 @@ export const terms: Term[] = [
     "reading": "Non-repudiation",
     "category": "セキュリティ運用",
     "definition": "ある事象や行為が実際に起きたことと、その主体を後から証明できるようにする性質です。実行した主体が、その行為をしていないと否定することを防ぎます。",
-    "example": "送信者が後から送っていないと否定できないように、署名などの証拠を残します。",
     "related": [
       "digital-signature",
       "accountability"
@@ -7332,7 +7184,6 @@ export const terms: Term[] = [
     "reading": "Entity",
     "category": "セキュリティ運用",
     "definition": "ここでは、人・組織・機器・プロセスなど、認証やアクセス制御などの対象として識別する実体を指します。",
-    "example": "システムにログインする利用者や、通信相手の端末を識別します。",
     "related": [
       "authenticity",
       "authorization"
@@ -7352,7 +7203,6 @@ export const terms: Term[] = [
     "reading": "Authorization",
     "category": "アクセス制御",
     "definition": "利用者やアプリケーションなどに、どの資源に対してどの操作を行う権限を認めるかを決めることです。アクセス制御は、この権限に基づいて操作を許可・拒否します。",
-    "example": "ログインした社員（認証）に、自部署のフォルダだけ書込みを許す（認可）。",
     "related": [
       "least-privilege"
     ],
@@ -7376,8 +7226,7 @@ export const terms: Term[] = [
     "name": "S/MIME",
     "reading": "Secure/Multipurpose Internet Mail Extensions",
     "category": "メールセキュリティ",
-    "definition": "公開鍵暗号とデジタル証明書を使って、電子メールの本文を暗号化したり、デジタル署名を付けたりする規格です。送信者のなりすましや改ざん、盗聴を防げます。",
-    "example": "取引先の公開鍵（証明書）でメールを暗号化し、自分の秘密鍵で署名して送ります。",
+    "definition": "デジタル証明書を使い、電子メールを暗号化したり、デジタル署名を付けたりする規格です。暗号化には受信者の証明書の公開鍵を使い、署名は送信者の秘密鍵で作って改ざんやなりすましを検知します。",
     "related": [
       "digital-signature",
       "dkim"
@@ -7408,7 +7257,6 @@ export const terms: Term[] = [
     "reading": "Open Source Software",
     "category": "セキュリティ運用",
     "definition": "ソースコードが公開され、利用・改変・再配布が許されたソフトウェアです。ライセンスの条件（著作権表示、ソース公開の義務など）を守る必要があり、使っているOSSの脆弱性を管理するためにSBOMが役立ちます。",
-    "example": "Webサーバに使っているOSSのライブラリに脆弱性が見つかったら、SBOMで影響のある製品をすぐ特定します。",
     "related": [
       "sbom"
     ],
@@ -7444,7 +7292,6 @@ export const terms: Term[] = [
     "reading": "Directory traversal",
     "category": "Webセキュリティ",
     "definition": "ファイル名を受け取るWebアプリに「../」などを含む値を渡して、公開を想定していないディレクトリのファイルを読み出す攻撃です。外部から渡されたファイル名を直接使わない、ファイル名だけを取り出して検証する、といった対策をとります。",
-    "example": "?file=../../etc/passwd を指定され、サーバのパスワードファイルが表示されてしまいます。",
     "related": [
       "os-command-injection"
     ],
@@ -7477,7 +7324,6 @@ export const terms: Term[] = [
     "reading": "Buffer overflow",
     "category": "Webセキュリティ",
     "definition": "確保した領域（バッファ）の大きさを超えるデータを書き込み、隣のメモリ領域を上書きしてしまう脆弱性です。戻り先アドレスを書き換えられると、攻撃者のコードを実行されます。",
-    "example": "16文字分しか用意していない領域に100文字の入力を書き込み、戻り先アドレスが書き換えられます。",
     "related": [],
     "criteria": [
       {
@@ -7512,7 +7358,6 @@ export const terms: Term[] = [
     "reading": "Signature",
     "category": "ネットワークセキュリティ",
     "definition": "IDSやウイルス対策ソフトで、既知の攻撃やマルウェアの特徴をパターンとして登録したものです。通信やファイルをシグネチャと照合して検知します。既知の攻撃は正確に検知できますが、未知の攻撃は見逃しやすくなります。",
-    "example": "特定のマルウェアが通信に含む文字列をシグネチャとして登録し、一致したら警告します。",
     "related": [
       "ids-ips"
     ],
@@ -7550,7 +7395,6 @@ export const terms: Term[] = [
     "reading": "Message Authentication Code (MAC)",
     "category": "暗号・認証",
     "definition": "メッセージと共通の秘密鍵から計算する短い値です。受信者が同じ鍵で計算し直して一致すれば、メッセージが改ざんされておらず、鍵を持つ相手から送られたことを確認できます。HMACが代表です。",
-    "example": "送信者と受信者が同じ鍵を持ち、受信者はMACが一致することで改ざんがないと判断します。",
     "related": [
       "hash",
       "digital-signature"
@@ -7581,7 +7425,6 @@ export const terms: Term[] = [
     "reading": "One-time password",
     "category": "暗号・認証",
     "definition": "1回限り有効なパスワードです。時刻や回数をもとに認証デバイスやアプリが生成したり、SMSなどで届けたりします。盗聴されても再利用できないため、リプレイ攻撃に強くなります。",
-    "example": "スマートフォンのアプリに30秒ごとに表示される6桁の数字を入力してログインします。",
     "related": [
       "mfa"
     ],
@@ -7616,7 +7459,6 @@ export const terms: Term[] = [
     "reading": "Risk-based authentication",
     "category": "暗号・認証",
     "definition": "いつもと違う端末・場所・時間帯からのアクセスなど、リスクが高いと判断したときだけ追加の認証を求める方式です。3Dセキュア2.0では、カード会社が取引のリスクを評価し、低リスクなら追加の本人認証なしで決済します。",
-    "example": "海外のIPアドレスから深夜にログインされたときだけ、ワンタイムパスワードの入力を求めます。",
     "related": [
       "mfa"
     ],
@@ -7652,7 +7494,6 @@ export const terms: Term[] = [
     "reading": "Completely Automated Public Turing test to tell Computers and Humans Apart",
     "category": "暗号・認証",
     "definition": "ゆがんだ文字の読取りや画像の選択など、人間には簡単でプログラムには難しい課題を出して、操作しているのが人間かどうかを判定する仕組みです。自動化されたアカウント作成や不正ログインの試行を防ぎます。",
-    "example": "ログインに5回失敗したら、信号機の写っている画像を選ぶ課題を表示します。",
     "related": [],
     "criteria": [
       {
@@ -7686,8 +7527,7 @@ export const terms: Term[] = [
     "name": "公開鍵暗号方式",
     "reading": "Public-key cryptography",
     "category": "暗号・認証",
-    "definition": "暗号化と復号に異なる鍵を使う方式です。誰でも使える公開鍵で暗号化し、本人だけが持つ秘密鍵で復号します。鍵を事前に安全に共有しなくてよく、n人が互いに通信するのに必要な鍵は2n個で済みます。共通鍵暗号方式は同じ鍵で暗号化・復号し、n(n−1)/2個の鍵が必要です。",
-    "example": "100人が互いに暗号通信するなら、公開鍵暗号方式は200個、共通鍵暗号方式は4,950個の鍵が必要です。",
+    "definition": "暗号化と復号に異なる鍵（公開鍵と秘密鍵）を使う方式です。受信者の公開鍵で暗号化し、対応する受信者の秘密鍵で復号します。",
     "related": [
       "pki",
       "digital-signature",
@@ -7718,7 +7558,7 @@ export const terms: Term[] = [
       },
       {
         "id": "trust",
-        "title": "公開鍵が本人のものか確かめるためにPKIが必要",
+        "title": "公開鍵のすり替えを防ぐため、証明書などで持ち主との対応を確認する",
         "hint": "公開鍵の正しさは誰が保証しますか？",
         "level": "deep"
       }
@@ -7737,7 +7577,6 @@ export const terms: Term[] = [
     "reading": "Computer Security Incident Response Team",
     "category": "セキュリティ運用",
     "definition": "セキュリティインシデントに対応するための組織（チーム）です。インシデントの受付・分析・対応・再発防止を行います。対象により、組織内CSIRT、国の窓口となるナショナルCSIRT、CSIRT間の調整を行うコーディネーションセンター（日本ではJPCERT/CC）などに分類されます。",
-    "example": "社内でマルウェア感染が見つかると、CSIRTが感染端末の隔離や原因の調査、関係者への連絡を指揮します。",
     "related": [
       "psirt"
     ],
@@ -7768,7 +7607,6 @@ export const terms: Term[] = [
     "reading": "Security Operation Center",
     "category": "セキュリティ運用",
     "definition": "ネットワークや機器のログを24時間監視し、サイバー攻撃の兆候を検知・分析して通知する組織です。SIEMなどのツールを使い、検知したインシデントはCSIRTに引き継ぎます。",
-    "example": "SOCが深夜に不審な外部通信を検知し、CSIRTに連絡して調査を依頼します。",
     "related": [
       "csirt",
       "siem"
@@ -7809,7 +7647,6 @@ export const terms: Term[] = [
     "reading": "Security Information and Event Management",
     "category": "セキュリティ運用",
     "definition": "サーバ、ネットワーク機器、セキュリティ製品などのログを一か所に集め、相関分析して不審な事象を検知・通知する仕組みです。不正アクセスの早期発見や、インシデント発生後の調査に使います。",
-    "example": "同じアカウントで短時間に東京と海外からログインされたことを、複数の機器のログを突き合わせて検知します。",
     "related": [
       "soc",
       "digital-forensics"
@@ -7846,7 +7683,6 @@ export const terms: Term[] = [
     "reading": "WHOIS",
     "category": "セキュリティ運用",
     "definition": "ドメイン名やIPアドレスの登録者などの情報を検索できるサービスです。不審な通信先や攻撃元の管理者を調べるときに使います。",
-    "example": "不審なメールの送信元ドメインをWHOISで調べると、数日前に登録されたばかりだと分かりました。",
     "related": [],
     "criteria": [
       {
@@ -7878,7 +7714,6 @@ export const terms: Term[] = [
     "reading": "Distributed Denial of Service attack",
     "category": "攻撃手法",
     "definition": "多数のコンピュータ（ボットネットなど）から一斉に大量の通信を送り、サーバや回線を過負荷にしてサービスを提供できなくするサービス妨害攻撃です。送信元が分散しているため、単純に送信元を遮断するだけでは防げません。",
-    "example": "ボットに感染した数万台のIoT機器から一斉にアクセスされ、ECサイトが閲覧できなくなりました。",
     "related": [
       "botnet",
       "syn-flood"
@@ -7915,7 +7750,6 @@ export const terms: Term[] = [
     "reading": "Password list attack",
     "category": "攻撃手法",
     "definition": "他のサービスから漏えいしたIDとパスワードの組をリストにして、別のサービスにログインを試す攻撃です。パスワードを使い回している利用者が被害に遭います。考えられる文字の組合せをすべて試すのはブルートフォース攻撃（総当たり）です。",
-    "example": "あるショッピングサイトから漏れたIDとパスワードで、銀行のサイトにログインされてしまいます。",
     "related": [
       "mfa"
     ],
@@ -7946,7 +7780,6 @@ export const terms: Term[] = [
     "reading": "Social engineering",
     "category": "攻撃手法",
     "definition": "技術ではなく人の心理的な隙や行動のミスにつけ込んで、パスワードなどの重要な情報を盗み出す手口です。なりすましの電話、肩越しののぞき見（ショルダーハッキング）、ごみ箱あさり（トラッシング）などがあります。",
-    "example": "システム部門を名乗る電話で「障害対応のためにパスワードを教えて」と聞き出します。",
     "related": [],
     "criteria": [
       {
@@ -7983,8 +7816,7 @@ export const terms: Term[] = [
     ],
     "reading": "Open relay",
     "category": "メールセキュリティ",
-    "definition": "メールサーバが、自組織と関係のない第三者どうしのメールを中継してしまうことです。迷惑メールの送信に悪用されるため、送信元か宛先のどちらかが自組織のドメインである場合だけ中継するよう設定します。",
-    "example": "社外の送信者から社外の宛先へのメールを受け付けて転送してしまうサーバは、第三者中継を許しています。",
+    "definition": "メールサーバが、許可していない第三者からのメールを外部の宛先へ中継してしまう状態です。迷惑メールの送信に悪用されます。",
     "related": [
       "submission-port"
     ],
@@ -8002,8 +7834,8 @@ export const terms: Term[] = [
       },
       {
         "id": "judge",
-        "title": "送信元・宛先とも自組織外なら中継を拒否する",
-        "hint": "中継してよいかはどう判断しますか？",
+        "title": "送信者の認証や接続元の制限で、許可した利用者だけに外部宛ての中継を認める",
+        "hint": "差出人のドメイン表記だけを信用せず、中継を許可する相手をどう確かめますか？",
         "level": "deep"
       },
       {
@@ -8024,7 +7856,6 @@ export const terms: Term[] = [
     "reading": "Certificate Revocation List (CRL)",
     "category": "暗号・認証",
     "definition": "有効期限前に失効させたデジタル証明書のシリアル番号を並べ、認証局が署名して公開するリストです。秘密鍵の漏えい（危殆化）などで証明書を使えなくしたときに、利用者はCRLやOCSPで失効していないかを確認します。",
-    "example": "サーバの秘密鍵が漏れたので証明書を失効させると、その証明書のシリアル番号がCRLに載ります。",
     "related": [
       "pki"
     ],
@@ -8054,8 +7885,7 @@ export const terms: Term[] = [
     "name": "量子暗号",
     "reading": "Quantum cryptography",
     "category": "暗号・認証",
-    "definition": "量子の性質（観測すると状態が変わる）を利用して、盗聴されると必ず分かる方法で暗号鍵を配送する技術（量子鍵配送）です。量子コンピュータでも解読できない暗号を、量子力学で実現します。量子計算機に耐える数学的な暗号である耐量子計算機暗号（PQC）とは別のものです。",
-    "example": "光子で鍵を送り、途中で盗聴されて状態が乱れていれば、その鍵を捨てます。",
+    "definition": "量子の性質を利用して、盗聴の影響を検出しながら暗号鍵を共有する技術です。代表的なものに量子鍵配送（QKD）があります。",
     "related": [
       "pqc",
       "quantum-computer"
@@ -8083,7 +7913,6 @@ export const terms: Term[] = [
     "reading": "Timing attack",
     "category": "攻撃手法",
     "definition": "暗号処理にかかる時間の違いを測定して、秘密鍵などの秘密情報を推測するサイドチャネル攻撃です。処理時間が秘密の値によって変わらない実装（定数時間の処理）で防ぎます。",
-    "example": "パスワードの比較が1文字目から順に不一致で終了する実装だと、時間の差から正しい文字を1文字ずつ推測されます。",
     "related": [
       "pqc"
     ],
@@ -8108,7 +7937,6 @@ export const terms: Term[] = [
     "reading": "Attribute certificate",
     "category": "暗号・認証",
     "definition": "公開鍵証明書の所有者に対して、役職や権限などの属性を結び付けて証明する証明書です。属性認証局が発行し、公開鍵は含まず、公開鍵証明書と組み合わせて使います。",
-    "example": "「医師である」という資格を属性証明書で示し、医療情報システムでの権限付与に使います。",
     "related": [
       "pki"
     ],
@@ -8121,7 +7949,8 @@ export const terms: Term[] = [
       {
         "id": "nokey",
         "title": "公開鍵は含まず、公開鍵証明書と組み合わせて使う",
-        "hint": "公開鍵証明書との違いは？"
+        "hint": "公開鍵証明書との違いは？",
+        "level": "deep"
       },
       {
         "id": "lifetime",
@@ -8138,7 +7967,6 @@ export const terms: Term[] = [
     "reading": "Model extraction attack",
     "category": "攻撃手法",
     "definition": "機械学習モデルに大量の入力を与えて出力を集め、その組から元のモデルと同等の機能を持つモデルを複製する攻撃です。学習データを推測するモデルインバージョン攻撃や、学習データに悪意のあるデータを混ぜるデータポイズニングとは目的が異なります。",
-    "example": "APIで公開された画像判定モデルに何万枚も問い合わせ、その結果を学習させて同じ性能のモデルを作ります。",
     "related": [
       "model-inversion",
       "data-poisoning"
@@ -8152,7 +7980,8 @@ export const terms: Term[] = [
       {
         "id": "query",
         "title": "大量の問い合わせを行う",
-        "hint": "どうやって情報を集めますか？"
+        "hint": "どうやって情報を集めますか？",
+        "level": "deep"
       },
       {
         "id": "measure",
@@ -8169,7 +7998,6 @@ export const terms: Term[] = [
     "reading": "Reverse engineering",
     "category": "攻撃手法",
     "definition": "完成した製品やプログラムを分解・解析して、その構造や仕組み、ソースコードに相当する情報を明らかにすることです。マルウェアの解析や互換製品の開発に使われる一方、ソフトウェアの使用許諾で禁止されていることもあります。",
-    "example": "マルウェアを逆アセンブルして、通信先のC&Cサーバのアドレスを突き止めます。",
     "related": [],
     "criteria": [
       {
@@ -8204,7 +8032,6 @@ export const terms: Term[] = [
     "reading": "Cryptographic Message Syntax",
     "category": "暗号・認証",
     "definition": "署名や暗号化を施したメッセージの形式を定める規格です。データ構造をASN.1で定義し、S/MIMEなどで利用されます。",
-    "example": "S/MIMEでメールの署名や暗号化データを格納する形式として使います。",
     "related": [
       "asn1",
       "xml-signature",
@@ -8225,7 +8052,6 @@ export const terms: Term[] = [
     "reading": "Abstract Syntax Notation One",
     "category": "暗号・認証",
     "definition": "通信などでやり取りするデータの型や構造を定義するための記法です。デジタル証明書やCMSなどのデータ構造の定義に使います。",
-    "example": "証明書の発行者や有効期間などの項目を、データ構造として定義します。",
     "related": [
       "cms-asn1",
       "xml-signature",
@@ -8246,7 +8072,6 @@ export const terms: Term[] = [
     "reading": "Content Delivery Network",
     "category": "ネットワーク",
     "definition": "Webコンテンツのコピーを世界各地のサーバ（エッジサーバ）に配置し、利用者に近いサーバから配信する仕組みです。表示を速くし、元のサーバの負荷を減らすほか、DDoS攻撃の緩和にも使われます。",
-    "example": "動画サイトが、日本の利用者には東京のエッジサーバから動画を配信します。",
     "related": [
       "domain-fronting",
       "ddos"
@@ -8278,7 +8103,6 @@ export const terms: Term[] = [
     "reading": "Server Name Indication",
     "category": "ネットワークセキュリティ",
     "definition": "TLSの接続開始時に、クライアントが接続したいサーバのホスト名を伝える拡張です。1つのIPアドレスで複数のドメインのHTTPSサイトを運用でき、サーバは適切な証明書を返せます。",
-    "example": "同じIPアドレスの共用サーバで、SNIに書かれたホスト名を見て a.example と b.example の証明書を使い分けます。",
     "related": [
       "tls",
       "domain-fronting"
@@ -8310,7 +8134,6 @@ export const terms: Term[] = [
     "reading": "Domain Name System reflection attack",
     "category": "攻撃手法",
     "definition": "送信元IPアドレスを攻撃対象に偽装して、オープンリゾルバなどのDNSサーバに問合せを送り、大きな応答を攻撃対象に集中させるDDoS攻撃です。小さな問合せで大きな応答を返させるため、通信量が増幅されます（DNSアンプ攻撃）。",
-    "example": "60バイトの問合せで4,000バイトの応答を返させ、攻撃対象の回線をあふれさせます。",
     "related": [
       "ddos",
       "dns"
@@ -8341,7 +8164,6 @@ export const terms: Term[] = [
     "reading": "Domain name hijacking",
     "category": "攻撃手法",
     "definition": "ドメイン名の登録情報やDNSの設定を不正に書き換えて、正規のドメイン名へのアクセスを攻撃者のサーバに誘導する攻撃です。登録事業者のアカウントの乗っ取りや、権威DNSサーバの改ざんで行われます。",
-    "example": "登録事業者の管理画面に不正ログインされ、ネームサーバの設定を書き換えられて偽サイトに誘導されました。",
     "related": [
       "dns-cache-poisoning",
       "domain-name"
@@ -8373,7 +8195,6 @@ export const terms: Term[] = [
     "reading": "Information-theoretic security",
     "category": "暗号・認証",
     "definition": "攻撃者の計算能力に制限を置かなくても、暗号文から元の情報を解読できないという安全性です。正しい条件で使うワンタイムパッドが代表例です。",
-    "example": "計算能力が無限にあっても、暗号文だけから平文を特定できません。",
     "related": [
       "computational-security",
       "dh-key-exchange",
@@ -8397,7 +8218,6 @@ export const terms: Term[] = [
     "reading": "Computational security",
     "category": "暗号・認証",
     "definition": "暗号の解読などに必要な計算が、現実的な時間や資源では実行できないことに基づく安全性です。",
-    "example": "解読に必要な計算量が非常に大きく、実用上の時間では終わりません。",
     "related": [
       "provable-security",
       "dh-key-exchange",
@@ -8421,7 +8241,6 @@ export const terms: Term[] = [
     "reading": "Diffie–Hellman key exchange",
     "category": "暗号・認証",
     "definition": "通信相手と公開情報を交換し、第三者に秘密を送らずに共通の秘密値を導くための方式です。単独では相手の認証は行いません。",
-    "example": "両者が公開値を交換し、それぞれの秘密値を使って同じ共有秘密を計算します。",
     "related": [
       "provable-security",
       "computational-security",
@@ -8435,6 +8254,12 @@ export const terms: Term[] = [
         "id": "meaning",
         "title": "公開情報の交換から共通の秘密値を導く鍵共有方式",
         "hint": "秘密値そのものを送らずに、何を共有しますか？"
+      },
+      {
+        "id": "authentication",
+        "title": "単独では相手を認証できないため、署名などで中間者攻撃を防ぐ",
+        "hint": "鍵が共有できれば、正しい相手だと確認できたことになりますか？",
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -8445,7 +8270,6 @@ export const terms: Term[] = [
     "reading": "Rivest–Shamir–Adleman",
     "category": "暗号・認証",
     "definition": "大きな整数の素因数分解の難しさを安全性の基礎とする公開鍵暗号方式です。公開鍵と秘密鍵を使い分けて暗号化や署名に利用します。",
-    "example": "公開鍵で暗号化したデータを、対応する秘密鍵で復号します。",
     "related": [
       "provable-security",
       "computational-security",
@@ -8459,6 +8283,12 @@ export const terms: Term[] = [
         "id": "meaning",
         "title": "素因数分解の難しさを基礎とする公開鍵暗号方式",
         "hint": "どの問題の難しさを利用する方式ですか？"
+      },
+      {
+        "id": "padding",
+        "title": "安全に使うには用途に合ったパディングが必要で、暗号化にはOAEP、署名にはPSSなどを使う",
+        "hint": "RSAの計算だけをそのまま暗号化や署名に使ってよいですか？",
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -8472,7 +8302,6 @@ export const terms: Term[] = [
     "reading": "Elliptic curve cryptography",
     "category": "暗号・認証",
     "definition": "楕円曲線上の離散対数問題の難しさを利用する公開鍵暗号技術です。鍵共有や署名などに使います。",
-    "example": "楕円曲線上の計算を利用して、鍵共有や署名を行います。",
     "related": [
       "provable-security",
       "computational-security",
@@ -8500,7 +8329,6 @@ export const terms: Term[] = [
     "reading": "Integrated circuit card",
     "category": "暗号・認証",
     "definition": "ICチップを埋め込んだカードです。端子を読取り機に接触させる接触型と、電波で通信する非接触型があります。ICチップ内で秘密鍵の処理を行えるため、磁気カードより偽造が困難です。",
-    "example": "交通系ICカードは非接触型、クレジットカードのICチップは接触型が一般的です。",
     "related": [
       "biometrics",
       "capacitive-sensing"
@@ -8535,7 +8363,6 @@ export const terms: Term[] = [
     "reading": "National Institute of Standards and Technology",
     "category": "セキュリティ運用",
     "definition": "米国国立標準技術研究所です。標準や技術に関する研究を行い、情報セキュリティ分野でもSP 800シリーズなどの標準・ガイドラインを公開しています。",
-    "example": "情報セキュリティ対策を検討するとき、NISTのガイドラインを参照します。",
     "related": [
       "enisa",
       "mitre-attack"
@@ -8555,7 +8382,6 @@ export const terms: Term[] = [
     "reading": "European Union Agency for Cybersecurity",
     "category": "セキュリティ運用",
     "definition": "欧州連合（EU）のサイバーセキュリティ機関です。EU域内のサイバーセキュリティの向上に向けた支援や情報提供などを行います。",
-    "example": "EUのサイバーセキュリティに関する調査報告を参照します。",
     "related": [
       "security-orgs",
       "mitre-attack"
@@ -8575,7 +8401,6 @@ export const terms: Term[] = [
     "reading": "Cloud Workload Protection Platform",
     "category": "クラウドセキュリティ",
     "definition": "クラウドなどで稼働する仮想マシンやコンテナといったワークロードを保護するための製品・機能の分類です。",
-    "example": "クラウド上のサーバーやコンテナに対する脅威を検知・防御します。",
     "related": [
       "casb",
       "cspm"
@@ -8595,7 +8420,6 @@ export const terms: Term[] = [
     "reading": "Cloud Access Security Broker",
     "category": "クラウドセキュリティ",
     "definition": "利用者によるクラウドサービスの利用状況を可視化し、組織のセキュリティ方針に従って利用を制御する仕組みです。",
-    "example": "社員が無許可で利用するクラウドサービスを検知し、利用を制御します。",
     "related": [
       "cnapp-family",
       "cspm"
@@ -8615,7 +8439,6 @@ export const terms: Term[] = [
     "reading": "Wi-Fi Protected Setup",
     "category": "ネットワークセキュリティ",
     "definition": "無線LANの接続設定を、ボタンを押すかPINを入力するだけで簡単に行える規格です。PIN方式には総当たりで突破される脆弱性があるため、使わないよう無効にすることが推奨されます。",
-    "example": "ルータのWPSボタンを押してから、プリンタのWPSボタンを押すと自動で接続されます。",
     "related": [
       "ieee8021x"
     ],
@@ -8646,7 +8469,6 @@ export const terms: Term[] = [
     "reading": "Physical access control",
     "category": "セキュリティ運用",
     "definition": "ICカードや生体認証などで、建物やサーバ室に入る人を確認・記録・制限する物理的な対策です。ITに係る全般統制の一つでもあり、共連れ（認証した人の後ろについて入る）を防ぐ仕組みも重要です。",
-    "example": "サーバ室の扉をICカードで開け、入室と退室の記録が残るようにします。",
     "related": [
       "application-control"
     ],
@@ -8671,7 +8493,6 @@ export const terms: Term[] = [
     "reading": "Firewall",
     "category": "ネットワークセキュリティ",
     "definition": "ネットワークの境界で、あらかじめ決めたルールに従って通信を許可・遮断する仕組みです。IPアドレスやポート番号で判定するパケットフィルタリング型が基本で、外部と内部の間にDMZを設けて公開サーバを置きます。",
-    "example": "外部からはWebサーバの443番ポートへの通信だけを許可し、他はすべて遮断します。",
     "related": [
       "ids-ips"
     ],
@@ -8716,7 +8537,6 @@ export const terms: Term[] = [
     "reading": "Unified Modeling Language",
     "category": "ソフトウェア設計",
     "definition": "システムの分析・設計で使うモデルの表記法を統一したものです。構造や振る舞いなど、表したい内容に応じて図を使い分けます。",
-    "example": "システムの構造を確認したいときと、処理の流れを確認したいときで、目的に合う図を使い分けます。",
     "related": [
       "oop"
     ],
@@ -8748,8 +8568,7 @@ export const terms: Term[] = [
     ],
     "reading": "Object-oriented",
     "category": "ソフトウェア設計",
-    "definition": "データとそれを操作する手続をオブジェクトとしてまとめ、オブジェクトの組合せでシステムを作る考え方です。カプセル化、継承（スーパークラスの性質をサブクラスが引き継ぐ）、多態性が特徴で、クラスから作った実体をインスタンスと呼びます。",
-    "example": "「動物」クラスを継承した「犬」クラスで、「鳴く」メソッドをオーバーライドして「ワン」と鳴くようにします。",
+    "definition": "データとそれを操作する手続をオブジェクトとしてまとめ、オブジェクトどうしのやり取りでシステムを構成する考え方です。",
     "related": [
       "uml"
     ],
@@ -8762,12 +8581,14 @@ export const terms: Term[] = [
       {
         "id": "inherit",
         "title": "サブクラスはスーパークラスの性質を継承する",
-        "hint": "継承とは？"
+        "hint": "継承とは？",
+        "level": "deep"
       },
       {
         "id": "poly",
         "title": "多態性（ポリモーフィズム）で同じ呼出しでもオブジェクトごとに異なる動作をする",
-        "hint": "同じメッセージで違う動作をする性質は？"
+        "hint": "同じメッセージで違う動作をする性質は？",
+        "level": "deep"
       },
       {
         "id": "instance",
@@ -8796,7 +8617,6 @@ export const terms: Term[] = [
     "reading": "Tuckman model",
     "category": "プロジェクト管理",
     "definition": "チームが成長する過程を、成立期（形成期）→動乱期（混乱期）→安定期（統一期）→遂行期（機能期）の段階で表したモデルです。動乱期にはメンバーの考え方の違いから対立が起き、それを乗り越えると規範ができて成果を出せるようになります。",
-    "example": "新しいプロジェクトで役割分担を巡って意見がぶつかるのは動乱期です。",
     "related": [],
     "criteria": [
       {
@@ -8825,7 +8645,6 @@ export const terms: Term[] = [
     "reading": "Person-month",
     "category": "プロジェクト管理",
     "definition": "1人が1か月働いたときの作業量を1とする、工数の単位です。期間そのものではなく、人数と期間を掛けた作業量を表します。",
-    "example": "3人が4か月働く作業量は12人月です。",
     "related": [
       "effort",
       "productivity",
@@ -8847,7 +8666,6 @@ export const terms: Term[] = [
     "reading": "Effort",
     "category": "プロジェクト管理",
     "definition": "作業に必要な労働量です。人数と作業時間・期間の積で表し、人時・人日・人月などを単位に使います。",
-    "example": "2人で5日かかる作業の工数は10人日です。",
     "related": [
       "man-month",
       "productivity",
@@ -8869,7 +8687,6 @@ export const terms: Term[] = [
     "reading": "Productivity",
     "category": "プロジェクト管理",
     "definition": "投入した資源や労力に対して、どれだけの成果を生み出したかを表す指標です。開発では単位工数当たりの成果物量などで測ります。",
-    "example": "10人日で20機能を作った場合、生産性は2機能/人日です。",
     "related": [
       "man-month",
       "effort",
@@ -8891,7 +8708,6 @@ export const terms: Term[] = [
     "reading": "Handover",
     "category": "プロジェクト管理",
     "definition": "担当が変わるときに、業務内容や作業状況、必要な知識などを次の担当者に伝えることです。",
-    "example": "途中参加した担当者に、作業手順と未完了の作業を説明します。",
     "related": [
       "man-month",
       "effort",
@@ -8913,7 +8729,6 @@ export const terms: Term[] = [
     "reading": "Labor cost",
     "category": "プロジェクト管理",
     "definition": "人の労働に対してかかる費用です。プロジェクトでは、必要な工数に単位工数当たりの単価を掛けるなどして見積もります。",
-    "example": "10人月の作業で単価が80万円/人月なら、人件費は800万円です。",
     "related": [
       "man-month",
       "effort",
@@ -8939,7 +8754,6 @@ export const terms: Term[] = [
     "reading": "Effort distribution model",
     "category": "プロジェクト管理",
     "definition": "ソフトウェア開発の各工程に、全体の工数と期間をどんな割合で配分するかを示したモデルです。工数比と期間比で表し、完了した工程から残りの工数や日数を見積もるのに使います。",
-    "example": "設計の工数比が0.3、全体の工数が100人月なら、設計に30人月を配分します。",
     "related": [
       "man-month"
     ],
@@ -8975,7 +8789,6 @@ export const terms: Term[] = [
     "reading": "Information technology service management",
     "category": "サービス管理",
     "definition": "ITサービスを計画・提供・管理・改善し、利用者や事業に価値を届けるための活動の体系です。要求に合ったサービスを提供し、その達成状況を評価して改善します。",
-    "example": "サービスの目標と実績を比べ、利用者への応答時間が目標を超えていれば運用や構成の改善を検討します。",
     "related": [
       "incident-problem"
     ],
@@ -9006,7 +8819,6 @@ export const terms: Term[] = [
     "reading": "Incident management",
     "category": "サービス管理",
     "definition": "サービスの中断や品質低下が起きたとき、できるだけ早く通常のサービスを回復させる活動です。",
-    "example": "サーバーの再起動によって業務を早く再開します。",
     "related": [
       "incident",
       "problem-management",
@@ -9028,7 +8840,6 @@ export const terms: Term[] = [
     "reading": "Incident",
     "category": "サービス管理",
     "definition": "サービスの予期しない中断や品質低下などの事象です。情報セキュリティの文脈では、不正アクセスや情報漏えいなどの事象も指します。",
-    "example": "システム停止によって利用者がサービスを使えなくなります。",
     "related": [
       "incident-problem",
       "problem-management",
@@ -9050,7 +8861,6 @@ export const terms: Term[] = [
     "reading": "Problem management",
     "category": "サービス管理",
     "definition": "インシデントの原因を調べ、根本原因の除去や回避策によって再発などを防ぐ活動です。",
-    "example": "繰り返す障害の原因を調べ、メモリリークを修正します。",
     "related": [
       "incident-problem",
       "incident",
@@ -9072,7 +8882,6 @@ export const terms: Term[] = [
     "reading": "Root cause",
     "category": "サービス管理",
     "definition": "事象や問題を引き起こしている根底の原因です。表面的な症状だけでなく、再発防止のために取り除く対象になります。",
-    "example": "再起動で一時的に直る障害の根本原因として、プログラムのメモリリークを突き止めます。",
     "related": [
       "incident-problem",
       "incident",
@@ -9098,7 +8907,6 @@ export const terms: Term[] = [
     "reading": "Service level management",
     "category": "サービス管理",
     "definition": "サービスの提供者と利用者の間で、提供するサービスの内容と品質の目標（サービスレベル目標）を合意し、SLA（サービスレベル合意書）として文書化して、達成状況を監視・報告・見直す活動です。",
-    "example": "「稼働率99.9%以上、障害の一次回答は30分以内」をSLAで合意し、毎月の実績を報告します。",
     "related": [
       "itsm"
     ],
@@ -9128,7 +8936,6 @@ export const terms: Term[] = [
     "reading": "Service availability",
     "category": "サービス管理",
     "definition": "合意したサービス提供時間のうち、実際にサービスを利用できた時間の割合です。（サービス提供時間－停止時間）÷サービス提供時間で求め、あらかじめ合意した計画停止は停止時間に含めないのが一般的です。",
-    "example": "月の提供時間が600時間で可用性99.5%なら、許容される停止時間は3時間です。",
     "related": [
       "slm",
       "availability"
@@ -9165,7 +8972,6 @@ export const terms: Term[] = [
     "reading": "Capacity management",
     "category": "サービス管理",
     "definition": "現在と将来の需要を満たせるように、ITサービスの資源や性能を計画し、監視・調整する活動です。",
-    "example": "利用者の増加を予測して、サーバーの資源と性能を計画します。",
     "related": [
       "service-continuity",
       "slm",
@@ -9186,7 +8992,6 @@ export const terms: Term[] = [
     "reading": "Service continuity management",
     "category": "サービス管理",
     "definition": "災害などの重大な事態でも、合意したレベルでサービスを継続・復旧できるように備える活動です。",
-    "example": "別拠点でサービスを復旧する計画を作り、定期的に訓練します。",
     "related": [
       "capacity-continuity",
       "slm",
@@ -9214,7 +9019,6 @@ export const terms: Term[] = [
     "reading": "System audit standards",
     "category": "システム監査",
     "definition": "経済産業省が定める、システム監査の実施に関する規範です。監査人の独立性・客観性、専門職としての正当な注意と正当な懐疑心、監査計画、監査手続と監査証拠、監査調書、報告とフォローアップなどを定めています。",
-    "example": "監査人は、被監査部門の説明をうのみにせず、正当な懐疑心を持って証拠を確かめます。",
     "related": [
       "risk-approach"
     ],
@@ -9257,7 +9061,6 @@ export const terms: Term[] = [
     "reading": "Audit procedures",
     "category": "システム監査",
     "definition": "監査意見の根拠となる監査証拠を入手・評価するために、監査人が実施する具体的な手続です。",
-    "example": "アクセス権一覧と人事情報を突き合わせ、不要な権限がないか確かめます。",
     "related": [
       "audit-evidence",
       "audit-standards",
@@ -9278,7 +9081,6 @@ export const terms: Term[] = [
     "reading": "Audit evidence",
     "category": "システム監査",
     "definition": "監査人が監査の結論や意見の根拠として用いる情報です。結論を支えるために十分かつ適切であることが求められます。",
-    "example": "権限設定の記録や操作ログを、統制が適切か判断する根拠にします。",
     "related": [
       "audit-procedure",
       "audit-standards",
@@ -9299,7 +9101,6 @@ export const terms: Term[] = [
     "reading": "Preliminary survey",
     "category": "システム監査",
     "definition": "監査対象の実態を把握し、本調査で行う監査手続を具体化するための調査です。資料の確認やヒアリングなどを行います。",
-    "example": "業務マニュアルを読んで対象の業務を理解し、本調査で確かめる事項を決めます。",
     "related": [
       "main-survey",
       "audit-procedure"
@@ -9319,7 +9120,6 @@ export const terms: Term[] = [
     "reading": "Main survey",
     "category": "システム監査",
     "definition": "監査計画などに沿って監査手続を実施し、監査証拠を入手・評価する調査です。",
-    "example": "決めた手続に従って操作ログや権限設定を確認し、統制を評価します。",
     "related": [
       "preliminary-survey",
       "audit-procedure"
@@ -9349,7 +9149,6 @@ export const terms: Term[] = [
     "reading": "Audit techniques",
     "category": "システム監査",
     "definition": "監査の目的に応じて、証拠を集めて確かめるための具体的な調査・検証の方法です。文書の確認、聞き取り、現場の観察、データの検証などを使い分けます。",
-    "example": "規程の記載だけで判断せず、記録の確認や現場での観察も行って、決められた手続が実行されているか確かめます。",
     "related": [
       "audit-procedure"
     ],
@@ -9377,7 +9176,6 @@ export const terms: Term[] = [
     "reading": "Proof list",
     "category": "システム監査",
     "definition": "データを入力したあとに、入力した内容を一覧で出力したものです。元の伝票と突き合わせて、入力漏れや重複、誤りがないこと（網羅性・正確性）を確認するのに使います。",
-    "example": "1日の受注伝票とプルーフリストの件数・合計金額を照合し、入力漏れがないことを確かめます。",
     "related": [
       "application-control"
     ],
@@ -9405,7 +9203,6 @@ export const terms: Term[] = [
     "reading": "Follow-up",
     "category": "システム監査",
     "definition": "システム監査で、監査報告書に記載した改善提案に対して、被監査部門が改善を実施しているかを確認する活動です。改善を実施するのは被監査部門で、監査人は状況を確認して評価します。",
-    "example": "前回の監査で指摘したパスワード管理の改善が、半年後に実施されているかを確認します。",
     "related": [
       "audit-standards"
     ],
@@ -9439,7 +9236,6 @@ export const terms: Term[] = [
     "reading": "Information technology governance",
     "category": "システム戦略",
     "definition": "経営陣が、ITの活用について方針を示し、IT投資や利用が組織の目標に沿っているかを評価・指示・モニタリングする仕組みです。ガバナンスは経営陣による方向付け、マネジメントはその方針に沿った計画と実行、コントロールは目標どおりに進むよう管理する仕組みを指します。",
-    "example": "経営会議がIT投資の優先順位を決め、その効果を定期的に評価するのはITガバナンスの活動です。",
     "related": [],
     "criteria": [
       {
@@ -9467,7 +9263,6 @@ export const terms: Term[] = [
     "reading": "Program management",
     "category": "プロジェクト管理",
     "definition": "互いに関連する複数のプロジェクトをまとめて管理し、個々のプロジェクトでは得られない相乗効果（シナジー）で戦略的な目標を達成することです。個々のプロジェクトを計画どおり完了させるのはプロジェクトマネジメントです。",
-    "example": "新物流センターの建設、システム刷新、組織再編の3つのプロジェクトを、物流改革という1つのプログラムとして管理します。",
     "related": [],
     "criteria": [
       {
@@ -9499,7 +9294,6 @@ export const terms: Term[] = [
     "reading": "Project Management Body of Knowledge",
     "category": "プロジェクト管理",
     "definition": "米国PMIがまとめたプロジェクトマネジメントの知識体系です。スコープ、スケジュール、コスト、品質、資源、コミュニケーション、リスク、調達、ステークホルダーなどの知識エリアで、必要な管理を整理しています。",
-    "example": "コストの管理では、EVMで予算と実績の差を監視し、必要なら是正処置をとります。",
     "related": [
       "evm"
     ],
@@ -9521,7 +9315,6 @@ export const terms: Term[] = [
     "reading": "Project charter",
     "category": "プロジェクト管理",
     "definition": "プロジェクトを正式に認可し、プロジェクトマネージャーに組織の資源を使う権限を与える文書です。目的、概要、主要な成果物、マイルストーン、予算の概略などを記します。詳細な進め方は、その後に作るプロジェクトマネジメント計画書にまとめます。",
-    "example": "スポンサーが憲章に署名して初めて、プロジェクトマネージャーは要員を集め始められます。",
     "related": [
       "pmbok",
       "scope-statement"
@@ -9557,7 +9350,6 @@ export const terms: Term[] = [
     "reading": "Project scope statement",
     "category": "プロジェクト管理",
     "definition": "プロジェクトで作る成果物と、そのための作業（スコープ）を記述した文書です。成果物、受入れ基準、除外事項（スコープに含めないもの）、制約条件、前提条件などを明確にし、スコープの膨張を防ぎます。",
-    "example": "「データ移行は含むが、旧システムの撤去は除外事項とする」と記述します。",
     "related": [
       "wbs"
     ],
@@ -9588,7 +9380,6 @@ export const terms: Term[] = [
     "reading": "Work Breakdown Structure",
     "category": "プロジェクト管理",
     "definition": "プロジェクトの成果物と作業を、管理しやすい大きさ（ワークパッケージ）まで階層的に分解したものです。スケジュール作成、見積り、担当の割当ての基礎になります。",
-    "example": "「新システム構築」を「設計」「開発」「テスト」に、さらに「画面設計」「帳票設計」…と分解します。",
     "related": [
       "scope-statement"
     ],
@@ -9619,7 +9410,6 @@ export const terms: Term[] = [
     "reading": "Crashing",
     "category": "プロジェクト管理",
     "definition": "クリティカルパス上の作業に人員や設備などの資源を追加し、プロジェクトの期間を短縮する技法です。追加費用と短縮できる日数を考えて実施します。",
-    "example": "テスト要員を追加して、完了までの日数を短縮します。",
     "related": [
       "fast-tracking",
       "critical-path"
@@ -9639,7 +9429,6 @@ export const terms: Term[] = [
     "reading": "Fast tracking",
     "category": "プロジェクト管理",
     "definition": "通常は順番に進める作業を、並行又は一部重ねて進めてプロジェクトの期間を短縮する技法です。先行作業の変更によって手戻りが生じるリスクがあります。",
-    "example": "設計がすべて終わる前に、確定した部分から開発を始めます。",
     "related": [
       "schedule-compression",
       "critical-path"
@@ -9662,7 +9451,6 @@ export const terms: Term[] = [
     "reading": "Expected Monetary Value (EMV)",
     "category": "プロジェクト管理",
     "definition": "不確実な結果について、それぞれの金額に発生確率を掛けて合計した値です。デシジョンツリーで複数の案を比べるとき、投資額を差し引いた期待金額価値の大きい案を選びます。",
-    "example": "成功確率60%で1,000万円、失敗で200万円の案は、0.6×1,000＋0.4×200＝680万円です。",
     "related": [],
     "criteria": [
       {
@@ -9702,7 +9490,6 @@ export const terms: Term[] = [
     "reading": "Contingency plan",
     "category": "プロジェクト管理",
     "definition": "リスクが実際に起きたときに備えて、あらかじめ用意しておく対応計画です。プロジェクトでは、特定したリスクに対するコンティンジェンシー予備費（予算）や予備期間を確保します。リスクへの対応には回避・転嫁・軽減・受容があります。",
-    "example": "外注先が倒産した場合に備えて、別の外注先候補と移行手順を決めておきます。",
     "related": [],
     "criteria": [
       {
@@ -9729,7 +9516,6 @@ export const terms: Term[] = [
     "reading": "Design review",
     "category": "開発技術",
     "definition": "設計の各段階で、関係者が設計書を評価し、誤りや問題点を早く見つけるための会議や活動です。後工程での手戻りを減らし、品質を確保します。製品の出荷可否を判断する出荷判定とは目的が異なります。",
-    "example": "基本設計が終わった時点で、業務部門と開発者が設計書を確認し、要件の漏れを見つけます。",
     "related": [],
     "criteria": [
       {
@@ -9763,7 +9549,6 @@ export const terms: Term[] = [
     "reading": "Scrum",
     "category": "開発技術",
     "definition": "アジャイル開発の代表的な手法です。スプリントという短い期間を繰り返し、スプリントプランニングで作業を決め、毎日デイリースクラムで状況を共有し、スプリントレビューで成果物をステークホルダーに見せてフィードバックを受け、レトロスペクティブで進め方を振り返ります。",
-    "example": "2週間のスプリントの最後に、動くソフトウェアを利用部門に見せて意見をもらいます。",
     "related": [],
     "criteria": [
       {
@@ -9811,7 +9596,6 @@ export const terms: Term[] = [
     "reading": "Software quality characteristics",
     "category": "開発技術",
     "definition": "ソフトウェアなどの品質を評価するため、その性質を複数の観点に整理したものです。特性ごとに評価したい内容や測定量を決めて品質を確認します。",
-    "example": "品質を一つの数値だけで決めず、性能や保守のしやすさなど、目的に合う複数の観点で確認します。",
     "related": [],
     "criteria": [
       {
@@ -9838,7 +9622,6 @@ export const terms: Term[] = [
     "reading": "Software reliability growth model",
     "category": "開発技術",
     "definition": "テストの進み具合と、見つかった誤りの累積数の関係を表すモデルです。累積誤り検出数はゴンペルツ曲線やロジスティック曲線のようなS字を描き、曲線が飽和に近づけば残っている誤りが少ないと判断できます。",
-    "example": "テスト工数を増やしても累積誤り検出数がほぼ増えなくなったので、品質が安定してきたと判断します。",
     "related": [],
     "criteria": [
       {
@@ -9876,7 +9659,6 @@ export const terms: Term[] = [
     "reading": "Low-code development",
     "category": "開発技術",
     "definition": "プログラムをほとんど書かず、画面上で部品を組み合わせたり設定したりしてアプリケーションを作る開発手法です。コードを全く書かないものはノーコード開発といいます。開発が速く、業務部門でも作れる一方、複雑な処理には向きません。",
-    "example": "業務部門が、画面の部品を並べて申請フォームと承認フローを1日で作ります。",
     "related": [],
     "criteria": [
       {
@@ -9911,7 +9693,6 @@ export const terms: Term[] = [
     "reading": "Prototyping",
     "category": "開発技術",
     "definition": "開発の早い段階で試作品（プロトタイプ）を作って利用者に見せ、意見をもとに要求を明確にしたり設計を改良したりする開発手法です。利用者の要求があいまいなときに有効です。",
-    "example": "画面だけの試作品を見せたら、「この項目は一覧で見たい」という要望が出てきました。",
     "related": [],
     "criteria": [
       {
@@ -9934,7 +9715,6 @@ export const terms: Term[] = [
     "reading": "Integration test",
     "category": "開発技術",
     "definition": "複数のモジュールやサブシステムを組み合わせ、呼出しやデータの受渡しなどのインタフェースが正しく動くかを確認するテストです。",
-    "example": "注文処理から在庫管理を呼び出したときに、商品番号や数量が正しく渡され、結果を受け取れるか確かめます。",
     "related": [
       "bottom-up-test",
       "big-bang-test",
@@ -9968,7 +9748,6 @@ export const terms: Term[] = [
     "reading": "Backup methods",
     "category": "サービス管理",
     "definition": "障害や誤操作でデータを失った場合に復旧できるよう、データの複製を別に保存することです。取得に必要な時間や容量と、復旧時に必要な世代や時間を考えて方式を選びます。",
-    "example": "バックアップを定期的に取得するだけでなく、必要な時点のデータに復旧できるか、復元手順も確認します。",
     "related": [
       "rto-rpo",
       "full-backup",
@@ -9989,8 +9768,8 @@ export const terms: Term[] = [
       },
       {
         "id": "offline",
-        "title": "ランサムウェアに備えてネットワークから切り離した世代を残す（3-2-1ルール）",
-        "hint": "最近重視される備えは？",
+        "title": "ランサムウェアに備え、ネットワークから切り離すなど同時に壊されない複製を残す",
+        "hint": "本番と同じ認証情報で書き換えられる複製だけで十分ですか？",
         "level": "deep"
       }
     ],
@@ -10002,7 +9781,6 @@ export const terms: Term[] = [
     "reading": "Recovery Level Objective",
     "category": "サービス管理",
     "definition": "災害などでサービスが止まったとき、どの水準（レベル）まで業務やサービスを復旧させるかの目標です。いつまでに（RTO）、どの時点のデータまで（RPO）と組み合わせて復旧の目標を定めます。",
-    "example": "「震災時は3日以内（RTO）に、通常の50%の処理能力（RLO）で受注業務を再開する」と定めます。",
     "related": [
       "rto-rpo",
       "rpo"
@@ -10033,7 +9811,6 @@ export const terms: Term[] = [
     "reading": "Traceability",
     "category": "開発技術",
     "definition": "要件定義から設計・プログラム・テストまで、成果物どうしの対応関係を追跡できることです。どの要件がどの設計とテストで実現・確認されたかが分かり、漏れの発見や変更の影響範囲の特定に役立ちます。",
-    "example": "要件番号R-12に対応する設計書と試験項目を一覧表で追えるようにし、変更時の影響範囲を調べます。",
     "related": [],
     "criteria": [
       {
@@ -10059,7 +9836,6 @@ export const terms: Term[] = [
     "reading": "Request for Information",
     "category": "システム戦略",
     "definition": "システムなどの調達に先立ち、技術動向や製品・サービスに関する情報をベンダーから集めるための依頼書です。",
-    "example": "候補となる製品の機能や提供条件について、各社に情報提供を依頼します。",
     "related": [
       "rfp"
     ],
@@ -10081,7 +9857,6 @@ export const terms: Term[] = [
     "reading": "Request for Proposal",
     "category": "システム戦略",
     "definition": "調達するシステムなどの要件や条件を提示し、ベンダーに具体的な提案を求めるための依頼書です。",
-    "example": "必要な機能や予算・納期を示して、実現方法と見積りの提案を求めます。",
     "related": [
       "rfi-rfp"
     ],
@@ -10106,7 +9881,6 @@ export const terms: Term[] = [
     "reading": "Model contract",
     "category": "法務",
     "definition": "情報システム開発などの取引で、当事者の役割・責任・契約条件を明確にするための契約書のひな型です。工程や取引の実態に応じて利用・調整します。",
-    "example": "開発工程ごとに、作業の範囲、発注者と受注者の役割、成果や責任について契約で明らかにします。",
     "related": [],
     "criteria": [
       {
@@ -10136,7 +9910,6 @@ export const terms: Term[] = [
     "reading": "Copyright",
     "category": "法務",
     "definition": "思想や感情を創作的に表現した著作物を保護し、複製などの利用を管理する権利です。登録を要せず創作した時点で発生し、アイデアそのものは保護の対象になりません。著作者人格権は譲渡できない別の権利として区別します。",
-    "example": "プログラムに書かれた創作的な表現は保護されますが、その処理のアイデア自体を独占できるわけではありません。",
     "related": [
       "author-moral-rights",
       "right-of-integrity"
@@ -10172,7 +9945,6 @@ export const terms: Term[] = [
     "reading": "Design Act",
     "category": "法務",
     "definition": "物品や建築物、画像のデザイン（形状・模様・色彩など）を保護する法律です。登録によって権利が発生します。2020年の改正で、物品に表示されない画像（操作画面などのGUI）も保護対象になりました。",
-    "example": "新しいスマートフォンアプリの操作画面のデザインを、意匠登録して模倣を防ぎます。",
     "related": [
       "copyright"
     ],
@@ -10205,7 +9977,6 @@ export const terms: Term[] = [
     "reading": "Patent right",
     "category": "法務",
     "definition": "自然法則を利用した技術的なアイデア（発明）を、出願・審査・登録を経て一定期間独占的に利用できる権利です。ITを使った新しい事業の仕組みも、技術的な特徴があればビジネスモデル特許として認められることがあります。",
-    "example": "ネット通販の「ワンクリック注文」の仕組みは、ビジネスモデル特許として知られています。",
     "related": [
       "copyright"
     ],
@@ -10238,7 +10009,6 @@ export const terms: Term[] = [
     "reading": "Unfair Competition Prevention Act",
     "category": "法務",
     "definition": "事業者間の公正な競争を守るため、不正な競争行為を規制する法律です。営業秘密の不正取得や、他社との混同を招く表示などを規制します。",
-    "example": "他社の有名ブランド名に似たドメイン名を取り、転売目的で保有するのは不正競争です。",
     "related": [
       "domain-name"
     ],
@@ -10263,7 +10033,6 @@ export const terms: Term[] = [
     "reading": "Trademark right",
     "category": "法務",
     "definition": "商品やサービスに使う文字・図形・記号などのマーク（商標）を、登録によって独占的に使用できる権利です。存続期間は登録から10年で、更新を繰り返せます。",
-    "example": "自社の新製品の名前とロゴを商標登録し、他社が似た名前で販売するのを防ぎます。",
     "related": [
       "unfair-competition"
     ],
@@ -10292,7 +10061,6 @@ export const terms: Term[] = [
     "reading": "Anonymized information",
     "category": "法務",
     "definition": "特定の個人を識別できないように個人情報を加工し、元に戻せないようにした情報です。個人情報保護法の定める基準に従って加工し、作成したことや第三者提供する項目を公表すれば、本人の同意なしに第三者提供できます。所管は個人情報保護委員会です。",
-    "example": "購買履歴から氏名や会員番号を削除し、生年月日を年代に丸めて、商品開発のために他社へ提供します。",
     "related": [],
     "criteria": [
       {
@@ -10325,7 +10093,6 @@ export const terms: Term[] = [
     "reading": "Enterprise Resource Planning",
     "category": "システム戦略",
     "definition": "販売・生産・会計・人事など企業の基幹業務を統合し、経営資源を一元的に管理して有効に活用する考え方、またはそのためのパッケージソフトウェア（ERPパッケージ）です。導入時はフィット＆ギャップ分析で、パッケージの機能と自社の業務プロセスの合う点・合わない点を洗い出します。",
-    "example": "受注を入力すると、在庫・生産計画・会計に自動で反映されます。",
     "related": [
       "soa",
       "bpr"
@@ -10373,7 +10140,6 @@ export const terms: Term[] = [
     "reading": "Business Process Reengineering",
     "category": "システム戦略",
     "definition": "業務の目的に立ち返って、既存の業務プロセスを抜本的に再設計し、コスト・品質・スピードなどを劇的に改善することです。ITの活用や外部委託を組み合わせます。継続的に業務プロセスを改善していくのはBPM（ビジネスプロセスマネジメント）です。",
-    "example": "紙の申請と三段階の押印による承認を廃止し、ワークフローシステムで即日承認に変えます。",
     "related": [
       "erp"
     ],
@@ -10413,7 +10179,6 @@ export const terms: Term[] = [
     "reading": "Investment appraisal",
     "category": "経営管理",
     "definition": "投資に必要な費用と将来の効果を評価し、実行の可否や案の選択に役立てる手法の総称です。投資効率・回収期間・貨幣の時間価値など、評価したい観点に応じて手法を使い分けます。",
-    "example": "投資額1,000万円で毎年400万円の効果があれば、回収期間は2.5年です。",
     "related": [],
     "criteria": [
       {
@@ -10442,7 +10207,6 @@ export const terms: Term[] = [
     "reading": "Balanced Scorecard (BSC)",
     "category": "経営戦略",
     "definition": "企業の戦略を、財務・顧客・内部ビジネスプロセス・学習と成長の4つの視点で目標と指標に落とし込み、バランスよく管理する手法です。視点間の因果関係（学習と成長→業務プロセス→顧客→財務）を図にしたのが戦略マップです。",
-    "example": "社員教育（学習と成長）→作業ミスの減少（業務プロセス）→顧客満足度（顧客）→売上（財務）という因果を戦略マップで示します。",
     "related": [],
     "criteria": [
       {
@@ -10483,7 +10247,6 @@ export const terms: Term[] = [
     "reading": "Ansoff matrix",
     "category": "経営戦略",
     "definition": "製品（既存・新規）と市場（既存・新規）の組合せで、企業の成長戦略を4つに分類したものです。既存製品×既存市場は市場浸透戦略、新製品×既存市場は新製品開発戦略、既存製品×新市場は新市場開拓戦略、新製品×新市場は多角化戦略です。",
-    "example": "既存の顧客に既存の商品をもっと買ってもらうための値引きキャンペーンは市場浸透戦略です。",
     "related": [
       "ppm"
     ],
@@ -10522,7 +10285,6 @@ export const terms: Term[] = [
     "reading": "Manufacturing Execution System",
     "category": "技術戦略",
     "definition": "工場の生産現場で、生産計画に基づく作業指示、工程管理、品質や実績の収集などを行う製造実行システムです。企業全体の計画を立てるERPなどの計画層と、機械を直接動かすPLCなどの制御層の間の実行層に位置します。",
-    "example": "ERPの生産計画をもとに、MESが今日の作業指示をラインに出し、実績を集めてERPに返します。",
     "related": [
       "plc",
       "erp"
@@ -10559,7 +10321,6 @@ export const terms: Term[] = [
     "reading": "Digital transformation certification",
     "category": "システム戦略",
     "definition": "経済産業省が、デジタルガバナンス・コードに沿って、DXに取り組む準備ができている（DX-Ready）事業者を認定する制度です。経営ビジョンやDX戦略の策定・公表、推進体制、成果指標、経営者のメッセージ、課題の把握などが基準になっています。",
-    "example": "経営ビジョンとDX戦略を取締役会で承認して公表し、認定を申請します。",
     "related": [
       "dx-index"
     ],
@@ -10595,7 +10356,6 @@ export const terms: Term[] = [
     "reading": "Digital transformation promotion index",
     "category": "システム戦略",
     "definition": "経済産業省が示した、企業がDXの取組み状況を自己診断するための指標です。経営のあり方・仕組みと、ITシステムの構築の2つの枠組みで構成されます。ITシステムには、データを活用できること、変化に迅速に対応できること（スピード・アジリティ）、部門ごとの個別最適ではなく全社最適であることなどが求められます。",
-    "example": "各部門が別々に作ったシステムを、全社でデータを共有できる構成に見直します。",
     "related": [
       "dx-certification"
     ],
@@ -10626,7 +10386,6 @@ export const terms: Term[] = [
     "reading": "Strategic analysis frameworks",
     "category": "経営戦略",
     "definition": "組織の内外の状況を整理し、経営戦略の立案に役立てる分析の枠組みの総称です。自社の資源、顧客や競合、社会環境など、分析する対象に応じて枠組みを選びます。",
-    "example": "新事業を検討する際に、社会環境の変化と、自社の資源や顧客の状況を整理します。",
     "related": [
       "five-forces",
       "ppm",
@@ -10656,7 +10415,6 @@ export const terms: Term[] = [
     "reading": "Smart factory",
     "category": "技術戦略",
     "definition": "工場の機器や設備をIoTでつなぎ、収集したデータをAIなどで分析して、生産の効率化や品質の向上を図る工場です。カメラ画像で製品の外観を自動検査するマシンビジョンや、AIによる需要予測に基づく生産計画などが例です。",
-    "example": "人が行っていた目視検査を、カメラとAIのマシンビジョンに置き換えて、不良品を自動で判定します。",
     "related": [
       "iot",
       "mes"
@@ -10692,7 +10450,6 @@ export const terms: Term[] = [
     "reading": "Open innovation",
     "category": "技術戦略",
     "definition": "自社の中だけで研究開発を完結させる（クローズドイノベーション、自前主義）のではなく、大学や他社など外部の技術やアイデアを積極的に取り入れ、また自社の技術を外部に提供して、新しい価値を生み出す考え方です。",
-    "example": "自社の研究所だけでなく、スタートアップと共同で新製品を開発します。",
     "related": [
       "co-creation"
     ],
@@ -10717,7 +10474,6 @@ export const terms: Term[] = [
     "reading": "Co-creation",
     "category": "経営戦略",
     "definition": "企業が顧客や取引先などと協働して、新しい製品・サービスや価値を共に創り出す戦略です。自社だけで作り込む自前主義や、他社を買収して取り込むM&Aとは異なります。",
-    "example": "利用者の投稿したアイデアを製品化し、開発段階から利用者と意見を交わします。",
     "related": [
       "open-innovation",
       "mergers-acquisitions"
@@ -10741,7 +10497,6 @@ export const terms: Term[] = [
     "reading": "Darwinian sea",
     "category": "技術戦略",
     "definition": "製品化・事業化した技術が、市場で他の製品との競争に勝ち残り、事業として定着するまでに直面する障壁を指します。",
-    "example": "製品を発売したが、競合製品との価格競争に勝てず撤退するのは、ダーウィンの海を越えられなかった例です。",
     "related": [
       "chasm"
     ],
@@ -10760,7 +10515,6 @@ export const terms: Term[] = [
     "reading": "Chasm",
     "category": "経営戦略",
     "definition": "新しい製品が普及していく過程で、新しいもの好きの初期採用者（アーリーアダプター）から、実利を重視する前期多数派（アーリーマジョリティ）へ広がる間にある深い溝のことです。この溝を越えられないと、製品は主流の市場に普及しません。",
-    "example": "一部の愛好家には売れたが、一般の会社員には広まらず販売が伸び悩むのは、キャズムを越えられない状態です。",
     "related": [
       "darwin-sea"
     ],
@@ -10791,7 +10545,6 @@ export const terms: Term[] = [
     "reading": "Material Requirements Planning",
     "category": "経営管理",
     "definition": "生産計画と部品の構成表から、必要な部品や資材の量と時期を計算する手法です。製品に必要な総所要量から、手持ちの在庫や発注済みの量を差し引いて正味所要量を求めます。",
-    "example": "製品Aを10個作るのに部品Bが2個ずつ必要なら総所要量は20個、在庫が5個あれば正味所要量は15個です。",
     "related": [],
     "criteria": [
       {
@@ -10824,7 +10577,6 @@ export const terms: Term[] = [
     "reading": "Corporate philosophy",
     "category": "経営戦略",
     "definition": "企業が存在する目的や大切にする価値観を示したものです。経営理念に基づいて全社の方向性を示す経営戦略を立て、それを事業ごとに具体化したものが事業戦略です。",
-    "example": "「食で人々を健康にする」という経営理念のもとで、健康食品事業を伸ばす経営戦略を立て、事業部が販売チャネルの戦略を決めます。",
     "related": [],
     "criteria": [
       {
@@ -10850,7 +10602,6 @@ export const terms: Term[] = [
     "reading": "Electronics Manufacturing Service",
     "category": "経営戦略",
     "definition": "他社ブランドの電子機器の製造を請け負うサービス、またはその事業者です。設計から製造までを受託することもあります。委託側は工場を持たずに製品を提供できます。相手先ブランドで製品を製造するのはOEMと呼ばれます。",
-    "example": "スマートフォンメーカーが、組立てをEMS事業者に委託します。",
     "related": [
       "fabless"
     ],
@@ -10874,7 +10625,6 @@ export const terms: Term[] = [
     "reading": "Fabless",
     "category": "経営戦略",
     "definition": "自社の製造工場を持たず、製品の企画や設計を行い、製造を外部に委託する企業の形態です。",
-    "example": "半導体の設計を自社で行い、製造を外部企業に委託します。",
     "related": [
       "foundry",
       "ems"
@@ -10894,7 +10644,6 @@ export const terms: Term[] = [
     "reading": "Foundry",
     "category": "経営戦略",
     "definition": "他社から委託を受けて、半導体などの製造を専門に行う企業です。",
-    "example": "顧客が設計した半導体を、製造設備を使って受託生産します。",
     "related": [
       "fabless",
       "ems"
@@ -10914,7 +10663,6 @@ export const terms: Term[] = [
     "reading": "Franchise",
     "category": "経営戦略",
     "definition": "本部（フランチャイザー）が加盟店（フランチャイジー）に、商標やノウハウを使って営業する権利を与え、その対価としてロイヤルティを受け取る事業形態です。",
-    "example": "コンビニエンスストアの多くは、本部のブランドと仕組みを使って加盟店のオーナーが経営しています。",
     "related": [],
     "criteria": [
       {
@@ -10950,7 +10698,6 @@ export const terms: Term[] = [
     "reading": "Market segmentation",
     "category": "経営戦略",
     "definition": "市場を、共通の特徴を持つ顧客の集まり（セグメント）に分けることです。分ける基準には、年齢・性別・所得などの人口統計的変数、地域などの地理的変数、価値観やライフスタイルなどの心理的変数、購買頻度などの行動的変数があります。",
-    "example": "「30代の共働き世帯」で区切るのは人口統計的変数、「健康志向の人」で区切るのは心理的変数です。",
     "related": [],
     "criteria": [
       {
@@ -10979,7 +10726,6 @@ export const terms: Term[] = [
     "reading": "Seven quality control tools",
     "category": "経営管理",
     "definition": "品質に関するデータや原因を、図表などで整理して改善に役立てる七つの基本的な道具の総称です。不良の多さや分布、原因の関係などを調べるために使います。",
-    "example": "品質データを図表に整理し、件数の多い問題や、原因として調べるべき項目を見つけます。",
     "related": [
       "pareto-chart",
       "cause-effect-diagram",
@@ -11007,7 +10753,6 @@ export const terms: Term[] = [
     "reading": "Backcasting",
     "category": "経営戦略",
     "definition": "目指す将来の姿を先に描き、そこから現在に向かってさかのぼって、今何をすべきかを考える方法です。現在の延長線上で将来を予測して計画するのはフォアキャスティングです。",
-    "example": "「2050年に温室効果ガス排出ゼロ」から逆算して、2030年までに必要な対策を決めます。",
     "related": [
       "forecasting"
     ],
@@ -11032,7 +10777,6 @@ export const terms: Term[] = [
     "reading": "Feasibility study",
     "category": "技術戦略",
     "definition": "新しい事業や計画について、技術・経済性・運用などの面から実現可能性を調べることです。本格的に投資する前に、実行するかどうかを判断する材料にします。",
-    "example": "新システムの導入前に、技術的に実現できるか、費用に見合う効果があるかを調査します。",
     "related": [],
     "criteria": [
       {
@@ -11055,7 +10799,6 @@ export const terms: Term[] = [
     "reading": "Delphi method",
     "category": "技術戦略",
     "definition": "複数の専門家に匿名でアンケートを行い、その結果を示して再びアンケートを行うことを繰り返し、意見を収束させて将来を予測する方法です。ブレーンストーミングのように集まって自由に発言し、批判せずに多くのアイデアを出す方法とは異なります。",
-    "example": "10年後の技術動向について専門家に3回アンケートを繰り返し、予測をまとめます。",
     "related": [
       "brainstorming"
     ],
@@ -11080,7 +10823,6 @@ export const terms: Term[] = [
     "reading": "Product life cycle",
     "category": "経営戦略",
     "definition": "製品が市場に出てから消えるまでを、導入期・成長期・成熟期・衰退期の4段階で表したものです。段階ごとに売上や利益、競合の状況が変わるため、とるべき戦略も変わります。",
-    "example": "成熟期には売上の伸びが止まり競合が増えるため、差別化や新しい用途の開拓を図ります。",
     "related": [
       "ppm"
     ],
@@ -11111,7 +10853,6 @@ export const terms: Term[] = [
     "reading": "Benchmarking",
     "category": "経営戦略",
     "definition": "業界内外の優れた企業のやり方（ベストプラクティス）と自社を比べて、差を分析し、業務の改善目標を立てる手法です。",
-    "example": "物流で定評のある他業界の企業の出荷手順と比べ、自社の出荷時間を半分にする目標を立てます。",
     "related": [],
     "criteria": [
       {
@@ -11140,7 +10881,6 @@ export const terms: Term[] = [
     "reading": "Aggregation service",
     "category": "経営戦略",
     "definition": "複数の企業やサービスが提供する情報や商品を集約し、1つの窓口でまとめて利用できるようにするサービスです。",
-    "example": "複数の銀行やクレジットカードの明細を1つのアプリでまとめて見られる家計簿サービスです。",
     "related": [
       "omni-channel"
     ],
@@ -11171,7 +10911,6 @@ export const terms: Term[] = [
     "reading": "Omni-channel",
     "category": "経営戦略",
     "definition": "実店舗、通販サイト、アプリなどすべての販売チャネルを統合し、顧客がどのチャネルでも同じように買い物できるようにする戦略です。",
-    "example": "アプリで注文した商品を近くの店舗で受け取り、ポイントも共通で貯まります。",
     "related": [],
     "criteria": [
       {
@@ -11194,7 +10933,6 @@ export const terms: Term[] = [
     "reading": "Escrow service",
     "category": "経営戦略",
     "definition": "商取引で、第三者が買い手からの代金をいったん預かり、商品が届いたことを確認してから売り手に支払う仲介サービスです。ネットオークションなど、互いに信頼関係のない取引の安全性を高めます。",
-    "example": "フリマアプリで、購入者が「受取り完了」を押すまで、運営会社が代金を預かります。",
     "related": [],
     "criteria": [
       {
@@ -11222,7 +10960,6 @@ export const terms: Term[] = [
     "reading": "Cost accounting standards",
     "category": "経営管理",
     "definition": "原価を計算・集計・配分する際の基本的な考え方を示す基準です。費用の性質や製品との関係などに応じて分類し、原価を把握します。",
-    "example": "工場の電気代や機械の減価償却費は製造原価の経費ですが、借入金の支払利息は含めません。",
     "related": [],
     "criteria": [
       {
@@ -11257,7 +10994,6 @@ export const terms: Term[] = [
     "reading": "Dummy activity",
     "category": "プロジェクト管理",
     "definition": "アローダイアグラムで、作業間の順序関係だけを表すための所要時間0の作業です。",
-    "example": "実際の作業は発生しないが、先行関係を表すために点線の矢印を置きます。",
     "related": [
       "critical-path"
     ],
@@ -11276,7 +11012,6 @@ export const terms: Term[] = [
     "reading": "Duration",
     "category": "プロジェクト管理",
     "definition": "作業や処理が開始してから完了するまでに必要な日数です。人数と日数を掛けた作業量とは区別します。",
-    "example": "3人で作業しても完了まで5日かかるなら、所要日数は5日です。",
     "related": [
       "critical-path"
     ],
@@ -11295,7 +11030,6 @@ export const terms: Term[] = [
     "reading": "Distributed Reflection Denial of Service",
     "category": "攻撃手法",
     "definition": "送信元IPアドレスを標的のものに偽装し、多数の第三者サーバからの応答を標的へ集中させてサービスを妨害する攻撃です。",
-    "example": "標的を送信元にしたDNS問合せを多数のサーバへ送り、その応答で標的の回線を圧迫します。",
     "related": [
       "ddos",
       "dns"
@@ -11317,7 +11051,6 @@ export const terms: Term[] = [
     "reading": "Zero-day attack",
     "category": "攻撃手法",
     "definition": "脆弱性への修正プログラムなどの対策が提供される前に、その脆弱性を悪用する攻撃です。",
-    "example": "製品の未知の脆弱性を、修正プログラムの公開前に悪用して侵入します。",
     "related": [
       "vulnerability"
     ],
@@ -11338,7 +11071,6 @@ export const terms: Term[] = [
     "reading": "Security Assertion Markup Language",
     "category": "暗号・認証",
     "definition": "認証結果や属性などの情報をXML形式のアサーションで連携する仕様です。シングルサインオンでは、IdPが認証し、SPがアサーションを検証してサービスへのアクセスを認めます。",
-    "example": "社内のIdPでログインした結果を外部の業務サービスへ伝え、再度パスワードを入力せずに利用します。",
     "related": [
       "single-sign-on"
     ],
@@ -11368,7 +11100,6 @@ export const terms: Term[] = [
     "reading": "Single sign-on",
     "category": "暗号・認証",
     "definition": "一度の認証によって、複数のシステムやサービスを再認証なしで利用できるようにする仕組みです。",
-    "example": "社内ポータルへのログイン後、経費精算と勤怠管理の画面も追加のログインなしで開きます。",
     "related": [
       "saml",
       "kerberos"
@@ -11390,7 +11121,6 @@ export const terms: Term[] = [
     "reading": "Kerberos",
     "category": "暗号・認証",
     "definition": "信頼する鍵配布センターが発行するチケットを使い、ネットワーク上のサービスへの認証を行う仕組みです。共通鍵暗号を用います。",
-    "example": "利用者は認証基盤からサービス用のチケットを取得し、ファイルサーバへ提示して認証を受けます。",
     "related": [
       "single-sign-on"
     ],
@@ -11410,8 +11140,7 @@ export const terms: Term[] = [
     "name": "SHA-512/256",
     "reading": "Secure Hash Algorithm 512/256",
     "category": "暗号・認証",
-    "definition": "SHA-512に基づくハッシュ計算を行い、最終的な512ビットの値を256ビットに切り詰める方式です。通常のSHA-512とは異なる初期値を使います。",
-    "example": "ファイルから256ビットのダイジェストを計算します。同じ入力でも、通常のSHA-512を半分に切った値やSHA-256の値とは異なります。",
+    "definition": "SHA-512に基づくハッシュ計算を行い、最終的な512ビットの値を256ビットに切り詰める方式です。",
     "related": [
       "sha-512",
       "sha-256",
@@ -11440,7 +11169,6 @@ export const terms: Term[] = [
     "reading": "Secure Hash Algorithm 512",
     "category": "暗号・認証",
     "definition": "SHA-2系列の暗号学的ハッシュ関数で、任意長の入力から512ビットのハッシュ値を計算します。",
-    "example": "配布ファイルのSHA-512値を計算して、公表された512ビットの値と一致するか確認します。",
     "related": [
       "hash",
       "sha-512-256"
@@ -11462,7 +11190,6 @@ export const terms: Term[] = [
     "reading": "Secure Hash Algorithm 256",
     "category": "暗号・認証",
     "definition": "SHA-2系列の暗号学的ハッシュ関数で、任意長の入力から256ビットのハッシュ値を計算します。",
-    "example": "ダウンロードしたファイルのSHA-256値を計算して、配布元が示す値と比較します。",
     "related": [
       "hash",
       "sha-512-256"
@@ -11484,7 +11211,6 @@ export const terms: Term[] = [
     "reading": "Kaminsky attack",
     "category": "攻撃手法",
     "definition": "未キャッシュの名前へのDNS問合せを次々に発生させ、偽応答を送り込んでキャッシュに偽の情報を登録させる攻撃手法です。送信元ポート番号のランダム化が対策の一つです。",
-    "example": "毎回異なるサブドメインを問い合わせさせ、正規の応答が来る前に偽の委任情報を注入しようとします。",
     "related": [
       "dns-cache-poisoning",
       "dns"
@@ -11506,7 +11232,6 @@ export const terms: Term[] = [
     "reading": "Cryptojacking",
     "category": "攻撃手法",
     "definition": "他人の端末やサーバの計算資源を無断で使い、暗号資産のマイニングを行う攻撃です。",
-    "example": "侵入したクラウドサーバで採掘プログラムを動かし、攻撃者が報酬を得る一方で所有者の電気代や利用料金が増えます。",
     "related": [
       "crypto-mining",
       "malware"
@@ -11528,7 +11253,6 @@ export const terms: Term[] = [
     "reading": "Cryptocurrency mining",
     "category": "セキュリティ運用",
     "definition": "PoW方式の暗号資産などで、大量の計算を行って条件を満たす値を探し、ブロックを確定して報酬を得る仕組みです。",
-    "example": "採掘者がナンスを変えながらハッシュ値を計算し、条件を満たすブロックを見つけます。",
     "related": [
       "cryptojacking",
       "hash"
@@ -11553,7 +11277,6 @@ export const terms: Term[] = [
     "reading": "Certification Authority",
     "category": "暗号・認証",
     "definition": "主体と公開鍵の対応を証明するデジタル証明書を、自身の秘密鍵で署名して発行する機関です。証明書の失効なども管理します。",
-    "example": "Webサイトの公開鍵を含む証明書を発行し、ブラウザは認証局の公開鍵でその署名を検証します。",
     "related": [
       "pki",
       "digital-certificate",
@@ -11576,7 +11299,6 @@ export const terms: Term[] = [
     "reading": "Information technology — Open Systems Interconnection — The Directory: Public-key and attribute certificate frameworks",
     "category": "暗号・認証",
     "definition": "公開鍵証明書などの形式を定める規格です。証明書には主体、公開鍵、発行者、有効期間、発行者の署名などが含まれます。",
-    "example": "TLSで使うサーバー証明書は、X.509の形式で公開鍵や有効期間を表します。",
     "related": [
       "digital-certificate",
       "tls"
@@ -11598,7 +11320,6 @@ export const terms: Term[] = [
     "reading": "Mirai",
     "category": "攻撃手法",
     "definition": "IoT機器などへ感染してボットネットを構成し、C&Cサーバの指令に従ってDDoS攻撃を行うマルウェアです。代表的な感染ではTelnetで弱い認証情報を試します。",
-    "example": "初期パスワードのまま公開されたIoTカメラを侵害し、他の機器と一斉に標的へ通信させます。",
     "related": [
       "iot",
       "botnet",
@@ -11622,7 +11343,6 @@ export const terms: Term[] = [
     "reading": "Connect back",
     "category": "攻撃手法",
     "definition": "侵害されたシステム側から攻撃者のサーバ側へ通信を開始する動作です。外向きの通信が許可されている環境で、攻撃者との通信経路の確立に悪用されます。",
-    "example": "感染端末が外部サーバへ接続し、その接続を通じて攻撃者から指令を受け取ります。",
     "related": [
       "backdoor",
       "command-control-server"
@@ -11644,7 +11364,6 @@ export const terms: Term[] = [
     "reading": "Trojan horse",
     "category": "攻撃手法",
     "definition": "正常で有益なプログラムに見せかけ、実行されると利用者の意図しない不正な処理を行うプログラムです。",
-    "example": "便利なツールを装ってインストールさせ、裏で入力情報を盗みます。",
     "related": [
       "malware",
       "backdoor"
@@ -11666,7 +11385,6 @@ export const terms: Term[] = [
     "reading": "Backdoor",
     "category": "攻撃手法",
     "definition": "通常の認証やアクセス制御を迂回してシステムへ入るための隠された経路や機能です。",
-    "example": "侵入した攻撃者が再侵入用の不正なアカウントや待受けプログラムを残します。",
     "related": [
       "malware",
       "connect-back"
@@ -11691,7 +11409,6 @@ export const terms: Term[] = [
     "reading": "Certification Practice Statement",
     "category": "暗号・認証",
     "definition": "認証局が証明書の発行、管理、失効、鍵管理などを実際にどのように行うかを記述する認証局運用規程です。",
-    "example": "申請者の本人確認方法や、失効依頼を受け付けて反映するまでの手順を公開します。",
     "related": [
       "certificate-authority",
       "certificate-policy"
@@ -11716,7 +11433,6 @@ export const terms: Term[] = [
     "reading": "Certificate Policy",
     "category": "暗号・認証",
     "definition": "ある種類の証明書の適用範囲や、認証局などが満たすべき要求事項を定める規則です。",
-    "example": "決済用証明書に必要な本人確認の水準や利用目的を定めます。",
     "related": [
       "cps",
       "pki"
@@ -11738,7 +11454,6 @@ export const terms: Term[] = [
     "reading": "Threat",
     "category": "セキュリティ運用",
     "definition": "システムや組織に損害を与える可能性がある、望ましくないインシデントの潜在的な原因です。",
-    "example": "不正侵入を試みる攻撃者や、設備を破損させる自然災害が脅威となります。",
     "related": [
       "vulnerability",
       "risk-identification"
@@ -11760,7 +11475,6 @@ export const terms: Term[] = [
     "reading": "Risk identification",
     "category": "セキュリティ運用",
     "definition": "リスクを発見し、認識し、記述するプロセスです。リスク源、事象、原因、起こり得る結果などを明らかにします。",
-    "example": "重要な業務で個人情報が漏れる事象と、その原因や影響を洗い出します。",
     "related": [
       "risk-evaluation",
       "risk-management"
@@ -11782,7 +11496,6 @@ export const terms: Term[] = [
     "reading": "Risk evaluation",
     "category": "セキュリティ運用",
     "definition": "リスク分析の結果をリスク基準と比較し、リスクが受容可能または許容可能かを判断するプロセスです。",
-    "example": "分析した情報漏えいリスクを自社の許容基準と比べ、追加対策が必要と判断します。",
     "related": [
       "risk-identification",
       "risk-management"
@@ -11804,7 +11517,6 @@ export const terms: Term[] = [
     "reading": "Information system Security Management and Assessment Program",
     "category": "クラウドセキュリティ",
     "definition": "政府が求めるセキュリティ要求を満たすクラウドサービスをあらかじめ評価・登録し、政府のクラウドサービス調達でセキュリティ水準を確保する制度です。",
-    "example": "政府機関がクラウドサービスを調達する際に、ISMAPの登録サービスリストを確認します。",
     "related": [
       "cloud-service"
     ],
@@ -11825,7 +11537,6 @@ export const terms: Term[] = [
     "reading": "Cloud service",
     "category": "システム構成",
     "definition": "ネットワークを通じて、サーバ、ストレージ、実行基盤、ソフトウェアなどのIT資源を必要に応じて利用するサービスです。",
-    "example": "自社でサーバを購入する代わりに、事業者の仮想サーバを必要な期間だけ利用します。",
     "related": [
       "ismap"
     ],
@@ -11846,7 +11557,6 @@ export const terms: Term[] = [
     "reading": "PrivacyMark",
     "category": "法務",
     "definition": "個人情報を適切に取り扱うための体制を整備した事業者を評価し、適合を示すマークの使用を認める制度です。JIS Q 15001に基づきます。",
-    "example": "事業者が個人情報保護マネジメントシステムを整え、審査を受けます。",
     "related": [
       "isms"
     ],
@@ -11870,7 +11580,6 @@ export const terms: Term[] = [
     "reading": "Information Security Management System",
     "category": "セキュリティ運用",
     "definition": "組織が情報セキュリティの方針や目標を定め、リスクに応じた管理策を運用・評価し、継続的に改善するための管理の仕組みです。",
-    "example": "情報資産のリスクを評価し、アクセス管理の運用状況を監査して改善します。",
     "related": [
       "risk-management"
     ],
@@ -11891,7 +11600,6 @@ export const terms: Term[] = [
     "reading": "National Institute of Standards and Technology Cybersecurity Framework 2.0",
     "category": "セキュリティ運用",
     "definition": "組織のサイバーセキュリティリスクを管理するためのNISTのフレームワークです。コアを統治、特定、防御、検知、対応、復旧の六つの機能で整理します。",
-    "example": "現在の対策と目標の状態を六つの機能に沿って整理し、改善の優先順位を決めます。",
     "related": [
       "security-orgs",
       "csf-govern"
@@ -11899,8 +11607,14 @@ export const terms: Term[] = [
     "criteria": [
       {
         "id": "meaning",
-        "title": "コアをGOVERN・IDENTIFY・PROTECT・DETECT・RESPOND・RECOVERで整理する",
-        "hint": "2.0で追加された機能を含め、六つを挙げられますか？"
+        "title": "NISTが示す、組織のサイバーセキュリティリスク管理の枠組み",
+        "hint": "何のリスク管理に使う枠組みですか？"
+      },
+      {
+        "id": "functions",
+        "title": "統治・特定・防御・検知・対応・復旧の六つの機能で対策を整理する",
+        "hint": "コアはどの六つの機能で構成されますか？",
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -11913,7 +11627,6 @@ export const terms: Term[] = [
     "reading": "Govern",
     "category": "セキュリティ運用",
     "definition": "NIST CSF 2.0の統治機能です。組織のサイバーセキュリティリスク管理の戦略、方針、責任などを定め、伝達し、監督します。",
-    "example": "経営層が許容するリスクや責任分担を決め、方針に沿った活動か監督します。",
     "related": [
       "csf-2",
       "risk-management"
@@ -11935,7 +11648,6 @@ export const terms: Term[] = [
     "reading": "Risk management",
     "category": "セキュリティ運用",
     "definition": "リスクに関して組織を指揮・統制するための調整された活動です。リスクの把握、対応、監視などを方針に沿って継続します。",
-    "example": "情報漏えいのリスクを把握し、対策後の残るリスクも定期的に見直します。",
     "related": [
       "risk-identification",
       "risk-evaluation"
@@ -11957,7 +11669,6 @@ export const terms: Term[] = [
     "reading": "Indicator of Compromise",
     "category": "セキュリティ運用",
     "definition": "システムが侵害された可能性を示す痕跡や指標です。悪性の通信先、マルウェアのハッシュ値、特徴的なファイルなどが調査や検知に使われます。",
-    "example": "既知のC&Cサーバへの通信履歴が端末に見つかり、侵害の調査を進めます。",
     "related": [
       "command-control-server",
       "digital-forensics"
@@ -11979,7 +11690,6 @@ export const terms: Term[] = [
     "reading": "Side-channel attack",
     "category": "攻撃手法",
     "definition": "暗号などの処理に伴う時間、消費電力、電磁波などを観測し、秘密情報を推測する攻撃の総称です。",
-    "example": "ICカードの演算中に消費電力や処理時間を測り、秘密鍵の手掛かりを得ます。",
     "related": [
       "timing-attack",
       "power-analysis-attack"
@@ -12001,7 +11711,6 @@ export const terms: Term[] = [
     "reading": "Power analysis attack",
     "category": "攻撃手法",
     "definition": "暗号処理中などの消費電力の変化を測定・解析し、秘密鍵などを推測するサイドチャネル攻撃です。",
-    "example": "ICカードの演算時の電力波形を収集し、処理データとの関係を解析します。",
     "related": [
       "side-channel-attack",
       "timing-attack"
@@ -12023,7 +11732,6 @@ export const terms: Term[] = [
     "reading": "Tamper resistance",
     "category": "セキュリティ運用",
     "definition": "機器やソフトウェアの不正な解析、改変、内部情報の読取りなどに抵抗する性質です。保護構造や異常検知、秘密情報の消去などで高めます。",
-    "example": "ICカードの筐体を開けると秘密鍵を消去する仕組みを設けます。",
     "related": [
       "side-channel-attack"
     ],
@@ -12044,7 +11752,6 @@ export const terms: Term[] = [
     "reading": "Volatility",
     "category": "セキュリティ運用",
     "definition": "証拠保全では、電源断や時間経過によって情報が消失・変化しやすい性質を指します。揮発性の高い情報から優先して収集します。",
-    "example": "メモリ上のプロセス情報を、ディスクのファイルより先に保存します。",
     "related": [
       "digital-forensics",
       "routing-table"
@@ -12066,7 +11773,6 @@ export const terms: Term[] = [
     "reading": "Routing table",
     "category": "ネットワーク",
     "definition": "宛先ネットワークに対する次の転送先や出力インタフェースなど、パケットの経路選択に使う情報を保持する表です。",
-    "example": "宛先IPアドレスに最も長く一致する経路を選び、指定された次のルータへ転送します。",
     "related": [
       "router",
       "volatility"
@@ -12088,7 +11794,6 @@ export const terms: Term[] = [
     "reading": "The OAuth 2.0 Authorization Framework",
     "category": "暗号・認証",
     "definition": "リソースオーナーの許可に基づき、クライアントへリソースへのアクセス権限を委譲するための認可の枠組みです。権限はアクセストークンで表します。",
-    "example": "写真編集アプリに、利用者のクラウド上の写真を読み出す権限だけを付与します。",
     "related": [
       "authorization",
       "access-token",
@@ -12111,7 +11816,6 @@ export const terms: Term[] = [
     "reading": "Authentication",
     "category": "暗号・認証",
     "definition": "利用者や機器などが主張する身元を確認することです。パスワード、所持物、生体情報などの認証要素を利用します。",
-    "example": "ログイン時に入力されたパスワードを確認し、登録した利用者本人かを確かめます。",
     "related": [
       "authorization",
       "mfa"
@@ -12133,7 +11837,6 @@ export const terms: Term[] = [
     "reading": "Access token",
     "category": "暗号・認証",
     "definition": "保護されたリソースへのアクセス権限を表す情報です。OAuth 2.0では、クライアントが認可サーバから取得し、リソースサーバへの要求時に提示します。",
-    "example": "写真の読取り権限を表すトークンをAPIへ提示して写真を取得します。",
     "related": [
       "oauth2",
       "authorization"
@@ -12155,7 +11858,6 @@ export const terms: Term[] = [
     "reading": "Simple Mail Transfer Protocol",
     "category": "メールセキュリティ",
     "definition": "電子メールを送信・転送するためのプロトコルです。メールサーバ間での転送や、クライアントからのメール投稿に使います。",
-    "example": "送信側のメールサーバが宛先のメールサーバへメールを転送します。",
     "related": [
       "submission-port",
       "op25b"
@@ -12177,7 +11879,6 @@ export const terms: Term[] = [
     "reading": "Router",
     "category": "ネットワーク",
     "definition": "ネットワーク層で宛先IPアドレスと経路情報に基づき、異なるネットワーク間でパケットを転送する機器です。",
-    "example": "社内LANからインターネットへ向かうパケットを、経路表に従って中継します。",
     "related": [
       "routing-table",
       "broadcast-domain",
@@ -12200,7 +11901,6 @@ export const terms: Term[] = [
     "reading": "Collision domain",
     "category": "ネットワーク",
     "definition": "イーサネットでフレームの衝突が伝わる範囲です。リピータハブでは共有され、ブリッジやスイッチ、ルータで分割されます。",
-    "example": "リピータハブに接続した半二重の端末群では、ある端末の送信が他の端末の送信と衝突します。",
     "related": [
       "ethernet",
       "router",
@@ -12223,7 +11923,6 @@ export const terms: Term[] = [
     "reading": "Broadcast domain",
     "category": "ネットワーク",
     "definition": "同じリンク層のブロードキャストが届く範囲です。ルータやVLANによって分割します。",
-    "example": "同じVLAN内の端末にはARP要求が届きますが、別のルータ配下へはそのまま届きません。",
     "related": [
       "router",
       "ethernet"
@@ -12248,7 +11947,6 @@ export const terms: Term[] = [
     "reading": "Spanning Tree Protocol",
     "category": "ネットワーク",
     "definition": "複数のブリッジやスイッチで情報を交換し、冗長な接続の一部を転送に使わず、ループのない木構造の経路を作るプロトコルです。障害時には経路を再構成します。",
-    "example": "三角形に結んだスイッチの一部のポートを待機させ、回線障害時に代替経路として使います。",
     "related": [
       "bridge"
     ],
@@ -12269,7 +11967,6 @@ export const terms: Term[] = [
     "reading": "Bridge",
     "category": "ネットワーク",
     "definition": "データリンク層でMACアドレスに基づき、LANのセグメント間でフレームを中継・フィルタリングする機器です。",
-    "example": "学習した宛先MACアドレスの側だけにフレームを送ることで、不要な転送を減らします。",
     "related": [
       "mac-address",
       "spanning-tree"
@@ -12291,7 +11988,6 @@ export const terms: Term[] = [
     "reading": "Load balancing",
     "category": "システム構成",
     "definition": "要求や処理を複数のサーバや経路などへ振り分け、特定の資源への負荷の集中を避ける仕組みです。",
-    "example": "利用者のHTTPリクエストを複数のWebサーバへ分配します。",
     "related": [
       "spanning-tree"
     ],
@@ -12312,7 +12008,6 @@ export const terms: Term[] = [
     "reading": "Hypertext Transfer Protocol GET method",
     "category": "ネットワーク",
     "definition": "指定したリソースの表現を取得するHTTPメソッドです。通常のHTMLフォームをGETで送信すると、入力値はURIのクエリに付加されます。",
-    "example": "検索フォームの入力値が/search?q=wordというURIに含まれます。",
     "related": [
       "http-protocol",
       "http-post"
@@ -12320,8 +12015,14 @@ export const terms: Term[] = [
     "criteria": [
       {
         "id": "meaning",
-        "title": "リソースの取得に使いフォームデータはURIのクエリに含める",
-        "hint": "何のためのメソッドで、フォームの入力値はどこに入りますか？"
+        "title": "指定したリソースの表現を取得するHTTPメソッド",
+        "hint": "何をするためのHTTPメソッドですか？"
+      },
+      {
+        "id": "sensitive-data",
+        "title": "フォームの値がURLに入るため、機密情報が履歴やアクセスログへ残らないよう注意する",
+        "hint": "URLに含めた値は、どこに記録されますか？",
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -12334,7 +12035,6 @@ export const terms: Term[] = [
     "reading": "Hypertext Transfer Protocol POST method",
     "category": "ネットワーク",
     "definition": "対象リソースにデータを送って処理を依頼するHTTPメソッドです。通常のHTMLフォームでは、入力値をリクエストのメッセージボディに含めます。",
-    "example": "申込フォームの内容をメッセージボディへ格納してWebサーバに送ります。",
     "related": [
       "http-protocol",
       "http-get",
@@ -12343,8 +12043,14 @@ export const terms: Term[] = [
     "criteria": [
       {
         "id": "meaning",
-        "title": "処理するデータをメッセージボディに含めて送信する",
-        "hint": "フォームの入力値はリクエストのどの部分に入りますか？"
+        "title": "対象リソースへデータを送って処理を依頼するHTTPメソッド",
+        "hint": "何をするためのHTTPメソッドですか？"
+      },
+      {
+        "id": "encryption",
+        "title": "ボディに入れただけでは暗号化されず、盗聴を防ぐにはHTTPSなどが必要になる",
+        "hint": "URLに出ない値なら、通信経路でも秘密になりますか？",
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -12357,7 +12063,6 @@ export const terms: Term[] = [
     "reading": "Structured Query Language NOT EXISTS",
     "category": "データベース",
     "definition": "副問合せの結果に行が一つも存在しないときに真となるSQLの条件です。相関副問合せと組み合わせて、対応する行がないデータを抽出できます。",
-    "example": "上司として参照する従業員が存在しない行を選び、部下のいない従業員を抽出します。",
     "related": [
       "correlated-subquery",
       "sql-null"
@@ -12379,7 +12084,6 @@ export const terms: Term[] = [
     "reading": "Correlated subquery",
     "category": "データベース",
     "definition": "外側の問合せの列を参照する副問合せです。外側の行の値に対応するデータがあるかなどを条件にできます。",
-    "example": "外側の従業員コードを内側の「上司」と比較し、その従業員に部下がいるかを調べます。",
     "related": [
       "not-exists"
     ],
@@ -12400,15 +12104,20 @@ export const terms: Term[] = [
     "reading": "Structured Query Language NULL",
     "category": "データベース",
     "definition": "SQLで値が存在しない、または不明であることを表すものです。0や空文字とは区別し、判定にはIS NULLなどを使います。",
-    "example": "上司が設定されていない従業員の「上司」列をNULLにします。",
     "related": [
       "not-exists"
     ],
     "criteria": [
       {
         "id": "meaning",
-        "title": "値の不存在や不明を表し通常の等値比較では真にならない",
-        "hint": "0や空文字とどう異なり、どの条件で判定しますか？"
+        "title": "SQLで値が存在しない、または不明であることを表す",
+        "hint": "0や空文字と同じ意味ですか？"
+      },
+      {
+        "id": "comparison",
+        "title": "NULLかどうかの判定には、通常の等値比較ではなくIS NULLを使う",
+        "hint": "NULLとの等値比較は真になりますか？",
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -12421,7 +12130,6 @@ export const terms: Term[] = [
     "reading": "SonarQube",
     "category": "開発技術",
     "definition": "ソースコードを静的解析し、バグ、脆弱性、重複などを検出してコード品質の管理を支援するツールです。",
-    "example": "コード変更ごとに解析し、重複したコードや問題を起こす可能性のある記述を確認します。",
     "related": [
       "git",
       "jenkins"
@@ -12443,7 +12151,6 @@ export const terms: Term[] = [
     "reading": "Git",
     "category": "開発技術",
     "definition": "ソースコードなどの変更履歴を管理する分散バージョン管理システムです。各開発者がリポジトリの履歴を保持し、ブランチやマージを使って共同開発します。",
-    "example": "修正をコミットし、別の作業ブランチの変更をマージします。",
     "related": [
       "jenkins",
       "sonarqube"
@@ -12465,7 +12172,6 @@ export const terms: Term[] = [
     "reading": "Jenkins",
     "category": "開発技術",
     "definition": "ビルド、テスト、デプロイなどの処理を自動実行するための自動化サーバです。継続的インテグレーションなどに使います。",
-    "example": "リポジトリへの変更を契機に、ビルドとテストを順に実行します。",
     "related": [
       "git",
       "sonarqube"
@@ -12487,7 +12193,6 @@ export const terms: Term[] = [
     "reading": "Snort",
     "category": "ネットワークセキュリティ",
     "definition": "ネットワーク通信を解析し、ルールに基づいて不正侵入や攻撃を検知・防止するOSSのツールです。",
-    "example": "ネットワーク上のパケットを監視し、既知の攻撃に一致する通信を検知します。",
     "related": [
       "ids-ips",
       "ips"
@@ -12509,7 +12214,6 @@ export const terms: Term[] = [
     "reading": "Keep Problem Try",
     "category": "開発技術",
     "definition": "振り返りの内容をKeep（続けたいこと）、Problem（問題点）、Try（次に試すこと）の三つで整理する手法です。",
-    "example": "短いレビューを続けることをKeep、レビュー待ちをProblem、担当者の交代制をTryに挙げます。",
     "related": [
       "scrum",
       "sprint-retrospective"
@@ -12531,7 +12235,6 @@ export const terms: Term[] = [
     "reading": "Downtime",
     "category": "サービス管理",
     "definition": "システムやサービスが利用できない時間です。サービス可用性の計算では、合意したサービス提供時間内の利用不能時間を対象にします。",
-    "example": "6時〜20時のサービスが10時から12時まで利用できなければ、提供時間内の停止は2時間です。",
     "related": [
       "service-availability",
       "service-hours",
@@ -12554,7 +12257,6 @@ export const terms: Term[] = [
     "reading": "Repair time",
     "category": "サービス管理",
     "definition": "故障したシステムや機器を修復して利用可能な状態に戻すために要する時間です。サービス提供時間内の停止時間と必ずしも一致しません。",
-    "example": "夜間に3時間の修復を行っても、朝までに復旧すれば日中だけのサービスの停止時間は増えません。",
     "related": [
       "downtime",
       "mttr"
@@ -12576,7 +12278,6 @@ export const terms: Term[] = [
     "reading": "Compliance",
     "category": "システム監査",
     "definition": "業務や情報システムの運用が、適用される法令、規則、契約、組織内の規程などに従っていることです。",
-    "example": "取引記録の保管期間やアクセス手続が法令と社内規程に適合しているか確認します。",
     "related": [
       "it-control-reliability"
     ],
@@ -12597,7 +12298,6 @@ export const terms: Term[] = [
     "reading": "Digital certificate",
     "category": "暗号・認証",
     "definition": "主体と公開鍵の対応などを記載し、発行者のデジタル署名で保証する電子的な証明書です。秘密鍵は含みません。",
-    "example": "ブラウザがサーバー証明書の署名とホスト名などを検証し、接続先の公開鍵を確認します。",
     "related": [
       "pki",
       "certificate-authority",
@@ -12620,7 +12320,6 @@ export const terms: Term[] = [
     "reading": "Command and Control server",
     "category": "攻撃手法",
     "definition": "マルウェアに感染した端末などに指令を送り、不正な動作を制御するためのサーバです。",
-    "example": "感染したIoT機器に、攻撃先のIPアドレスと攻撃開始の指令を送ります。",
     "related": [
       "botnet",
       "mirai"
@@ -12642,7 +12341,6 @@ export const terms: Term[] = [
     "reading": "Address Resolution Protocol cache",
     "category": "ネットワーク",
     "definition": "ARPによって得たIPv4アドレスとMACアドレスの対応を一時的に保持する情報です。一定時間で更新・削除されるため、証拠保全では早めに取得します。",
-    "example": "同じLAN内のゲートウェイのIPv4アドレスとMACアドレスの対応を保存します。",
     "related": [
       "mac-address",
       "digital-forensics"
@@ -12664,7 +12362,6 @@ export const terms: Term[] = [
     "reading": "Outbound Port 25 Blocking",
     "category": "メールセキュリティ",
     "definition": "管理下のネットワークから外部のTCPの25番ポートへの接続を制限し、端末などによる直接のスパムメール送信を抑制する対策です。",
-    "example": "ISPが加入者の感染端末から外部メールサーバへの直接送信を遮断します。",
     "related": [
       "submission-port",
       "smtp-auth",
@@ -12687,7 +12384,6 @@ export const terms: Term[] = [
     "reading": "Simple Mail Transfer Protocol Authentication",
     "category": "メールセキュリティ",
     "definition": "SMTPでメールを投稿する利用者を認証する拡張です。許可された利用者だけがメール送信サービスを使えるようにします。",
-    "example": "メールクライアントが認証情報を提示してから投稿用サーバにメールを送信します。",
     "related": [
       "smtp",
       "submission-port",
@@ -12710,7 +12406,6 @@ export const terms: Term[] = [
     "reading": "Hypertext Transfer Protocol",
     "category": "ネットワーク",
     "definition": "クライアントとサーバがリクエストとレスポンスをやり取りし、Web上のリソースを取得・送信するためのアプリケーション層のプロトコルです。",
-    "example": "ブラウザがGETリクエストを送り、Webサーバがステータスコードとページの内容を返します。",
     "related": [
       "http-status",
       "http-get",
@@ -12733,7 +12428,6 @@ export const terms: Term[] = [
     "reading": "Sprint retrospective",
     "category": "開発技術",
     "definition": "スクラムで、直近のスプリントの進め方や協働、プロセスなどを振り返り、品質と有効性を高める改善を計画するイベントです。",
-    "example": "レビュー待ちで手戻りが増えた原因を話し合い、次のスプリントで試す改善を決めます。",
     "related": [
       "scrum",
       "kpt",
@@ -12756,7 +12450,6 @@ export const terms: Term[] = [
     "reading": "Sprint review",
     "category": "開発技術",
     "definition": "スクラムで、スプリントの成果をステークホルダーと検査し、状況の変化も踏まえて今後の適応を決めるイベントです。",
-    "example": "開発した機能を利用部門と確認し、得られた意見から今後の優先順位を見直します。",
     "related": [
       "scrum",
       "sprint-retrospective"
@@ -12778,7 +12471,6 @@ export const terms: Term[] = [
     "reading": "Agreed service time",
     "category": "サービス管理",
     "definition": "サービスを利用できるように提供することが顧客などとの間で合意された時間です。サービス可用性の計算の基準になります。",
-    "example": "毎日6時から20時までを提供時間と合意した場合、1日当たり14時間が対象です。",
     "related": [
       "service-availability",
       "downtime"
@@ -12800,7 +12492,6 @@ export const terms: Term[] = [
     "reading": "Reliability in information technology control objectives",
     "category": "システム監査",
     "definition": "財務報告に係る内部統制のITの統制目標では、情報が組織の意図どおりに承認され、漏れや重複なく正確に記録・処理されることです。",
-    "example": "売上取引を二重計上せず、全件を正しい金額と科目で記録します。",
     "related": [
       "compliance",
       "reliability"
@@ -12822,7 +12513,6 @@ export const terms: Term[] = [
     "reading": "Symmetric Key",
     "category": "暗号・認証",
     "definition": "暗号化と復号、またはMACの生成と検証などで、当事者が共有して使う秘密の鍵です。",
-    "example": "送受信者が同じAES鍵を安全に共有します。",
     "related": [],
     "criteria": [
       {
@@ -12839,7 +12529,6 @@ export const terms: Term[] = [
     "reading": "Public Key",
     "category": "暗号・認証",
     "definition": "公開鍵暗号方式で公開して利用する鍵です。対応する秘密鍵で作った署名の検証や、秘密鍵の所有者宛ての暗号化などに使います。",
-    "example": "認証局の公開鍵で証明書の署名を検証します。",
     "related": [
       "private-key",
       "public-key-crypto"
@@ -12859,7 +12548,6 @@ export const terms: Term[] = [
     "reading": "Private Key",
     "category": "暗号・認証",
     "definition": "公開鍵暗号方式で公開鍵と対になり、所有者が秘密に保持する鍵です。署名の生成や、自分宛ての暗号文の復号などに使います。",
-    "example": "認証局が秘密鍵で証明書に署名します。",
     "related": [
       "public-key",
       "digital-signature"
@@ -12879,7 +12567,6 @@ export const terms: Term[] = [
     "reading": "Forward Secrecy",
     "category": "暗号・認証",
     "definition": "認証用などの長期秘密鍵が後から漏えいしても、過去の通信のセッション鍵を復元できない性質です。",
-    "example": "一時的なDH鍵を通信ごとに作り、利用後に破棄します。",
     "related": [
       "dh-key-exchange",
       "session-key"
@@ -12907,7 +12594,6 @@ export const terms: Term[] = [
     "reading": "Session Key",
     "category": "暗号・認証",
     "definition": "個々の通信セッションのデータを暗号化・復号などするために使う鍵です。",
-    "example": "TLSの鍵交換で得た情報から、実際の通信保護用の鍵を導出します。",
     "related": [],
     "criteria": [
       {
@@ -12924,7 +12610,6 @@ export const terms: Term[] = [
     "reading": "Blockchain",
     "category": "暗号・認証",
     "definition": "データをブロックにまとめ、前のブロックのハッシュ値などで連結し、複数の参加者が履歴を共有する仕組みです。",
-    "example": "過去の取引を変更すると後続のハッシュの対応が崩れます。",
     "related": [],
     "criteria": [
       {
@@ -12941,7 +12626,6 @@ export const terms: Term[] = [
     "reading": "Transport Layer Security 1.3",
     "category": "暗号・認証",
     "definition": "通信の暗号化・認証・完全性保護を提供するTLSの版です。古い暗号方式を除き、暗号スイートにはAEADとハッシュを含め、鍵交換や署名の方式は別に選びます。",
-    "example": "TLS_AES_128_GCM_SHA256でWeb通信を保護します。",
     "related": [
       "tls",
       "aead",
@@ -12976,7 +12660,6 @@ export const terms: Term[] = [
     "reading": "Authenticated Encryption with Associated Data",
     "category": "暗号・認証",
     "definition": "平文の暗号化と認証を一体で行い、暗号化しない付加データも改ざん検知の対象にできる方式です。",
-    "example": "AES-GCMで本文を暗号化し、ヘッダーの一部も認証します。",
     "related": [],
     "criteria": [
       {
@@ -12993,7 +12676,6 @@ export const terms: Term[] = [
     "reading": "Cipher Suite",
     "category": "暗号・認証",
     "definition": "通信で用いる暗号アルゴリズムなどの組合せです。含む要素はプロトコルの版によって異なります。",
-    "example": "TLS 1.3ではAEAD方式とハッシュ方式の組に合意します。",
     "related": [],
     "criteria": [
       {
@@ -13010,7 +12692,6 @@ export const terms: Term[] = [
     "reading": "Collision Resistance",
     "category": "暗号・認証",
     "definition": "同じハッシュ値になる異なる二つの入力を見つけることが計算上困難である性質です。",
-    "example": "別の文書を用意して同じ署名対象ハッシュを作ることを難しくします。",
     "related": [],
     "criteria": [
       {
@@ -13029,7 +12710,6 @@ export const terms: Term[] = [
     "reading": "Preimage Resistance",
     "category": "暗号・認証",
     "definition": "与えられたハッシュ値に対応する入力を求めることが計算上困難である性質です。",
-    "example": "ハッシュ値だけから元のメッセージを探すことを難しくします。",
     "related": [],
     "criteria": [
       {
@@ -13046,7 +12726,6 @@ export const terms: Term[] = [
     "reading": "Birthday Attack",
     "category": "暗号・認証",
     "definition": "ハッシュなどの出力の衝突を、候補同士の多数の組合せを利用して探索する攻撃です。理想的なnビット出力では約2のn/2乗が探索回数の目安です。",
-    "example": "256ビットハッシュの衝突を約2の128乗回の試行で探すことを考えます。",
     "related": [],
     "criteria": [
       {
@@ -13062,8 +12741,7 @@ export const terms: Term[] = [
     "name": "CTRモード",
     "reading": "Counter mode",
     "category": "暗号・認証",
-    "definition": "カウンタ値をブロック暗号で暗号化して鍵ストリームを作り、データとXORを取る暗号利用モードです。同じ鍵でカウンタを再利用しません。",
-    "example": "各ブロックのカウンタを独立に処理し、暗号化を並列化します。",
+    "definition": "カウンタ値をブロック暗号で暗号化して鍵ストリームを作り、データとXORを取る暗号利用モードです。",
     "related": [
       "block-cipher",
       "logic-operation"
@@ -13091,7 +12769,6 @@ export const terms: Term[] = [
     "reading": "Block Cipher",
     "category": "暗号・認証",
     "definition": "固定長のブロックごとに、鍵を使って暗号化・復号する共通鍵暗号です。長いデータには暗号利用モードを組み合わせます。",
-    "example": "AESをCTRやGCMなどのモードで利用します。",
     "related": [],
     "criteria": [
       {
@@ -13108,7 +12785,6 @@ export const terms: Term[] = [
     "reading": "Padding",
     "category": "暗号・認証",
     "definition": "データを必要な長さや形式にそろえるため、規則に従って付加データを加えることです。",
-    "example": "CBCモードで平文の長さをブロック長の倍数へそろえます。",
     "related": [],
     "criteria": [
       {
@@ -13125,7 +12801,6 @@ export const terms: Term[] = [
     "reading": "Content Protection for Recordable Media",
     "category": "暗号・認証",
     "definition": "記録可能な媒体上のコンテンツを保護する技術です。SDメモリカードなどで利用されます。",
-    "example": "SDカードに記録した映像の不正なコピーを制限します。",
     "related": [],
     "criteria": [
       {
@@ -13142,7 +12817,6 @@ export const terms: Term[] = [
     "reading": "Content Protection for Pre-recorded Media",
     "category": "暗号・認証",
     "definition": "記録済みの媒体のコンテンツを保護する技術です。DVD-Audioなどで利用されます。",
-    "example": "販売される記録済み音楽メディアの内容を保護します。",
     "related": [],
     "criteria": [
       {
@@ -13159,7 +12833,6 @@ export const terms: Term[] = [
     "reading": "Digital Transmission Content Protection",
     "category": "暗号・認証",
     "definition": "デジタル機器間で伝送するコンテンツを、機器認証や暗号化などで保護する技術です。",
-    "example": "対応する映像機器間で録画番組を保護して転送します。",
     "related": [],
     "criteria": [
       {
@@ -13176,7 +12849,6 @@ export const terms: Term[] = [
     "reading": "High-bandwidth Digital Content Protection",
     "category": "暗号・認証",
     "definition": "HDMIなどのデジタル映像・音声の伝送路で、機器認証と暗号化によってコンテンツを保護する技術です。",
-    "example": "プレーヤーからディスプレイへ送る映像を保護します。",
     "related": [],
     "criteria": [
       {
@@ -13193,7 +12865,6 @@ export const terms: Term[] = [
     "reading": "LEFT OUTER JOIN",
     "category": "データベース",
     "definition": "左側の表の全行を残し、結合条件に一致する右側の行を結び付ける外部結合です。一致しない右側の列はNULLになります。",
-    "example": "顧客表を左に置き、受注がない顧客も一覧に残します。",
     "related": [
       "full-outer-join",
       "sql-null"
@@ -13215,7 +12886,6 @@ export const terms: Term[] = [
     "reading": "Join Condition",
     "category": "データベース",
     "definition": "複数の表の行をどの対応関係で組み合わせるかを指定する条件です。",
-    "example": "顧客コードが等しい受注行と顧客行を結合します。",
     "related": [],
     "criteria": [
       {
@@ -13232,7 +12902,6 @@ export const terms: Term[] = [
     "reading": "Full Outer Join",
     "category": "データベース",
     "definition": "両方の表の全行を残す外部結合です。相手に一致する行がなければ、相手側の列をNULLにします。",
-    "example": "片方だけにある商品コードも両方の一覧に残します。",
     "related": [],
     "criteria": [
       {
@@ -13249,7 +12918,6 @@ export const terms: Term[] = [
     "reading": "Structured Query Language OR",
     "category": "データベース",
     "definition": "複数の条件のうち、少なくとも一つが真なら全体を真とする条件です。SQLではNULLによる不明の扱いも考慮します。",
-    "example": "勤続年数>10 OR 年齢>28で、どちらかを満たす社員を選びます。",
     "related": [],
     "criteria": [
       {
@@ -13266,7 +12934,6 @@ export const terms: Term[] = [
     "reading": "Structured Query Language AND",
     "category": "データベース",
     "definition": "複数の条件が全て真のときに全体を真とする条件です。SQLではNULLによる不明の扱いも考慮します。",
-    "example": "条件を満たし、かつ所属が総務部の社員を選びます。",
     "related": [],
     "criteria": [
       {
@@ -13283,7 +12950,6 @@ export const terms: Term[] = [
     "reading": "Data Lineage",
     "category": "データベース",
     "definition": "データの発生源から変換・加工を経て現在の形になるまでの流れを示す情報です。",
-    "example": "集計値がどの元データと処理から作られたかを追います。",
     "related": [],
     "criteria": [
       {
@@ -13300,7 +12966,6 @@ export const terms: Term[] = [
     "reading": "Metadata",
     "category": "データベース",
     "definition": "データの構造、意味、作成元、更新日時など、データを説明・管理するための情報です。",
-    "example": "売上列の型や単位、集計の対象期間を記録します。",
     "related": [],
     "criteria": [
       {
@@ -13317,7 +12982,6 @@ export const terms: Term[] = [
     "reading": "Data Warehouse",
     "category": "データベース",
     "definition": "様々なシステムのデータを統合・蓄積し、分析や意思決定に利用するためのデータ基盤です。",
-    "example": "販売・在庫・顧客の履歴をまとめて分析します。",
     "related": [],
     "criteria": [
       {
@@ -13334,7 +12998,6 @@ export const terms: Term[] = [
     "reading": "Open Database Connectivity",
     "category": "データベース",
     "definition": "アプリケーションからドライバーを介し、様々なDBMSへ共通のインタフェースでアクセスするための仕組みです。",
-    "example": "対応ドライバーを使って業務アプリからDBへSQLを送ります。",
     "related": [],
     "criteria": [
       {
@@ -13351,7 +13014,6 @@ export const terms: Term[] = [
     "reading": "Data Dictionary",
     "category": "データベース",
     "definition": "表や列、制約、利用者、権限など、DBMSがデータベースを管理するための情報を集めたものです。",
-    "example": "表の定義や列の型を調べます。",
     "related": [],
     "criteria": [
       {
@@ -13368,7 +13030,6 @@ export const terms: Term[] = [
     "reading": "Log",
     "category": "データベース",
     "definition": "システムの動作や操作、事象などを時系列で記録した情報です。調査や監査、障害回復などに使います。",
-    "example": "誰がどのレコードを更新したか記録します。",
     "related": [],
     "criteria": [
       {
@@ -13385,7 +13046,6 @@ export const terms: Term[] = [
     "reading": "GRANT",
     "category": "データベース",
     "definition": "SQLで、利用者などへ表や資源に対する操作権限を与える文です。",
-    "example": "利用者BにA表のSELECT権限を付与します。",
     "related": [],
     "criteria": [
       {
@@ -13402,7 +13062,6 @@ export const terms: Term[] = [
     "reading": "WITH GRANT OPTION",
     "category": "データベース",
     "definition": "SQLのGRANTで、与えた権限を受領者が他者へ再付与することも認める指定です。",
-    "example": "Bが受け取ったSELECT権限をCにも付与できるようにします。",
     "related": [],
     "criteria": [
       {
@@ -13419,7 +13078,6 @@ export const terms: Term[] = [
     "reading": "SELECT",
     "category": "データベース",
     "definition": "SQLで、指定した列や条件に基づいて表などからデータを取り出す文です。",
-    "example": "条件に合う社員番号だけを取得します。",
     "related": [],
     "criteria": [
       {
@@ -13436,7 +13094,6 @@ export const terms: Term[] = [
     "reading": "UPDATE",
     "category": "データベース",
     "definition": "SQLで、表の既存の行の値を変更する文です。対象行はWHEREなどで指定します。",
-    "example": "社員番号を指定し、その社員の所属を変更します。",
     "related": [],
     "criteria": [
       {
@@ -13453,7 +13110,6 @@ export const terms: Term[] = [
     "reading": "Referential Integrity",
     "category": "データベース",
     "definition": "外部キーの値に対応する参照先が存在するなど、表間の参照関係に矛盾がない性質です。",
-    "example": "存在しない顧客コードを受注表へ登録しないようにします。",
     "related": [],
     "criteria": [
       {
@@ -13470,7 +13126,6 @@ export const terms: Term[] = [
     "reading": "Structured Query Language",
     "category": "データベース",
     "definition": "関係データベースの定義、検索、更新、権限管理などを行うための言語です。",
-    "example": "SELECTで検索し、GRANTで利用者に権限を与えます。",
     "related": [],
     "criteria": [
       {
@@ -13487,7 +13142,6 @@ export const terms: Term[] = [
     "reading": "Reproduction Right",
     "category": "法務",
     "definition": "著作物を有形的に再製する行為を専有する著作者の権利です。プログラムのコピーも対象になります。",
-    "example": "ソフトウェアを別の媒体へコピーすることの許諾を確認します。",
     "related": [],
     "criteria": [
       {
@@ -13504,7 +13158,6 @@ export const terms: Term[] = [
     "reading": "Technological Protection",
     "category": "法務",
     "definition": "著作権などを侵害する行為を技術的に防止・抑止する手段です。コピー制御などが該当し、回避を伴う利用には法令や許諾の確認が必要です。",
-    "example": "複製制御を解除してソフトウェアをコピーする行為が問題になります。",
     "related": [],
     "criteria": [
       {
@@ -13521,7 +13174,6 @@ export const terms: Term[] = [
     "reading": "Software License",
     "category": "法務",
     "definition": "権利者が、利用者に対してソフトウェアなどの利用を認める範囲と条件を定める契約です。",
-    "example": "利用台数や改変・複製の可否を契約で確認します。",
     "related": [],
     "criteria": [
       {
@@ -13541,7 +13193,6 @@ export const terms: Term[] = [
     "reading": "Return On Investment",
     "category": "サービス管理",
     "definition": "投資によって得る利益の増加額を投資額で割り、投資効率を表す指標です。算定では対象期間と利益・投資の定義を合わせます。",
-    "example": "投資額40、利益増加70なら175％です。",
     "related": [
       "initial-cost",
       "operating-cost",
@@ -13562,7 +13213,6 @@ export const terms: Term[] = [
     "reading": "Initial Cost",
     "category": "サービス管理",
     "definition": "導入や開発などの開始時に必要となる費用です。運用開始後に継続して発生する費用とは分けます。",
-    "example": "システム導入時に機器の購入と初期設定の費用を払います。",
     "related": [],
     "criteria": [
       {
@@ -13579,7 +13229,6 @@ export const terms: Term[] = [
     "reading": "Operating Cost",
     "category": "サービス管理",
     "definition": "システムやサービスを継続して利用・運用するために発生する費用です。",
-    "example": "保守、回線、クラウド利用の料金を毎年支払います。",
     "related": [],
     "criteria": [
       {
@@ -13596,7 +13245,6 @@ export const terms: Term[] = [
     "reading": "Incremental Profit",
     "category": "サービス管理",
     "definition": "投資前などの基準と比較して増えた利益です。投資評価では、対象期間の効果から必要な費用を差し引いて求めます。",
-    "example": "削減した業務費110から投資額40を引き、増加額70とします。",
     "related": [],
     "criteria": [
       {
@@ -13613,7 +13261,6 @@ export const terms: Term[] = [
     "reading": "Business Continuity",
     "category": "サービス管理",
     "definition": "災害や障害などが起きても重要業務を継続し、許容される時間内に復旧できるようにすることです。",
-    "example": "拠点が使えなくなっても代替拠点で重要な受注業務を続けます。",
     "related": [],
     "criteria": [
       {
@@ -13630,7 +13277,6 @@ export const terms: Term[] = [
     "reading": "Supply Chain",
     "category": "サービス管理",
     "definition": "調達、生産、物流、販売など、製品やサービスを届けるまでにつながる企業や活動の連鎖です。",
-    "example": "部品の供給元から販売先までの取引関係を把握します。",
     "related": [],
     "criteria": [
       {
@@ -13647,7 +13293,6 @@ export const terms: Term[] = [
     "reading": "Software as a Service",
     "category": "サービス管理",
     "definition": "提供者が運用するアプリケーションをネットワーク経由で利用するクラウドサービスの区分です。",
-    "example": "ブラウザで事業者の会計サービスを使います。",
     "related": [],
     "criteria": [
       {
@@ -13666,7 +13311,6 @@ export const terms: Term[] = [
     "reading": "Platform as a Service",
     "category": "サービス管理",
     "definition": "アプリケーションの開発・実行に使う基盤を提供するクラウドサービスの区分です。利用者は主にアプリケーションやデータを管理します。",
-    "example": "OSの管理を提供者へ任せ、自作アプリを実行します。",
     "related": [],
     "criteria": [
       {
@@ -13685,7 +13329,6 @@ export const terms: Term[] = [
     "reading": "Infrastructure as a Service",
     "category": "サービス管理",
     "definition": "仮想サーバやストレージ、ネットワークなどの基盤資源を提供するクラウドサービスの区分です。利用者は通常OSやアプリケーションを管理します。",
-    "example": "仮想マシンに自分でOSやDBMSを導入します。",
     "related": [],
     "criteria": [
       {
@@ -13702,7 +13345,6 @@ export const terms: Term[] = [
     "reading": "Internal Audit",
     "category": "サービス管理",
     "definition": "組織内の仕組みや活動が要求事項などを満たすかを、独立性と客観性を確保して評価する活動です。",
-    "example": "SMSが規格と自社の要求に適合しているか定期的に確認します。",
     "related": [],
     "criteria": [
       {
@@ -13719,7 +13361,6 @@ export const terms: Term[] = [
     "reading": "Management Review",
     "category": "サービス管理",
     "definition": "経営層が、マネジメントシステムの適切性・妥当性・有効性などを定期的に評価し、改善や変更を判断する活動です。",
-    "example": "監査結果や目標の達成状況を見て資源配分や方針を見直します。",
     "related": [],
     "criteria": [
       {
@@ -13736,7 +13377,6 @@ export const terms: Term[] = [
     "reading": "Service Management System",
     "category": "サービス管理",
     "definition": "サービスを指揮・管理する方針や目標、プロセスなどから成るサービスマネジメントシステムです。",
-    "example": "サービスの計画・提供・測定・改善の仕組みを整備します。",
     "related": [],
     "criteria": [
       {
@@ -13753,7 +13393,6 @@ export const terms: Term[] = [
     "reading": "Observe / Orient / Decide / Act",
     "category": "サービス管理",
     "definition": "観察、状況判断、意思決定、行動を繰り返し、状況の変化へ適応して判断・行動する枠組みです。",
-    "example": "現場の変化を把握して対応を選び、実行結果から次の行動を変えます。",
     "related": [],
     "criteria": [
       {
@@ -13770,7 +13409,6 @@ export const terms: Term[] = [
     "reading": "Continual Improvement",
     "category": "サービス管理",
     "definition": "パフォーマンスを向上させるために繰り返し行う活動です。一度の改善で終わらず測定・評価などを次の改善につなげます。",
-    "example": "毎月の障害傾向を分析し、対策の効果を確認して次の改善を行います。",
     "related": [],
     "criteria": [
       {
@@ -13787,7 +13425,6 @@ export const terms: Term[] = [
     "reading": "Degressive Charging",
     "category": "サービス管理",
     "definition": "利用量が増えるほど追加利用分などの単価を下げる課金方式です。料金総額は増えても増え方が緩やかになります。",
-    "example": "大量に利用する部分へ低い従量単価を適用します。",
     "related": [],
     "criteria": [
       {
@@ -13806,7 +13443,6 @@ export const terms: Term[] = [
     "reading": "Progressive Charging",
     "category": "サービス管理",
     "definition": "利用量が増えるほど追加利用分などの単価を上げる課金方式です。",
-    "example": "一定量を超えた利用分へ高い従量単価を適用します。",
     "related": [],
     "criteria": [
       {
@@ -13823,7 +13459,6 @@ export const terms: Term[] = [
     "reading": "Unit Price",
     "category": "サービス管理",
     "definition": "商品やサービスの単位量当たりの価格です。単価と利用量などから総額を求めます。",
-    "example": "1Gバイト当たりの料金にデータ量を掛けて料金を計算します。",
     "related": [],
     "criteria": [
       {
@@ -13840,7 +13475,6 @@ export const terms: Term[] = [
     "reading": "Usage Charge",
     "category": "サービス管理",
     "definition": "サービスや資源を利用する対価として支払う金額です。従量制では利用量と単価などから決まります。",
-    "example": "利用した時間やデータ量に応じて月額の総料金を計算します。",
     "related": [],
     "criteria": [
       {
@@ -13857,7 +13491,6 @@ export const terms: Term[] = [
     "reading": "Permutation",
     "category": "基礎理論",
     "definition": "複数の要素から、選んだ要素の並ぶ順序を区別して数える並べ方です。重複の可否により数え方が変わります。",
-    "example": "異なるM個から重複なくn個を並べる数はM!/(M−n)!です。",
     "related": [],
     "criteria": [
       {
@@ -13874,7 +13507,6 @@ export const terms: Term[] = [
     "reading": "Combination",
     "category": "基礎理論",
     "definition": "複数の要素から、選んだ要素の順序を区別せずに数える選び方です。",
-    "example": "異なるM個から重複なくn個を選ぶ数はM!/(n!(M−n)!)です。",
     "related": [],
     "criteria": [
       {
@@ -13891,7 +13523,6 @@ export const terms: Term[] = [
     "reading": "Combination With Repetition",
     "category": "基礎理論",
     "definition": "同じ要素を繰り返し選ぶことを許し、選ぶ順序を区別しない組合せです。",
-    "example": "M種類から合計n個を選ぶ数は(M+n−1)!/(n!(M−1)!)です。",
     "related": [],
     "criteria": [
       {
@@ -13908,7 +13539,6 @@ export const terms: Term[] = [
     "reading": "Internet Control Message Protocol",
     "category": "ネットワーク",
     "definition": "IP通信のエラーや制御情報を通知するプロトコルです。エコー要求・応答による到達性の確認にも使います。",
-    "example": "ルータが時間切れや宛先への到達不能を送信元へ通知します。",
     "related": [],
     "criteria": [
       {
@@ -13925,7 +13555,6 @@ export const terms: Term[] = [
     "reading": "Internet Protocol version 4",
     "category": "ネットワーク",
     "definition": "32ビットのIPアドレスを使うインターネットプロトコルです。通常アドレスを8ビットずつの四つの十進数で表します。",
-    "example": "192.0.2.1というアドレスを端末へ設定します。",
     "related": [],
     "criteria": [
       {
@@ -13942,7 +13571,6 @@ export const terms: Term[] = [
     "reading": "User Datagram Protocol",
     "category": "ネットワーク",
     "definition": "コネクション確立や再送制御を行わず、ポート番号を用いてデータグラムを送受信するトランスポート層のプロトコルです。",
-    "example": "遅延を抑えたい通信で、必要な損失対策をアプリケーション側に実装します。",
     "related": [],
     "criteria": [
       {
@@ -13959,7 +13587,6 @@ export const terms: Term[] = [
     "reading": "Transmission Control Protocol",
     "category": "ネットワーク",
     "definition": "コネクションを確立し、再送や順序制御、フロー制御などによって信頼性のあるバイト列の通信を提供するプロトコルです。",
-    "example": "Web通信のデータを欠落や順序の乱れから回復して受信します。",
     "related": [],
     "criteria": [
       {
@@ -13976,7 +13603,6 @@ export const terms: Term[] = [
     "reading": "Text record",
     "category": "ネットワーク",
     "definition": "DNSに文字列情報を公開するためのリソースレコードです。SPFやDKIMの公開情報などにも使います。",
-    "example": "ドメインの送信許可方針をSPFの文字列として登録します。",
     "related": [],
     "criteria": [
       {
@@ -13993,7 +13619,6 @@ export const terms: Term[] = [
     "reading": "Pretty Good Privacy",
     "category": "ネットワーク",
     "definition": "公開鍵暗号と共通鍵暗号などを組み合わせ、電子メールやファイルの暗号化・署名を行う仕組みです。",
-    "example": "受信者の公開鍵を使ってメールの暗号鍵を保護します。",
     "related": [],
     "criteria": [
       {
@@ -14010,7 +13635,6 @@ export const terms: Term[] = [
     "reading": "Simple Mail Transfer Protocol over Transport Layer Security",
     "category": "ネットワーク",
     "definition": "SMTPの通信路をTLSで暗号化し、メール転送や投稿時の盗聴・改ざんを防ぐ方式です。",
-    "example": "メールサーバ同士の接続でTLSを使い通信を保護します。",
     "related": [],
     "criteria": [
       {
@@ -14032,7 +13656,6 @@ export const terms: Term[] = [
     "reading": "Privacy Separator",
     "category": "ネットワーク",
     "definition": "同じアクセスポイントに接続する無線端末同士の直接通信を禁止する機能です。",
-    "example": "公衆無線LANの利用者が別の利用者のPCへ直接アクセスすることを抑えます。",
     "related": [],
     "criteria": [
       {
@@ -14049,7 +13672,6 @@ export const terms: Term[] = [
     "reading": "Service Set Identifier",
     "category": "ネットワーク",
     "definition": "無線LANのネットワークを識別するための識別子です。秘密の暗号鍵ではありません。",
-    "example": "端末のWi-Fi設定で接続するネットワークのSSIDを選びます。",
     "related": [],
     "criteria": [
       {
@@ -14066,7 +13688,6 @@ export const terms: Term[] = [
     "reading": "Media Access Control address filtering",
     "category": "ネットワーク",
     "definition": "端末のMACアドレスに基づいて通信や接続を許可・拒否する機能です。MACアドレスは偽装され得るため強い認証の代わりにはなりません。",
-    "example": "登録された端末のMACアドレスだけ接続を許可します。",
     "related": [],
     "criteria": [
       {
@@ -14083,7 +13704,6 @@ export const terms: Term[] = [
     "reading": "Neighbor Discovery",
     "category": "ネットワーク",
     "definition": "IPv6で同一リンク上のルータや近隣ノードの発見、アドレス解決などを行う仕組みです。ICMPv6を使います。",
-    "example": "宛先IPv6アドレスに対応するリンク層アドレスを問い合わせます。",
     "related": [],
     "criteria": [
       {
@@ -14100,7 +13720,6 @@ export const terms: Term[] = [
     "reading": "Private Address",
     "category": "ネットワーク",
     "definition": "組織内などのネットワークで使うために予約されたIPアドレスです。インターネット上の公的な到達先としては使いません。",
-    "example": "IPv4の192.168.0.0/16を社内LANへ割り当てます。",
     "related": [],
     "criteria": [
       {
@@ -14117,7 +13736,6 @@ export const terms: Term[] = [
     "reading": "Class D",
     "category": "ネットワーク",
     "definition": "IPv4の旧来のクラス分けで、224.0.0.0から239.255.255.255までのマルチキャスト用アドレスの範囲です。",
-    "example": "239.0.1.1を受信者グループの宛先として使います。",
     "related": [],
     "criteria": [
       {
@@ -14134,7 +13752,6 @@ export const terms: Term[] = [
     "reading": "Virtual Router Redundancy Protocol",
     "category": "ネットワーク",
     "definition": "複数のルータで仮想ルータを構成し、障害時にゲートウェイ機能を引き継ぐためのプロトコルです。",
-    "example": "端末のゲートウェイ設定を変えずに稼働中のルータを切り替えます。",
     "related": [],
     "criteria": [
       {
@@ -14151,7 +13768,6 @@ export const terms: Term[] = [
     "reading": "Default Gateway",
     "category": "ネットワーク",
     "definition": "特定の経路がない宛先へパケットを送るときに使う、既定の転送先となるルータです。",
-    "example": "LAN外の宛先へ向かうパケットを指定したルータへ渡します。",
     "related": [],
     "criteria": [
       {
@@ -14168,7 +13784,6 @@ export const terms: Term[] = [
     "reading": "Rapid Spanning Tree Protocol",
     "category": "ネットワーク",
     "definition": "スパニングツリープロトコルを改良し、L2ネットワークのループ防止と障害後の素早い経路切替えを行うプロトコルです。",
-    "example": "冗長スイッチのリンク障害時に代替経路へ収束します。",
     "related": [],
     "criteria": [
       {
@@ -14185,7 +13800,6 @@ export const terms: Term[] = [
     "reading": "Reverse Address Resolution Protocol",
     "category": "ネットワーク",
     "definition": "MACアドレスなどの情報から、自分のIPv4アドレスをサーバへ問い合わせるための旧来のプロトコルです。",
-    "example": "ディスクを持たない端末が起動時に自分のIPアドレスを得ます。",
     "related": [],
     "criteria": [
       {
@@ -14202,7 +13816,6 @@ export const terms: Term[] = [
     "reading": "Internet Service Provider",
     "category": "ネットワーク",
     "definition": "利用者へインターネットへの接続サービスを提供する事業者です。",
-    "example": "自宅の回線をインターネットへ接続し、割り当てるIPアドレスなどを管理します。",
     "related": [],
     "criteria": [
       {
@@ -14219,7 +13832,6 @@ export const terms: Term[] = [
     "reading": "Hypertext Transfer Protocol Secure",
     "category": "ネットワーク",
     "definition": "HTTPの通信をTLSで保護する方式です。サーバの認証、通信内容の暗号化や改ざん検知を提供します。",
-    "example": "ブラウザでhttpsから始まるURLへ接続します。",
     "related": [],
     "criteria": [
       {
@@ -14236,7 +13848,6 @@ export const terms: Term[] = [
     "reading": "Internet Message Access Protocol over Transport Layer Security",
     "category": "ネットワーク",
     "definition": "メールボックスへアクセスするIMAPの通信をTLSで保護する方式です。認証情報やメール本文などを暗号化します。",
-    "example": "スマートフォンがメールサーバ上の受信箱を安全に参照します。",
     "related": [],
     "criteria": [
       {
@@ -14255,7 +13866,6 @@ export const terms: Term[] = [
     "reading": "Authenticated Post Office Protocol",
     "category": "ネットワーク",
     "definition": "POP3で平文パスワードをそのまま送らず、チャレンジに応じた値で認証する旧来の方式です。通信全体を暗号化するものではありません。",
-    "example": "サーバのチャレンジと秘密から認証用のダイジェストを計算します。",
     "related": [],
     "criteria": [
       {
@@ -14272,7 +13882,6 @@ export const terms: Term[] = [
     "reading": "Post Office Protocol version 3",
     "category": "ネットワーク",
     "definition": "メールサーバのメールボックスから電子メールを取り出すためのプロトコルです。暗号化にはTLSなどが別途必要です。",
-    "example": "メールクライアントがサーバのメールをダウンロードします。",
     "related": [],
     "criteria": [
       {
@@ -14289,7 +13898,6 @@ export const terms: Term[] = [
     "reading": "Simple Network Time Protocol",
     "category": "ネットワーク",
     "definition": "NTPの仕組みを簡易な形で利用してネットワーク越しに時刻を同期するためのプロトコルです。",
-    "example": "端末が時刻サーバへ問い合わせて時計を合わせます。",
     "related": [],
     "criteria": [
       {
@@ -14306,7 +13914,6 @@ export const terms: Term[] = [
     "reading": "Network Time Protocol",
     "category": "ネットワーク",
     "definition": "ネットワーク上の時刻サーバと情報を交換し、通信遅延などを考慮して時計を同期するプロトコルです。",
-    "example": "複数の時刻源を使ってサーバ群の時刻を合わせます。",
     "related": [],
     "criteria": [
       {
@@ -14323,7 +13930,6 @@ export const terms: Term[] = [
     "reading": "Network News Transfer Protocol",
     "category": "ネットワーク",
     "definition": "ネットニュースの記事をサーバ間で配送したり、クライアントが取得・投稿したりするためのプロトコルです。",
-    "example": "ニュースグループの記事を別のニュースサーバへ転送します。",
     "related": [],
     "criteria": [
       {
@@ -14340,7 +13946,6 @@ export const terms: Term[] = [
     "reading": "Trivial File Transfer Protocol",
     "category": "ネットワーク",
     "definition": "UDPを使う簡易なファイル転送プロトコルです。FTPのような利用者認証の機能は持ちません。",
-    "example": "ネットワーク機器の起動用ファイルを転送します。",
     "related": [],
     "criteria": [
       {
@@ -14357,7 +13962,6 @@ export const terms: Term[] = [
     "reading": "Internet Group Management Protocol",
     "category": "ネットワーク",
     "definition": "IPv4で、端末と近隣ルータとの間でマルチキャストグループへの参加情報などを交換するプロトコルです。",
-    "example": "ルータへ受信したいマルチキャストグループを知らせます。",
     "related": [],
     "criteria": [
       {
@@ -14374,7 +13978,6 @@ export const terms: Term[] = [
     "reading": "Session Initiation Protocol",
     "category": "ネットワーク",
     "definition": "音声通話などのセッションを確立・変更・終了するための制御用プロトコルです。",
-    "example": "IP電話で相手を呼び出して通話セッションを開始します。",
     "related": [],
     "criteria": [
       {
@@ -14391,7 +13994,6 @@ export const terms: Term[] = [
     "reading": "Lightweight Directory Access Protocol",
     "category": "ネットワーク",
     "definition": "利用者や組織、機器などを階層的に管理するディレクトリへアクセスするためのプロトコルです。",
-    "example": "社内のディレクトリから利用者の属性を検索します。",
     "related": [],
     "criteria": [
       {
@@ -14408,7 +14010,6 @@ export const terms: Term[] = [
     "reading": "Demilitarized zone",
     "category": "ネットワーク",
     "definition": "内部ネットワークとインターネットの間などに設ける、公開サーバ用の隔離されたネットワーク領域です。",
-    "example": "公開WebサーバをDMZへ置き、内部DBへの通信をFWで制限します。",
     "related": [],
     "criteria": [
       {
@@ -14425,7 +14026,6 @@ export const terms: Term[] = [
     "reading": "Point-to-Point Tunneling Protocol",
     "category": "ネットワーク",
     "definition": "PPPのフレームをIPネットワークでトンネル転送するための旧来のプロトコルです。",
-    "example": "離れた拠点間でPPP接続の内容を運びます。",
     "related": [],
     "criteria": [
       {
@@ -14442,7 +14042,6 @@ export const terms: Term[] = [
     "reading": "Network Address",
     "category": "ネットワーク",
     "definition": "IPアドレスのネットワーク部を示し、IPv4の通常のサブネットではホスト部を全て0にした値です。",
-    "example": "192.168.10.0/24では192.168.10.0がネットワークを表します。",
     "related": [],
     "criteria": [
       {
@@ -14459,7 +14058,6 @@ export const terms: Term[] = [
     "reading": "Broadcast Address",
     "category": "ネットワーク",
     "definition": "同じ範囲の全端末へ送るための宛先アドレスです。IPv4のサブネットでは通常ホスト部を全て1にします。",
-    "example": "192.168.10.0/24の全端末へ192.168.10.255を宛先として送ります。",
     "related": [],
     "criteria": [
       {
@@ -14476,7 +14074,6 @@ export const terms: Term[] = [
     "reading": "Host Part",
     "category": "ネットワーク",
     "definition": "IPアドレスのうち、同じネットワーク内のホストを区別するために使う部分です。境界はプレフィックス長などで決まります。",
-    "example": "/26のIPv4ネットワークでは下位6ビットがホスト部です。",
     "related": [],
     "criteria": [
       {
@@ -14493,7 +14090,6 @@ export const terms: Term[] = [
     "reading": "Loopback",
     "category": "ネットワーク",
     "definition": "通信を自分自身へ戻し、同じ端末内のサービスへのアクセスや試験などに使う仕組みです。",
-    "example": "IPv4の127.0.0.1で自分のWebサーバに接続します。",
     "related": [],
     "criteria": [
       {
@@ -14510,7 +14106,6 @@ export const terms: Term[] = [
     "reading": "Wi-Fi Protected Access 3 Enterprise",
     "category": "ネットワーク",
     "definition": "IEEE 802.1Xの認証基盤を用いる、組織向けのWPA3のセキュリティ方式です。利用者ごとの認証と動的な鍵の確立を行います。",
-    "example": "社員ごとの認証情報で無線LANへ接続します。",
     "related": [],
     "criteria": [
       {
@@ -14527,7 +14122,6 @@ export const terms: Term[] = [
     "reading": "Transmission Efficiency",
     "category": "ネットワーク",
     "definition": "回線の理論上の伝送能力に対し、有効なデータの転送に使える割合です。制御情報や待ち時間などの影響を反映します。",
-    "example": "1Gビット/秒で効率50％なら有効速度を500Mビット/秒と見積もります。",
     "related": [],
     "criteria": [
       {
@@ -14544,7 +14138,6 @@ export const terms: Term[] = [
     "reading": "Designated Port",
     "category": "ネットワーク",
     "definition": "STPで、各セグメントからルートブリッジへ最良の経路を提供する側のポートです。",
-    "example": "リンク両端のルートまでのコストを比較して選びます。",
     "related": [],
     "criteria": [
       {
@@ -14561,7 +14154,6 @@ export const terms: Term[] = [
     "reading": "Root Port",
     "category": "ネットワーク",
     "definition": "STPで、各非ルートブリッジがルートブリッジへ向かう最良経路として選ぶポートです。",
-    "example": "非ルートのスイッチが最小コストでルートに到達する上流ポートを選びます。",
     "related": [],
     "criteria": [
       {
@@ -14578,7 +14170,6 @@ export const terms: Term[] = [
     "reading": "Root Bridge",
     "category": "ネットワーク",
     "definition": "STPで、ループのない木構造を計算する基準として選出されるブリッジです。",
-    "example": "全てのスイッチがこのブリッジまでの経路コストを計算します。",
     "related": [],
     "criteria": [
       {
@@ -14595,7 +14186,6 @@ export const terms: Term[] = [
     "reading": "Directed Broadcast",
     "category": "ネットワーク",
     "definition": "特定のIPv4ネットワークを宛先とするブロードキャストです。宛先ネットワークのホスト部を全て1にして表します。",
-    "example": "192.168.10.255を192.168.10.0/24への一斉送信に使います。",
     "related": [],
     "criteria": [
       {
@@ -14612,7 +14202,6 @@ export const terms: Term[] = [
     "reading": "Limited Broadcast",
     "category": "ネットワーク",
     "definition": "255.255.255.255を宛先にする、同一リンク内に限定されたIPv4ブロードキャストです。ルータは通常中継しません。",
-    "example": "自分のネットワーク情報が未確定の端末がローカルへ送信します。",
     "related": [],
     "criteria": [
       {
@@ -14629,7 +14218,6 @@ export const terms: Term[] = [
     "reading": "Redirect",
     "category": "ネットワーク",
     "definition": "ICMPで、送信元へより適切な次の転送先を知らせ、経路の変更を促すメッセージです。",
-    "example": "同じLAN上の別ルータへ直接送る方がよいことを通知します。",
     "related": [],
     "criteria": [
       {
@@ -14646,7 +14234,6 @@ export const terms: Term[] = [
     "reading": "Time Exceeded",
     "category": "ネットワーク",
     "definition": "IPパケットのTTLの超過や再組立ての時間切れなどを送信元へ通知するICMPメッセージです。",
-    "example": "途中のルータでTTLが0になり、送信元へ時間切れを返します。",
     "related": [],
     "criteria": [
       {
@@ -14663,7 +14250,6 @@ export const terms: Term[] = [
     "reading": "Time To Live",
     "category": "ネットワーク",
     "definition": "IPv4パケットがネットワーク内で無限に循環することを防ぐ値です。ルータで減らされ、0になったパケットは破棄されます。",
-    "example": "転送のたびにTTLを減らしてループするパケットを止めます。",
     "related": [],
     "criteria": [
       {
@@ -14680,7 +14266,6 @@ export const terms: Term[] = [
     "reading": "Network Tap",
     "category": "ネットワーク",
     "definition": "通信回線の信号などを分岐し、監視装置へトラフィックを取り出すための装置です。",
-    "example": "光回線の信号を光学的に分岐してセキュリティ監視へ渡します。",
     "related": [],
     "criteria": [
       {
@@ -14697,7 +14282,6 @@ export const terms: Term[] = [
     "reading": "Wavelength Division Multiplexing",
     "category": "ネットワーク",
     "definition": "波長の異なる複数の光信号を、1本の光ファイバに重ねて伝送する技術です。",
-    "example": "複数の通信回線を異なる波長へ割り当ててまとめます。",
     "related": [],
     "criteria": [
       {
@@ -14714,7 +14298,6 @@ export const terms: Term[] = [
     "reading": "Layer2 Switch",
     "category": "ネットワーク",
     "definition": "データリンク層で、学習したMACアドレスとポートの対応に基づきフレームを転送する装置です。",
-    "example": "宛先MACアドレスを見て必要なポートへだけ送ります。",
     "related": [],
     "criteria": [
       {
@@ -14731,7 +14314,6 @@ export const terms: Term[] = [
     "reading": "Cache-Control",
     "category": "ネットワーク",
     "definition": "HTTPのキャッシュに保存や再利用の条件を伝えるヘッダーフィールドです。",
-    "example": "機密情報の応答にno-storeを指定します。",
     "related": [],
     "criteria": [
       {
@@ -14748,7 +14330,6 @@ export const terms: Term[] = [
     "reading": "no-store",
     "category": "ネットワーク",
     "definition": "HTTPのCache-Controlで、要求や応答をキャッシュに保存しないよう指示するディレクティブです。",
-    "example": "個人情報の応答をブラウザや共有キャッシュへ保存させません。",
     "related": [
       "cache-control",
       "cache-no-cache"
@@ -14768,7 +14349,6 @@ export const terms: Term[] = [
     "reading": "no-cache",
     "category": "ネットワーク",
     "definition": "HTTPのCache-Controlで、保存した応答を再利用する前に元サーバで検証するよう要求するディレクティブです。保存自体の禁止ではありません。",
-    "example": "キャッシュを使う前に条件付き要求で有効性を確認します。",
     "related": [
       "cache-control",
       "cache-no-store"
@@ -14790,7 +14370,6 @@ export const terms: Term[] = [
     "reading": "Shared Cache",
     "category": "ネットワーク",
     "definition": "複数の利用者のために応答などを保存・再利用するキャッシュです。HTTPではプロキシなどが該当します。",
-    "example": "社内プロキシが同じ公開コンテンツを複数人へ配信します。",
     "related": [],
     "criteria": [
       {
@@ -14807,7 +14386,6 @@ export const terms: Term[] = [
     "reading": "Unicast",
     "category": "ネットワーク",
     "definition": "一つの送信先を指定してデータを送る通信方式です。",
-    "example": "特定の端末のIPアドレスを宛先に通信します。",
     "related": [],
     "criteria": [
       {
@@ -14824,7 +14402,6 @@ export const terms: Term[] = [
     "reading": "Broadcast",
     "category": "ネットワーク",
     "definition": "同じネットワークなどの範囲にある全ての端末へデータを送る通信方式です。",
-    "example": "同じLANへARP要求を一斉送信します。",
     "related": [],
     "criteria": [
       {
@@ -14841,7 +14418,6 @@ export const terms: Term[] = [
     "reading": "Authentication / Authorization / Accounting",
     "category": "セキュリティ",
     "definition": "認証・認可・アカウンティングをまとめた、ネットワークの利用を管理する枠組みです。RADIUSやDiameterなどで扱います。",
-    "example": "利用者の身元、利用を許すサービス、接続時間の記録を一つの認証基盤で管理します。",
     "related": [
       "authentication",
       "authorization",
@@ -14866,7 +14442,6 @@ export const terms: Term[] = [
     "reading": "Diameter",
     "category": "セキュリティ",
     "definition": "認証、認可、アカウンティングを扱うプロトコルです。RADIUSを発展させ、信頼性のある転送や拡張性などを備えます。",
-    "example": "通信事業者のネットワークで加入者のサービス利用を管理します。",
     "related": [],
     "criteria": [
       {
@@ -14883,7 +14458,6 @@ export const terms: Term[] = [
     "reading": "Accounting",
     "category": "セキュリティ",
     "definition": "利用者がシステムやネットワークをいつどれだけ使ったかなどの利用記録を収集・管理することです。",
-    "example": "無線LANの接続開始・終了時刻や通信量を記録します。",
     "related": [],
     "criteria": [
       {
@@ -14900,7 +14474,6 @@ export const terms: Term[] = [
     "reading": "Adversarial Examples",
     "category": "セキュリティ",
     "definition": "学習済みモデルに誤った判断をさせるよう、微小な摂動などを加えた入力です。敵対的サンプルとも呼びます。",
-    "example": "人には同じ標識に見える画像へノイズを加え、画像認識モデルの分類を変えます。",
     "related": [],
     "criteria": [
       {
@@ -14919,7 +14492,6 @@ export const terms: Term[] = [
     "reading": "Common Vulnerability Scoring System",
     "category": "セキュリティ",
     "definition": "脆弱性の深刻度を共通の指標と計算方法で評価する仕組みです。環境や脅威の状況と併せて対応の優先度を判断します。",
-    "example": "遠隔から認証なしで悪用できる脆弱性のスコアを確認します。",
     "related": [],
     "criteria": [
       {
@@ -14938,7 +14510,6 @@ export const terms: Term[] = [
     "reading": "Structured Threat Information Expression",
     "category": "セキュリティ",
     "definition": "サイバー脅威に関する情報を構造化して表現するための仕様です。攻撃手法や侵害指標などの関係も記述できます。",
-    "example": "悪性IPアドレスと攻撃キャンペーンの関係を機械処理できる形で共有します。",
     "related": [],
     "criteria": [
       {
@@ -14957,7 +14528,6 @@ export const terms: Term[] = [
     "reading": "Trusted Automated Exchange of Intelligence Information",
     "category": "セキュリティ",
     "definition": "STIXなどで表現したサイバー脅威情報を交換するためのアプリケーション層のプロトコルです。",
-    "example": "組織間で脅威情報のコレクションを取得し、検知ルールの更新に使います。",
     "related": [],
     "criteria": [
       {
@@ -14976,7 +14546,6 @@ export const terms: Term[] = [
     "reading": "Network Time Protocol reflection attack",
     "category": "セキュリティ",
     "definition": "送信元を標的のIPアドレスに偽装した要求をNTPサーバへ送り、その応答を標的へ集中させる攻撃です。大きな応答で通信量を増幅する場合があります。",
-    "example": "小さなNTP要求に対する大きな応答を、多数のサーバから標的へ送らせます。",
     "related": [],
     "criteria": [
       {
@@ -14993,7 +14562,6 @@ export const terms: Term[] = [
     "reading": "Smurf",
     "category": "セキュリティ",
     "definition": "標的のIPアドレスを送信元とするICMPエコー要求をブロードキャストし、多数の応答を標的へ集中させる攻撃です。",
-    "example": "同じネットワーク内の複数端末から標的へエコー応答を送らせます。",
     "related": [],
     "criteria": [
       {
@@ -15009,8 +14577,7 @@ export const terms: Term[] = [
     "name": "パスキー",
     "reading": "Passkey",
     "category": "セキュリティ",
-    "definition": "FIDOの仕組みを用いた公開鍵暗号方式の認証資格情報です。対応するサービスにだけ使える鍵で認証し、パスワードをサーバと共有しません。",
-    "example": "端末の生体認証で秘密鍵の使用を許可し、サーバのチャレンジに署名してログインします。",
+    "definition": "FIDOの仕組みを用いた公開鍵暗号方式の認証資格情報です。対応するサービスに結び付いた鍵で認証し、パスワードをサーバと共有しません。",
     "related": [
       "fido",
       "biometrics"
@@ -15038,7 +14605,6 @@ export const terms: Term[] = [
     "reading": "Fast IDentity Online",
     "category": "セキュリティ",
     "definition": "パスワードへの依存を減らすため、認証器内の秘密鍵とサービス側の公開鍵を使って認証する仕様群です。",
-    "example": "指紋で端末の鍵を使用可能にし、署名した応答をサーバで検証します。",
     "related": [
       "passkey",
       "public-key",
@@ -15061,7 +14627,6 @@ export const terms: Term[] = [
     "reading": "Proxy authentication single sign-on",
     "category": "セキュリティ",
     "definition": "シングルサインオンで、利用者に代わって対象システムのログイン画面へ認証情報を入力する方式です。",
-    "example": "端末のソフトウェアが業務アプリのログイン画面を検出してIDとパスワードを入力します。",
     "related": [],
     "criteria": [
       {
@@ -15078,7 +14643,6 @@ export const terms: Term[] = [
     "reading": "Security Orchestration, Automation and Response",
     "category": "セキュリティ",
     "definition": "複数のセキュリティツールを連携し、調査や対応のワークフローを自動化・効率化する技術です。",
-    "example": "SIEMの通知を受けて関連情報を収集し、承認後に端末を隔離します。",
     "related": [],
     "criteria": [
       {
@@ -15097,7 +14661,6 @@ export const terms: Term[] = [
     "reading": "Web Application Firewall",
     "category": "セキュリティ",
     "definition": "WebアプリケーションへのHTTP通信を検査し、SQLインジェクションやXSSなどの攻撃を検出・遮断する仕組みです。",
-    "example": "公開Webサイトの前段で不正な入力を含むリクエストを遮断します。",
     "related": [],
     "criteria": [
       {
@@ -15114,7 +14677,6 @@ export const terms: Term[] = [
     "reading": "False Positive",
     "category": "セキュリティ",
     "definition": "正常なものを誤って異常や攻撃として検知することです。誤検知とも呼びます。",
-    "example": "WAFが正当な数式入力を攻撃と判断して遮断します。",
     "related": [
       "false-negative",
       "waf"
@@ -15136,7 +14698,6 @@ export const terms: Term[] = [
     "reading": "False Negative",
     "category": "セキュリティ",
     "definition": "実際には異常や攻撃であるものを、正常として見逃すことです。",
-    "example": "不正なSQLを含むリクエストがWAFを通過します。",
     "related": [
       "false-positive",
       "waf"
@@ -15158,7 +14719,6 @@ export const terms: Term[] = [
     "reading": "Inline Mode",
     "category": "セキュリティ",
     "definition": "監視・防御装置を通信経路に直列に配置し、通信を装置へ通過させる動作形態です。",
-    "example": "IPSが全パケットを検査し、不正な通信をその場で遮断します。",
     "related": [],
     "criteria": [
       {
@@ -15177,7 +14737,6 @@ export const terms: Term[] = [
     "reading": "Anomaly Detection",
     "category": "セキュリティ",
     "definition": "通常の振る舞いを基準として、そこから外れたものを異常として検出する方式です。",
-    "example": "普段と大きく異なる通信量や接続先への変化を検知します。",
     "related": [],
     "criteria": [
       {
@@ -15196,7 +14755,6 @@ export const terms: Term[] = [
     "reading": "Signature Detection",
     "category": "セキュリティ",
     "definition": "既知の攻撃などの特徴を定義し、そのパターンに一致するものを検出する方式です。",
-    "example": "攻撃リクエストに特徴的な文字列や通信パターンを照合します。",
     "related": [],
     "criteria": [
       {
@@ -15215,7 +14773,6 @@ export const terms: Term[] = [
     "reading": "Clickjacking",
     "category": "セキュリティ",
     "definition": "透明なフレームなどで画面を重ね、利用者に見えている操作とは異なる操作を行わせる攻撃です。",
-    "example": "無害なボタンの上に設定変更のボタンを透明に重ねます。",
     "related": [],
     "criteria": [
       {
@@ -15234,7 +14791,6 @@ export const terms: Term[] = [
     "reading": "X-Frame-Options",
     "category": "セキュリティ",
     "definition": "Webページをフレームへ埋め込めるかをブラウザへ伝えるHTTPレスポンスヘッダーです。クリックジャッキング対策に使います。",
-    "example": "DENYを指定してページをフレーム内へ表示させません。",
     "related": [],
     "criteria": [
       {
@@ -15251,7 +14807,6 @@ export const terms: Term[] = [
     "reading": "Httponly Cookie",
     "category": "セキュリティ",
     "definition": "JavaScriptなどからcookieを読み書きできないようにする属性です。XSSでcookieの値が盗まれる影響を抑えます。",
-    "example": "セッションcookieへHttpOnlyを付け、document.cookieから読めなくします。",
     "related": [],
     "criteria": [
       {
@@ -15268,7 +14823,6 @@ export const terms: Term[] = [
     "reading": "Secure Cookie",
     "category": "セキュリティ",
     "definition": "cookieをHTTPSなどの安全な通信でのみ送信するように指定する属性です。",
-    "example": "セッションcookieが暗号化されていないHTTPへ送られないようにします。",
     "related": [],
     "criteria": [
       {
@@ -15285,7 +14839,6 @@ export const terms: Term[] = [
     "reading": "Hypertext Transfer Protocol Strict Transport Security",
     "category": "セキュリティ",
     "definition": "ブラウザに一定期間そのホストへHTTPSでのみ接続するよう要求する仕組みです。Strict-Transport-Securityヘッダーなどで設定します。",
-    "example": "HTTPのURLを開いてもブラウザが送信前にHTTPSへ変更します。",
     "related": [],
     "criteria": [
       {
@@ -15304,7 +14857,6 @@ export const terms: Term[] = [
     "reading": "Datagram Transport Layer Security",
     "category": "セキュリティ",
     "definition": "TLSの保護をUDPなどのデータグラム通信に適用するプロトコルです。暗号化や改ざん検知を行い、損失や順序の変化を考慮します。",
-    "example": "UDPで送るリアルタイム通信の内容を保護します。",
     "related": [],
     "criteria": [
       {
@@ -15321,7 +14873,6 @@ export const terms: Term[] = [
     "reading": "Authorization Server",
     "category": "セキュリティ",
     "definition": "OAuthなどで利用者の許可に基づいてクライアントへアクセストークンを発行するサーバです。",
-    "example": "写真へのアクセスを利用者が許可した後、アプリにトークンを発行します。",
     "related": [],
     "criteria": [
       {
@@ -15338,7 +14889,6 @@ export const terms: Term[] = [
     "reading": "Resource Owner",
     "category": "セキュリティ",
     "definition": "保護されたリソースへのアクセスを許可する権限を持つ主体です。OAuthでは利用者本人などが該当します。",
-    "example": "自分の写真を編集アプリが読み出すことを許可します。",
     "related": [],
     "criteria": [
       {
@@ -15355,7 +14905,6 @@ export const terms: Term[] = [
     "reading": "Cross-site request forgery token",
     "category": "セキュリティ",
     "definition": "正規の画面からの要求であることをサーバが確認するため、フォームなどに含めて照合する推測困難な値です。",
-    "example": "送信されたトークンをセッション側の値と照合し、不一致なら更新を拒否します。",
     "related": [],
     "criteria": [
       {
@@ -15374,7 +14923,6 @@ export const terms: Term[] = [
     "reading": "Hypertext Transfer Protocol header injection",
     "category": "セキュリティ",
     "definition": "外部入力に改行などを混入し、HTTP応答のヘッダーや本文の構成を不正に変える攻撃です。",
-    "example": "Locationヘッダーの値に改行を混入し、別のヘッダーを追加します。",
     "related": [],
     "criteria": [
       {
@@ -15391,7 +14939,6 @@ export const terms: Term[] = [
     "reading": "Session Hijacking",
     "category": "セキュリティ",
     "definition": "セッションIDの窃取や推測などにより、認証済み利用者のセッションを不正に利用する攻撃です。",
-    "example": "盗んだcookieを使って本人として操作します。",
     "related": [],
     "criteria": [
       {
@@ -15408,7 +14955,6 @@ export const terms: Term[] = [
     "reading": "Man-in-the-Browser attack",
     "category": "セキュリティ",
     "definition": "ブラウザに侵入したマルウェアが、正規サイトとの通信内容や表示を改ざんする攻撃です。",
-    "example": "送金先口座を送信直前に別の口座へ置き換えます。",
     "related": [
       "transaction-signing"
     ],
@@ -15429,7 +14975,6 @@ export const terms: Term[] = [
     "reading": "Transaction Signing",
     "category": "セキュリティ",
     "definition": "送金先や金額などの取引情報に結び付いた確認値を作り、利用者が確認した内容と受信側の内容の一致を検証する仕組みです。",
-    "example": "別端末で入力した送金先と金額から確認値を生成します。",
     "related": [],
     "criteria": [
       {
@@ -15448,7 +14993,6 @@ export const terms: Term[] = [
     "reading": "National Operation Towards IoT Clean Environment (IoT: Internet of Things)",
     "category": "セキュリティ",
     "definition": "インターネット上のIoT機器などを調査し、悪用のおそれのある機器の利用者へISPなどを通じて注意喚起する取組です。",
-    "example": "推測しやすい認証情報を使う機器の利用者へ対策を促します。",
     "related": [],
     "criteria": [
       {
@@ -15467,7 +15011,6 @@ export const terms: Term[] = [
     "reading": "National Institute of Information and Communications Technology",
     "category": "セキュリティ",
     "definition": "情報通信分野の研究開発を行う国立研究開発法人情報通信研究機構です。IoT機器の調査やサイバー攻撃の観測などにも取り組みます。",
-    "example": "NOTICEでセキュリティ上の問題がある機器を調査します。",
     "related": [],
     "criteria": [
       {
@@ -15484,7 +15027,6 @@ export const terms: Term[] = [
     "reading": "Security Content Automation Protocol",
     "category": "セキュリティ",
     "definition": "セキュリティ設定や脆弱性情報を標準化して表現・交換・処理し、管理や評価の自動化を支えるNISTの仕様群です。",
-    "example": "機器の設定を基準と照合し、結果を共通形式で交換します。",
     "related": [],
     "criteria": [
       {
@@ -15503,7 +15045,6 @@ export const terms: Term[] = [
     "reading": "Domain Name System Security Extensions",
     "category": "セキュリティ",
     "definition": "DNSのデータにデジタル署名を付け、検証側が作成元の正当性と改ざんの有無を確認できるようにする拡張です。",
-    "example": "信頼の連鎖をたどって応答レコードの署名を検証します。",
     "related": [
       "dns",
       "digital-signature"
@@ -15525,7 +15066,6 @@ export const terms: Term[] = [
     "reading": "Information system Security Management and Assessment Program for Low-Impact Use",
     "category": "セキュリティ",
     "definition": "ISMAPのうち、セキュリティ上のリスクの小さな業務・情報の処理に使うSaaSを対象とする仕組みです。",
-    "example": "低リスクの業務向けSaaSの登録状況を調達時に確認します。",
     "related": [],
     "criteria": [
       {
@@ -15542,7 +15082,6 @@ export const terms: Term[] = [
     "reading": "Security Incident Management Maturity Model",
     "category": "セキュリティ",
     "definition": "Open CSIRT Foundationが開発した、セキュリティインシデント管理の成熟度を評価するモデルです。組織、人材、ツール、プロセスを扱います。",
-    "example": "CSIRTの体制や対応手順を評価して改善項目を見つけます。",
     "related": [],
     "criteria": [
       {
@@ -15561,7 +15100,6 @@ export const terms: Term[] = [
     "reading": "Software Assurance Maturity Model",
     "category": "セキュリティ",
     "definition": "OWASPによる、ソフトウェア保証活動の成熟度を評価・改善するためのモデルです。",
-    "example": "開発工程で実施するセキュリティ活動を評価して改善計画を立てます。",
     "related": [],
     "criteria": [
       {
@@ -15578,7 +15116,6 @@ export const terms: Term[] = [
     "reading": "Common Weakness Enumeration",
     "category": "セキュリティ",
     "definition": "ソフトウェアやハードウェアのセキュリティ上の弱点を種類ごとに分類した一覧です。個別の製品の脆弱性IDとは異なります。",
-    "example": "SQLインジェクションという弱点の種類をCWEで確認します。",
     "related": [],
     "criteria": [
       {
@@ -15597,7 +15134,6 @@ export const terms: Term[] = [
     "reading": "Common Platform Enumeration",
     "category": "セキュリティ",
     "definition": "IT製品やプラットフォームを識別するための共通の命名体系です。",
-    "example": "脆弱性が影響するOSやアプリケーションの種類とバージョンを指定します。",
     "related": [],
     "criteria": [
       {
@@ -15614,7 +15150,6 @@ export const terms: Term[] = [
     "reading": "Shadow information technology",
     "category": "セキュリティ",
     "definition": "組織の管理部門の許可や把握を経ずに、従業員などが業務でIT機器やサービスを利用することです。",
-    "example": "個人契約のクラウドストレージへ業務ファイルを保存します。",
     "related": [],
     "criteria": [
       {
@@ -15631,7 +15166,6 @@ export const terms: Term[] = [
     "reading": "Enhanced Open",
     "category": "セキュリティ",
     "definition": "パスワードなしの無線LANで、OWEを用いて接続ごとの無線区間の暗号化を行うための仕様です。接続先の認証は提供しません。",
-    "example": "公衆Wi-Fiで共通パスワードを配らずに無線通信を暗号化します。",
     "related": [],
     "criteria": [
       {
@@ -15650,7 +15184,6 @@ export const terms: Term[] = [
     "reading": "Opportunistic Wireless Encryption",
     "category": "セキュリティ",
     "definition": "認証を行わずに鍵交換で通信の鍵を確立し、無線区間を暗号化する方式です。Enhanced Openで利用します。",
-    "example": "公開Wi-Fiの接続ごとに異なる暗号化鍵を確立します。",
     "related": [],
     "criteria": [
       {
@@ -15669,7 +15202,6 @@ export const terms: Term[] = [
     "reading": "Domain Name System Certification Authority Authorization",
     "category": "セキュリティ",
     "definition": "ドメインの証明書を発行してよい認証局をDNSで指定するレコードです。意図しない証明書発行のリスクを抑えます。",
-    "example": "特定の認証局だけにexample.comの証明書発行を許可します。",
     "related": [],
     "criteria": [
       {
@@ -15686,7 +15218,6 @@ export const terms: Term[] = [
     "reading": "Password Spray",
     "category": "セキュリティ",
     "definition": "少数のよく使われるパスワードを多数の利用者IDに試す攻撃です。単一IDの連続失敗によるロックを避けようとします。",
-    "example": "よくあるパスワードを全社員のIDへ時間を空けて試します。",
     "related": [],
     "criteria": [
       {
@@ -15705,7 +15236,6 @@ export const terms: Term[] = [
     "reading": "Dictionary Attack",
     "category": "セキュリティ",
     "definition": "単語や人名、よく使われるパスワードなどの候補を辞書から選び、順に認証へ試す攻撃です。",
-    "example": "辞書の単語と数字を組み合わせてログインを試します。",
     "related": [],
     "criteria": [
       {
@@ -15725,7 +15255,6 @@ export const terms: Term[] = [
     "reading": "Brute Force",
     "category": "セキュリティ",
     "definition": "可能な候補を網羅的に試してパスワードや鍵などを探す攻撃です。ブルートフォース攻撃とも呼びます。",
-    "example": "4桁の暗証番号を0000から9999まで全て試します。",
     "related": [],
     "criteria": [
       {
@@ -15742,7 +15271,6 @@ export const terms: Term[] = [
     "reading": "Keylogger",
     "category": "セキュリティ",
     "definition": "キーボードの入力内容を記録するソフトウェアや装置です。不正に設置されるとパスワードなどの窃取に使われます。",
-    "example": "入力したIDとパスワードを裏で記録して外部へ送ります。",
     "related": [],
     "criteria": [
       {
@@ -15759,7 +15287,6 @@ export const terms: Term[] = [
     "reading": "Man In The Middle",
     "category": "セキュリティ",
     "definition": "通信する当事者の間へ介入し、相手になりすまして盗聴や改ざんなどを行う攻撃です。",
-    "example": "偽のアクセスポイントを経由させて通信内容を中継・改変します。",
     "related": [],
     "criteria": [
       {
@@ -15776,7 +15303,6 @@ export const terms: Term[] = [
     "reading": "Password",
     "category": "セキュリティ",
     "definition": "利用者が知っている秘密の文字列を照合し、身元の確認などに用いる認証情報です。",
-    "example": "ログイン時に入力した文字列をサーバが検証します。",
     "related": [],
     "criteria": [
       {
@@ -15793,7 +15319,6 @@ export const terms: Term[] = [
     "reading": "Open-source intelligence",
     "category": "セキュリティ",
     "definition": "公開されている情報を収集・分析し、目的に役立つ知見を得る活動です。",
-    "example": "公式サイトや公開SNSから組織の構成や連絡先を調べます。",
     "related": [],
     "criteria": [
       {
@@ -15810,7 +15335,6 @@ export const terms: Term[] = [
     "reading": "SECURITY ACTION",
     "category": "セキュリティ",
     "definition": "中小企業などが情報セキュリティ対策への取組を自己宣言するIPAの制度です。第三者が安全性を認証する制度ではありません。",
-    "example": "自社の対策への取組を一つ星や二つ星として宣言します。",
     "related": [],
     "criteria": [
       {
@@ -15829,7 +15353,6 @@ export const terms: Term[] = [
     "reading": "Information-technology Promotion Agency, Japan",
     "category": "セキュリティ",
     "definition": "情報処理推進機構の略称です。情報セキュリティ対策、デジタル人材育成、情報処理技術者試験などに取り組む独立行政法人です。",
-    "example": "脆弱性対策の情報や中小企業向けのガイドラインを公開します。",
     "related": [],
     "criteria": [
       {
@@ -15846,7 +15369,6 @@ export const terms: Term[] = [
     "reading": "Cybersecurity Management Guidelines",
     "category": "セキュリティ",
     "definition": "経営者が認識すべき原則と、責任者へ指示すべき重要事項などをまとめた経済産業省・IPAの指針です。",
-    "example": "経営者がセキュリティ投資や対応体制の方針を示します。",
     "related": [],
     "criteria": [
       {
@@ -15863,7 +15385,6 @@ export const terms: Term[] = [
     "reading": "Cryptography Research and Evaluation Committees",
     "category": "セキュリティ",
     "definition": "電子政府で使用する暗号などの安全性・実装性能を評価・監視し、暗号の適切な利用を検討する取組です。",
-    "example": "CRYPTREC暗号リストの対象暗号を評価し、安全性の変化を監視します。",
     "related": [],
     "criteria": [
       {
@@ -15880,7 +15401,6 @@ export const terms: Term[] = [
     "reading": "Information system Security Management and Assessment Program Control Criteria",
     "category": "セキュリティ",
     "definition": "政府向けクラウドサービスのセキュリティ評価で用いる基準です。国際規格やJASAのクラウド情報セキュリティ管理基準などを基礎とします。",
-    "example": "クラウド事業者の管理策が調達要件を満たすか評価します。",
     "related": [],
     "criteria": [
       {
@@ -15897,7 +15417,6 @@ export const terms: Term[] = [
     "reading": "National Institute of Standards and Technology Cybersecurity Framework 1.1",
     "category": "セキュリティ",
     "definition": "NISTのサイバーセキュリティフレームワークの1.1版です。コアを識別・防御・検知・対応・復旧の五つの機能で整理します。",
-    "example": "五つの機能で現状と目標の差を整理します。",
     "related": [
       "csf-2"
     ],
@@ -15916,7 +15435,6 @@ export const terms: Term[] = [
     "reading": "Authentication Server",
     "category": "セキュリティ",
     "definition": "利用者や機器の認証情報を検証し、認証の結果を返すサーバです。",
-    "example": "RADIUSサーバがアクセスポイントからの要求を受け、利用者を認証します。",
     "related": [],
     "criteria": [
       {
@@ -15933,7 +15451,6 @@ export const terms: Term[] = [
     "reading": "Privileged identifier",
     "category": "セキュリティ",
     "definition": "通常の利用者より強い管理権限を持ち、システム設定やデータの直接変更などを行えるIDです。",
-    "example": "DB管理者のIDで表の直接修正を行います。",
     "related": [],
     "criteria": [
       {
@@ -15950,7 +15467,6 @@ export const terms: Term[] = [
     "reading": "Audit Trail",
     "category": "セキュリティ",
     "definition": "誰がいつ何を行ったかなどを後から追跡・検証するための記録です。",
-    "example": "特権IDによるデータの変更内容と実行者を保存します。",
     "related": [],
     "criteria": [
       {
@@ -15967,7 +15483,6 @@ export const terms: Term[] = [
     "reading": "Segregation Of Duties",
     "category": "セキュリティ",
     "definition": "不正や誤りを抑えるため、相互に牽制すべき業務や権限を別の担当者などへ分けることです。",
-    "example": "データ変更の依頼、承認、実行を一人で完結させません。",
     "related": [],
     "criteria": [
       {
@@ -15984,7 +15499,6 @@ export const terms: Term[] = [
     "reading": "Access Management",
     "category": "セキュリティ",
     "definition": "利用者の登録・変更・削除や権限の付与・見直しなどを通じ、資源へのアクセスを適切に管理する活動です。",
-    "example": "退職した利用者のIDを無効にし、異動後の権限を見直します。",
     "related": [],
     "criteria": [
       {
@@ -16004,7 +15518,6 @@ export const terms: Term[] = [
     "reading": "Access Control",
     "category": "セキュリティ",
     "definition": "誰がどの資源にどの操作を行えるかを、決められた規則に従って制御することです。",
-    "example": "担当者だけが顧客情報を更新できるようにします。",
     "related": [],
     "criteria": [
       {
@@ -16024,7 +15537,6 @@ export const terms: Term[] = [
     "reading": "Access Rights",
     "category": "セキュリティ",
     "definition": "利用者やプログラムに許された、資源に対する読取り・更新・実行などの操作の範囲です。",
-    "example": "参照だけできる利用者にはDELETEの権限を付けません。",
     "related": [],
     "criteria": [
       {
@@ -16041,7 +15553,6 @@ export const terms: Term[] = [
     "reading": "User identifier",
     "category": "セキュリティ",
     "definition": "システムで利用者を識別するための情報です。秘密であることを前提とするパスワードとは役割が異なります。",
-    "example": "社員番号をログイン時の利用者IDとして使います。",
     "related": [],
     "criteria": [
       {
@@ -16058,7 +15569,6 @@ export const terms: Term[] = [
     "reading": "Penetration Test",
     "category": "セキュリティ",
     "definition": "許可された範囲で実際に攻撃や侵入を試み、セキュリティ対策の実効性や侵入可能性を確認するテストです。",
-    "example": "公開サーバの弱点を利用して侵入や権限取得が可能か調べます。",
     "related": [],
     "criteria": [
       {
@@ -16075,7 +15585,6 @@ export const terms: Term[] = [
     "reading": "Shared Responsibility",
     "category": "セキュリティ",
     "definition": "クラウドサービスの種類などに応じ、利用者と提供者がセキュリティや運用の責任を分担する考え方です。",
-    "example": "PaaSでは提供者がOSを管理し、利用者はアプリケーションの安全性を管理します。",
     "related": [],
     "criteria": [
       {
@@ -16095,7 +15604,6 @@ export const terms: Term[] = [
     "reading": "Registration Authority",
     "category": "セキュリティ",
     "definition": "PKIの登録局であり、証明書申請者の本人確認や申請審査を行い、発行の承認・却下を担います。",
-    "example": "申請者の確認資料を審査し、認証局へ証明書発行の承認を伝えます。",
     "related": [
       "pki",
       "certificate-authority",
@@ -16118,7 +15626,6 @@ export const terms: Term[] = [
     "reading": "Supplicant",
     "category": "セキュリティ",
     "definition": "IEEE 802.1Xで認証を要求する端末側の機器やソフトウェアです。",
-    "example": "無線LANへ接続するPCが認証情報を送ります。",
     "related": [
       "ieee8021x",
       "authenticator",
@@ -16139,7 +15646,6 @@ export const terms: Term[] = [
     "reading": "Authenticator",
     "category": "セキュリティ",
     "definition": "IEEE 802.1Xで端末と認証サーバの間を仲介し、認証結果に応じて接続を制御する機能です。",
-    "example": "アクセスポイントが認証を仲介し、成功後に端末の通信を許可します。",
     "related": [
       "ieee8021x",
       "supplicant",
@@ -16160,7 +15666,6 @@ export const terms: Term[] = [
     "reading": "Remote Authentication Dial-In User Service",
     "category": "セキュリティ",
     "definition": "ネットワーク利用者などの認証・認可・アカウンティングを扱うプロトコルです。接続制御装置がクライアントとして認証サーバと連携します。",
-    "example": "アクセスポイントが利用者の認証要求をRADIUSサーバへ送ります。",
     "related": [
       "aaa",
       "ieee8021x"
@@ -16180,7 +15685,6 @@ export const terms: Term[] = [
     "reading": "Extensible Authentication Protocol",
     "category": "セキュリティ",
     "definition": "様々な認証方式を運ぶための拡張可能な認証の枠組みです。IEEE 802.1Xなどで利用します。",
-    "example": "EAP-TLSで証明書を使った認証を行います。",
     "related": [
       "ieee8021x"
     ],
@@ -16199,7 +15703,6 @@ export const terms: Term[] = [
     "reading": "Online Certificate Status Protocol",
     "category": "セキュリティ",
     "definition": "公開鍵証明書の失効状態をオンラインで問い合わせるためのプロトコルです。",
-    "example": "証明書のシリアル番号を基に、失効しているか応答を得ます。",
     "related": [
       "crl",
       "validation-authority"
@@ -16219,7 +15722,6 @@ export const terms: Term[] = [
     "reading": "Placeholder",
     "category": "セキュリティ",
     "definition": "SQLの構造と値を分離するため、値を後から割り当てる位置を示す仕組みです。適切なバインドでSQLインジェクションを防ぎます。",
-    "example": "WHERE id = ?の疑問符へ利用者IDを値として渡します。",
     "related": [],
     "criteria": [
       {
@@ -16236,7 +15738,6 @@ export const terms: Term[] = [
     "reading": "Wireless Local Area Network",
     "category": "セキュリティ",
     "definition": "電波を使って端末とアクセスポイントなどを接続するLANです。IEEE 802.11系列などが使われます。",
-    "example": "PCをWi-Fiアクセスポイントへ接続します。",
     "related": [],
     "criteria": [
       {
@@ -16253,7 +15754,6 @@ export const terms: Term[] = [
     "reading": "Quantum Key Distribution",
     "category": "セキュリティ",
     "definition": "量子状態の性質を利用し、盗聴の影響を検出しながら暗号鍵を共有する技術です。",
-    "example": "量子通信路と認証された古典通信路を用いて共有鍵を確立します。",
     "related": [
       "one-time-pad"
     ],
@@ -16275,7 +15775,6 @@ export const terms: Term[] = [
     "reading": "Parallel Simulation",
     "category": "セキュリティ",
     "definition": "監査対象と同じデータを独立した別のプログラムで処理し、結果を比較して正確性を確かめる監査技法です。",
-    "example": "給与データを別の計算プログラムで処理し、実システムの結果と照合します。",
     "related": [],
     "criteria": [
       {
@@ -16295,7 +15794,6 @@ export const terms: Term[] = [
     "reading": "General information technology controls",
     "category": "セキュリティ",
     "definition": "業務処理統制を支える、システムの開発・保守、運用、アクセス管理などに関する統制です。",
-    "example": "本番へのプログラム変更の承認手順を組織共通で定めます。",
     "related": [],
     "criteria": [
       {
@@ -16314,7 +15812,6 @@ export const terms: Term[] = [
     "reading": "Cryptographic Module",
     "category": "セキュリティ",
     "definition": "暗号化、署名、鍵管理などの暗号機能を実装するハードウェア・ソフトウェアなどのまとまりです。",
-    "example": "暗号鍵の保管と署名処理を専用装置の境界内で行います。",
     "related": [],
     "criteria": [
       {
@@ -16331,7 +15828,6 @@ export const terms: Term[] = [
     "reading": "Federal Information Processing Standard 140-3",
     "category": "セキュリティ",
     "definition": "暗号モジュールの設計・実装・運用などに関するセキュリティ要求事項を定めた米国の連邦標準です。",
-    "example": "暗号装置が鍵の保護や物理的な保護の要求を満たすか評価します。",
     "related": [],
     "criteria": [
       {
@@ -16348,7 +15844,6 @@ export const terms: Term[] = [
     "reading": "Evaluation criteria for information technology security",
     "category": "セキュリティ",
     "definition": "IT製品などのセキュリティ機能とその保証を評価する共通の基準です。コモンクライテリアとも呼ばれます。",
-    "example": "調達する機器のセキュリティ機能の評価結果を確認します。",
     "related": [],
     "criteria": [
       {
@@ -16365,7 +15860,6 @@ export const terms: Term[] = [
     "reading": "Information security, cybersecurity and privacy protection — Information security controls",
     "category": "セキュリティ",
     "definition": "情報セキュリティ管理策と、その実施のための指針を示す国際規格です。",
-    "example": "アクセス管理や人的セキュリティの管理策を検討する際に参照します。",
     "related": [],
     "criteria": [
       {
@@ -16382,7 +15876,6 @@ export const terms: Term[] = [
     "reading": "Code of practice for information security controls based on ISO/IEC 27002 for cloud services",
     "category": "セキュリティ",
     "definition": "クラウドサービスの利用者と提供者向けに、情報セキュリティ管理策の実施指針を示す国際規格です。",
-    "example": "クラウド固有の責任分担や仮想環境の分離に関する管理策を確認します。",
     "related": [],
     "criteria": [
       {
@@ -16399,7 +15892,6 @@ export const terms: Term[] = [
     "reading": "Personal information protection management systems — Requirements",
     "category": "セキュリティ",
     "definition": "個人情報保護マネジメントシステムの要求事項を定める日本産業規格です。",
-    "example": "組織の個人情報保護の仕組みを整備・改善する基準として用います。",
     "related": [],
     "criteria": [
       {
@@ -16416,7 +15908,6 @@ export const terms: Term[] = [
     "reading": "Validation Authority",
     "category": "セキュリティ",
     "definition": "公開鍵証明書の失効状態など、有効性の検証に関する問合せに応答する検証局です。",
-    "example": "証明書のシリアル番号に対して失効の有無を返します。",
     "related": [
       "crl",
       "ocsp",
@@ -16437,7 +15928,6 @@ export const terms: Term[] = [
     "reading": "SOAP (originally Simple Object Access Protocol)",
     "category": "開発技術",
     "definition": "構造化されたメッセージをXMLで表現し、ネットワーク上で交換するための枠組みです。",
-    "example": "WebサービスがSOAPメッセージで処理要求と結果をやり取りします。",
     "related": [],
     "criteria": [
       {
@@ -16454,7 +15944,6 @@ export const terms: Term[] = [
     "reading": "Extensible Markup Language Key Management Specification",
     "category": "開発技術",
     "definition": "デジタル署名などで使う公開鍵情報の登録や検証などを、Webサービスで扱うための仕様です。",
-    "example": "利用する公開鍵の情報をサービスに問い合わせて確認します。",
     "related": [],
     "criteria": [
       {
@@ -16471,7 +15960,6 @@ export const terms: Term[] = [
     "reading": "Capability Maturity Model Integration",
     "category": "開発技術",
     "definition": "組織の開発やサービス提供などのプロセスの能力・成熟度を評価し、改善を進めるためのモデルです。",
-    "example": "開発プロセスの管理や標準化の状況を評価します。",
     "related": [],
     "criteria": [
       {
@@ -16491,7 +15979,6 @@ export const terms: Term[] = [
     "reading": "Branch Coverage",
     "category": "開発技術",
     "definition": "テストで、各判定全体の結果が真と偽になる分岐を少なくとも一度ずつ実行する基準です。分岐網羅とも呼びます。",
-    "example": "A>6 OR B=0の結果が真になるケースと偽になるケースを用意します。",
     "related": [
       "white-box-test",
       "multiple-condition-coverage"
@@ -16513,7 +16000,6 @@ export const terms: Term[] = [
     "reading": "Multiple Condition Coverage",
     "category": "開発技術",
     "definition": "一つの判定を構成する各条件の真偽の組合せを、全て実行するテスト基準です。",
-    "example": "二つの条件なら真真・真偽・偽真・偽偽を確認します。",
     "related": [],
     "criteria": [
       {
@@ -16530,7 +16016,6 @@ export const terms: Term[] = [
     "reading": "White Box Test",
     "category": "開発技術",
     "definition": "プログラムの内部構造に着目し、文や分岐などを実行するテストケースを設計する方法です。",
-    "example": "制御フローを見て全分岐を通す入力を作ります。",
     "related": [],
     "criteria": [
       {
@@ -16547,7 +16032,6 @@ export const terms: Term[] = [
     "reading": "Black Box Test",
     "category": "開発技術",
     "definition": "プログラムの内部構造によらず、仕様に基づく入力と期待する出力からテストを設計する方法です。",
-    "example": "入力の同値クラスや境界値からテストケースを選びます。",
     "related": [],
     "criteria": [
       {
@@ -16564,7 +16048,6 @@ export const terms: Term[] = [
     "reading": "Boundary Value",
     "category": "開発技術",
     "definition": "条件が切り替わる境界上や、その直前・直後などの値です。条件式の誤りを見つけるテストに使います。",
-    "example": "年齢>28の条件なら28と29などを確かめます。",
     "related": [],
     "criteria": [
       {
@@ -16581,7 +16064,6 @@ export const terms: Term[] = [
     "reading": "Tailoring",
     "category": "開発技術",
     "definition": "目的や状況に合わせて、ライフサイクルプロセスなどを選択・修正したり、新たに定義したりすることです。",
-    "example": "小規模な開発でも必要な成果を保ちながら手順を調整します。",
     "related": [],
     "criteria": [
       {
@@ -16598,7 +16080,6 @@ export const terms: Term[] = [
     "reading": "Life Cycle Process",
     "category": "開発技術",
     "definition": "システムやソフトウェアの構想から開発、利用、保守、廃棄などの期間にわたり実施するプロセスです。",
-    "example": "開発だけでなく、取得や運用、保守の活動も計画します。",
     "related": [],
     "criteria": [
       {
@@ -16615,7 +16096,6 @@ export const terms: Term[] = [
     "reading": "Simulation",
     "category": "開発技術",
     "definition": "実際の対象の振る舞いをモデルで模擬し、条件を変えた結果などを調べることです。",
-    "example": "利用者数を変えて待ち時間の変化をモデルで調べます。",
     "related": [],
     "criteria": [
       {
@@ -16632,7 +16112,6 @@ export const terms: Term[] = [
     "reading": "Chaos Engineering",
     "category": "開発技術",
     "definition": "制御した条件でシステムへ障害を注入し、挙動を観察して耐障害性を改善する手法です。",
-    "example": "一部のサービスを停止し、利用者への影響と復旧を確認します。",
     "related": [],
     "criteria": [
       {
@@ -16649,7 +16128,6 @@ export const terms: Term[] = [
     "reading": "Development and Operations",
     "category": "開発技術",
     "definition": "開発と運用が協調し、自動化やフィードバックなどを通じて継続的にソフトウェアの価値を提供・改善する取組です。",
-    "example": "運用で見つかった課題を開発へ戻し、変更を素早く安全に届けます。",
     "related": [],
     "criteria": [
       {
@@ -16666,7 +16144,6 @@ export const terms: Term[] = [
     "reading": "Test Driven Development",
     "category": "開発技術",
     "definition": "先に失敗するテストを書き、それを通す最小限の実装を作り、リファクタリングするサイクルで開発する手法です。",
-    "example": "計算関数の期待する結果をテストにしてから関数を実装します。",
     "related": [],
     "criteria": [
       {
@@ -16683,7 +16160,6 @@ export const terms: Term[] = [
     "reading": "Extreme Programming",
     "category": "開発技術",
     "definition": "コミュニケーションなどの価値を基礎に、テスト駆動開発やペアプログラミングなどの実践を組み合わせるアジャイル開発手法です。",
-    "example": "短いサイクルでテストを通し、二人でコードを確認しながら実装します。",
     "related": [],
     "criteria": [
       {
@@ -16700,7 +16176,6 @@ export const terms: Term[] = [
     "reading": "Product Backlog",
     "category": "開発技術",
     "definition": "プロダクトを改善するために必要なことを、順序付けてまとめた一覧です。スクラムで今後の作業の源になります。",
-    "example": "利用者の要望や技術的な改善を価値などに応じて並べます。",
     "related": [],
     "criteria": [
       {
@@ -16717,7 +16192,6 @@ export const terms: Term[] = [
     "reading": "Gang of Four",
     "category": "開発技術",
     "definition": "オブジェクト指向のデザインパターンをまとめた四人の著者の呼称です。パターンは生成・構造・振る舞いの三つに分類されます。",
-    "example": "Factory MethodやObserverなどの設計パターンを参照します。",
     "related": [],
     "criteria": [
       {
@@ -16734,7 +16208,6 @@ export const terms: Term[] = [
     "reading": "Design Pattern",
     "category": "開発技術",
     "definition": "ソフトウェアの設計で繰り返し現れる問題に対する、再利用可能な解決の構造を整理したものです。",
-    "example": "Observerで状態変化の通知を疎結合に実現します。",
     "related": [],
     "criteria": [
       {
@@ -16751,7 +16224,6 @@ export const terms: Term[] = [
     "reading": "Architecture Pattern",
     "category": "開発技術",
     "definition": "システム全体の構成や主要な要素の関係を定める、再利用可能な構造上の解決策です。",
-    "example": "Layersで責任を階層へ分けます。",
     "related": [],
     "criteria": [
       {
@@ -16768,7 +16240,6 @@ export const terms: Term[] = [
     "reading": "Refactoring",
     "category": "開発技術",
     "definition": "外部から見た振る舞いを保ちながら、コードの内部構造を改善することです。",
-    "example": "重複した処理を共通の関数へまとめます。",
     "related": [],
     "criteria": [
       {
@@ -16785,7 +16256,6 @@ export const terms: Term[] = [
     "reading": "Test Coverage",
     "category": "開発技術",
     "definition": "対象とした文や分岐などのうち、テストで実行・確認した範囲や割合です。基準によって測る対象が異なります。",
-    "example": "全分岐のうちテストで通った分岐の割合を測ります。",
     "related": [],
     "criteria": [
       {
@@ -16802,7 +16272,6 @@ export const terms: Term[] = [
     "reading": "Walkthrough",
     "category": "開発技術",
     "definition": "成果物の作成者などと参加者が動作を机上で追い、欠陥や問題点を見つけるレビュー手法です。",
-    "example": "入力例に沿って仕様書やコードの動作を説明し、問題を検討します。",
     "related": [],
     "criteria": [
       {
@@ -16819,7 +16288,6 @@ export const terms: Term[] = [
     "reading": "Formal Methods",
     "category": "開発技術",
     "definition": "数学的に厳密な記法やモデルで仕様を表し、満たすべき性質を論理的に検証する手法です。",
-    "example": "状態遷移モデルにデッドロックがないか検証します。",
     "related": [],
     "criteria": [
       {
@@ -16836,7 +16304,6 @@ export const terms: Term[] = [
     "reading": "Inspection",
     "category": "開発技術",
     "definition": "モデレーターや記録役などの役割と手順を定め、複数人で成果物の欠陥を見つける形式的なレビューです。",
-    "example": "事前にコードを確認し、会議で欠陥を記録します。",
     "related": [],
     "criteria": [
       {
@@ -16853,7 +16320,6 @@ export const terms: Term[] = [
     "reading": "Referer",
     "category": "セキュリティ",
     "definition": "要求元のページのURIなどを伝えるHTTPリクエストヘッダーです。ブラウザの方針などで省略・制限される場合があります。",
-    "example": "サーバが重要な要求のリンク元を検査します。",
     "related": [],
     "criteria": [
       {
@@ -16870,7 +16336,6 @@ export const terms: Term[] = [
     "reading": "Layer Two Tunneling Protocol",
     "category": "セキュリティ",
     "definition": "PPPなどのデータリンク層のフレームをIPネットワーク上でトンネル転送するプロトコルです。暗号化にはIPsecなどを組み合わせます。",
-    "example": "離れた拠点のPPP接続をトンネル化します。",
     "related": [],
     "criteria": [
       {
@@ -16887,7 +16352,6 @@ export const terms: Term[] = [
     "reading": "Foreign Key",
     "category": "セキュリティ",
     "definition": "他の表などの候補キーを参照する列や列の組です。対応する参照先を要求する制約で参照整合性を保ちます。",
-    "example": "受注表の顧客コードから顧客表のキーを参照します。",
     "related": [
       "candidate-key",
       "referential-integrity"
@@ -16909,7 +16373,6 @@ export const terms: Term[] = [
     "reading": "Candidate Key",
     "category": "セキュリティ",
     "definition": "表の各行を一意に識別でき、どの列を除いてもその性質を失う最小の列の組です。主キーは候補キーから選びます。",
-    "example": "社員番号とメールアドレスがそれぞれ一意なら、両方が候補キーになり得ます。",
     "related": [
       "primary-key"
     ],
@@ -16930,7 +16393,6 @@ export const terms: Term[] = [
     "reading": "Information technology — Service management — Part 1: Service management system requirements",
     "category": "セキュリティ",
     "definition": "サービスマネジメントシステムの要求事項を定める日本産業規格です。",
-    "example": "サービス提供の仕組みが規格の要求に適合するか内部監査します。",
     "related": [],
     "criteria": [
       {
@@ -16947,7 +16409,6 @@ export const terms: Term[] = [
     "reading": "Top Down Test",
     "category": "セキュリティ",
     "definition": "上位のモジュールから下位へ順に結合を進めるテスト方式です。未完成の下位モジュールはスタブで代用します。",
-    "example": "画面側から結合し、呼出し先の未完成処理をスタブにします。",
     "related": [
       "integration-test"
     ],
@@ -16966,7 +16427,6 @@ export const terms: Term[] = [
     "reading": "Sandwich Test",
     "category": "セキュリティ",
     "definition": "上位からと下位からの結合テストを並行して進め、中間で結び付ける方式です。",
-    "example": "上位はスタブ、下位はドライバを使いながら両方向から結合します。",
     "related": [
       "integration-test"
     ],
@@ -16985,7 +16445,6 @@ export const terms: Term[] = [
     "reading": "Detached Signature",
     "category": "セキュリティ",
     "definition": "署名要素の外側にあるデータを参照して付ける署名です。XML署名では同じ文書中の別要素も対象にできます。",
-    "example": "署名要素と同じXML文書にある別の要素をIDで参照します。",
     "related": [],
     "criteria": [
       {
@@ -17002,7 +16461,6 @@ export const terms: Term[] = [
     "reading": "Domain Name System resolver",
     "category": "セキュリティ",
     "definition": "名前解決の要求を行い、DNS情報を取得する機能です。端末側のスタブや再帰問合せを処理するリゾルバなどがあります。",
-    "example": "名前に対応するIPアドレスをDNSから得ます。",
     "related": [
       "dns",
       "dnssec"
@@ -17022,7 +16480,6 @@ export const terms: Term[] = [
     "reading": "Address Resolution Protocol",
     "category": "セキュリティ",
     "definition": "同じリンク上で、IPv4アドレスに対応するMACアドレスを問い合わせるプロトコルです。アドレス重複の確認にも使います。",
-    "example": "ゲートウェイのIPv4アドレスから送信先MACアドレスを調べます。",
     "related": [
       "arp-cache",
       "mac-address"
@@ -17042,7 +16499,6 @@ export const terms: Term[] = [
     "reading": "e-Government Recommended Ciphers List",
     "category": "セキュリティ",
     "definition": "CRYPTREC暗号リストのうち、安全性と実装性能を確認し、市場での利用実績なども踏まえて電子政府での利用を推奨する暗号技術の一覧です。",
-    "example": "新たな政府システムで利用する暗号の候補を確認します。",
     "related": [],
     "criteria": [
       {
@@ -17059,7 +16515,6 @@ export const terms: Term[] = [
     "reading": "Candidate Recommended Ciphers List",
     "category": "セキュリティ",
     "definition": "CRYPTREC暗号リストのうち、安全性と実装性能が確認され、今後推奨リストへ掲載される可能性がある暗号技術の一覧です。",
-    "example": "安全性が確認された新しい暗号の位置付けを調べます。",
     "related": [],
     "criteria": [
       {
@@ -17076,7 +16531,6 @@ export const terms: Term[] = [
     "reading": "Monitored Ciphers List",
     "category": "セキュリティ",
     "definition": "CRYPTREC暗号リストのうち、積極的な推奨からは外れるものの、互換性維持などのために継続利用を扱う暗号技術の一覧です。",
-    "example": "既存システムで使う古い暗号の移行方針を検討します。",
     "related": [],
     "criteria": [
       {
@@ -17093,7 +16547,6 @@ export const terms: Term[] = [
     "reading": "Cryptographic Compromise",
     "category": "セキュリティ",
     "definition": "計算能力や解読技術の進歩、鍵の漏えいなどにより、暗号や鍵の安全性が低下・喪失することです。",
-    "example": "秘密鍵が漏えいした証明書を失効させます。",
     "related": [],
     "criteria": [
       {
@@ -17110,7 +16563,6 @@ export const terms: Term[] = [
     "reading": "Hash Value",
     "category": "セキュリティ",
     "definition": "入力データにハッシュ関数を適用して得られる、一定長の値です。ハッシュ関数そのものとは区別します。",
-    "example": "配布ファイルから計算した値と公開値を比較します。",
     "related": [
       "hash"
     ],
@@ -17131,7 +16583,6 @@ export const terms: Term[] = [
     "reading": "NT LAN Manager (LAN: Local Area Network)",
     "category": "セキュリティ",
     "definition": "Windowsなどで使われるチャレンジレスポンス型の認証方式です。パスワード由来の秘密に基づいて応答を作ります。",
-    "example": "サーバからのチャレンジに対する応答で利用者を検証します。",
     "related": [
       "pass-the-hash"
     ],
@@ -17150,7 +16601,6 @@ export const terms: Term[] = [
     "reading": "Plaintext Password",
     "category": "セキュリティ",
     "definition": "暗号化やハッシュ化などをしていない、元の文字列のままのパスワードです。",
-    "example": "設定ファイルからそのまま読めるパスワードが漏えいします。",
     "related": [],
     "criteria": [
       {
@@ -17170,7 +16620,6 @@ export const terms: Term[] = [
     "reading": "Exclusive OR",
     "category": "セキュリティ",
     "definition": "二つの論理値が異なるときに1、同じときに0になる論理演算です。XORとも呼びます。",
-    "example": "同じ鍵ストリームで2回XORを取ると元のデータへ戻ります。",
     "related": [],
     "criteria": [
       {
@@ -17187,7 +16636,6 @@ export const terms: Term[] = [
     "reading": "Bit",
     "category": "セキュリティ",
     "definition": "0と1の二つの状態を表す情報量の単位です。通信速度などでは1秒当たりのビット数を使います。",
-    "example": "1Gビット/秒を10の9乗ビット/秒として計算します。",
     "related": [],
     "criteria": [
       {
@@ -17204,7 +16652,6 @@ export const terms: Term[] = [
     "reading": "Byte",
     "category": "セキュリティ",
     "definition": "通常8ビットをひとまとめにしたデータ量の単位です。通信のビット数との換算を区別します。",
-    "example": "6Mバイトを48Mビットへ換算します。",
     "related": [],
     "criteria": [
       {
@@ -17221,7 +16668,6 @@ export const terms: Term[] = [
     "reading": "Audit Risk",
     "category": "セキュリティ",
     "definition": "対象の重要な不備などを見逃し、監査人が適切でない結論を示すリスクです。監査の計画と実施により合理的に低く抑えます。",
-    "example": "重要なアクセス権限の不備を発見できず、適切と判断してしまいます。",
     "related": [
       "risk-approach"
     ],
@@ -17240,7 +16686,6 @@ export const terms: Term[] = [
     "reading": "Reconnaissance",
     "category": "セキュリティ",
     "definition": "攻撃を準備するため、標的の組織や人、システムなどについて情報を収集する段階です。",
-    "example": "公開SNSから攻撃対象の関係者や利用サービスを調べます。",
     "related": [
       "cyber-kill-chain"
     ],
@@ -17259,7 +16704,6 @@ export const terms: Term[] = [
     "reading": "Planned Downtime",
     "category": "セキュリティ",
     "definition": "保守や更新などのため、あらかじめ予定してサービスを止めることです。可用性での扱いは顧客と合意した提供時間などに従います。",
-    "example": "顧客の合意に基づき、更新の停止時間を提供時間から除外します。",
     "related": [
       "service-availability",
       "service-hours"
@@ -17281,7 +16725,6 @@ export const terms: Term[] = [
     "reading": "Forward proxy",
     "category": "ネットワーク",
     "definition": "クライアントの代理として外部サーバへの要求を中継する仕組みです。",
-    "example": "社内端末からのWebアクセスを代理し、アクセス先の制限やキャッシュを行います。",
     "related": [
       "reverse-proxy"
     ],
@@ -17300,7 +16743,6 @@ export const terms: Term[] = [
     "reading": "Not only Structured Query Language",
     "category": "データベース",
     "definition": "関係データベース以外のモデルを用いるデータベースの総称です。",
-    "example": "キーと値の組や文書などの形式でデータを保存します。",
     "related": [
       "base"
     ],
@@ -17319,7 +16761,6 @@ export const terms: Term[] = [
     "reading": "Eventual consistency",
     "category": "データベース",
     "definition": "更新が新たに行われなければ、時間の経過とともに各ノードのデータが一致する性質です。",
-    "example": "更新直後は参照する複製によって値が異なっても、更新の反映後は一致します。",
     "related": [
       "base"
     ],
@@ -17338,7 +16779,6 @@ export const terms: Term[] = [
     "reading": "Enveloped signature",
     "category": "暗号・認証",
     "definition": "署名対象のXMLデータの内部に署名要素を置く形式です。",
-    "example": "XML文書の内部に、その文書に対する署名を含めます。",
     "related": [
       "xml-signature"
     ],
@@ -17357,7 +16797,6 @@ export const terms: Term[] = [
     "reading": "Enveloping signature",
     "category": "暗号・認証",
     "definition": "署名要素の内部に署名対象のデータを含める形式です。",
-    "example": "XMLの署名要素が、署名対象のデータを内側に持ちます。",
     "related": [
       "xml-signature"
     ],
@@ -17376,7 +16815,6 @@ export const terms: Term[] = [
     "reading": "Quantum bit",
     "category": "基礎理論",
     "definition": "量子計算で情報を表す単位で、0と1の重ね合わせ状態を取れるものです。",
-    "example": "通常のビットとは異なり、重ね合わせ状態を計算に利用します。",
     "related": [
       "quantum-computer"
     ],
@@ -17395,7 +16833,6 @@ export const terms: Term[] = [
     "reading": "Superposition",
     "category": "基礎理論",
     "definition": "量子の状態を、複数の基底状態の重なりとして表せる性質です。",
-    "example": "量子ビットでは、0と1の重ね合わせ状態を扱います。",
     "related": [
       "quantum-computer"
     ],
@@ -17414,7 +16851,6 @@ export const terms: Term[] = [
     "reading": "Quantum gate",
     "category": "基礎理論",
     "definition": "量子ビットの状態に操作を加える、量子計算の基本的な処理です。",
-    "example": "量子ビットにゲート操作を順に加えて計算を進めます。",
     "related": [
       "quantum-computer"
     ],
@@ -17433,7 +16869,6 @@ export const terms: Term[] = [
     "reading": "Supervised learning",
     "category": "AI・機械学習",
     "definition": "正解ラベル付きのデータから、入力と出力の関係を学ぶ手法です。",
-    "example": "正解の付いた画像で学習し、新しい画像を分類します。",
     "related": [
       "machine-learning"
     ],
@@ -17452,7 +16887,6 @@ export const terms: Term[] = [
     "reading": "Unsupervised learning",
     "category": "AI・機械学習",
     "definition": "正解ラベルのないデータから、構造やまとまりなどを見つける手法です。",
-    "example": "購買傾向が似た顧客をグループに分けます。",
     "related": [
       "machine-learning"
     ],
@@ -17471,7 +16905,6 @@ export const terms: Term[] = [
     "reading": "Reinforcement learning",
     "category": "AI・機械学習",
     "definition": "環境との相互作用で得る報酬を基に、望ましい行動の選び方を学ぶ手法です。",
-    "example": "行動した結果の報酬を使い、より良い行動を選ぶように学習します。",
     "related": [
       "machine-learning"
     ],
@@ -17490,7 +16923,6 @@ export const terms: Term[] = [
     "reading": "Inference",
     "category": "AI・機械学習",
     "definition": "学習済みモデルを新しいデータに適用して、予測や判断などの出力を得る処理です。",
-    "example": "学習済みの分類モデルで、新しく届いたメールを判定します。",
     "related": [
       "machine-learning"
     ],
@@ -17509,7 +16941,6 @@ export const terms: Term[] = [
     "reading": "Multitask learning",
     "category": "AI・機械学習",
     "definition": "関連する複数の課題を一緒に学習し、共通する情報を活用する手法です。",
-    "example": "一つのモデルで、画像の分類と関連する属性の予測を学習します。",
     "related": [
       "ensemble-learning"
     ],
@@ -17528,7 +16959,6 @@ export const terms: Term[] = [
     "reading": "Bubble sort",
     "category": "基礎理論",
     "definition": "隣り合う要素を比較し、順序が逆なら交換する操作を繰り返して整列する手法です。",
-    "example": "隣の値と比べて交換し、大きな値を端へ移動させます。",
     "related": [
       "sorting"
     ],
@@ -17547,7 +16977,6 @@ export const terms: Term[] = [
     "reading": "Insertion sort",
     "category": "基礎理論",
     "definition": "整列済みの部分へ次の要素を適切な位置に挿入していく整列手法です。",
-    "example": "左側の整列済みの列に、新しい値を順に挿入します。",
     "related": [
       "sorting"
     ],
@@ -17566,7 +16995,6 @@ export const terms: Term[] = [
     "reading": "Heap sort",
     "category": "基礎理論",
     "definition": "ヒープ構造から最大値や最小値を順に取り出して整列する手法です。",
-    "example": "最大値を取り出して末尾へ置き、残りのヒープを調整します。",
     "related": [
       "sorting"
     ],
@@ -17585,7 +17013,6 @@ export const terms: Term[] = [
     "reading": "Prefix notation",
     "category": "基礎理論",
     "definition": "演算子を、その演算の対象より前に置く表記法です。",
-    "example": "足し算を「+ A B」の順に表します。",
     "related": [
       "reverse-polish"
     ],
@@ -17604,7 +17031,6 @@ export const terms: Term[] = [
     "reading": "Infix notation",
     "category": "基礎理論",
     "definition": "演算子を、その演算の対象の間に置く表記法です。",
-    "example": "足し算を「A + B」の順に表します。",
     "related": [
       "reverse-polish"
     ],
@@ -17623,7 +17049,6 @@ export const terms: Term[] = [
     "reading": "Logical AND",
     "category": "基礎理論",
     "definition": "入力がともに真のときだけ真になる論理演算です。",
-    "example": "二つの入力が1のときだけ、出力が1になります。",
     "related": [
       "logic-operation"
     ],
@@ -17642,7 +17067,6 @@ export const terms: Term[] = [
     "reading": "Logical OR",
     "category": "基礎理論",
     "definition": "入力の少なくとも一方が真なら真になる論理演算です。",
-    "example": "二つの入力がともに0のときだけ、出力が0になります。",
     "related": [
       "logic-operation"
     ],
@@ -17661,7 +17085,6 @@ export const terms: Term[] = [
     "reading": "NOT OR gate",
     "category": "基礎理論",
     "definition": "論理和の結果を反転し、入力がともに0のときだけ1を出力する論理素子です。",
-    "example": "二つの入力のどちらかが1なら、出力は0になります。",
     "related": [
       "nand"
     ],
@@ -17683,7 +17106,6 @@ export const terms: Term[] = [
     "reading": "De Morgan's laws",
     "category": "基礎理論",
     "definition": "論理積全体の否定は各入力を否定した論理和に、論理和全体の否定は各入力を否定した論理積になる法則です。",
-    "example": "NOT(A AND B)を、(NOT A) OR (NOT B)に書き換えます。",
     "related": [
       "nand"
     ],
@@ -17702,7 +17124,6 @@ export const terms: Term[] = [
     "reading": "Ray tracing",
     "category": "マルチメディア",
     "definition": "視点などから光線の経路を追跡し、物体の反射や屈折などを画像に反映する手法です。",
-    "example": "鏡への映り込みや透明な物体を通る光を表現します。",
     "related": [
       "rendering"
     ],
@@ -17721,7 +17142,6 @@ export const terms: Term[] = [
     "reading": "Radiosity",
     "category": "マルチメディア",
     "definition": "物体の面どうしの拡散光の相互反射を計算し、明るさや色を表現する手法です。",
-    "example": "壁で反射した光が、別の面の明るさや色に影響する様子を表します。",
     "related": [
       "rendering"
     ],
@@ -17740,7 +17160,6 @@ export const terms: Term[] = [
     "reading": "Texture mapping",
     "category": "マルチメディア",
     "definition": "物体の表面に画像を対応付け、模様や質感を表現する手法です。",
-    "example": "立体モデルの表面に木目の画像を貼り付けます。",
     "related": [
       "rendering"
     ],
@@ -17759,7 +17178,6 @@ export const terms: Term[] = [
     "reading": "Metaball",
     "category": "マルチメディア",
     "definition": "複数の影響場を合成して、融合するような滑らかな曲面を表す手法です。",
-    "example": "近付けた球状の領域が、滑らかにつながる物体を表します。",
     "related": [
       "rendering"
     ],
@@ -17778,7 +17196,6 @@ export const terms: Term[] = [
     "reading": "Hidden-surface removal",
     "category": "マルチメディア",
     "definition": "視点から見えない面を判定し、画像に描かないようにする処理です。",
-    "example": "手前の物体に隠れる奥の面を描画から除きます。",
     "related": [
       "rendering"
     ],
@@ -17797,7 +17214,6 @@ export const terms: Term[] = [
     "reading": "Bitmap font",
     "category": "マルチメディア",
     "definition": "文字の形を画素の集まりとして表すフォントです。",
-    "example": "拡大すると、元の画素の区切りが目立つことがあります。",
     "related": [
       "outline-font"
     ],
@@ -17816,7 +17232,6 @@ export const terms: Term[] = [
     "reading": "Raster format",
     "category": "マルチメディア",
     "definition": "画像を、格子状に並んだ画素の値で表す形式です。",
-    "example": "写真を各画素の色の集まりとして保存します。",
     "related": [
       "svg"
     ],
@@ -17835,7 +17250,6 @@ export const terms: Term[] = [
     "reading": "Vector format",
     "category": "マルチメディア",
     "definition": "線や曲線などの図形を、座標や描画命令で表す形式です。",
-    "example": "図形の座標から描き直すため、拡大しても輪郭を滑らかに表示できます。",
     "related": [
       "svg"
     ],
@@ -17854,7 +17268,6 @@ export const terms: Term[] = [
     "reading": "Portable Network Graphics",
     "category": "マルチメディア",
     "definition": "可逆圧縮や透過に対応するラスタ画像のファイル形式です。",
-    "example": "画面の図やアイコンを、透過部分を保って保存します。",
     "related": [
       "svg"
     ],
@@ -17873,7 +17286,6 @@ export const terms: Term[] = [
     "reading": "Tagged Image File Format",
     "category": "マルチメディア",
     "definition": "画像と関連情報をタグで保持する、ラスタ画像のファイル形式です。",
-    "example": "スキャンした画像や高精細な画像を保存します。",
     "related": [
       "svg"
     ],
@@ -17892,7 +17304,6 @@ export const terms: Term[] = [
     "reading": "World Wide Web Consortium",
     "category": "マルチメディア",
     "definition": "Web技術に関する標準仕様の策定などを行う団体です。",
-    "example": "Webの文書やデータを相互に扱えるようにする仕様を策定します。",
     "related": [
       "svg"
     ],
@@ -17911,7 +17322,6 @@ export const terms: Term[] = [
     "reading": "Sensor",
     "category": "システム構成",
     "definition": "温度や圧力などの物理量を検出し、電気信号などに変換する装置です。",
-    "example": "温度を測り、その値を制御装置に送ります。",
     "related": [
       "actuator"
     ],
@@ -17930,7 +17340,6 @@ export const terms: Term[] = [
     "reading": "Fault avoidance",
     "category": "システム構成",
     "definition": "部品や設計の品質を高め、故障そのものが起こりにくくする考え方です。",
-    "example": "高品質な部品の採用や十分な試験で故障の発生を減らします。",
     "related": [
       "fault-tolerance"
     ],
@@ -17949,7 +17358,6 @@ export const terms: Term[] = [
     "reading": "Roaming",
     "category": "ネットワーク",
     "definition": "契約している事業者以外の通信網を利用してサービスを受ける仕組みです。",
-    "example": "提携先の通信網を利用し、契約先の圏外でも通信します。",
     "related": [
       "mobile-network"
     ],
@@ -17968,7 +17376,6 @@ export const terms: Term[] = [
     "reading": "Tethering",
     "category": "ネットワーク",
     "definition": "スマートフォンなどを中継して、他の端末をインターネットへ接続する機能です。",
-    "example": "パソコンをスマートフォン経由でインターネットにつなぎます。",
     "related": [
       "mobile-network"
     ],
@@ -17987,7 +17394,6 @@ export const terms: Term[] = [
     "reading": "Fallback",
     "category": "ネットワーク",
     "definition": "通常の方式が使えないとき、利用できる代替方式に切り替えることです。",
-    "example": "新しい通信方式が使えない場所で、別の対応方式に切り替えます。",
     "related": [
       "mobile-network"
     ],
@@ -18006,7 +17412,6 @@ export const terms: Term[] = [
     "reading": "Ping",
     "category": "ネットワーク",
     "definition": "ICMPの要求と応答などを使い、相手への到達性を確認するコマンドです。",
-    "example": "相手から応答が返るかを確認して通信障害を切り分けます。",
     "related": [
       "network-commands"
     ],
@@ -18025,7 +17430,6 @@ export const terms: Term[] = [
     "reading": "Internet Protocol configuration",
     "category": "ネットワーク",
     "definition": "Windowsで、自端末のIPアドレスなどのネットワーク設定を確認するコマンドです。",
-    "example": "自端末のIPアドレスやデフォルトゲートウェイを確認します。",
     "related": [
       "network-commands"
     ],
@@ -18044,7 +17448,6 @@ export const terms: Term[] = [
     "reading": "Network statistics",
     "category": "ネットワーク",
     "definition": "ネットワークの接続状態や待受けポートなどを確認するコマンドです。",
-    "example": "どのポートで接続を待ち受けているかを確認します。",
     "related": [
       "network-commands"
     ],
@@ -18063,7 +17466,6 @@ export const terms: Term[] = [
     "reading": "Data poisoning",
     "category": "攻撃手法",
     "definition": "学習データに不正なデータを混ぜ、モデルの学習結果や判断をゆがめる攻撃です。",
-    "example": "誤ったラベルのデータを学習させ、特定の入力を誤分類させます。",
     "related": [
       "model-extraction"
     ],
@@ -18082,7 +17484,6 @@ export const terms: Term[] = [
     "reading": "Capacitive sensing",
     "category": "暗号・認証",
     "definition": "指などが近付いたときの静電容量の変化を利用して、接触位置などを検出する方式です。",
-    "example": "タッチパネルで、指を触れた位置を検出します。",
     "related": [
       "ic-card"
     ],
@@ -18101,7 +17502,6 @@ export const terms: Term[] = [
     "reading": "Symmetric-key cryptography",
     "category": "暗号・認証",
     "definition": "暗号化と復号に同じ秘密の鍵を使う暗号方式です。",
-    "example": "通信する両者が同じ鍵を安全に共有して使います。",
     "related": [
       "public-key-crypto"
     ],
@@ -18110,6 +17510,12 @@ export const terms: Term[] = [
         "id": "meaning",
         "title": "暗号化と復号に同じ秘密の鍵を使う暗号方式",
         "hint": "この用語の意味や基本の仕組みを説明できますか？"
+      },
+      {
+        "id": "key-distribution",
+        "title": "通信の前に共通鍵を安全に共有し、漏えい時には更新する必要がある",
+        "hint": "同じ鍵を使う相手に、その鍵をどう渡しますか？",
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -18120,7 +17526,6 @@ export const terms: Term[] = [
     "reading": "Lattice problem",
     "category": "暗号・認証",
     "definition": "格子と呼ぶ点の集合に関する計算問題の総称で、耐量子計算機暗号の数学的な基盤に利用されます。",
-    "example": "格子上の短いベクトルなどを求める問題の難しさを暗号に利用します。",
     "related": [
       "pqc"
     ],
@@ -18139,7 +17544,6 @@ export const terms: Term[] = [
     "reading": "Full backup",
     "category": "サービス管理",
     "definition": "対象の全データをまとめて複製するバックアップ方式です。",
-    "example": "全データのバックアップを一つの世代として保存します。",
     "related": [
       "backup"
     ],
@@ -18148,6 +17552,12 @@ export const terms: Term[] = [
         "id": "meaning",
         "title": "対象の全データをまとめて複製するバックアップ方式",
         "hint": "この用語の意味や基本の仕組みを説明できますか？"
+      },
+      {
+        "id": "restore",
+        "title": "一つの世代だけで復元できる一方、毎回すべてを複製する時間と容量が必要になる",
+        "hint": "取得の負担と復元の手間には、どんな特徴がありますか？",
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -18158,7 +17568,6 @@ export const terms: Term[] = [
     "reading": "Differential backup",
     "category": "サービス管理",
     "definition": "直近のフルバックアップ以降に変更されたデータを複製する方式です。",
-    "example": "復旧にはフルバックアップと最新の差分を使います。",
     "related": [
       "backup"
     ],
@@ -18167,6 +17576,12 @@ export const terms: Term[] = [
         "id": "meaning",
         "title": "直近のフルバックアップ以降に変更されたデータを複製する方式",
         "hint": "この用語の意味や基本の仕組みを説明できますか？"
+      },
+      {
+        "id": "restore",
+        "title": "復元には直近のフルバックアップと最新の差分が必要になる",
+        "hint": "差分をすべて順に適用する必要はありますか？",
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -18177,7 +17592,6 @@ export const terms: Term[] = [
     "reading": "Incremental backup",
     "category": "サービス管理",
     "definition": "直前のバックアップ以降に変更されたデータを複製する方式です。",
-    "example": "復旧にはフルバックアップと、それ以降の増分を順に適用します。",
     "related": [
       "backup"
     ],
@@ -18186,6 +17600,12 @@ export const terms: Term[] = [
         "id": "meaning",
         "title": "直前のバックアップ以降に変更されたデータを複製する方式",
         "hint": "この用語の意味や基本の仕組みを説明できますか？"
+      },
+      {
+        "id": "restore",
+        "title": "復元にはフルバックアップ以降の増分を順に適用するため、途中の世代の欠損にも注意する",
+        "hint": "増分を一つ失うと、その後の復元に影響しますか？",
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -18196,7 +17616,6 @@ export const terms: Term[] = [
     "reading": "Bottom-up test",
     "category": "開発技術",
     "definition": "下位のモジュールから順に結合し、未完成の上位部分をドライバで代用して行うテストです。",
-    "example": "下位モジュールを呼び出すドライバを用意し、結合を進めます。",
     "related": [
       "integration-test"
     ],
@@ -18215,7 +17634,6 @@ export const terms: Term[] = [
     "reading": "Big bang test",
     "category": "開発技術",
     "definition": "モジュールを一度に結合してテストする方法です。",
-    "example": "全体をまとめて試験するため、不具合の箇所の切り分けが難しくなることがあります。",
     "related": [
       "integration-test"
     ],
@@ -18234,7 +17652,6 @@ export const terms: Term[] = [
     "reading": "Test stub",
     "category": "開発技術",
     "definition": "テスト対象から呼び出される未完成の下位モジュールなどを代用するプログラムです。",
-    "example": "呼び出されたら、決められた値を返す代用品を作ります。",
     "related": [
       "integration-test"
     ],
@@ -18253,7 +17670,6 @@ export const terms: Term[] = [
     "reading": "Test driver",
     "category": "開発技術",
     "definition": "テスト対象を呼び出す上位モジュールなどを代用するプログラムです。",
-    "example": "引数を渡してテスト対象を実行し、戻り値を確認します。",
     "related": [
       "integration-test"
     ],
@@ -18272,7 +17688,6 @@ export const terms: Term[] = [
     "reading": "Strengths / Weaknesses / Opportunities / Threats analysis",
     "category": "経営戦略",
     "definition": "内部の強み・弱みと、外部の機会・脅威を整理する分析手法です。",
-    "example": "自社の技術という強みを、市場の機会にどう生かすか検討します。",
     "related": [
       "environment-analysis"
     ],
@@ -18294,7 +17709,6 @@ export const terms: Term[] = [
     "reading": "Customer / Competitor / Company analysis",
     "category": "経営戦略",
     "definition": "顧客・競合・自社という三つの視点で事業環境を分析する手法です。",
-    "example": "顧客の要求、競合の提供内容、自社の強みを整理します。",
     "related": [
       "environment-analysis"
     ],
@@ -18316,7 +17730,6 @@ export const terms: Term[] = [
     "reading": "Political / Economic / Social / Technological analysis",
     "category": "経営戦略",
     "definition": "政治・経済・社会・技術という外部のマクロ環境を分析する手法です。",
-    "example": "法規制や景気、社会の変化、技術動向を整理します。",
     "related": [
       "environment-analysis"
     ],
@@ -18335,7 +17748,6 @@ export const terms: Term[] = [
     "reading": "Value / Rarity / Imitability / Organization analysis",
     "category": "経営戦略",
     "definition": "経営資源を、経済価値・希少性・模倣困難性・組織の観点で評価する手法です。",
-    "example": "自社の技術が競争上の優位につながるかを評価します。",
     "related": [
       "environment-analysis"
     ],
@@ -18354,7 +17766,6 @@ export const terms: Term[] = [
     "reading": "Value chain analysis",
     "category": "経営戦略",
     "definition": "事業活動を主活動や支援活動に分け、どこで価値が生まれるかを分析する手法です。",
-    "example": "調達・製造・販売などの活動を分け、強化する活動を検討します。",
     "related": [
       "environment-analysis"
     ],
@@ -18373,7 +17784,6 @@ export const terms: Term[] = [
     "reading": "Pareto chart",
     "category": "経営管理",
     "definition": "項目を多い順に並べた棒グラフと累積比率で、重点的に扱う項目を示す図です。",
-    "example": "不良件数を種類別に並べ、優先して改善する項目を見つけます。",
     "related": [
       "qc-tools"
     ],
@@ -18392,7 +17802,6 @@ export const terms: Term[] = [
     "reading": "Cause-and-effect diagram",
     "category": "経営管理",
     "definition": "結果となる特性と、その原因となる要因の関係を体系的に整理した図です。",
-    "example": "不良が起こる原因を、人・機械・材料などの観点から整理します。",
     "related": [
       "qc-tools"
     ],
@@ -18411,7 +17820,6 @@ export const terms: Term[] = [
     "reading": "Matrix diagram",
     "category": "経営管理",
     "definition": "行と列に並べた要素どうしの関係を、交点の記号などで整理する図です。",
-    "example": "要求と担当部門の対応を表で確かめます。",
     "related": [
       "qc-tools"
     ],
@@ -18430,7 +17838,6 @@ export const terms: Term[] = [
     "reading": "Relations diagram",
     "category": "経営管理",
     "definition": "複雑に絡む原因と結果の関係を、矢印などでつないで整理する図です。",
-    "example": "問題の要因がどのように影響し合うかを表します。",
     "related": [
       "qc-tools"
     ],
@@ -18449,7 +17856,6 @@ export const terms: Term[] = [
     "reading": "Brainstorming",
     "category": "技術戦略",
     "definition": "批判を控えて自由に多くの意見を出し、組合せや発展によって発想を広げる方法です。",
-    "example": "会議の初期には評価を後回しにし、改善案を幅広く出します。",
     "related": [
       "delphi"
     ],
@@ -18468,7 +17874,6 @@ export const terms: Term[] = [
     "reading": "Forecasting",
     "category": "経営戦略",
     "definition": "現在までのデータや傾向などを基に、将来の状態を予測する考え方です。",
-    "example": "過去の販売傾向を延長して将来の需要を見積もります。",
     "related": [
       "backcasting"
     ],
@@ -18487,7 +17892,6 @@ export const terms: Term[] = [
     "reading": "Mergers and acquisitions",
     "category": "経営戦略",
     "definition": "企業の合併や買収によって、事業や経営資源を取得・統合することです。",
-    "example": "他社の株式や事業を取得して経営資源を取り込みます。",
     "related": [
       "co-creation"
     ],
@@ -18506,7 +17910,6 @@ export const terms: Term[] = [
     "reading": "Author's moral rights",
     "category": "法務",
     "definition": "著作者の人格的な利益を保護する権利で、著作者自身に属し譲渡できないものです。",
-    "example": "著作物の氏名表示や、意に反する改変などに関する権利を扱います。",
     "related": [
       "copyright"
     ],
@@ -18525,7 +17928,6 @@ export const terms: Term[] = [
     "reading": "Right of integrity",
     "category": "法務",
     "definition": "著作物などについて、著作者の意に反して改変されないことに関する権利です。",
-    "example": "法律で認められる場合を除き、著作者の意に反する内容の変更を防ぎます。",
     "related": [
       "copyright"
     ],
