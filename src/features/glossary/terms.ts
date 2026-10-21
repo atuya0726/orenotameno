@@ -2246,18 +2246,22 @@ export const terms: Term[] = [
     "id": "evm",
     "name": "EVM",
     "aliases": [
-      "SPI",
-      "TCPI",
-      "BAC",
-      "PV",
-      "EV",
-      "AC"
+      "アーンド・バリュー・マネジメント",
+      "Earned Value Management"
     ],
     "reading": "Earned Value Management",
     "category": "プロジェクト管理",
     "definition": "計画価値（PV）、出来高（EV）、実コスト（AC）を同じ金額の尺度で比べ、プロジェクトのコストとスケジュールの状況を評価する手法です。",
     "example": "PV 100、EV 80、AC 90なら、EV＜PVで進捗が遅れ、AC＞EVでコストが超過しています。",
-    "related": [],
+    "related": [
+      "evm-pv",
+      "evm-ev",
+      "evm-ac",
+      "evm-cpi",
+      "evm-spi",
+      "evm-tcpi",
+      "evm-bac"
+    ],
     "criteria": [
       {
         "id": "three",
@@ -2287,6 +2291,199 @@ export const terms: Term[] = [
       "コストの評価にPVを使ったり、CPIとSPIの意味を逆に読んだりする誤りが選択肢になります。"
     ]
   },
+  {
+    "id": "evm-pv",
+    "name": "PV（計画価値）",
+    "aliases": [
+      "PV",
+      "計画価値"
+    ],
+    "reading": "Planned Value",
+    "category": "プロジェクト管理",
+    "definition": "ある時点までに完了する予定の作業に割り当てた予算額です。実際の支出ではなく、計画上の作業量を金額で表します。",
+    "example": "総予算200万円の作業を半分まで終える計画なら、その時点のPVは100万円です。",
+    "related": [
+      "evm",
+      "evm-ev"
+    ],
+    "criteria": [
+      {
+        "id": "planned-budget",
+        "title": "その時点までに完了予定の作業に割り当てた予算額",
+        "hint": "どの時点の、予定と実績のどちらの作業を金額で表しますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "evm-ev",
+    "name": "EV（出来高）",
+    "aliases": [
+      "EV",
+      "出来高"
+    ],
+    "reading": "Earned Value",
+    "category": "プロジェクト管理",
+    "definition": "実際に完了した作業を、その作業に割り当てた予算額で評価した値です。実際に支払った金額とは区別します。",
+    "example": "総予算200万円の作業が40％完了していれば、EVは80万円です。",
+    "related": [
+      "evm",
+      "evm-pv",
+      "evm-ac"
+    ],
+    "criteria": [
+      {
+        "id": "completed-budget",
+        "title": "実際に完了した作業を予算額で評価した値",
+        "hint": "完了した作業量を、どの金額に基づいて評価しますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "evm-ac",
+    "name": "AC（実コスト）",
+    "aliases": [
+      "AC",
+      "実コスト"
+    ],
+    "reading": "Actual Cost",
+    "category": "プロジェクト管理",
+    "definition": "ある時点までに実施した作業のために、実際に発生した費用です。計画上の予算や、完了した作業の予算額とは区別します。",
+    "example": "完了した作業の予算額が80万円でも、実際に90万円かかっていればACは90万円です。",
+    "related": [
+      "evm",
+      "evm-ev"
+    ],
+    "criteria": [
+      {
+        "id": "actual-cost",
+        "title": "実施した作業のために実際に発生した費用",
+        "hint": "予定の予算ではなく、何にかかった費用ですか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "evm-cpi",
+    "name": "CPI（コスト効率指数）",
+    "aliases": [
+      "コスト効率指数"
+    ],
+    "reading": "Cost Performance Index",
+    "category": "プロジェクト管理",
+    "definition": "出来高を実コストで割って求める、コストの効率を示す指標です。CPI＝EV÷ACで、1未満なら完了した作業の予算額より実際の費用が大きく、コスト超過を示します。",
+    "example": "EVが80万円、ACが100万円ならCPIは0.8で、コスト超過と判断します。",
+    "related": [
+      "evm",
+      "evm-ev",
+      "evm-ac",
+      "evm-tcpi"
+    ],
+    "criteria": [
+      {
+        "id": "cost-ratio",
+        "title": "出来高を実コストで割ってコスト効率を表す（CPI＝EV÷AC）",
+        "hint": "どの二つの値を、どちらを分子にして割りますか？"
+      },
+      {
+        "id": "interpretation",
+        "title": "1未満ならコスト超過、1より大きければ予算に対して効率が良い",
+        "hint": "CPIが0.9のとき、コストをどう評価しますか？",
+        "level": "A"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "evm-spi",
+    "name": "SPI（スケジュール効率指数）",
+    "aliases": [
+      "SPI",
+      "スケジュール効率指数"
+    ],
+    "reading": "Schedule Performance Index",
+    "category": "プロジェクト管理",
+    "definition": "出来高を計画価値で割って求める、スケジュールの効率を示す指標です。SPI＝EV÷PVで、1未満なら予定より作業が遅れ、1より大きければ予定より進んでいます。",
+    "example": "EVが80万円、PVが100万円ならSPIは0.8で、予定より作業が遅れています。",
+    "related": [
+      "evm",
+      "evm-ev",
+      "evm-pv"
+    ],
+    "criteria": [
+      {
+        "id": "schedule-ratio",
+        "title": "出来高を計画価値で割って進捗の効率を表す（SPI＝EV÷PV）",
+        "hint": "予定に対する進捗を、どの二つの値の比で表しますか？"
+      },
+      {
+        "id": "interpretation",
+        "title": "1未満なら遅れ、1より大きければ予定より進んでいる",
+        "hint": "SPIが1.1のとき、進捗をどう評価しますか？",
+        "level": "A"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "evm-tcpi",
+    "name": "TCPI（残作業効率指数）",
+    "aliases": [
+      "TCPI",
+      "残作業効率指数"
+    ],
+    "reading": "To-Complete Performance Index",
+    "category": "プロジェクト管理",
+    "definition": "目標の総コスト内で完成させるために、残りの作業で必要となるコスト効率です。完成時総予算BACを目標にする場合、（BAC－EV）÷（BAC－AC）で求めます。",
+    "example": "BACが200万円、EVが80万円、ACが100万円ならTCPIは1.2で、残りの費用1円当たり1.2円分の予算上の作業を進める必要があります。",
+    "related": [
+      "evm",
+      "evm-bac",
+      "evm-ev",
+      "evm-ac",
+      "evm-cpi"
+    ],
+    "criteria": [
+      {
+        "id": "remaining-efficiency",
+        "title": "目標の総コスト内で完成するために残作業で必要なコスト効率",
+        "hint": "現在までの実績ではなく、どの作業に必要な効率を表しますか？"
+      },
+      {
+        "id": "budget-formula",
+        "title": "BACを目標にする場合は（BAC－EV）÷（BAC－AC）で求める",
+        "hint": "残りの作業の予算額と残りの予算を、どう使って計算しますか？",
+        "level": "A"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "evm-bac",
+    "name": "BAC（完成時総予算）",
+    "aliases": [
+      "BAC",
+      "完成時総予算"
+    ],
+    "reading": "Budget at Completion",
+    "category": "プロジェクト管理",
+    "definition": "プロジェクトの計画された全作業に割り当てた予算の総額です。完了時の実コストや、現時点での完成までのコスト予測とは区別します。",
+    "example": "計画された全作業の予算が200万円なら、途中の実支出にかかわらず、その計画のBACは200万円です。",
+    "related": [
+      "evm",
+      "evm-tcpi"
+    ],
+    "criteria": [
+      {
+        "id": "total-budget",
+        "title": "計画された全作業に割り当てた予算の総額",
+        "hint": "実績や将来の予測ではなく、何の総額ですか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+
   {
     "id": "critical-path",
     "name": "クリティカルパス",
@@ -2740,15 +2937,17 @@ export const terms: Term[] = [
     "id": "roc-curve",
     "name": "ROC曲線",
     "aliases": [
-      "偽陽性率",
-      "2クラス分類"
+      "ROC",
+      "Receiver Operating Characteristic curve"
     ],
     "reading": "Receiver Operating Characteristic curve",
     "category": "AI・機械学習",
     "definition": "2クラス分類器のしきい値を変えながら、横軸に偽陽性率、縦軸に真陽性率をとって描いた曲線です。左上に近いほど性能が良く、曲線下の面積（AUC）で比較します。",
     "example": "迷惑メール判定のしきい値を下げると、迷惑メールの検出率（真陽性率）は上がるが、普通のメールの誤判定（偽陽性率）も増えます。",
     "related": [
-      "overfitting"
+      "overfitting",
+      "false-positive-rate",
+      "binary-classification"
     ],
     "criteria": [
       {
@@ -2778,6 +2977,57 @@ export const terms: Term[] = [
       "縦軸を適合率（Precision）とする誤りがあります。適合率と再現率の曲線はPR曲線です。"
     ]
   },
+  {
+    "id": "false-positive-rate",
+    "name": "偽陽性率",
+    "aliases": [
+      "False Positive Rate",
+      "FPR"
+    ],
+    "reading": "False Positive Rate",
+    "category": "AI・機械学習",
+    "definition": "実際には陰性であるもののうち、誤って陽性と判定したものの割合です。偽陽性の件数を、実際に陰性であるものの総数で割って求めます。",
+    "example": "通常のメール100件のうち5件を迷惑メールと誤判定した場合、偽陽性率は5％です。",
+    "related": [
+      "roc-curve",
+      "false-positive",
+      "binary-classification"
+    ],
+    "criteria": [
+      {
+        "id": "negative-denominator",
+        "title": "実際に陰性のもののうち、誤って陽性と判定した割合",
+        "hint": "分母にする集団と、その中で数える誤判定は何ですか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "binary-classification",
+    "name": "2クラス分類",
+    "aliases": [
+      "二値分類",
+      "二項分類"
+    ],
+    "reading": "Binary classification",
+    "category": "AI・機械学習",
+    "definition": "入力されたデータを、二つのクラスのいずれかに分類することです。例えば、メールを迷惑メールと通常のメールに分けます。",
+    "example": "メールの特徴から、迷惑メールか通常のメールかを判定します。",
+    "related": [
+      "machine-learning",
+      "roc-curve",
+      "false-positive-rate"
+    ],
+    "criteria": [
+      {
+        "id": "two-classes",
+        "title": "データを二つのクラスのいずれかに分類する",
+        "hint": "分類先のクラスはいくつありますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+
   {
     "id": "machine-learning",
     "name": "機械学習",
@@ -18295,5 +18545,10 @@ export const termById = new Map(terms.map(term => [term.id, term]));
 export const normalizeTermWord = (text: string) => text.normalize('NFKC').toLowerCase().replace(/ディジタル/g, 'デジタル').replace(/[\s・]/g, '');
 const spellings = (term: Term) => [term.name, ...term.name.split(/[（）()]/).filter(Boolean), ...(term.aliases ?? [])];
 const termByWord = new Map(terms.flatMap(term => spellings(term).map(word => [normalizeTermWord(word), term] as const)).reverse());
+// Explicit names and aliases take priority over fragments inferred from parentheses.
+// For example, CPI（コスト効率指数） must not replace the CPU term named CPI.
+for (const term of terms.slice().reverse()) {
+  for (const word of [term.name, ...(term.aliases ?? [])]) termByWord.set(normalizeTermWord(word), term);
+}
 export function termForWord(word: string): Term | undefined { return termByWord.get(normalizeTermWord(word)); }
 export const termCategories = [...new Set(terms.map(term => term.category))];

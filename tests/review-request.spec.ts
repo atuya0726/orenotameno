@@ -281,11 +281,11 @@ test('reviews saved words one after another in random order from the review note
   await page.getByRole('link', { name: '単語を復習' }).click();
   await page.getByRole('radio', { name: 'A · 応用', exact: false }).check();
   await page.getByRole('link', { name: '復習を始める' }).click();
-  // the first word is picked at random and opens its glossary term directly; both words open the ROC曲線 term
-  await expect(page).toHaveURL(/\/glossary\/roc-curve\?.*review=/);
+  // Each selected concept opens its own glossary term, in random order.
+  await expect(page).toHaveURL(/\/glossary\/(roc-curve|false-positive-rate)\?.*review=/);
   await expect(page.getByText('単語の復習 1 / 2')).toBeVisible();
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('ROC曲線');
   const first = new URL(page.url()).searchParams.get('review');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText(first!);
   await page.getByRole('link', { name: 'この単語をとばす' }).click();
   await expect(page.getByText('単語の復習 2 / 2')).toBeVisible();
   const second = new URL(page.url()).searchParams.get('review');
@@ -377,7 +377,7 @@ test('retries a failed queue removal without paying for another evaluation', asy
   expect(calls).toBe(1);
 });
 
-test('keeps progress stable as mastered words leave the queue and removes only the reviewed spelling', async ({ page }) => {
+test('keeps progress stable as mastered concepts leave the queue and preserves other concepts', async ({ page }) => {
   await page.route('**/api/glossary/evaluate', route => route.fulfill({ json: wordEvaluation('S') }));
   await page.goto('/study/A1?question=sc-2025-autumn-a1-2');
   await page.getByRole('button', { name: 'イで回答', exact: true }).click();

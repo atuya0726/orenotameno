@@ -15,6 +15,7 @@ import { cn } from '@/lib/utils';
 import { Mic } from 'lucide-react';
 import { CalculatorToggle } from '@/components/calculator';
 import GlossaryApp from '@/features/glossary/GlossaryApp';
+import { groupReviewWords } from '@/features/glossary/review-words';
 import { PracticeSetup } from '@/components/practice-setup';
 import { StudyCompletion } from '@/components/study-completion';
 import { buildPracticeQueue, parsePracticeSearch } from '@/lib/practice';
@@ -363,7 +364,7 @@ function ReviewNotebook() {
   const { snapshot } = useLearning();
   const pending = activeReviews(snapshot.cards);
   const priorityCount = pending.filter(card => card.remainingReviews >= 3).length;
-  const words = snapshot.reviewWords.length;
+  const words = groupReviewWords(snapshot.reviewWords).length;
   if (!pending.length && !words) return <><PageIntro title="復習ノート" /><Empty icon={<CheckCheck />} title="復習する問題はありません" description="問題一覧から、次の学習を進めましょう。"><Button asChild><Link to="/questions">問題を選ぶ<ArrowRight size={16} /></Link></Button></Empty></>;
   return <><PageIntro title="復習ノート" />
     <div className="review-summaries">

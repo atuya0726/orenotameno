@@ -67,11 +67,23 @@ describe('question vocabulary candidates', () => {
     expect(termForWord('可用性')?.name).toBe('可用性');
     expect(termForWord('可用性')?.id).not.toBe('availability');
   });
+  it('resolves each earned value measure independently and distinguishes the two CPIs', () => {
+    const words = ['EVM', 'PV', 'EV', 'AC', 'SPI', 'TCPI', 'BAC', 'CPI（コスト効率指数）'];
+    const resolved = words.map(termForWord);
+    expect(resolved.every(Boolean)).toBe(true);
+    expect(new Set(resolved.map(term => term?.id)).size).toBe(words.length);
+    for (const term of resolved.slice(1)) expect(term?.related).toContain('evm');
+    expect(termForWord('PV')?.reading).toBe('Planned Value');
+    expect(termForWord('CPI')?.reading).toBe('Cycles Per Instruction');
+    expect(termForWord('CPI（コスト効率指数）')?.reading).toBe('Cost Performance Index');
+    expect(getQuestionTerms({ id: 'sc-2025-spring-a1-18' })).toContain('CPI（コスト効率指数）');
+  });
   it.each([
     ['公開鍵暗号方式', '共通鍵暗号方式'],
     ['SVG', 'PNG', 'TIFF', 'W3C', 'ラスタ形式', 'ベクター形式'],
     ['量子コンピュータ', '量子ビット', '量子ゲート', '重ね合わせ'],
     ['BASE', 'NoSQL', '結果整合性'],
+    ['ROC曲線', '偽陽性率', '2クラス分類'],
     ['機械学習', '教師あり学習', '教師なし学習', '強化学習', '推論'],
     ['モデル抽出攻撃', 'データポイズニング'],
     ['整列アルゴリズム', 'バブルソート', '挿入ソート', 'ヒープソート'],
