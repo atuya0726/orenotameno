@@ -1,14 +1,14 @@
 import { z } from 'zod';
 import { explanationInputSchema } from './features/glossary/model';
 import { termById } from './features/glossary/terms';
-import { DEFAULT_MODEL, EvaluationError, evaluateWithOpenAI } from './server/glossary-evaluator';
+import { DEFAULT_MODEL, EvaluationError, evaluateWithOpenAI, GRADING_POLICY_VERSION } from './server/glossary-evaluator';
 
 export type Env = {
   OPENAI_API_KEY?: string; OPENAI_MODEL?: string;
   ASSETS?: { fetch: (request: Request) => Promise<Response> };
 };
 const inputSchema = z.object({ termId: z.string(), text: explanationInputSchema }).strict();
-const json = (body: unknown, status = 200) => Response.json(body, { status, headers: { 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff' } });
+const json = (body: unknown, status = 200) => Response.json(body, { status, headers: { 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff', 'X-Glossary-Policy': GRADING_POLICY_VERSION } });
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {

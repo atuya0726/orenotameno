@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { evaluateWithOpenAI, MIN_COVERED_PROBABILITY } from './glossary-evaluator';
+import { evaluateWithOpenAI, GRADING_POLICY_VERSION, MIN_COVERED_PROBABILITY } from './glossary-evaluator';
 import worker from '../worker';
 import { termById } from '../features/glossary/terms';
 import { evaluationSchema, type Term } from '../features/glossary/model';
@@ -220,6 +220,8 @@ describe('Worker API boundary', () => {
     const assets = vi.fn().mockResolvedValue(new Response('<html>app</html>'));
     expect(await (await worker.fetch(new Request('https://example.test/glossary/dns'), { ASSETS: { fetch: assets } })).text()).toBe('<html>app</html>');
     expect((await worker.fetch(new Request('https://example.test/api/unknown'), {})).status).toBe(404);
-    expect((await worker.fetch(new Request('https://example.test/api/glossary/evaluate'), {})).status).toBe(405);
+    const policyProbe = await worker.fetch(new Request('https://example.test/api/glossary/evaluate'), {});
+    expect(policyProbe.status).toBe(405);
+    expect(policyProbe.headers.get('X-Glossary-Policy')).toBe(GRADING_POLICY_VERSION);
   });
 });
