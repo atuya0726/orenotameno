@@ -25,10 +25,10 @@ for (const term of incoming) {
 }
 for (const term of incoming) {
   for (const key of ['id', 'name', 'reading', 'category', 'definition', 'example']) if (!term[key]) errors.push(`${term.id}: missing ${key}`);
-  if (!term.criteria?.some(c => !c.level || c.level === 'B')) errors.push(`${term.id}: needs at least one B criterion`);
+  if (!term.criteria?.some(c => !c.level || c.level === 'basic')) errors.push(`${term.id}: needs at least one basic criterion`);
   const criterionIds = term.criteria?.map(c => c.id) ?? [];
   if (new Set(criterionIds).size !== criterionIds.length || criterionIds.some(id => !id)) errors.push(`${term.id}: criterion ids must be unique`);
-  for (const c of term.criteria ?? []) if (c.level && !['A', 'S'].includes(c.level)) errors.push(`${term.id}/${c.id}: level must be A or S (omit for B)`);
+  for (const c of term.criteria ?? []) if (c.level && !['basic', 'deep'].includes(c.level)) errors.push(`${term.id}/${c.id}: level must be basic or deep (omit for basic)`);
   for (const id of term.related ?? []) if (!ids.has(id)) errors.push(`${term.id}: unknown related id ${id}`);
 }
 if (errors.length) {

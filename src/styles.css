@@ -741,14 +741,18 @@ svg { flex-shrink: 0; }
 .glossary-grade-summary { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-2); min-width: 104px; min-height: 116px; padding: var(--space-3); border-radius: var(--radius-card); background: var(--caution-soft); }
 .glossary-result-covered .glossary-grade-summary { background: var(--success-soft); }
 .glossary-result-heading h2 { font-size: 12px; font-weight: 600; color: var(--text-secondary); }
-.glossary-result-value { color: var(--caution); font-size: 18px; font-weight: 700; }
+.glossary-result-value { display: flex; align-items: center; gap: var(--space-2); color: var(--caution); font-size: 20px; font-weight: 700; }
 .glossary-result-covered .glossary-result-value { color: var(--success); }
+.glossary-deep-badge { display: inline-flex; align-items: center; gap: var(--space-1); color: var(--success); font-size: 12px; font-weight: 600; }
+.glossary-grade-summary > small { color: var(--text-secondary); font-size: 11px; }
 .rubric-results { display: grid; gap: var(--space-3); }
 .rubric-level + .rubric-level { margin-top: var(--space-5); }
 .rubric-level-heading { display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-2); margin: 0 0 var(--space-3); font-size: 14px; color: var(--foreground); }
 .rubric-level-heading small { font-size: 11px; font-weight: 400; color: var(--text-secondary); }
 .rubric-level-heading span { display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 6px; background: var(--surface-secondary); border: 1px solid var(--border); color: var(--foreground); font-weight: 700; font-size: 12px; }
-.glossary-grade { font-size: 64px; font-weight: 800; line-height: 1; }
+.rubric-level-heading .rubric-count { width: auto; min-width: 30px; padding: 0 5px; margin-left: auto; font-variant-numeric: tabular-nums; }
+.rubric-deep .rubric-missing { border-left-color: var(--border-strong); }
+.rubric-deep .rubric-missing .rubric-icon { color: var(--text-secondary); background: var(--surface-secondary); }
 .rubric-item { display: flex; gap: var(--space-3); padding: var(--space-4); border: 1px solid var(--border); border-left: 4px solid var(--caution); border-radius: var(--radius-control); }
 .rubric-covered { border-left-color: var(--success); }
 .rubric-review { border-left-color: var(--danger); }
@@ -820,6 +824,7 @@ svg { flex-shrink: 0; }
 .review-goal-selected { border-color: var(--brand); background: var(--surface-secondary); }
 .review-goal-option input { margin-top: 4px; accent-color: var(--brand); }
 .review-goal-option strong, .review-goal-option small { display: block; }
+.review-goal-option strong { display: flex; align-items: center; gap: var(--space-2); }
 .review-goal-option small { margin-top: var(--space-1); font-size: 12px; line-height: 1.8; color: var(--text-secondary); }
 .review-goal-result { flex: 1 1 160px; min-width: 0; font-size: 12px; color: var(--text-secondary); line-height: 1.9; }
 .review-goal-result > p { margin: 0; padding: 0; background: none; }

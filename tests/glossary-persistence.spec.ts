@@ -4,7 +4,7 @@ import { mockSpeechRecognition, speakExplanation } from './helpers/glossary-spee
 
 const term = termById.get('digital-signature')!;
 const text = '署名者の秘密鍵で署名を作り、公開鍵で検証して改ざんを検知する仕組みです。';
-const evaluation = { version: 1, engine: 'openai', api: 'decisions', model: 'gpt-6-luna', status: 'covered', grade: 'A', covered: 3, total: 3, criteria: term.criteria.map(c => ({ id: c.id, title: c.title, level: c.level ?? 'B', status: 'covered', evidence: '', hint: '' })), summary: '' };
+const evaluation = { version: 1, engine: 'openai', api: 'decisions', model: 'gpt-6-luna', status: 'covered', grade: 'pass-plus', covered: 3, total: 3, criteria: term.criteria.map(c => ({ id: c.id, title: c.title, level: c.level ?? 'basic', status: 'covered', evidence: '', hint: '' })), summary: '' };
 const check = (page: Page) => page.getByRole('button', { name: 'AIでチェック', exact: true });
 type StorageControl = { holdSave: boolean; releaseSave?: () => void; historyReads: number };
 
@@ -62,7 +62,7 @@ test('shows the grade before storage completes and does not reread the full hist
   await speakExplanation(page, text);
   const reads = await page.evaluate(() => (window as unknown as StorageControl).historyReads);
   await check(page).click();
-  await expect(page.getByLabel('評価 A', { exact: true })).toBeVisible();
+  await expect(page.getByLabel('評価 合格 ＋ 深掘りできた', { exact: true })).toBeVisible();
   await expect(page.getByRole('status').filter({ hasText: '履歴を保存中' })).toBeVisible();
   await expect.poll(() => page.evaluate(() => Boolean((window as unknown as StorageControl).releaseSave))).toBe(true);
   expect(await page.evaluate(() => (window as unknown as StorageControl).historyReads)).toBe(reads);
@@ -80,7 +80,7 @@ test('retains a failed save across navigation and retries storage without anothe
   let calls = 0;
   await page.route('**/api/glossary/evaluate', route => { calls++; return route.fulfill({ json: evaluation }); });
   await page.goto('/glossary/digital-signature'); await speakExplanation(page, text); await check(page).click();
-  await expect(page.getByLabel('評価 A', { exact: true })).toBeVisible();
+  await expect(page.getByLabel('評価 合格 ＋ 深掘りできた', { exact: true })).toBeVisible();
   await expect(page.getByRole('alert')).toContainText('履歴に保存できませんでした');
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   expect(await storedCount(page)).toBe(0);
@@ -100,7 +100,7 @@ test('keeps a newer draft when a previous explanation finishes saving after navi
   await delaySave(page);
   await page.route('**/api/glossary/evaluate', route => route.fulfill({ json: evaluation }));
   await page.goto('/glossary/digital-signature'); await speakExplanation(page, text); await check(page).click();
-  await expect(page.getByLabel('評価 A', { exact: true })).toBeVisible();
+  await expect(page.getByLabel('評価 合格 ＋ 深掘りできた', { exact: true })).toBeVisible();
   await expect.poll(() => page.evaluate(() => Boolean((window as unknown as StorageControl).releaseSave))).toBe(true);
   await page.getByRole('link', { name: '用語一覧へ戻る', exact: true }).click();
   await page.getByRole('textbox', { name: '用語を検索' }).fill('Digital signature');
@@ -123,10 +123,10 @@ test('removes a mastered review word only after its evaluation is saved', async 
   const word = page.getByRole('button', { name: 'デジタル署名を復習する', exact: true });
   await word.click(); await expect(word).toHaveAttribute('aria-pressed', 'true');
   await page.goto('/glossary/review');
-  await page.getByRole('radio', { name: /^A ·/ }).check();
+  await page.getByRole('radio', { name: /^深掘り/ }).check();
   await page.getByRole('link', { name: '復習を始める' }).click();
   await speakExplanation(page, text); await check(page).click();
-  await expect(page.getByLabel('評価 A', { exact: true })).toBeVisible();
+  await expect(page.getByLabel('評価 合格 ＋ 深掘りできた', { exact: true })).toBeVisible();
   await expect(page.getByRole('button', { name: '保存を再試行', exact: true })).toBeVisible();
   await expect(page.getByRole('link', { name: '復習を終える', exact: true })).toHaveCount(0);
   await page.getByRole('button', { name: '保存を再試行', exact: true }).click();

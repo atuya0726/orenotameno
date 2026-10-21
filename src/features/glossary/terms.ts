@@ -32,13 +32,13 @@ export const terms: Term[] = [
         "id": "digest",
         "title": "本文のハッシュ値（メッセージダイジェスト）に署名する",
         "hint": "本文そのものではなく、何に対して署名を作りますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "certificate",
         "title": "公開鍵が本人のものであることは認証局の証明書（PKI）で保証する",
         "hint": "検証に使う公開鍵が本当に署名者のものだと、どうやって確かめますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -81,13 +81,13 @@ export const terms: Term[] = [
         "id": "use",
         "title": "改ざんの検知やパスワードの保存などに使う",
         "hint": "ハッシュ値はどんな場面で何のために使いますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "deprecated",
         "title": "MD5やSHA-1は衝突が見つかっており、SHA-256などを使う",
         "hint": "今は使うべきでないハッシュ関数と、その理由は何ですか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -120,13 +120,13 @@ export const terms: Term[] = [
         "id": "purpose",
         "title": "同じパスワードの判別やレインボーテーブルなどの事前計算攻撃を防ぐ",
         "hint": "ソルトがあると、どんな攻撃が難しくなりますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "public",
         "title": "ソルト自体は秘密にしなくてよく、ハッシュ値と一緒に保存する",
         "hint": "ソルトは秘密にする必要がありますか？どこに保存しますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -164,19 +164,19 @@ export const terms: Term[] = [
         "id": "hybrid",
         "title": "ハンドシェイクで鍵を共有し、通信本体は共通鍵暗号で暗号化する",
         "hint": "通信本体の暗号化には、どの方式の暗号を使いますか？その鍵はどう共有しますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "forward-secrecy",
         "title": "一時的な鍵交換（ECDHEなど）で前方秘匿性を確保し、サーバの秘密鍵が漏れても過去の通信を守る",
         "hint": "サーバの秘密鍵が後から漏れたとき、過去の通信を守るには何が必要ですか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "mutual",
         "title": "クライアント証明書を使えば、サーバだけでなく利用者側も認証できる",
         "hint": "サーバだけでなく、接続してくる利用者側を認証するにはどうしますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -204,19 +204,19 @@ export const terms: Term[] = [
         "id": "impact",
         "title": "DBからの漏えいや不正操作が起きる",
         "hint": "攻撃が成立すると何が起きますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "defense",
         "title": "パラメータ化して命令と値を分離する",
         "hint": "安全にSQLを組み立てる方法を説明できますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "mitigation",
         "title": "DBアカウントの権限の最小化やエラー詳細を表示しないなどで被害を抑える",
         "hint": "パラメータ化のほかに、被害を小さくする対策は何ですか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -253,25 +253,25 @@ export const terms: Term[] = [
         "id": "defense",
         "title": "出力先に応じてエスケープする",
         "hint": "入力内容を画面に出すとき、どう処理しますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "impact",
         "title": "Cookieの盗用によるセッションハイジャックや偽の画面表示などの被害が起きる",
         "hint": "スクリプトが実行されると、どんな被害が起きますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "types",
         "title": "反射型・格納型（持続型）・DOMベースの種類がある",
         "hint": "攻撃用スクリプトがページに入り込む経路には、どんな種類がありますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "mitigation",
         "title": "Cookie の HttpOnly 属性やCSP（Content Security Policy）で被害を緩和する",
         "hint": "エスケープ漏れがあっても、Cookie窃取やスクリプト実行を抑える仕組みは何ですか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -307,25 +307,25 @@ export const terms: Term[] = [
         "id": "defense",
         "title": "CSRFトークンなどで正当な要求か検証する",
         "hint": "正規画面からの要求かを確認する対策は何ですか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "token-reason",
         "title": "トークンは攻撃者が知り得ない値なので、偽のリクエストと区別できる",
         "hint": "CSRFトークンで偽のリクエストを見分けられるのはなぜですか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "samesite",
         "title": "Cookieの SameSite 属性やOrigin・Refererヘッダの検証も対策になる",
         "hint": "トークン以外に、他サイトからのリクエストを防ぐ仕組みは何ですか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "reauth",
         "title": "送金や設定変更などの重要な処理では、パスワードの再入力を求める",
         "hint": "特に重要な処理には、トークン以外にどんな確認を加えますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -357,13 +357,13 @@ export const terms: Term[] = [
         "id": "reason",
         "title": "一つの要素が漏れても他の種類の要素がなければ突破できない",
         "hint": "要素の種類を分けると、なぜ安全性が上がるのですか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "realtime-phishing",
         "title": "偽サイトが入力をそのまま中継するリアルタイムフィッシングでは、ワンタイムパスワードも突破され得る",
         "hint": "多要素認証を使っていても突破されるのは、どんな攻撃ですか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -400,13 +400,13 @@ export const terms: Term[] = [
         "id": "impact",
         "title": "誤操作や侵害時の被害を限定する",
         "hint": "権限を絞ることで、どのようなリスクを減らせますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "review",
         "title": "権限を定期的に見直し、異動・退職などで不要になった権限を削除する",
         "hint": "一度与えた権限は、その後どう管理しますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -438,13 +438,13 @@ export const terms: Term[] = [
         "id": "servers",
         "title": "フルリゾルバ（キャッシュDNSサーバ）が権威DNSサーバに問い合わせて名前解決する",
         "hint": "名前解決では、どんな役割のDNSサーバが関わりますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "distributed",
         "title": "ルートから階層的に分散してレコードを管理する",
         "hint": "DNSのデータは、どのように分担して管理されていますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -477,19 +477,19 @@ export const terms: Term[] = [
         "id": "use",
         "title": "負荷分散・TLS終端・キャッシュなどの用途",
         "hint": "中継以外に、どのような機能を担当できますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "hide",
         "title": "内部のサーバを直接公開せずに済み、WAFなどの防御を前段に置ける",
         "hint": "セキュリティの面では、どんな利点がありますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "client-ip",
         "title": "サーバからは接続元がプロキシに見えるため、X-Forwarded-Forなどで元の送信元を引き継ぐ",
         "hint": "リバースプロキシの後ろにあるサーバからは、利用者のIPアドレスがどう見えますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -527,7 +527,7 @@ export const terms: Term[] = [
         "id": "forwarding",
         "title": "転送で接続元IPアドレスが変わっても、署名対象が変更されなければ検証できる",
         "hint": "転送時に何が変わらなければ、署名を検証できますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -560,19 +560,19 @@ export const terms: Term[] = [
         "id": "limit",
         "title": "本文の改ざんは検知しない",
         "hint": "DKIMとは違い、本文の書き換えまで分かりますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "forwarding",
         "title": "メールが転送されると接続元IPアドレスが変わり、認証に失敗しやすい",
         "hint": "メールが転送されると、SPFの照合はどうなりますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "record",
         "title": "送信許可情報はDNSのTXTレコードに記述する",
         "hint": "送信を許可する情報は、DNSのどの種類のレコードに記しますか？",
-        "level": "S"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -614,7 +614,7 @@ export const terms: Term[] = [
         "id": "nosql",
         "title": "NoSQLのデータベースなど、大規模な分散システムで採用される",
         "hint": "BASE特性は、どんなデータベースで採用されていますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -661,13 +661,13 @@ export const terms: Term[] = [
         "id": "recovery",
         "title": "障害時はログを使い、ロールバックやロールフォワードで原子性と耐久性を守る",
         "hint": "障害が起きたとき、DBMSはどのようにデータを元に戻したり復元したりしますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "locking",
         "title": "ロック（2相ロックなど）で独立性を守る",
         "hint": "同時に実行されるトランザクションが干渉しないよう、どうしますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -725,13 +725,13 @@ export const terms: Term[] = [
         "id": "continuous",
         "title": "アクセスのたびに継続的に検証する",
         "hint": "一度認証したら、その後のアクセスはどう扱いますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "vs-perimeter",
         "title": "侵入後の横展開やクラウド利用に弱い境界型防御の限界を踏まえた考え方",
         "hint": "なぜ従来の境界型防御では不十分になったのですか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -810,13 +810,13 @@ export const terms: Term[] = [
         "id": "revocation",
         "title": "失効した証明書はCRLやOCSPで確認する",
         "hint": "秘密鍵が漏えいした証明書を、有効期限前に使えなくするにはどうしますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "chain",
         "title": "ルートCAまで署名をたどる証明書チェーンで信頼を確認する",
         "hint": "中間CAが発行した証明書は、どこまでたどって検証しますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -849,7 +849,7 @@ export const terms: Term[] = [
         "id": "transition",
         "title": "危殆化の進んだ暗号は運用監視リストへ移り、新規の利用を避けて移行する",
         "hint": "暗号が弱くなったと分かったとき、リスト上の扱いと利用者の対応はどう変わりますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -884,13 +884,13 @@ export const terms: Term[] = [
         "id": "threat",
         "title": "RSA暗号や楕円曲線暗号は、量子コンピュータで解読されるおそれがある",
         "hint": "なぜPQCへの移行が必要なのですか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "math",
         "title": "量子コンピュータでも解くのが難しいと考えられる数学的問題に基づく",
         "hint": "量子計算による攻撃への安全性は、何に基づきますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -923,13 +923,13 @@ export const terms: Term[] = [
         "id": "its",
         "title": "計算能力が無限でも解読できない情報理論的安全性を持つ",
         "hint": "量子コンピュータを使っても解読できないのはなぜですか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "distribution",
         "title": "長い鍵を安全に共有するのが難しく、実用は限られる",
         "hint": "理論的に安全なのに、広く使われないのはなぜですか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -967,7 +967,7 @@ export const terms: Term[] = [
         "id": "types",
         "title": "エンベロープ署名は対象の中に署名、エンベローピング署名は署名の中に対象、デタッチ署名は対象と署名が別の要素",
         "hint": "署名と署名対象の位置関係で、どんな種類がありますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -1001,13 +1001,13 @@ export const terms: Term[] = [
         "id": "lateral",
         "title": "侵入した端末から盗んだ資格情報で、他のサーバへ横展開する",
         "hint": "攻撃者は盗んだハッシュ値を何に使いますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "mitigation",
         "title": "特権アカウントの利用先を制限し、資格情報の窃取と横展開を抑える",
         "hint": "盗まれた資格情報が他の端末でも使われることを、どう抑えますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -1043,13 +1043,13 @@ export const terms: Term[] = [
         "id": "spoof",
         "title": "送信元IPアドレスを偽装して行われることがあり、偽装先へSYN/ACKが返る",
         "hint": "送信元が偽装されていると、応答はどこへ返りますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "backscatter",
         "title": "未使用アドレス宛てのSYN/ACK（バックスキャッタ）を観測すると、送信元のサーバが攻撃先だと推定できる",
         "hint": "誰も使っていないアドレスにSYN/ACKが届いたら、何が起きていますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -1082,19 +1082,19 @@ export const terms: Term[] = [
         "id": "c2",
         "title": "マルウェアのC&C通信を、フィルタリングを避けて行うのに悪用される",
         "hint": "攻撃者は何の通信を隠したいのですか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "countermeasure",
         "title": "外から見える接続先と実際の転送先の不整合を検査し、不正な中継を制限する",
         "hint": "表向きの接続先と実際の通信先に注目すると、どう対策できますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "sni-host",
         "title": "TLSのSNIとHTTPのHostヘッダーに、異なるドメインを指定する",
         "hint": "暗号化される前と後で、どの値を使い分けますか？",
-        "level": "S"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -1127,7 +1127,7 @@ export const terms: Term[] = [
         "id": "defense",
         "title": "出力する確信度を丸める、問合せ回数を制限する、差分プライバシーを用いるなどで対策する",
         "hint": "推測の手掛かりを減らすには、どうしますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -1157,19 +1157,19 @@ export const terms: Term[] = [
         "id": "errors",
         "title": "本人拒否率（FRR）と他人受入率（FAR）の二つの誤りがあり、しきい値で調整する",
         "hint": "生体認証で起こる誤りには、どんな種類がありますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "irrevocable",
         "title": "生体情報は漏えいしても変更できない",
         "hint": "パスワードと比べて、漏えいしたときの問題は何ですか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "liveness",
         "title": "偽造した指紋や写真によるなりすましを、生体検知（ライブネス検知）で防ぐ",
         "hint": "作り物の指や写真で認証を突破されないようにするには？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -1238,13 +1238,13 @@ export const terms: Term[] = [
         "id": "tactics",
         "title": "戦術は攻撃者の目的（初期アクセス、権限昇格、横展開など）、技術はその実現方法",
         "hint": "戦術と技術は、それぞれ何を表しますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "usage",
         "title": "検知ルールの網羅性の評価や、攻撃を模したレッドチーム演習の計画に使う",
         "hint": "防御側はATT&CKを具体的にどう活用しますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -1276,13 +1276,13 @@ export const terms: Term[] = [
         "id": "cvd",
         "title": "発見者や調整機関（JPCERT/CCなど）と連携し、修正の準備ができてから公表する調整された脆弱性開示を行う",
         "hint": "脆弱性の情報は、いつ、誰と調整して公表しますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "sbom",
         "title": "SBOMで製品に含まれる部品を把握し、部品の脆弱性の影響を素早く判断する",
         "hint": "製品に使ったOSSに脆弱性が見つかったとき、影響範囲をどう調べますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -1323,7 +1323,7 @@ export const terms: Term[] = [
         "id": "insider",
         "title": "シグネチャでは見つけにくい内部不正や、正規の資格情報の悪用の発見に向く",
         "hint": "パターン照合では見つけにくい脅威は何ですか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -1359,7 +1359,7 @@ export const terms: Term[] = [
         "id": "remediation",
         "title": "検知した設定ミスの自動修正や、IaCのテンプレートの事前検査で再発を防ぐ",
         "hint": "見つけた設定ミスを繰り返さないためには、どうしますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -1390,25 +1390,25 @@ export const terms: Term[] = [
         "id": "eap",
         "title": "EAPを使って認証する枠組み",
         "hint": "認証のやり取りに使うプロトコルは何ですか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "roles",
         "title": "サプリカント（端末）、オーセンティケータ（アクセスポイントなど）、認証サーバ（RADIUSなど）の三者で構成する",
         "hint": "登場する三つの役割は何ですか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "methods",
         "title": "EAP-TLSはクライアント証明書、PEAPはID・パスワードで認証する",
         "hint": "EAPの方式によって、何で認証するかがどう違いますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "wpa-enterprise",
         "title": "WPA3／WPA2エンタープライズで使われ、利用者ごとに異なる暗号鍵を配布できる",
         "hint": "共通のパスフレーズを使う方式と比べた利点は何ですか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -1440,25 +1440,25 @@ export const terms: Term[] = [
         "id": "commit",
         "title": "コミット情報がログファイルに書き込まれた時点でコミット完了とする",
         "hint": "コミット処理はどの時点で完了しますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "durability",
         "title": "障害が起きても、ログからコミット済みの更新を回復でき、永続性を保証する",
         "hint": "ACID特性のどの性質を支えますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "buffer",
         "title": "主記憶上のログバッファへの書込みだけでは、障害で失われるため不十分",
         "hint": "ログバッファに書いた時点でコミット完了にしないのはなぜですか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "recovery",
         "title": "チェックポイント以降のログを使い、コミット済みはロールフォワード、未コミットはロールバックする",
         "hint": "障害からの回復で、ログをどう使い分けますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -1491,7 +1491,7 @@ export const terms: Term[] = [
         "id": "area",
         "title": "エリアに分割して、リンク状態の情報の量と再計算の範囲を抑える",
         "hint": "大きなネットワークで、データベースが大きくなりすぎないようにするには？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -1521,7 +1521,7 @@ export const terms: Term[] = [
         "id": "review",
         "title": "環境の変化でリスクが相当程度変われば、監査計画を見直す",
         "hint": "計画を立てた後にリスクが変わったら、どうしますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -1553,25 +1553,25 @@ export const terms: Term[] = [
         "id": "utilization",
         "title": "利用率ρは到着率×平均サービス時間（窓口が使われている割合）",
         "hint": "利用率はどのように求めますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "formula",
         "title": "平均待ち時間はρ／(1−ρ)×平均サービス時間",
         "hint": "平均待ち時間を利用率とサービス時間で表すとどうなりますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "nonlinear",
         "title": "利用率が1に近づくと待ち時間は急激に増える",
         "hint": "利用率が0.5から0.9に上がると、待ち時間はどう変わりますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "merge",
         "title": "窓口を統合して到着が2倍になると利用率も2倍になり、式のρを置き換えて考える",
         "hint": "二つの窓口を1台にまとめたとき、利用率はどうなりますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -1597,13 +1597,13 @@ export const terms: Term[] = [
         "id": "series-parallel",
         "title": "直列は稼働率の積、並列は1−(1−稼働率)の積で求める",
         "hint": "装置を直列・並列につないだとき、全体の稼働率はどう計算しますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "ratio",
         "title": "稼働率はMTTR／MTBFの比だけで決まり、MTBFやMTTR個々の値は決まらない",
         "hint": "稼働率が同じ二つのシステムは、MTBFも同じといえますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -1633,25 +1633,25 @@ export const terms: Term[] = [
         "id": "1nf",
         "title": "第1正規形は繰返し項目をなくし、各属性を単一の値にする",
         "hint": "一つの属性に複数の値が入っているとき、どうしますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "2nf",
         "title": "第2正規形は候補キーの一部への従属（部分関数従属）を取り除く",
         "hint": "複合キーの一部だけで決まる属性があるとき、どうしますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "3nf",
         "title": "第3正規形は非キー属性間の従属（推移的関数従属）を取り除く",
         "hint": "キー以外の属性で決まる属性があるとき、どうしますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "denormalize",
         "title": "検索性能のために、あえて非正規化することがある",
         "hint": "結合が多すぎて遅いとき、どのような判断がありますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -1680,25 +1680,25 @@ export const terms: Term[] = [
         "id": "order",
         "title": "資源を占有する順序がプロセスごとに異なると起こり得る",
         "hint": "どんなときに互いの資源を待つ状況が生まれますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "prevent",
         "title": "全プロセスで資源の確保順序をそろえると防げる",
         "hint": "デッドロックを防ぐ簡単な決まりは何ですか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "conditions",
         "title": "相互排他・保持と待ち・横取り不可・循環待ちの4条件がそろうと発生する",
         "hint": "デッドロックが起きるための条件は何ですか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "detect",
         "title": "待ちグラフで循環を検出し、一方を中断して資源を解放する回復方法がある",
         "hint": "起きてしまったデッドロックは、どう見つけて解消しますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -1733,7 +1733,7 @@ export const terms: Term[] = [
         "id": "syndrome",
         "title": "検査結果の組合せから誤りのビット位置を求める",
         "hint": "誤りの位置は、どのように特定しますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -1761,7 +1761,7 @@ export const terms: Term[] = [
         "id": "redundancy",
         "title": "冗長化（多重化）によって実現する",
         "hint": "どのような仕組みで機能を保ちますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -1792,13 +1792,13 @@ export const terms: Term[] = [
         "id": "remedy",
         "title": "学習データの追加やモデルの複雑さの抑制などで汎化性能を改善する",
         "hint": "訓練データだけに合いすぎることを、どう抑えますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "cross-validation",
         "title": "交差検証で汎化性能を評価し、過学習を見つける",
         "hint": "汎化性能を評価する方法は何ですか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -1829,19 +1829,19 @@ export const terms: Term[] = [
         "id": "vuln",
         "title": "脆弱性が公表された部品を含む製品を素早く特定できる",
         "hint": "脆弱性管理にどう役立ちますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "license",
         "title": "OSSのライセンス管理にも使える",
         "hint": "脆弱性以外に、どのような管理に使えますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "supply-chain",
         "title": "ソフトウェアサプライチェーンの透明性を高め、供給元から利用者まで情報を共有する",
         "hint": "なぜ供給元と利用者がSBOMを共有するのですか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -1876,19 +1876,19 @@ export const terms: Term[] = [
         "id": "avoid-shell",
         "title": "シェルを起動する関数を使わない実装が根本的な対策",
         "hint": "最も根本的な対策は何ですか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "escape",
         "title": "やむを得ずシェルを使う場合は、入力値の許可リスト検査やエスケープを行う",
         "hint": "シェルを使わざるを得ないときはどうしますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "least-priv",
         "title": "アプリケーションの実行権限を最小にして被害を抑える",
         "hint": "攻撃が成功した場合の被害を小さくするには？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -1920,19 +1920,19 @@ export const terms: Term[] = [
         "id": "vpn",
         "title": "VPNの構築に使われる",
         "hint": "代表的な用途は何ですか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "mode",
         "title": "ペイロードだけを守るトランスポートモードと、元のパケット全体を包むトンネルモードがある",
         "hint": "二つの動作モードの違いは何ですか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "esp-ah",
         "title": "暗号化と認証を行うESP、認証だけを行うAH、鍵交換のIKEで構成される",
         "hint": "IPsecを構成するプロトコルには何がありますか？",
-        "level": "S"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -1969,7 +1969,7 @@ export const terms: Term[] = [
         "id": "format",
         "title": "CVE-年-番号の形式で表す",
         "hint": "CVE識別子はどのような形式ですか？",
-        "level": "S"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -1996,19 +1996,19 @@ export const terms: Term[] = [
         "id": "redirect",
         "title": "利用者を偽のサーバに誘導できる",
         "hint": "攻撃が成功すると、利用者はどうなりますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "random",
         "title": "問合せのIDと送信元ポート番号をランダムにして推測を難しくする",
         "hint": "偽の応答を受け入れにくくするには、何をランダムにしますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "dnssec",
         "title": "DNSSECで応答に署名し、正当性を検証する",
         "hint": "応答が正しいことを暗号で確かめる仕組みは何ですか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -2044,7 +2044,7 @@ export const terms: Term[] = [
         "id": "salt",
         "title": "ソルトを付けてハッシュ化すると、事前計算の表が使えなくなる",
         "hint": "この攻撃を防ぐ対策は何ですか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -2085,13 +2085,13 @@ export const terms: Term[] = [
         "id": "report",
         "title": "受信側から認証結果のレポートを受け取り、なりすましを監視できる",
         "hint": "送信ドメイン側は何を受け取れますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "staged",
         "title": "none→quarantine→rejectと段階的にポリシーを強める運用",
         "hint": "いきなりrejectにしないのはなぜですか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -2126,7 +2126,7 @@ export const terms: Term[] = [
         "id": "op25b",
         "title": "OP25Bと組み合わせ、正規の利用者の送信経路を確保する",
         "hint": "ポート25の外向き通信を止める対策と、どう組み合わせますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -2158,13 +2158,13 @@ export const terms: Term[] = [
         "id": "abuse",
         "title": "なりすましによる詐欺や偽情報の拡散に悪用される",
         "hint": "どのような攻撃に使われますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "verify",
         "title": "別経路での本人確認（コールバックなど）や、送金手続の多重承認で被害を防ぐ",
         "hint": "声や映像だけで判断しないために、どんな手続が有効ですか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -2196,13 +2196,13 @@ export const terms: Term[] = [
         "id": "use",
         "title": "DDoS攻撃・スパム送信・情報窃取などに使われる",
         "hint": "ボットネットは何に使われますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "detect",
         "title": "C&Cサーバへの通信（定期的な外向き通信）を検知・遮断して対策する",
         "hint": "感染端末を見つけるには、どんな通信に注目しますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -2229,13 +2229,13 @@ export const terms: Term[] = [
         "id": "integrity",
         "title": "証拠の完全性を保つため、複製を取りハッシュ値で同一性を示す",
         "hint": "証拠が改変されていないことは、どう示しますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "chain-custody",
         "title": "誰がいつ証拠を扱ったかを記録する証拠保全の手続（Chain of Custody）",
         "hint": "法廷で証拠として通用させるために、何を記録しますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -2272,19 +2272,19 @@ export const terms: Term[] = [
         "id": "cost",
         "title": "コストはEVとACで評価する（CPI＝EV÷AC）",
         "hint": "コストの効率は、どの値を比べますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "schedule",
         "title": "スケジュールはEVとPVで評価する（SPI＝EV÷PV）",
         "hint": "進捗の効率は、どの値を比べますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "index",
         "title": "CPI・SPIは1より大きいほど良く、1未満ならコスト超過・遅延",
         "hint": "CPIが0.9なら、どのような状態ですか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -2390,7 +2390,7 @@ export const terms: Term[] = [
         "id": "interpretation",
         "title": "1未満ならコスト超過、1より大きければ予算に対して効率が良い",
         "hint": "CPIが0.9のとき、コストをどう評価しますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -2421,7 +2421,7 @@ export const terms: Term[] = [
         "id": "interpretation",
         "title": "1未満なら遅れ、1より大きければ予定より進んでいる",
         "hint": "SPIが1.1のとき、進捗をどう評価しますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -2454,7 +2454,7 @@ export const terms: Term[] = [
         "id": "budget-formula",
         "title": "BACを目標にする場合は（BAC－EV）÷（BAC－AC）で求める",
         "hint": "残りの作業の予算額と残りの予算を、どう使って計算しますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -2512,13 +2512,13 @@ export const terms: Term[] = [
         "id": "shorten",
         "title": "全体を短縮するにはクリティカルパス上の作業を短縮する",
         "hint": "全体の期間を縮めるには、どの作業を短くしますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "shift",
         "title": "短縮するとクリティカルパスが別の経路に移り、短縮量が限られることがある",
         "hint": "ある経路を大きく短縮しても、全体がそれほど縮まないのはなぜですか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -2593,19 +2593,19 @@ export const terms: Term[] = [
         "id": "examples",
         "title": "入力チェック、照合、承認、エラー処理などが例",
         "hint": "具体的にはどのような統制がありますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "assertions",
         "title": "網羅性（漏れなく）・正確性・正当性（承認済み）などの観点を確保する",
         "hint": "業務処理統制は、データのどのような性質を確保しますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "dependency",
         "title": "全般統制が有効でないと、業務処理統制の有効性も信頼できない",
         "hint": "二つの統制はどのような関係にありますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -2638,7 +2638,7 @@ export const terms: Term[] = [
         "id": "benefit",
         "title": "業務プロセスとの対応付けや、他システムとの連携・再利用がしやすい",
         "hint": "SOAの利点は何ですか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -2672,19 +2672,19 @@ export const terms: Term[] = [
         "id": "allocation",
         "title": "事業間の資源（資金）配分を決めるために使う",
         "hint": "PPMの目的は何ですか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "cash-flow",
         "title": "金のなる木の資金を問題児や花形に回す",
         "hint": "資金はどこからどこへ流しますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "limits",
         "title": "事業間の相乗効果や、シェアを高める以外の戦略を考慮しにくい",
         "hint": "PPMにはどのような限界がありますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -2718,25 +2718,25 @@ export const terms: Term[] = [
         "id": "formula",
         "title": "固定費÷(1−変動費率)で求める",
         "hint": "損益分岐点売上高の式は何ですか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "split",
         "title": "費用を固定費と変動費に分けて考える",
         "hint": "計算の前に、費用をどう分けますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "marginal",
         "title": "1−変動費率は限界利益率で、二つの売上高と利益から求められる",
         "hint": "利益の増え方から、限界利益率をどう求めますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "safety",
         "title": "実際の売上高が損益分岐点をどれだけ上回るかを安全余裕率で表す",
         "hint": "売上が少し減っても赤字にならないかは、何で判断しますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -2795,13 +2795,13 @@ export const terms: Term[] = [
         "id": "no-select",
         "title": "派遣先が事前面接などで派遣労働者を特定することは禁止",
         "hint": "派遣先は、派遣される人を選べますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "vs-contract",
         "title": "請負では発注者が労働者に直接指示できず、指示すると偽装請負になる",
         "hint": "請負契約との違いは何ですか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -2834,19 +2834,19 @@ export const terms: Term[] = [
         "id": "low-good",
         "title": "結合度は低いほど望ましい",
         "hint": "結合度は高い方と低い方、どちらが望ましいですか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "data",
         "title": "必要なデータだけを引数で渡すデータ結合が最も低い",
         "hint": "最も結合度が低い受渡し方法は何ですか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "order",
         "title": "低い順にデータ・スタンプ・制御・外部・共通・内容結合",
         "hint": "結合の種類を、結合度の低い順に並べると？",
-        "level": "S"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -2874,19 +2874,19 @@ export const terms: Term[] = [
         "id": "latency",
         "title": "応答の遅延を小さくできる",
         "hint": "クラウドで処理する場合と比べて、何が速くなりますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "traffic",
         "title": "クラウドへ送る通信量を減らせる",
         "hint": "ネットワークにはどのような利点がありますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "privacy",
         "title": "個人情報などをクラウドに送らずに済むため、プライバシー保護にも役立つ",
         "hint": "データを外に出さないことには、どんな利点がありますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -2964,13 +2964,13 @@ export const terms: Term[] = [
         "id": "upperleft",
         "title": "左上に近い（AUCが大きい）ほど良い分類器",
         "hint": "良い分類器の曲線はどこに寄りますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "diagonal",
         "title": "対角線はランダムな判定と同じ性能（AUC=0.5）を表す",
         "hint": "原点から右上への直線は何を意味しますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -3052,13 +3052,13 @@ export const terms: Term[] = [
         "id": "inference",
         "title": "学習済みモデルで新しいデータを予測することを推論という",
         "hint": "学習の後、モデルを使う段階を何と呼びますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "generalize",
         "title": "目的は訓練データではなく未知データでの性能（汎化性能）",
         "hint": "訓練データだけで正解率が高ければよいですか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -3090,7 +3090,7 @@ export const terms: Term[] = [
         "id": "data",
         "title": "大量のデータと計算資源（GPUなど）を必要とする",
         "hint": "学習に何が多く必要ですか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -3117,7 +3117,7 @@ export const terms: Term[] = [
         "id": "hallucination",
         "title": "事実と異なる内容をもっともらしく出力することがある",
         "hint": "出力をそのまま信じてよいですか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -3142,19 +3142,19 @@ export const terms: Term[] = [
         "id": "generalization",
         "title": "未知データへの性能（汎化性能）を見積もる目的",
         "hint": "何を確かめるための方法ですか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "leakage",
         "title": "検証用データが学習に混ざると性能を過大評価する（データ漏えい）",
         "hint": "分け方で注意することは？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "kfold",
         "title": "k分割ではk回学習・検証して平均をとる",
         "hint": "k分割交差検証の手順は？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -3182,13 +3182,13 @@ export const terms: Term[] = [
         "id": "accuracy",
         "title": "単独のモデルより精度や安定性を高める",
         "hint": "何のために組み合わせますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "diversity",
         "title": "効果を出すには個々のモデルの誤りが互いに異なる（多様性）ことが必要",
         "hint": "同じモデルを並べても効果がありますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -3309,7 +3309,7 @@ export const terms: Term[] = [
         "id": "count",
         "title": "必要な回数は「幅÷2ⁿ ≦ 許容誤差」となる最小のn",
         "hint": "幅を1/1000にするには何回必要ですか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -3341,13 +3341,13 @@ export const terms: Term[] = [
         "id": "use",
         "title": "関数呼出しの戻り先や逆ポーランド表記法の計算に使う",
         "hint": "どんな処理に使われますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "overflow",
         "title": "領域を超えて積むとスタックオーバーフローになる",
         "hint": "積みすぎると何が起きますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -3377,13 +3377,13 @@ export const terms: Term[] = [
         "id": "queue",
         "title": "データ構造ではキュー（待ち行列）として使う",
         "hint": "FIFOのデータ構造は何ですか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "replace",
         "title": "ページ置換では参照の新しさではなく読み込んだ順で追い出すため、よく使うページも追い出し得る",
         "hint": "LRUとの違いは何ですか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -3411,7 +3411,7 @@ export const terms: Term[] = [
         "id": "old-popular",
         "title": "過去によく使われたデータが、使われなくなっても残り続けやすい",
         "hint": "LFUの弱点は？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -3448,13 +3448,13 @@ export const terms: Term[] = [
         "id": "stack",
         "title": "スタックにオペランドを積み、演算子でポップして計算する",
         "hint": "どのデータ構造で評価しますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "convert",
         "title": "中置記法から変換するときは優先順位の高い演算から後置にする",
         "hint": "(A+B)×Cをどう書きますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -3482,25 +3482,25 @@ export const terms: Term[] = [
         "id": "fast",
         "title": "衝突が少なければ件数によらずほぼ一定時間で探索できる",
         "hint": "探索時間はデータ量に比例しますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "collision",
         "title": "異なるキーが同じ位置になる衝突（シノニム）が起き得る",
         "hint": "どんな問題が起きますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "resolve",
         "title": "衝突はチェイン法（リスト）やオープンアドレス法で解決する",
         "hint": "衝突への対処法は？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "load",
         "title": "格納率（負荷率）が高いほど衝突が増えて遅くなる",
         "hint": "表が埋まってくると何が起きますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -3532,7 +3532,7 @@ export const terms: Term[] = [
         "id": "traverse",
         "title": "前順・中順・後順でたどる順序が異なる",
         "hint": "ノードをたどる順番の種類は？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -3563,13 +3563,13 @@ export const terms: Term[] = [
         "id": "stack",
         "title": "呼出しごとに戻り先や変数がスタックに積まれる",
         "hint": "呼出し情報はどこに保存されますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "loop",
         "title": "再帰は繰返し（ループ）に書き換えられる",
         "hint": "再帰を使わずに書けますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -3597,7 +3597,7 @@ export const terms: Term[] = [
         "id": "crypto",
         "title": "十分な規模の量子コンピュータは、RSAなど一部の公開鍵暗号の解読を高速化する可能性がある",
         "hint": "特定の問題を高速に解けることは、暗号の安全性にどのような影響がありますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -3632,13 +3632,13 @@ export const terms: Term[] = [
         "id": "order",
         "title": "平均O(n log n)、基準値の選び方が悪いと最悪O(n²)",
         "hint": "計算量は？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "unstable",
         "title": "同じ値の並びが保たれない（安定ではない）",
         "hint": "安定な整列ですか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -3666,7 +3666,7 @@ export const terms: Term[] = [
         "id": "choice",
         "title": "同じ値のデータの相対順を保ちたい場合は、安定性のある整列手法を選ぶ",
         "hint": "同じ値のデータの並び順を残したいとき、どの性質に注目しますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -3694,19 +3694,19 @@ export const terms: Term[] = [
         "id": "sd",
         "title": "標準偏差が大きいほど山が低く横に広がる",
         "hint": "標準偏差でグラフはどう変わりますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "ratio",
         "title": "平均±1σに約68%、±2σに約95%が含まれる",
         "hint": "±1σの範囲に何%入りますか？",
-        "level": "S"
+        "level": "deep"
       },
       {
         "id": "inflection",
         "title": "平均±1σの位置が曲線の変曲点になる",
         "hint": "曲がり方が変わる点はどこですか？",
-        "level": "S"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -3732,13 +3732,13 @@ export const terms: Term[] = [
         "id": "expected",
         "title": "ビット数×誤り率で誤りの期待値を求める",
         "hint": "1パケットの平均の誤り数はどう求めますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "packet",
         "title": "誤りを含むパケットの確率は 1−(1−p)^n、pが小さければ約n×p",
         "hint": "誤りを含むパケットの割合は？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -3768,13 +3768,13 @@ export const terms: Term[] = [
         "id": "mask",
         "title": "論理積で特定のビットを取り出し、論理和で特定のビットを1にする（マスク演算）",
         "hint": "ビットを取り出すには？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "xor-twice",
         "title": "同じ値で2回XORすると元に戻る性質は暗号やパリティに使われる",
         "hint": "XORの面白い性質は？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -3804,7 +3804,7 @@ export const terms: Term[] = [
         "id": "universal",
         "title": "NAND（またはNOR）だけで任意の論理回路を構成できる",
         "hint": "NANDだけで何が作れますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -3835,7 +3835,7 @@ export const terms: Term[] = [
         "id": "timechart",
         "title": "タイムチャートの各時点の入出力から真理値表を作って回路を判定する",
         "hint": "タイムチャートからどう回路を選びますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -3864,13 +3864,13 @@ export const terms: Term[] = [
         "id": "detect",
         "title": "単純なパリティは1ビット誤りの検出のみで訂正はできない",
         "hint": "パリティで訂正できますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "even-errors",
         "title": "2ビット同時の誤りは単純なパリティでは検出できない",
         "hint": "誤りが2ビットあるとどうなりますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -3902,7 +3902,7 @@ export const terms: Term[] = [
         "id": "quality",
         "title": "光や材質などの条件を反映し、画像の品質と描画時間のバランスを考えて処理する",
         "hint": "画像の見え方と処理時間には、どのような関係がありますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -3927,13 +3927,13 @@ export const terms: Term[] = [
         "id": "tracking",
         "title": "利用者の動きに合わせて映像を即座に描き直す",
         "hint": "頭を動かすと何が起きますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "latency",
         "title": "描画の遅延が大きいとVR酔いの原因になる",
         "hint": "遅延が大きいと何が問題ですか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -3967,13 +3967,13 @@ export const terms: Term[] = [
         "id": "scale",
         "title": "拡大しても画質が劣化しない",
         "hint": "拡大するとどうなりますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "script",
         "title": "テキストなのでスクリプトを埋め込め、アップロードを許すとXSSの原因になり得る",
         "hint": "セキュリティ上の注意点は？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -4006,7 +4006,7 @@ export const terms: Term[] = [
         "id": "xxe",
         "title": "外部実体参照を許すと XXE 攻撃でファイルを読まれる",
         "hint": "XML特有の脆弱性は？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -4072,7 +4072,7 @@ export const terms: Term[] = [
         "id": "scale",
         "title": "拡大しても滑らか",
         "hint": "拡大するとどうなりますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -4099,19 +4099,19 @@ export const terms: Term[] = [
         "id": "calc",
         "title": "1フレームのデータ量×フレーム数/秒で必要量を求める",
         "hint": "動画の必要帯域はどう計算しますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "compress",
         "title": "圧縮率や伝送効率を考慮して実際の必要量を求める",
         "hint": "圧縮されているときは？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "pixel",
         "title": "1フレームのデータ量は画素数×1画素のビット数",
         "hint": "1フレームのデータ量は？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -4224,7 +4224,7 @@ export const terms: Term[] = [
         "id": "types",
         "title": "命令流とデータ流の単一・複数の組合せでSISD・SIMD・MISD・MIMDに分類する",
         "hint": "二つの分類軸の組合せで、どのような区分になりますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -4252,25 +4252,25 @@ export const terms: Term[] = [
         "id": "bottleneck",
         "title": "性能を制約しているボトルネックを特定する",
         "hint": "まず何を見つけますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "steps",
         "title": "現状把握→予測→構成の決定→監視と見直しの流れで進める",
         "hint": "計画の手順は？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "tuning",
         "title": "増強の前に設定やプログラムのチューニングで改善できることもある",
         "hint": "機器を増やす以外の手は？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "margin",
         "title": "ピーク時の負荷と余裕率を考慮する",
         "hint": "平均値だけで計画してよいですか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -4367,19 +4367,19 @@ export const terms: Term[] = [
         "id": "hit",
         "title": "ヒット率はデータがキャッシュにある割合",
         "hint": "ヒット率とは？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "effective",
         "title": "ヒット時とミス時の所要時間を、それぞれの発生割合で加重平均して実効アクセス時間を求める",
         "hint": "ミス時に必要な処理も含め、平均時間をどう求めますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "locality",
         "title": "参照の局所性があるためキャッシュが効く",
         "hint": "なぜ小容量でも効果がありますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -4404,19 +4404,19 @@ export const terms: Term[] = [
         "id": "realtime",
         "title": "決められた時間内に応答するリアルタイム性が求められる",
         "hint": "どんな性能が求められますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "resource",
         "title": "メモリや電力など限られた資源で動作する",
         "hint": "どんな制約がありますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "update",
         "title": "出荷後の更新が難しく、脆弱性が長く残りやすい",
         "hint": "セキュリティ上の課題は？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -4441,7 +4441,7 @@ export const terms: Term[] = [
         "id": "measure",
         "title": "一定時間待って状態を再確認するなどで除去する",
         "hint": "どう対策しますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -4469,19 +4469,19 @@ export const terms: Term[] = [
         "id": "time",
         "title": "処理時間＝命令数×CPI×クロック周期",
         "hint": "処理時間はどう求めますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "period",
         "title": "クロック周期は動作周波数の逆数",
         "hint": "2GHzのクロック周期は？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "average",
         "title": "命令の種類ごとのCPIを出現率で加重平均して平均CPIを求める",
         "hint": "命令ごとに違うときは？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -4561,25 +4561,25 @@ export const terms: Term[] = [
         "id": "paging",
         "title": "ページング方式は固定長のページ単位で管理する",
         "hint": "ページング方式の単位は？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "replace",
         "title": "主記憶が足りないとページ置換えで追い出し、必要なページをページインする",
         "hint": "空きがないときは？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "pagefault",
         "title": "主記憶にないページを参照するとページフォールトが起きる",
         "hint": "ないページを参照すると？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "thrashing",
         "title": "ページ置換えが頻発して処理が進まない状態をスラッシングという",
         "hint": "置換えが多すぎるとどうなりますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -4613,13 +4613,13 @@ export const terms: Term[] = [
         "id": "paging",
         "title": "ページングは外部断片化が起きないが内部断片化が起き得る",
         "hint": "ページング方式の長所は？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "compaction",
         "title": "空き領域をまとめ直すことで、外部断片化を解消できる場合がある",
         "hint": "細切れの空き領域には、どのような対処ができますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -4648,19 +4648,19 @@ export const terms: Term[] = [
         "id": "gateway",
         "title": "センサーノードのデータはゲートウェイで集約・変換して上位へ送る",
         "hint": "センサーとクラウドの間に何を置きますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "constraint",
         "title": "IoT機器は電力・計算能力が限られ、セキュリティ対策が難しい",
         "hint": "IoT機器の課題は？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "mirai",
         "title": "初期パスワードのままの機器がボットネットに悪用された（Mirai）",
         "hint": "実際に起きた被害は？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -4688,13 +4688,13 @@ export const terms: Term[] = [
         "id": "average",
         "title": "平均電流は動作と休止の電流を時間の割合で加重平均する",
         "hint": "平均電流はどう求めますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "battery",
         "title": "電池の寿命は容量÷平均電流で見積もる",
         "hint": "電池が何時間もつか求めるには？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -4717,13 +4717,13 @@ export const terms: Term[] = [
         "id": "use",
         "title": "電源工事が難しい場所の無線LANアクセスポイントやカメラに使う",
         "hint": "どんな機器に使いますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "budget",
         "title": "スイッチ全体で供給できる電力の上限に注意する",
         "hint": "多数の機器をつなぐときの注意は？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -4748,7 +4748,7 @@ export const terms: Term[] = [
         "id": "layer",
         "title": "製造業の階層では、PLCは制御層、MESは実行層、ERPは計画層に位置づく",
         "hint": "製造システムの階層での位置は？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -4771,19 +4771,19 @@ export const terms: Term[] = [
         "id": "shutdown",
         "title": "その間に安全な停止や発電機への切替えを行う",
         "hint": "給電中に何をしますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "surge",
         "title": "瞬断や電圧変動からも機器を守る",
         "hint": "停電以外に防げるものは？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "capacity",
         "title": "接続機器の消費電力と必要時間から容量を決める",
         "hint": "UPSの容量はどう決めますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -4812,13 +4812,13 @@ export const terms: Term[] = [
         "id": "session",
         "title": "切替え後も処理を続けるには、セッション情報を共有する必要がある",
         "hint": "利用者のログイン状態を保つには？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "loadbalance",
         "title": "負荷分散型は全サーバで処理を分担する",
         "hint": "現用・待機以外の方式は？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -4851,13 +4851,13 @@ export const terms: Term[] = [
         "id": "order",
         "title": "字句解析→構文解析→意味解析→最適化→コード生成の順に処理する",
         "hint": "処理の順序は？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "optimize",
         "title": "最適化では実行速度やサイズを改善するようコードを変換する",
         "hint": "最適化で何をしますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -4886,7 +4886,7 @@ export const terms: Term[] = [
         "id": "flow",
         "title": "編集・ビルド・実行・デバッグを1つの環境で行える",
         "hint": "IDEで何ができますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -4912,13 +4912,13 @@ export const terms: Term[] = [
         "id": "example",
         "title": "モーター、電磁弁、油圧シリンダなどがある",
         "hint": "代表例は？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "loop",
         "title": "センサー→制御→アクチュエーターでフィードバック制御を構成する",
         "hint": "三つの関係は？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -5060,13 +5060,13 @@ export const terms: Term[] = [
         "id": "hazard",
         "title": "分岐やデータの依存で流れが乱れる（ハザード）",
         "hint": "何で効率が落ちますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "speculative",
         "title": "分岐予測で先の命令を投機実行し、外れたら結果を捨てる",
         "hint": "分岐の結果を待たずに進めるには？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -5094,7 +5094,7 @@ export const terms: Term[] = [
         "id": "commit",
         "title": "結果はプログラム順に確定させ、正しさを保つ",
         "hint": "結果の反映順序は？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -5203,13 +5203,13 @@ export const terms: Term[] = [
         "id": "large",
         "title": "大規模な計算を分担して処理する",
         "hint": "何に使いますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "heterogeneous",
         "title": "異なる場所や管理主体の計算資源を連携させて利用できる",
         "hint": "資源の場所や管理者に注目すると、どのような特徴がありますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -5235,13 +5235,13 @@ export const terms: Term[] = [
         "id": "iot",
         "title": "電池交換が難しいIoT機器の電源に使う",
         "hint": "どんな機器に向きますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "lowpower",
         "title": "得られる電力は小さいため、間欠動作などの低消費電力設計と組み合わせる",
         "hint": "電力が小さい点はどう補いますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -5266,13 +5266,13 @@ export const terms: Term[] = [
         "id": "sense",
         "title": "体の情報を継続的に計測して連携する",
         "hint": "何を計測しますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "privacy",
         "title": "健康情報など機微な個人情報を扱うため保護が重要",
         "hint": "注意すべき情報は？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -5300,19 +5300,19 @@ export const terms: Term[] = [
         "id": "auto",
         "title": "ツールで設定を自動化し、手作業の誤りや時間を減らす",
         "hint": "ツールを使う利点は？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "account",
         "title": "アカウントのプロビジョニングでは入社・異動・退職に合わせて権限を付与・削除する",
         "hint": "IDの管理では？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "deprovision",
         "title": "不要になった資源・権限の削除（デプロビジョニング）も重要",
         "hint": "終わったときに必要なことは？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -5342,19 +5342,19 @@ export const terms: Term[] = [
         "id": "reproduce",
         "title": "同じ環境を自動で何度でも再現でき、手作業の誤りを減らす",
         "hint": "利点は？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "vcs",
         "title": "コードなのでバージョン管理やレビューができる",
         "hint": "コード化で何ができるようになりますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "secret",
         "title": "コードに秘密情報を書かない、設定ミスを自動検査する",
         "hint": "セキュリティ上の注意は？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -5377,19 +5377,19 @@ export const terms: Term[] = [
         "id": "notify",
         "title": "停止を検知したら通知・対応する",
         "hint": "停止を見つけたらどうしますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "method",
         "title": "pingの応答、ポート接続、プロセスの確認など方法がある",
         "hint": "どうやって確認しますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "service",
         "title": "ping応答があってもサービスが止まっていることがあるため、サービスレベルで監視する",
         "hint": "pingだけで十分ですか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -5416,7 +5416,7 @@ export const terms: Term[] = [
         "id": "selection",
         "title": "専用利用による管理の自由度と、共同利用による資源の効率化などを考えてモデルを選ぶ",
         "hint": "専用利用と共同利用には、どのような利点がありますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -5464,13 +5464,13 @@ export const terms: Term[] = [
         "id": "preemptive",
         "title": "優先度の高いタスクが来ると実行中のタスクを中断して切り替える（プリエンプティブ）",
         "hint": "高い優先度のタスクが来たら？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "periodic",
         "title": "周期タスクは決まった周期で起動し、その周期内に終える必要がある",
         "hint": "周期タスクのスケジューリングで確認することは？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -5500,7 +5500,7 @@ export const terms: Term[] = [
         "id": "early",
         "title": "変更を小さく頻繁に検証し、統合時の不具合を早期に見つける",
         "hint": "頻繁に統合・テストすることで、どのような問題を減らせますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -5531,13 +5531,13 @@ export const terms: Term[] = [
         "id": "acid",
         "title": "分散環境でも原子性を守るための方式",
         "hint": "ACIDのどの性質を守りますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "block",
         "title": "調停者が障害で止まると参加者が待ち続ける（ブロッキング）ことがある",
         "hint": "2相コミットの弱点は？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -5602,7 +5602,7 @@ export const terms: Term[] = [
         "id": "dbms",
         "title": "DBMSがSQLによる操作や整合性・同時実行を管理する",
         "hint": "DBMSの役割は？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -5627,13 +5627,13 @@ export const terms: Term[] = [
         "id": "restrict",
         "title": "見せる行や列を限定してアクセス制御に使える",
         "hint": "セキュリティ上の使い道は？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "update",
         "title": "結合や集計を含むビューは更新できないことがある",
         "hint": "ビューはいつでも更新できますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -5665,7 +5665,7 @@ export const terms: Term[] = [
         "id": "compatible",
         "title": "和・差・積には列の数と型が対応する和両立が必要",
         "hint": "UNIONできる条件は？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -5694,19 +5694,19 @@ export const terms: Term[] = [
         "id": "partial",
         "title": "部分関数従属は主キーの一部に従属すること（除くと第2正規形）",
         "hint": "第2正規形で除くのは？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "transitive",
         "title": "推移的関数従属は非キー列を介して従属すること（除くと第3正規形）",
         "hint": "第3正規形で除くのは？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "anomaly",
         "title": "従属が残ると更新時異状（更新・挿入・削除の不整合）が起きる",
         "hint": "正規化しないと何が困りますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -5736,13 +5736,13 @@ export const terms: Term[] = [
         "id": "cascade",
         "title": "CASCADEは参照先の削除に連動して参照元も削除する",
         "hint": "CASCADEの動作は？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "restrict",
         "title": "RESTRICTは参照されている行の削除を拒否し、SET NULLは外部キーをNULLにする",
         "hint": "他の指定の動作は？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -5769,13 +5769,13 @@ export const terms: Term[] = [
         "id": "traffic",
         "title": "1回の呼出しで済み、通信量が減る",
         "hint": "ネットワーク面の利点は？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "privilege",
         "title": "表への直接の権限を与えず、プロシージャ経由に限定できる",
         "hint": "セキュリティ面の利点は？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -5951,13 +5951,13 @@ export const terms: Term[] = [
         "id": "time",
         "title": "送信時間＝データ量（ビット）÷伝送速度",
         "hint": "送るのにかかる時間は？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "overhead",
         "title": "ヘッダーの分だけ実際に送るデータ量が増える",
         "hint": "ヘッダーは送信時間に影響しますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -5982,7 +5982,7 @@ export const terms: Term[] = [
         "id": "ethernet",
         "title": "有線LANの代表はイーサネット",
         "hint": "有線LANの代表的な規格は？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -6007,19 +6007,19 @@ export const terms: Term[] = [
         "id": "dmz",
         "title": "公開するWebサーバを内部ネットワークと分離した領域に置き、侵害時の影響を抑える",
         "hint": "公開サーバの配置では、内部への影響をどう抑えますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "proxy",
         "title": "前段にリバースプロキシを置き、負荷分散やWAFを行う",
         "hint": "前に置く装置は？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "banner",
         "title": "サーバの種類やバージョン情報を返さないよう設定する",
         "hint": "設定で気を付けることは？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -6047,13 +6047,13 @@ export const terms: Term[] = [
         "id": "tunnel",
         "title": "パケットを別のパケットで包んで運ぶトンネリングを使う",
         "hint": "どうやって専用線のようにしますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "crypto",
         "title": "通信の秘匿性が必要なVPNでは、暗号化や認証によって盗聴やなりすましを防ぐ",
         "hint": "安全な通信路を構成するためには、どのような保護が必要ですか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -6084,13 +6084,13 @@ export const terms: Term[] = [
         "id": "protocols",
         "title": "IPは第3層、TCP/UDPは第4層、イーサネットは第2層",
         "hint": "代表的なプロトコルはどの層ですか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "devices",
         "title": "ルータは第3層、スイッチは第2層、リピータは第1層で中継する",
         "hint": "中継装置と層の関係は？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -6118,19 +6118,19 @@ export const terms: Term[] = [
         "id": "encap",
         "title": "上位層のデータはヘッダーを付けて下位層に包まれる（カプセル化）",
         "hint": "IPパケットはどう運ばれますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "order",
         "title": "フレームの中では宛先MAC→（IPヘッダーの）宛先IP→（TCPヘッダーの）宛先ポートの順に現れる",
         "hint": "宛先情報はどの順に並びますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "collision",
         "title": "昔の共有型ではCSMA/CDで衝突を制御していた",
         "hint": "共有型のアクセス制御は？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -6155,7 +6155,7 @@ export const terms: Term[] = [
         "id": "random",
         "title": "MACアドレスは偽装できるため認証には使えない",
         "hint": "MACアドレスで端末を認証してよいですか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -6188,7 +6188,7 @@ export const terms: Term[] = [
         "id": "global",
         "title": "グローバルIPアドレスはインターネットで一意、プライベートは組織内で使う",
         "hint": "二つの種類の違いは？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -6217,25 +6217,25 @@ export const terms: Term[] = [
         "id": "and",
         "title": "IPアドレスとの論理積でサブネットワークアドレスを求める",
         "hint": "サブネットのアドレスはどう求めますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "hosts",
         "title": "通常のIPv4サブネットでは、ネットワーク・ブロードキャスト用を除いてホスト数を求める",
         "hint": "ホスト部の全ての値を端末に割り当てられますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "vlsm",
         "title": "可変長サブネットマスクでサブネットごとに大きさを変える",
         "hint": "サブネットの大きさを変えるには？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "cidr",
         "title": "/20のようにプレフィックス長で表す（CIDR表記）",
         "hint": "短く表す書き方は？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -6261,19 +6261,19 @@ export const terms: Term[] = [
         "id": "wellknown",
         "title": "よく使うサービスには決まった番号（ウェルノウンポート）がある",
         "hint": "Web（HTTPS）は何番ですか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "source",
         "title": "送信元ポート番号はランダムに選ぶことで推測されにくくする（DNSキャッシュポイズニング対策など）",
         "hint": "送信元ポートをランダムにする理由は？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "scan",
         "title": "ポートスキャンで開いているポートを調べられるため不要なポートを閉じる",
         "hint": "攻撃者は何を調べますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -6351,7 +6351,7 @@ export const terms: Term[] = [
         "id": "switch",
         "title": "全二重のスイッチ接続では衝突が起きずCSMA/CDは使われない",
         "hint": "今のLANでは使われていますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -6378,13 +6378,13 @@ export const terms: Term[] = [
         "id": "ack",
         "title": "受信確認（ACK）で送達を確かめる",
         "hint": "届いたかどうかはどう分かりますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "vs-cd",
         "title": "無線では衝突を検知できないためCDではなくCAを使う",
         "hint": "なぜCSMA/CDではないのですか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -6410,13 +6410,13 @@ export const terms: Term[] = [
         "id": "notation",
         "title": "16ビットずつ16進数で区切り、0の連続は::で省略する",
         "hint": "どう表記しますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "dual",
         "title": "IPv4との併用（デュアルスタック）では両方のファイアウォール設定が必要",
         "hint": "移行期の注意は？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -6441,7 +6441,7 @@ export const terms: Term[] = [
         "id": "auth",
         "title": "PAPやCHAPで接続相手を認証できる",
         "hint": "PPPにはどんな機能がありますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -6464,19 +6464,19 @@ export const terms: Term[] = [
         "id": "auth",
         "title": "パスワードのほか公開鍵認証が使える",
         "hint": "どんな認証方式がありますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "hostkey",
         "title": "初回接続時にサーバの鍵の指紋を確認して中間者攻撃を防ぐ",
         "hint": "初回接続で確認することは？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "forward",
         "title": "ポートフォワーディングで他の通信を中継できる",
         "hint": "SSHで他の通信を運ぶには？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -6501,13 +6501,13 @@ export const terms: Term[] = [
         "id": "routing",
         "title": "RIP-2やOSPFはルーティング情報の交換にマルチキャストを使う",
         "hint": "マルチキャストの使用例は？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "address",
         "title": "IPv4では224.0.0.0〜239.255.255.255（クラスD）を使う",
         "hint": "マルチキャストのアドレス範囲は？",
-        "level": "S"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -6541,19 +6541,19 @@ export const terms: Term[] = [
         "id": "rip2",
         "title": "RIP-2は可変長サブネットマスク、認証、マルチキャストに対応する",
         "hint": "RIP-2で何が加わりましたか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "limit",
         "title": "最大ホップ数は15で大規模網に向かない",
         "hint": "RIPの制約は？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "converge",
         "title": "経路の変化が伝わるのに時間がかかる（収束が遅い）",
         "hint": "ディスタンスベクタ型の弱点は？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -6578,19 +6578,19 @@ export const terms: Term[] = [
         "id": "broadcast",
         "title": "DHCPv4では、アドレス未設定の端末がブロードキャストでサーバを探す",
         "hint": "IPv4アドレスがまだない端末は、どうやってサーバを探しますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "lease",
         "title": "アドレスは期限付きで貸し出す（リース）",
         "hint": "割り当ては永久ですか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "rogue",
         "title": "偽のDHCPサーバで不正なゲートウェイやDNSを配られる攻撃がある",
         "hint": "DHCPに関する攻撃は？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -6620,7 +6620,7 @@ export const terms: Term[] = [
         "id": "selection",
         "title": "A/AAAAによる名前解決やMXによるメール配送など、情報の用途ごとにレコードを設定する",
         "hint": "名前解決やメール配送には、どのようにレコードを使い分けますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -6649,7 +6649,7 @@ export const terms: Term[] = [
         "id": "classes",
         "title": "2xx成功、3xxリダイレクト、4xxクライアントエラー、5xxサーバエラー",
         "hint": "百の位はそれぞれ何を表しますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -6682,13 +6682,13 @@ export const terms: Term[] = [
         "id": "dom",
         "title": "取得したデータをDOM操作で反映する",
         "hint": "画面の更新に使う仕組みは？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "cors",
         "title": "別のオリジンへの通信は同一オリジンポリシーとCORSで制限される",
         "hint": "他のサイトのAPIを自由に呼べますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -6711,13 +6711,13 @@ export const terms: Term[] = [
         "id": "separate",
         "title": "構造と見た目を分離して管理できる",
         "hint": "HTMLとどう役割を分けますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "cascade",
         "title": "複数の指定が重なるときは詳細度や順序で優先が決まる",
         "hint": "指定が重なったら？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -6745,13 +6745,13 @@ export const terms: Term[] = [
         "id": "static",
         "title": "スタティックVLANはポートごとに固定でVLANを割り当てる",
         "hint": "ポートで決めるVLANは？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "auth",
         "title": "認証VLANは利用者の認証結果に応じてVLANを動的に割り当て、フリーアドレス制でも同じセグメントにつなげる",
         "hint": "席が自由な職場で使うVLANは？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -6784,7 +6784,7 @@ export const terms: Term[] = [
         "id": "inbound",
         "title": "動的な変換表だけでは外部から開始する通信を届けられず、公開には転送設定などが必要になる",
         "hint": "外部から通信を始めるとき、変換先はどう決まりますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -6809,13 +6809,13 @@ export const terms: Term[] = [
         "id": "network",
         "title": "どの席でも所属に応じたネットワークにつなぐ仕組みが要る",
         "hint": "ネットワーク面の課題は？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "authvlan",
         "title": "認証VLANなら利用者の認証結果で所属VLANに接続できる",
         "hint": "どの席でも同じ部署のVLANにつなぐには？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -6840,13 +6840,13 @@ export const terms: Term[] = [
         "id": "hijack",
         "title": "登録情報やDNS設定を乗っ取られるとドメイン名ハイジャックになる",
         "hint": "ドメインに関する攻撃は？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "expire",
         "title": "更新を忘れて失効したドメインを第三者に取得される危険がある",
         "hint": "期限切れの危険は？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -6874,13 +6874,13 @@ export const terms: Term[] = [
         "id": "break",
         "title": "途中の段階で連鎖を断てば被害を防げる",
         "hint": "この考え方で何を整理しますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "order",
         "title": "偵察→武器化→デリバリ→エクスプロイト→インストール→C&C→目的の実行",
         "hint": "段階の順序は？",
-        "level": "S"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -6913,7 +6913,7 @@ export const terms: Term[] = [
         "id": "patch",
         "title": "悪用が確認・想定される脆弱性を評価し、修正や緩和策を速やかに適用する",
         "hint": "脆弱性を突くコードが使われる場合、どのように被害を抑えますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -6942,19 +6942,19 @@ export const terms: Term[] = [
         "id": "fix",
         "title": "修正プログラムの適用や設定変更で解消する",
         "hint": "どう対処しますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "manage",
         "title": "資産を把握し、情報収集→評価→対応の脆弱性管理を継続する",
         "hint": "組織としてどう管理しますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "cvss",
         "title": "深刻度はCVSSで評価する",
         "hint": "深刻度は何で表しますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -6980,7 +6980,7 @@ export const terms: Term[] = [
         "id": "route",
         "title": "メール、Web、脆弱性などから感染する",
         "hint": "どこから入ってきますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -7005,13 +7005,13 @@ export const terms: Term[] = [
         "id": "backup",
         "title": "オフラインのバックアップを用意して復旧できるようにする",
         "hint": "最も重要な備えは？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "double",
         "title": "データを盗んで公開すると脅す二重恐喝が多い",
         "hint": "最近の手口の特徴は？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -7036,7 +7036,7 @@ export const terms: Term[] = [
         "id": "verify",
         "title": "口座変更などは電話など別の経路で確認する",
         "hint": "有効な対策は？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -7366,7 +7366,7 @@ export const terms: Term[] = [
         "id": "access-control",
         "title": "アクセス制御はこの認可に基づいて操作を許可・拒否する",
         "hint": "認可とアクセス制御の関係は？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -7397,7 +7397,7 @@ export const terms: Term[] = [
         "id": "e2e",
         "title": "端末間で暗号化するので経路上のサーバでも中身を読めない",
         "hint": "どこまで保護されますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -7427,13 +7427,13 @@ export const terms: Term[] = [
         "id": "vuln",
         "title": "利用しているOSSの脆弱性を把握・更新する必要がある",
         "hint": "セキュリティ面の注意は？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "copyleft",
         "title": "GPLなどでは、改変物の配布時に同じライセンスやソースコード提供などの条件を守る",
         "hint": "改変して配布するとき、ライセンスによってどのような条件がありますか？",
-        "level": "S"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -7458,13 +7458,13 @@ export const terms: Term[] = [
         "id": "measure",
         "title": "外部から渡されたファイル名を直接使わない、ファイル名だけに限定して検証する",
         "hint": "対策は？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "privilege",
         "title": "アプリの実行権限を最小にして被害を抑える",
         "hint": "被害を小さくするには？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -7489,19 +7489,19 @@ export const terms: Term[] = [
         "id": "code",
         "title": "戻り先アドレスを書き換えられ任意のコードを実行される",
         "hint": "何が危険ですか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "measure",
         "title": "入力長の検査、安全な関数の使用、メモリ安全な言語の採用",
         "hint": "開発での対策は？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "mitigation",
         "title": "ASLRやスタック保護、DEPで悪用を難しくする",
         "hint": "OSやコンパイラでの対策は？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -7531,13 +7531,13 @@ export const terms: Term[] = [
         "id": "unknown",
         "title": "未知の攻撃は検知できないため、振る舞い（アノマリ）型と組み合わせる",
         "hint": "シグネチャ型の弱点は？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "update",
         "title": "定期的にシグネチャを更新する必要がある",
         "hint": "運用で欠かせないことは？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -7570,7 +7570,7 @@ export const terms: Term[] = [
         "id": "nonrepudiation",
         "title": "共通鍵なので第三者に対する否認防止はできない（デジタル署名との違い）",
         "hint": "デジタル署名との違いは？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -7595,13 +7595,13 @@ export const terms: Term[] = [
         "id": "replay",
         "title": "盗まれても再利用できずリプレイ攻撃を防ぐ",
         "hint": "どんな攻撃に強いですか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "phishing",
         "title": "リアルタイムに中継するフィッシングには弱い",
         "hint": "ワンタイムパスワードでも防げない攻撃は？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -7635,13 +7635,13 @@ export const terms: Term[] = [
         "id": "3ds",
         "title": "3Dセキュア2.0はリスクベース認証でネット決済の本人認証を行う",
         "hint": "クレジットカード決済での例は？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "ux",
         "title": "普段は追加操作がないため利便性と安全性を両立できる",
         "hint": "利用者にとっての利点は？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -7664,19 +7664,19 @@ export const terms: Term[] = [
         "id": "bot",
         "title": "ボットによる自動登録や総当たりを防ぐ",
         "hint": "何を防ぎますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "limit",
         "title": "本人であることは確認しない（認証ではない）",
         "hint": "CAPTCHAで本人確認ができますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "solver",
         "title": "人を雇って解かせるサービスやAIで突破されることがある",
         "hint": "CAPTCHAの限界は？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -7708,19 +7708,19 @@ export const terms: Term[] = [
         "id": "count",
         "title": "n人が公開鍵と秘密鍵を1組ずつ持つと、合計2n個の鍵になる",
         "hint": "各利用者が持つ鍵の組と合計個数は？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "hybrid",
         "title": "公開鍵暗号で共通鍵を安全に共有し、通信データは共通鍵暗号で保護する構成が使われる",
         "hint": "大量のデータの暗号化には、どう組み合わせて使いますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "trust",
         "title": "公開鍵が本人のものか確かめるためにPKIが必要",
         "hint": "公開鍵の正しさは誰が保証しますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -7751,13 +7751,13 @@ export const terms: Term[] = [
         "id": "types",
         "title": "組織内CSIRT、ナショナルCSIRT、コーディネーションセンターなどの種類がある",
         "hint": "どんな種類がありますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "soc",
         "title": "SOCは監視して検知し、CSIRTが対応を担うという分担が多い",
         "hint": "SOCとの違いは？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -7783,19 +7783,19 @@ export const terms: Term[] = [
         "id": "handover",
         "title": "検知したインシデントをCSIRTなどに通知・連携する",
         "hint": "検知した後は？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "siem",
         "title": "SIEMで様々なログを集めて相関分析する",
         "hint": "どんなツールを使いますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "mssp",
         "title": "外部の専門事業者に監視を委託することも多い",
         "hint": "自社で持たない場合は？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -7829,13 +7829,13 @@ export const terms: Term[] = [
         "id": "forensic",
         "title": "保存したログはインシデント後の調査（フォレンジック）にも使う",
         "hint": "検知以外の用途は？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "tuning",
         "title": "誤検知が多いと重要な警告が埋もれるため、検知ルールを調整する",
         "hint": "運用上の課題は？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -7858,13 +7858,13 @@ export const terms: Term[] = [
         "id": "use",
         "title": "不審な通信先や攻撃元の管理者の調査に使う",
         "hint": "インシデント対応での使い道は？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "privacy",
         "title": "登録者情報は代理公開などで隠されていることも多い",
         "hint": "いつも登録者が分かりますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -7898,13 +7898,13 @@ export const terms: Term[] = [
         "id": "measure",
         "title": "CDNやDDoS対策サービスで攻撃の通信を吸収・遮断する",
         "hint": "対策は？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "reflection",
         "title": "送信元を偽ったDNSなどの応答を標的に集中させるリフレクション攻撃もある",
         "hint": "増幅させる手口は？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -7929,13 +7929,13 @@ export const terms: Term[] = [
         "id": "measure",
         "title": "パスワードを使い回さない、多要素認証を使う",
         "hint": "有効な対策は？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "lockout",
         "title": "パスワードリスト攻撃は1アカウント当たりの試行が少なくロックアウトで防ぎにくい",
         "hint": "アカウントロックで防げますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -7958,19 +7958,19 @@ export const terms: Term[] = [
         "id": "examples",
         "title": "なりすまし電話、のぞき見、ごみ箱あさりなど",
         "hint": "具体的な手口は？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "training",
         "title": "教育・訓練と、電話でパスワードを聞かない等のルールで防ぐ",
         "hint": "対策は？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "pretext",
         "title": "緊急性や権威を装って判断を急がせるのが典型",
         "hint": "よく使われる心理的なテクニックは？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -7998,19 +7998,19 @@ export const terms: Term[] = [
         "id": "spam",
         "title": "迷惑メールの送信に悪用される",
         "hint": "何が問題ですか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "judge",
         "title": "送信元・宛先とも自組織外なら中継を拒否する",
         "hint": "中継してよいかはどう判断しますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "blacklist",
         "title": "中継を許すとサーバのIPアドレスがブラックリストに載り、自社のメールも届かなくなる",
         "hint": "自社にとっての不利益は？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -8038,13 +8038,13 @@ export const terms: Term[] = [
         "id": "check",
         "title": "利用者は証明書を使う前に失効していないか確認する",
         "hint": "利用者は何をしますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "compromise",
         "title": "秘密鍵の危殆化（漏えいなど）が失効の代表的な理由",
         "hint": "どんなときに失効させますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -8070,7 +8070,7 @@ export const terms: Term[] = [
         "id": "distance",
         "title": "専用の装置と伝送路が必要で、距離に制約がある",
         "hint": "実用上の課題は？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -8097,7 +8097,7 @@ export const terms: Term[] = [
         "id": "constant",
         "title": "秘密の値によらず処理時間を一定にする",
         "hint": "対策は？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -8127,7 +8127,7 @@ export const terms: Term[] = [
         "id": "lifetime",
         "title": "属性は変わりやすいため有効期間を短くできる",
         "hint": "属性を分ける利点は？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -8158,7 +8158,7 @@ export const terms: Term[] = [
         "id": "measure",
         "title": "問い合わせ回数の制限や出力の情報量を減らすことで対策する",
         "hint": "対策は？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -8181,19 +8181,19 @@ export const terms: Term[] = [
         "id": "use",
         "title": "マルウェア解析や互換性の確認に使われる",
         "hint": "正当な用途は？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "license",
         "title": "使用許諾契約で禁止されていることがある",
         "hint": "法的な注意点は？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "obfuscate",
         "title": "難読化で解析を困難にする対策がある",
         "hint": "解析されにくくするには？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -8261,13 +8261,13 @@ export const terms: Term[] = [
         "id": "load",
         "title": "表示の高速化と元のサーバの負荷軽減",
         "hint": "利点は？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "ddos",
         "title": "大量の通信を分散して受け止め、DDoS攻撃を緩和する",
         "hint": "セキュリティ面の効果は？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -8293,13 +8293,13 @@ export const terms: Term[] = [
         "id": "multi",
         "title": "1つのIPアドレスで複数ドメインの証明書を使い分けられる",
         "hint": "何ができるようになりますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "plain",
         "title": "通常の暗号化されていないClientHelloでは、経路上から接続先のホスト名を読み取れる",
         "hint": "接続開始時に暗号化されていない場合、経路上に何が見えますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -8330,7 +8330,7 @@ export const terms: Term[] = [
         "id": "measure",
         "title": "DNSサーバをオープンリゾルバにしない、送信元偽装のパケットを出口で遮断する",
         "hint": "対策は？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -8356,13 +8356,13 @@ export const terms: Term[] = [
         "id": "redirect",
         "title": "正規のドメインへのアクセスを攻撃者のサーバへ誘導する",
         "hint": "何が起きますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "measure",
         "title": "登録事業者アカウントの多要素認証とレジストリロックで守る",
         "hint": "対策は？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -8515,13 +8515,13 @@ export const terms: Term[] = [
         "id": "contact",
         "title": "接触型は端子を接触させ、非接触型は電波で通信する",
         "hint": "二つの方式の違いは？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "tamper",
         "title": "耐タンパ性があり内部の秘密情報を取り出しにくい",
         "hint": "偽造しにくい理由は？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -8629,13 +8629,13 @@ export const terms: Term[] = [
         "id": "pin",
         "title": "PIN方式は総当たりで突破されやすい",
         "hint": "セキュリティ上の問題は？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "disable",
         "title": "使わない場合は無効にする",
         "hint": "推奨される設定は？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -8660,7 +8660,7 @@ export const terms: Term[] = [
         "id": "tailgate",
         "title": "一人ずつ通すゲートなどで、認証を受けずに後ろから入る共連れを防ぐ",
         "hint": "認証された人に続いて無認証で入ることを、どう防ぎますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -8690,13 +8690,13 @@ export const terms: Term[] = [
         "id": "stateful",
         "title": "ステートフルインスペクションは通信の状態を記録して戻りの通信を判断する",
         "hint": "往復の通信をどう扱いますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "dmz",
         "title": "公開サーバは内部LANと分けたDMZに置く",
         "hint": "公開サーバはどこに置きますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -8730,7 +8730,7 @@ export const terms: Term[] = [
         "id": "selection",
         "title": "構造・処理の流れ・相互作用など、表したい内容に応じて図を選ぶ",
         "hint": "どのような内容をモデル化するときに、図を使い分けますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -8773,13 +8773,13 @@ export const terms: Term[] = [
         "id": "instance",
         "title": "クラスから生成した実体をインスタンスという",
         "hint": "インスタンスとは？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "override",
         "title": "オーバーライドはスーパークラスのメソッドをサブクラスで再定義する",
         "hint": "オーバーライドとは？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -8808,13 +8808,13 @@ export const terms: Term[] = [
         "id": "storming",
         "title": "動乱期は考え方の違いから対立が生じる段階",
         "hint": "対立が起きるのはどの段階ですか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "norming",
         "title": "安定期にはチームの規範や役割が確立する",
         "hint": "共通のルールができるのは？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -8953,13 +8953,13 @@ export const terms: Term[] = [
         "id": "two",
         "title": "工数比と期間比を別々に持つ",
         "hint": "どんな比率がありますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "estimate",
         "title": "終わった工程の実績から全体や残りの工数・期間を見積もる",
         "hint": "進捗の見積りにどう使いますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -8989,13 +8989,13 @@ export const terms: Term[] = [
         "id": "improve",
         "title": "サービスの目標と実績の差を評価し、改善する事項や運用の変更を決める",
         "hint": "提供したサービスの達成状況を、どのように改善へつなげますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "standard",
         "title": "JIS Q 20000-1が要求事項を定める",
         "hint": "規格は？",
-        "level": "S"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -9117,7 +9117,7 @@ export const terms: Term[] = [
         "id": "review",
         "title": "JIS Q 20000-1ではサービスレベル目標の達成状況を計画した間隔でレビューする",
         "hint": "どのくらいの頻度で見直しますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -9148,13 +9148,13 @@ export const terms: Term[] = [
         "id": "planned",
         "title": "合意した計画停止は停止時間に含めない",
         "hint": "計画停止は含めますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "vs-availability",
         "title": "機器の稼働率（MTBF/MTTR）ではなく利用者から見た可用性",
         "hint": "機器の稼働率との違いは？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -9228,25 +9228,25 @@ export const terms: Term[] = [
         "id": "independence",
         "title": "監査人は監査対象から独立し、客観的な立場を保つ",
         "hint": "監査人に求められる立場は？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "skepticism",
         "title": "正当な注意と正当な懐疑心を持って監査する",
         "hint": "監査人の心構えは？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "finding",
         "title": "監査証拠から得た事実に基づく評価を所見（監査意見の根拠）とする",
         "hint": "所見とは？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "reproducible",
         "title": "第三者が同じ結論に至れるよう監査調書に記録する",
         "hint": "なぜ調書を残すのですか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -9363,7 +9363,7 @@ export const terms: Term[] = [
         "id": "selection",
         "title": "監査目的と対象に応じ、文書・聞き取り・観察・データ検証などの方法を選ぶ",
         "hint": "何を確かめたいかに応じて、どのように調査方法を選びますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -9391,7 +9391,7 @@ export const terms: Term[] = [
         "id": "match",
         "title": "元の伝票と突き合わせ入力の漏れ・重複・誤りを確かめる",
         "hint": "何に使いますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -9419,7 +9419,7 @@ export const terms: Term[] = [
         "id": "who",
         "title": "改善を実施するのは監査人ではなく被監査部門",
         "hint": "誰が改善しますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -9451,7 +9451,7 @@ export const terms: Term[] = [
         "id": "investment",
         "title": "IT投資が経営目標に貢献しているかを評価する",
         "hint": "IT投資との関係は？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -9479,13 +9479,13 @@ export const terms: Term[] = [
         "id": "synergy",
         "title": "相乗効果により戦略目標を達成する",
         "hint": "何を目指しますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "resource",
         "title": "プロジェクト間で経営資源（人・もの・金・情報）を配分・調整する",
         "hint": "プロジェクト間で調整するものは？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -9536,13 +9536,13 @@ export const terms: Term[] = [
         "id": "content",
         "title": "目的や主要な成果物、マイルストーン、予算の概略を記す",
         "hint": "何を書きますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "plan",
         "title": "詳細な実行方法はプロジェクトマネジメント計画書にまとめる",
         "hint": "憲章の後に作る計画書は？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -9571,13 +9571,13 @@ export const terms: Term[] = [
         "id": "exclusion",
         "title": "含めないもの（除外事項）を明記する",
         "hint": "範囲外のことはどう扱いますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "wbs",
         "title": "スコープ記述書を基にWBSを作成する",
         "hint": "この文書の後に作るものは？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -9602,13 +9602,13 @@ export const terms: Term[] = [
         "id": "package",
         "title": "最下位はワークパッケージで、見積りや割当ての単位になる",
         "hint": "どこまで分解しますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "100",
         "title": "すべての作業を漏れなく含める（100%ルール）",
         "hint": "分解のルールは？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -9674,19 +9674,19 @@ export const terms: Term[] = [
         "id": "choose",
         "title": "費用も含めて同じ基準の期待値を求め、案の比較や意思決定に使う",
         "hint": "投資額や損失も考慮して、どのように案を比較しますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "tree",
         "title": "デシジョンツリーで分岐ごとに計算し、投資額を差し引いて比較する",
         "hint": "案ごとの比較の仕方は？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "risk",
         "title": "リスクの定量的分析で使う",
         "hint": "どんな場面で使いますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -9714,7 +9714,7 @@ export const terms: Term[] = [
         "id": "reserve",
         "title": "特定したリスクに備えてコンティンジェンシー予備費を確保する",
         "hint": "予算面の備えは？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -9741,13 +9741,13 @@ export const terms: Term[] = [
         "id": "rework",
         "title": "後工程での手戻りを減らす",
         "hint": "早く見つけるとどんな利点がありますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "qa",
         "title": "品質保証の活動の一つで、工程ごとに実施する",
         "hint": "どの活動に位置づきますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -9775,25 +9775,25 @@ export const terms: Term[] = [
         "id": "review",
         "title": "スプリントレビューで成果物を確認しフィードバックを受ける",
         "hint": "成果物を見せるイベントは？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "retro",
         "title": "レトロスペクティブでプロセスを振り返り改善する",
         "hint": "進め方を改善するイベントは？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "planning",
         "title": "スプリントプランニングで何をするかを決め、デイリースクラムで毎日同期する",
         "hint": "スプリントの始めと毎日のイベントは？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "roles",
         "title": "プロダクトオーナーは価値や優先順位、スクラムマスターはスクラムの実践支援、開発者は成果物の作成を担う",
         "hint": "スクラムのチームでは、主な責任をどのように分担しますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -9823,7 +9823,7 @@ export const terms: Term[] = [
         "id": "measure",
         "title": "品質特性ごとに測定量（メトリクス）を決めて評価する",
         "hint": "どうやって評価しますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -9850,19 +9850,19 @@ export const terms: Term[] = [
         "id": "saturate",
         "title": "曲線が飽和に近づけば残存誤りが少ないと判断できる",
         "hint": "テストの終わりをどう判断しますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "early",
         "title": "初期に増えないのは誤りが少ないのではなくテストが進んでいないこともある",
         "hint": "初期の傾きが小さいとき注意することは？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "scurve",
         "title": "ゴンペルツ曲線などのS字曲線を描く",
         "hint": "曲線の形は？",
-        "level": "S"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -9888,19 +9888,19 @@ export const terms: Term[] = [
         "id": "speed",
         "title": "開発が速く、専門家でなくても作れる",
         "hint": "利点は？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "limit",
         "title": "複雑な処理や大規模なシステムには向かず、プラットフォームへの依存が生じる",
         "hint": "欠点は？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "shadow",
         "title": "業務部門が管理外で作ると、統制や情報漏えいの問題が生じる",
         "hint": "統制面の課題は？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -9923,7 +9923,7 @@ export const terms: Term[] = [
         "id": "clarify",
         "title": "要求を明確にでき、認識のずれを減らせる",
         "hint": "どんなときに有効ですか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -9951,7 +9951,7 @@ export const terms: Term[] = [
         "id": "selection",
         "title": "結合の順序に応じて代替モジュールを用意し、不具合の切り分けやすさを考えて進める",
         "hint": "まだ完成していない部分をどう補い、どのように結合を進めますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -9985,13 +9985,13 @@ export const terms: Term[] = [
         "id": "restore",
         "title": "取得時間や容量に加え、復旧時に必要な世代と復旧時間を考えて方式を選ぶ",
         "hint": "取得の手間だけでなく、復旧時には何を考慮しますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "offline",
         "title": "ランサムウェアに備えてネットワークから切り離した世代を残す（3-2-1ルール）",
         "hint": "最近重視される備えは？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -10017,7 +10017,7 @@ export const terms: Term[] = [
         "id": "bcp",
         "title": "事業継続計画（BCP）で、優先業務ごとに目標を決める",
         "hint": "どの計画で定めますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -10045,7 +10045,7 @@ export const terms: Term[] = [
         "id": "benefit",
         "title": "漏れの発見や変更の影響範囲の特定に役立つ",
         "hint": "利点は？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -10118,7 +10118,7 @@ export const terms: Term[] = [
         "id": "phase",
         "title": "工程や成果の性質に応じ、当事者が負う作業・完成などの責任を契約で明らかにする",
         "hint": "作業の性質によって、契約上の責任をどのように整理しますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -10156,7 +10156,7 @@ export const terms: Term[] = [
         "id": "scope",
         "title": "アルゴリズムやプロトコルなどのアイデアは保護されない",
         "hint": "プログラムのどの部分が保護されませんか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -10191,7 +10191,7 @@ export const terms: Term[] = [
         "id": "gui",
         "title": "操作画面などの画像（GUI）も保護対象になった",
         "hint": "画面デザインは保護されますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -10224,7 +10224,7 @@ export const terms: Term[] = [
         "id": "business",
         "title": "技術的な特徴を伴えばビジネスモデルも特許になり得る",
         "hint": "ビジネスの仕組みは特許になりますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -10252,7 +10252,7 @@ export const terms: Term[] = [
         "id": "examples",
         "title": "営業秘密の不正取得や他社との混同を招く表示などが規制対象になる",
         "hint": "規制される不正な競争行為の例を説明できますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -10304,13 +10304,13 @@ export const terms: Term[] = [
         "id": "consent",
         "title": "公表などの手続をすれば本人の同意なく第三者提供できる",
         "hint": "第三者提供に同意は要りますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "publish",
         "title": "提供時に提供する情報の項目と方法を公表し、相手に匿名加工情報であることを明示する",
         "hint": "提供時の義務は？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -10340,25 +10340,25 @@ export const terms: Term[] = [
         "id": "package",
         "title": "ERPパッケージとして導入されることが多い",
         "hint": "どう導入しますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "fitgap",
         "title": "フィット＆ギャップ分析でパッケージ機能と業務の差異を洗い出す",
         "hint": "導入前に行う分析は？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "adapt",
         "title": "差異は業務をパッケージに合わせるか、追加開発で埋める",
         "hint": "合わない部分はどうしますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "addon",
         "title": "追加開発が多いとバージョンアップが難しくなる",
         "hint": "カスタマイズしすぎの問題は？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -10387,13 +10387,13 @@ export const terms: Term[] = [
         "id": "effect",
         "title": "コスト・品質・スピードを劇的に改善する",
         "hint": "何を目指しますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "money",
         "title": "効果は人件費や外部委託費の削減などで金額として評価する",
         "hint": "効果をどう評価しますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -10425,7 +10425,7 @@ export const terms: Term[] = [
         "id": "comparison",
         "title": "投資効率・回収期間・貨幣の時間価値など、重視する観点に応じて手法を使い分ける",
         "hint": "評価の目的によって、どのような観点を選びますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -10454,19 +10454,19 @@ export const terms: Term[] = [
         "id": "kpi",
         "title": "視点ごとに目標と評価指標を設定する",
         "hint": "視点ごとに何を決めますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "map",
         "title": "戦略マップは4つの視点の目標の因果関係を図示する",
         "hint": "戦略マップとは？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "balance",
         "title": "財務指標だけに偏らない管理をする",
         "hint": "なぜ「バランス」なのですか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -10497,13 +10497,13 @@ export const terms: Term[] = [
         "id": "penetration",
         "title": "既存製品×既存市場は市場浸透戦略",
         "hint": "既存の顧客に既存の商品を売るのは？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "others",
         "title": "新製品開発・新市場開拓・多角化の各戦略",
         "hint": "残りの3つの戦略は？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -10537,13 +10537,13 @@ export const terms: Term[] = [
         "id": "layer",
         "title": "計画層（ERP）と制御層（PLC）の間の実行層に位置する",
         "hint": "どの層に位置しますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "flow",
         "title": "計画層の生産計画を作業指示に落とし、実績を計画層に返す",
         "hint": "上下の層とどう連携しますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -10573,13 +10573,13 @@ export const terms: Term[] = [
         "id": "code",
         "title": "デジタルガバナンス・コードに沿った基準で審査する",
         "hint": "基準は何に基づきますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "criteria",
         "title": "経営ビジョン・DX戦略の策定と公表、推進体制、成果指標などが求められる",
         "hint": "主な認定基準は？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -10609,13 +10609,13 @@ export const terms: Term[] = [
         "id": "two",
         "title": "経営の仕組みとITシステムの構築の2つで構成する",
         "hint": "どんな枠組みですか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "it",
         "title": "ITシステムにはデータ活用、スピード・アジリティ、全社最適が求められる",
         "hint": "ITシステムに求められる要素は？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -10671,13 +10671,13 @@ export const terms: Term[] = [
         "id": "forecast",
         "title": "需要予測に基づいて生産計画を最適化する",
         "hint": "データを生産計画にどう生かしますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "ot",
         "title": "工場の制御システム（OT）がネットワークにつながり、サイバー攻撃の対象になる",
         "hint": "セキュリティ上の課題は？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -10706,7 +10706,7 @@ export const terms: Term[] = [
         "id": "outbound",
         "title": "自社の技術を外部に提供（ライセンスなど）することも含む",
         "hint": "外に出す方向もありますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -10774,7 +10774,7 @@ export const terms: Term[] = [
         "id": "mainstream",
         "title": "越えないと主流の市場に普及しない",
         "hint": "越えられないとどうなりますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -10803,13 +10803,13 @@ export const terms: Term[] = [
         "id": "net",
         "title": "正味所要量＝総所要量－引当可能在庫（－発注残）",
         "hint": "正味所要量の求め方は？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "level",
         "title": "構成表を上位から順に展開し、下位部品の所要量を求める",
         "hint": "多段階の部品はどう計算しますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -10836,7 +10836,7 @@ export const terms: Term[] = [
         "id": "hierarchy",
         "title": "経営理念を基に経営戦略や事業の判断の方向を定める",
         "hint": "企業の戦略や日々の判断に対して、どのような役割がありますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -10931,7 +10931,7 @@ export const terms: Term[] = [
         "id": "benefit",
         "title": "本部は少ない資本で店舗網を広げられる",
         "hint": "本部にとっての利点は？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -10962,13 +10962,13 @@ export const terms: Term[] = [
         "id": "variables",
         "title": "人口統計的・地理的・心理的・行動的変数で分ける",
         "hint": "分ける基準は？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "stp",
         "title": "セグメンテーション→ターゲティング→ポジショニングの順に進める（STP）",
         "hint": "その後に行うことは？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -10996,7 +10996,7 @@ export const terms: Term[] = [
         "id": "selection",
         "title": "不良の多さ・分布・原因の関係など、調べたい内容に応じて道具を選ぶ",
         "hint": "優先する問題や原因を調べるため、道具をどう使い分けますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -11021,7 +11021,7 @@ export const terms: Term[] = [
         "id": "use",
         "title": "現状の延長では届かない大きな目標に向く",
         "hint": "どんなときに向きますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -11044,7 +11044,7 @@ export const terms: Term[] = [
         "id": "decide",
         "title": "本格的な投資の前に実行の可否を判断する",
         "hint": "何に使いますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -11069,7 +11069,7 @@ export const terms: Term[] = [
         "id": "forecast",
         "title": "主に将来予測に使う",
         "hint": "何に使いますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -11094,13 +11094,13 @@ export const terms: Term[] = [
         "id": "strategy",
         "title": "段階ごとに適した戦略が異なる",
         "hint": "段階によって何が変わりますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "mature",
         "title": "成熟期は売上の伸びが鈍化し競争が激しくなる",
         "hint": "成熟期の特徴は？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -11123,13 +11123,13 @@ export const terms: Term[] = [
         "id": "improve",
         "title": "差を分析して改善目標を立てる",
         "hint": "比較の後に何をしますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "other",
         "title": "同業他社だけでなく他業界も比較対象になる",
         "hint": "比べる相手は同業者だけですか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -11154,13 +11154,13 @@ export const terms: Term[] = [
         "id": "example",
         "title": "複数の口座をまとめて見られる家計簿アプリなど",
         "hint": "具体例は？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "api",
         "title": "金融ではAPI連携で口座情報を取得する",
         "hint": "情報はどうやって集めますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -11183,7 +11183,7 @@ export const terms: Term[] = [
         "id": "seamless",
         "title": "顧客はどのチャネルでも同じように購入・受取りができる",
         "hint": "顧客にとっての利点は？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -11206,7 +11206,7 @@ export const terms: Term[] = [
         "id": "trust",
         "title": "信頼関係のない取引の安全性を高める",
         "hint": "何のためのサービスですか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -11234,19 +11234,19 @@ export const terms: Term[] = [
         "id": "three",
         "title": "製造原価は材料費・労務費・経費からなる",
         "hint": "製造原価の構成は？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "exclude",
         "title": "支払利息などの財務費用は製造原価に入れない",
         "hint": "製造原価に含めない費用は？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "direct",
         "title": "製品に直接結び付くかで直接費と間接費に分ける",
         "hint": "直接費と間接費の違いは？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": []
@@ -11352,7 +11352,7 @@ export const terms: Term[] = [
         "id": "verification",
         "title": "SPが受け取ったアサーションを検証する",
         "hint": "サービス側は受け取った認証情報をどう扱いますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -11427,7 +11427,7 @@ export const terms: Term[] = [
         "id": "initial-value",
         "title": "通常のSHA-512とは異なる初期値を使う",
         "hint": "通常のSHA-512の出力を切るだけで同じ値になりますか？",
-        "level": "S"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -12894,7 +12894,7 @@ export const terms: Term[] = [
         "id": "ephemeral-key",
         "title": "一時的な鍵共有と鍵の破棄などで実現する",
         "hint": "過去のセッション鍵を後から導出できなくするにはどうしますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -12957,13 +12957,13 @@ export const terms: Term[] = [
         "id": "suite",
         "title": "暗号スイートではAEADとハッシュの組合せを選ぶ",
         "hint": "TLS 1.3の暗号スイートには、どの種類のアルゴリズムが含まれますか？",
-        "level": "A"
+        "level": "deep"
       },
       {
         "id": "separate-negotiation",
         "title": "鍵交換と署名の方式は暗号スイートと別に選ぶ",
         "hint": "TLS 1.2と暗号スイートの内容は同じですか？",
-        "level": "S"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -13078,7 +13078,7 @@ export const terms: Term[] = [
         "id": "counter-unique",
         "title": "同じ鍵でカウンタを再利用しない",
         "hint": "鍵ストリームが再利用されると安全ですか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [
@@ -15025,7 +15025,7 @@ export const terms: Term[] = [
         "id": "local-verification",
         "title": "生体情報を使う場合も認証器内で照合する",
         "hint": "生体情報そのものはサーバへ送りますか？",
-        "level": "A"
+        "level": "deep"
       }
     ],
     "commonMistakes": [

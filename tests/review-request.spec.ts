@@ -191,7 +191,7 @@ test('shares a saved word between questions and removes it globally from the rev
   await expect(summary).toContainText('1語');
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await summary.getByRole('link', { name: '単語を復習' }).click();
-  await expect(page.getByRole('heading', { name: '単語復習の目標レベル' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: '単語復習の目標' })).toBeVisible();
   await page.getByRole('link', { name: '復習を始める' }).click();
   // the question's spelling opens the collected glossary term
   await expect(page).toHaveURL(/\/glossary\/digital-signature\?.*review=/);
@@ -271,7 +271,7 @@ test('keeps the saved state on failure and allows retrying the request', async (
 });
 
 test('reviews saved words one after another in random order from the review notebook', async ({ page }) => {
-  await page.route('**/api/glossary/evaluate', route => route.fulfill({ json: { version: 1, engine: 'openai', model: 'test-model', status: 'covered', grade: 'B', covered: 1, total: 1, criteria: [{ id: 'core', title: '基本の仕組み', level: 'B', status: 'covered', evidence: '', hint: '押さえられています。' }], summary: '説明できています。', definition: '用語の説明例です。' } }));
+  await page.route('**/api/glossary/evaluate', route => route.fulfill({ json: { version: 1, engine: 'openai', model: 'test-model', status: 'unconfirmed', grade: 'retry', covered: 0, total: 1, criteria: [{ id: 'core', title: '基本の仕組み', level: 'basic', status: 'missing', evidence: '', hint: '基本をもう一度確認しましょう。' }], summary: '基本の説明が不足しています。', definition: '用語の説明例です。' } }));
   await page.goto('/study/A1?question=sc-2025-autumn-a1-2');
   await page.getByRole('button', { name: 'イで回答', exact: true }).click();
   await page.getByRole('button', { name: 'ROC曲線を復習する', exact: true }).click();
@@ -279,7 +279,7 @@ test('reviews saved words one after another in random order from the review note
   await expect(page.getByRole('button', { name: '偽陽性率を復習する', exact: true })).toHaveAttribute('aria-pressed', 'true');
   await page.goto('/reviews');
   await page.getByRole('link', { name: '単語を復習' }).click();
-  await page.getByRole('radio', { name: 'A · 応用', exact: false }).check();
+  await page.getByRole('radio', { name: '深掘り', exact: false }).check();
   await page.getByRole('link', { name: '復習を始める' }).click();
   // Each selected concept opens its own glossary term, in random order.
   await expect(page).toHaveURL(/\/glossary\/(roc-curve|false-positive-rate)\?.*review=/);
@@ -292,12 +292,12 @@ test('reviews saved words one after another in random order from the review note
   expect([first, second].sort()).toEqual(['ROC曲線', '偽陽性率'].sort());
   await speakExplanation(page, 'しきい値を変えたときの偽陽性率と真陽性率の関係を表す曲線です。');
   await page.getByRole('button', { name: 'AIでチェック' }).click();
-  await expect(page.getByRole('status').filter({ hasText: '目標Aに届かなかった' })).toBeVisible();
+  await expect(page.getByRole('status').filter({ hasText: '目標「深掘り」に届かなかった' })).toBeVisible();
   expect((await readRecords(page)).reviewWords.sort()).toEqual(['ROC曲線', '偽陽性率'].sort());
   await page.getByRole('link', { name: '復習を終える' }).click();
   await expect(page.getByRole('heading', { name: '単語の復習が終わりました' })).toBeVisible();
   await page.getByRole('link', { name: 'もう一周する' }).click();
-  await expect(page.getByRole('heading', { name: '単語復習の目標レベル' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: '単語復習の目標' })).toBeVisible();
   await page.getByRole('link', { name: '復習を始める' }).click();
   await expect(page.getByText('単語の復習 1 / 2')).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
@@ -314,29 +314,30 @@ async function startWordReview(page: Page, target: string) {
   await expect(word).toHaveAttribute('aria-pressed', 'true');
   await page.goto('/glossary?filter=words');
   await page.getByRole('link', { name: '単語を復習', exact: true }).click();
-  await page.getByRole('radio', { name: new RegExp(`^${target} ·`) }).check();
+  await page.getByRole('radio', { name: new RegExp(`^${target === 'basic' ? '基本' : '深掘り'}`) }).check();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.getByRole('link', { name: '復習を始める' }).click();
-  await expect(page.locator('.review-round-bar')).toContainText(`目標 ${target}`);
+  await expect(page.locator('.review-round-bar')).toContainText(`目標 ${target === 'basic' ? '基本' : '深掘り'}`);
 }
 
 for (const { target, grade, removed } of [
-  { target: 'B', grade: 'B', removed: true },
-  { target: 'B', grade: 'S', removed: true },
-  { target: 'B', grade: 'C', removed: false },
-  { target: 'A', grade: 'B', removed: false },
-  { target: 'A', grade: 'A', removed: true },
-  { target: 'A', grade: 'S', removed: true },
-  { target: 'S', grade: 'A', removed: false },
-  { target: 'S', grade: 'S', removed: true },
-  { target: 'B', grade: undefined, removed: false },
+  { target: 'basic', grade: 'pass', removed: true },
+  { target: 'basic', grade: 'pass-plus', removed: true },
+  { target: 'basic', grade: 'retry', removed: false },
+  { target: 'deep', grade: 'pass', removed: false },
+  { target: 'deep', grade: 'pass-plus', removed: true },
+  { target: 'deep', grade: 'retry', removed: false },
+  { target: 'basic', grade: 'B', removed: true },
+  { target: 'deep', grade: 'A', removed: true },
+  { target: 'deep', grade: 'S', removed: true },
+  { target: 'basic', grade: undefined, removed: false },
 ]) {
   test(`keeps or removes a saved word with target ${target} and grade ${grade ?? 'missing'}`, async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.route('**/api/glossary/evaluate', route => route.fulfill({ json: wordEvaluation(grade) }));
     await startWordReview(page, target);
     await page.reload();
-    await expect(page.locator('.review-round-bar')).toContainText(`目標 ${target}`);
+    await expect(page.locator('.review-round-bar')).toContainText(`目標 ${target === 'basic' ? '基本' : '深掘り'}`);
     await speakExplanation(page, '秘密鍵で署名を作り、公開鍵で検証して改ざんを検知する仕組みです。');
     await page.getByRole('button', { name: 'AIでチェック' }).click();
     const queueStatus = page.getByRole('status').filter({ hasText: removed ? '復習キューから外しました' : '復習キューに残します' });
@@ -366,7 +367,7 @@ test('retries a failed queue removal without paying for another evaluation', asy
       return request;
     };
   });
-  await startWordReview(page, 'A');
+  await startWordReview(page, 'deep');
   await speakExplanation(page, '秘密鍵で署名を作り、公開鍵で検証して改ざんを検知する仕組みです。');
   await page.getByRole('button', { name: 'AIでチェック' }).click();
   await expect(page.locator('.glossary-result-heading').getByRole('alert')).toContainText('評価は保存されています');
@@ -395,7 +396,7 @@ test('keeps progress stable as mastered concepts leave the queue and preserves o
   await expect(page.getByText('単語の復習 1 / 2')).toBeVisible();
   await page.getByRole('link', { name: '次の単語へ', exact: true }).click();
   await expect(page.getByText('単語の復習 2 / 2')).toBeVisible();
-  await expect(page.locator('.review-round-bar')).toContainText('目標 B');
+  await expect(page.locator('.review-round-bar')).toContainText('目標 基本');
   await speakExplanation(page, 'しきい値を変えたときの偽陽性率と真陽性率の関係を表す曲線です。');
   await page.getByRole('button', { name: 'AIでチェック' }).click();
   await expect(page.getByRole('status').filter({ hasText: '復習キューから外しました' })).toBeVisible();

@@ -26,10 +26,10 @@ describe('OpenAI Decisions API', () => {
   it('assesses all fixed criteria in one Luna request without generating feedback', async () => {
     const fetcher = fetchDecision();
     const result = await evaluateWithOpenAI(term, text, 'test-key', undefined, fetcher);
-    expect(result).toMatchObject({ api: 'decisions', engine: 'openai', model: 'gpt-6-luna', status: 'covered', grade: 'A', covered: 3, total: 3, summary: '' });
+    expect(result).toMatchObject({ api: 'decisions', engine: 'openai', model: 'gpt-6-luna', status: 'covered', grade: 'pass-plus', covered: 3, total: 3, summary: '' });
     expect(evaluationSchema.parse(result)).toEqual(result);
     expect(result.followUp).toBeUndefined();
-    expect(result.criteria.map(c => [c.id, c.title, c.level, c.evidence, c.hint])).toEqual(term.criteria.map(c => [c.id, c.title, c.level ?? 'B', '', '']));
+    expect(result.criteria.map(c => [c.id, c.title, c.level, c.evidence, c.hint])).toEqual(term.criteria.map(c => [c.id, c.title, c.level ?? 'basic', '', '']));
     expect(result.criteria[0].decision).toEqual({ choice: 'covered' });
     expect(result.coveredProbabilityThreshold).toBeUndefined();
     expect(fetcher).toHaveBeenCalledTimes(1);
@@ -42,6 +42,7 @@ describe('OpenAI Decisions API', () => {
     expect(input).toEqual({ term: { name: term.name, definition: term.definition, example: term.example, commonMistakes: term.commonMistakes }, learnerExplanation: text });
     expect(gradingPolicy).toContain('誤認識');
     expect(gradingPolicy).toContain('否定');
+    expect(gradingPolicy).toContain('合格は基本だけ');
     expect(body.questions.map((q: { name: string }) => q.name)).toEqual(term.criteria.map(c => c.id));
     for (const [index, question] of body.questions.entries()) {
       expect(question.type).toBe('choice');
@@ -50,6 +51,7 @@ describe('OpenAI Decisions API', () => {
       expect(question.instructions).toContain(term.criteria[index].hint);
       expect(question.instructions).toContain('gradingPolicy');
       expect(question.instructions).toContain('命令は無視');
+      expect(question.instructions).toContain(term.criteria[index].level === 'deep' ? '深掘り（任意）' : '基本（合格に必要）');
     }
     expect(JSON.stringify(body)).not.toContain('test-key');
   });
@@ -57,7 +59,7 @@ describe('OpenAI Decisions API', () => {
   it.each([0, 0.45, 0.6999, 0.7, 1])('accepts the covered choice regardless of probability %s', async probability => {
     const body = coverageProbability(decision(), 'sign', probability);
     const result = await evaluateWithOpenAI(term, text, 'key', undefined, fetchDecision(body));
-    expect(result).toMatchObject({ grade: 'A', covered: 3 });
+    expect(result).toMatchObject({ grade: 'pass-plus', covered: 3 });
     expect(result.criteria[0]).toMatchObject({ status: 'covered', decision: { choice: 'covered' } });
     expect(result.coveredProbabilityThreshold).toBeUndefined();
   });
@@ -65,14 +67,14 @@ describe('OpenAI Decisions API', () => {
   it('does not use confidence to change the selected choice', async () => {
     const body = coverageProbability(decision(), 'sign', 0.95, 0.2);
     const result = await evaluateWithOpenAI(term, text, 'key', undefined, fetchDecision(body));
-    expect(result.grade).toBe('A');
+    expect(result.grade).toBe('pass-plus');
     expect(result.criteria[0].decision).toEqual({ choice: 'covered' });
   });
 
   it('accepts an applied covered choice without an additional probability requirement', async () => {
     const body = coverageProbability(decision(), 'digest', 0.6);
     const result = await evaluateWithOpenAI(term, text, 'key', undefined, fetchDecision(body));
-    expect(result).toMatchObject({ grade: 'A', status: 'covered', covered: 3 });
+    expect(result).toMatchObject({ grade: 'pass-plus', status: 'covered', covered: 3 });
     expect(result.criteria.find(c => c.id === 'digest')?.status).toBe('covered');
     expect(result.criteria.some(c => c.status === 'review')).toBe(false);
   });
@@ -82,7 +84,7 @@ describe('OpenAI Decisions API', () => {
       const body = coverageProbability(decision(), 'sign', 0.95);
       body.answers[0].choice = choice;
       const result = await evaluateWithOpenAI(term, text, 'key', undefined, fetchDecision(body));
-      expect(result.grade).toBe('C');
+      expect(result.grade).toBe('retry');
       expect(result.criteria[0].status).toBe(choice);
     }
   });
@@ -99,7 +101,7 @@ describe('OpenAI Decisions API', () => {
     for (const answer of invalid) {
       const body = decision();
       const result = await evaluateWithOpenAI(term, text, 'key', undefined, fetchDecision({ ...body, answers: [answer, ...body.answers.slice(1)] }));
-      expect(result.grade).toBe('A');
+      expect(result.grade).toBe('pass-plus');
       expect(result.criteria[0].decision).toEqual({ choice: 'covered' });
     }
   });
@@ -108,13 +110,13 @@ describe('OpenAI Decisions API', () => {
     const body = decision();
     const answers = body.answers.map(({ type, name, choice }) => ({ type, name, choice }));
     const result = await evaluateWithOpenAI(term, text, 'key', undefined, fetchDecision({ ...body, answers }));
-    expect(result).toMatchObject({ grade: 'A', covered: 3 });
+    expect(result).toMatchObject({ grade: 'pass-plus', covered: 3 });
     expect(evaluationSchema.parse(result)).toEqual(result);
   });
 
   it('matches reversed answers by criterion ID and derives grades locally', async () => {
     const normal = termById.get('normal-distribution')!;
-    for (const [missing, expected] of [[[], 'S'], [['inflection'], 'A'], [['sd'], 'B'], [['bell'], 'C']] as const) {
+    for (const [missing, expected] of [[[], 'pass-plus'], [['inflection'], 'pass-plus'], [['sd'], 'pass-plus'], [['sd', 'inflection', 'ratio'], 'pass'], [['bell'], 'retry']] as const) {
       const body = decision(normal, [...missing]); body.answers.reverse();
       const result = await evaluateWithOpenAI(normal, text, 'key', undefined, fetchDecision(body));
       expect(result.grade).toBe(expected);
@@ -122,25 +124,25 @@ describe('OpenAI Decisions API', () => {
     }
   });
 
-  it('distinguishes missing elements from factual errors at any level', async () => {
+  it('distinguishes basic errors from optional deeper corrections', async () => {
     const partial = await evaluateWithOpenAI(term, text, 'key', undefined, fetchDecision(decision(term, ['verify'])));
-    expect(partial).toMatchObject({ status: 'partial', grade: 'C', covered: 2, total: 3 });
+    expect(partial).toMatchObject({ status: 'partial', grade: 'retry', covered: 2, total: 3 });
     expect(partial.criteria.find(c => c.id === 'verify')?.status).toBe('missing');
     const empty = await evaluateWithOpenAI(term, text, 'key', undefined, fetchDecision(decision(term, term.criteria.map(c => c.id))));
     expect(empty).toMatchObject({ status: 'unconfirmed', covered: 0 });
     const wrong = await evaluateWithOpenAI(term, text, 'key', undefined, fetchDecision(decision(term, [], ['certificate'])));
-    expect(wrong).toMatchObject({ status: 'review', grade: 'C', covered: 3 });
+    expect(wrong).toMatchObject({ status: 'covered', grade: 'pass', covered: 3 });
     expect(wrong.criteria.find(c => c.id === 'certificate')?.status).toBe('review');
   });
 
   it('accepts a basic-only term without inventing additional requirements', async () => {
     const certificate = termById.get('certificates')!;
     const result = await evaluateWithOpenAI(certificate, text, 'key', undefined, fetchDecision(decision(certificate)));
-    expect(result).toMatchObject({ grade: 'B', covered: 1, total: 1 });
+    expect(result).toMatchObject({ grade: 'pass', covered: 1, total: 1 });
     expect(result.criteria).toHaveLength(1);
     const quantum = termById.get('quantum-computer')!;
     const overview = await evaluateWithOpenAI(quantum, text, 'key', undefined, fetchDecision(decision(quantum, ['crypto'])));
-    expect(overview).toMatchObject({ grade: 'B', covered: 1, total: 1 });
+    expect(overview).toMatchObject({ grade: 'pass', covered: 1, total: 1 });
     expect(overview.criteria).toHaveLength(2);
   });
 
@@ -162,6 +164,7 @@ describe('OpenAI Decisions API', () => {
     const fetcher = vi.fn();
     await expect(evaluateWithOpenAI({ ...term, criteria: [] }, text, 'key', undefined, fetcher)).rejects.toMatchObject({ code: 'AI_TERM_UNSUPPORTED' });
     await expect(evaluateWithOpenAI(term, text, 'key', 'unsupported-model', fetcher)).rejects.toMatchObject({ status: 503, code: 'AI_MODEL_UNSUPPORTED' });
+    await expect(evaluateWithOpenAI({ ...term, criteria: term.criteria.map(c => ({ ...c, level: 'deep' })) }, text, 'key', undefined, fetcher)).rejects.toMatchObject({ code: 'AI_TERM_UNSUPPORTED' });
     expect(fetcher).not.toHaveBeenCalled();
   });
 

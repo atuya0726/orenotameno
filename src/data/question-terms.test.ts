@@ -38,7 +38,7 @@ describe('question vocabulary candidates', () => {
     expect(termForWord('サーバ証明書')?.id).toBe('certificates');
     for (const term of certificates) {
       expect(term?.criteria).toHaveLength(1);
-      expect(term?.criteria[0].level ?? 'B').toBe('B');
+      expect(term?.criteria[0].level ?? 'basic').toBe('basic');
     }
   });
   it.each([

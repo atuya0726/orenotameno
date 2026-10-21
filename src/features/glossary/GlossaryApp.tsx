@@ -1,19 +1,18 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { Link, Navigate, Route, Routes, useParams, useSearchParams } from 'react-router';
-import { ArrowDownToLine, ArrowLeft, ArrowRight, ArrowUpFromLine, BookOpen, Check, CheckCheck, ChevronDown, ChevronRight, CircleHelp, Clock3, History, LoaderCircle, Mic, RotateCcw, Search, Square, Trash2, TriangleAlert, X } from 'lucide-react';
+import { ArrowDownToLine, ArrowLeft, ArrowRight, ArrowUpFromLine, BookOpen, Check, CheckCheck, ChevronDown, ChevronRight, CircleHelp, Clock3, History, LoaderCircle, Mic, RotateCcw, Search, Sparkles, Square, Trash2, TriangleAlert, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { formatDate, dayKey } from '@/lib/date';
 import { GlossaryProvider, useGlossary } from './useGlossary';
 import { normalizeTermWord as normalize, termForWord, terms, termById, termCategories } from './terms';
-import { EXPLANATION_MAX_LENGTH, explanationInputSchema, isUncertainCriterion, levelInfo, levels, type CriterionResult, type Evaluation, type Grade, type GlossaryAttempt, type GlossaryDraft, type Level, type Term } from './model';
+import { EXPLANATION_MAX_LENGTH, explanationInputSchema, criterionLevel, isUncertainCriterion, levelInfo, levels, meetsReviewTarget, outcomeOf, type CriterionResult, type GlossaryAttempt, type GlossaryDraft, type Level, type Term } from './model';
 import { serializeGlossary } from './db';
 import { useLearning } from '@/lib/store';
 import { useSpeech } from './useSpeech';
 import { groupReviewWords, reviewWordKey } from './review-words';
 
-const statusLabels: Record<Evaluation['status'], string> = { covered: '要点を確認', partial: '説明を補おう', review: '要点に誤りあり', unconfirmed: '要点を確認できず' };
-const gradeLabels: Record<Grade, string> = { S: '発展の論点まで説明', A: '応用の論点まで説明', B: '基本の論点を押さえた', C: '説明に不足や誤りがある' };
+const outcomeLabels = { pass: '合格', 'pass-plus': '合格 ＋ 深掘りできた', retry: '基本をもう一度' };
 export default function GlossaryApp() {
   return <GlossaryProvider><GlossaryShell /></GlossaryProvider>;
 }
@@ -44,9 +43,10 @@ function termPath(termId: string, attemptId?: string) {
 function latestByTerm(attempts: GlossaryAttempt[]) { return new Map(attempts.map(attempt => [attempt.termId, attempt])); }
 function ResultBadge({ attempt }: { attempt?: GlossaryAttempt }) {
   if (!attempt) return <span className="pill">未練習</span>;
-  const { grade, status } = attempt.evaluation;
-  if (grade) return <span className={cn('pill', grade === 'C' ? 'pill-amber' : 'pill-green')}>{grade} · {gradeLabels[grade]}</span>;
-  return <span className={cn('pill', status === 'covered' ? 'pill-green' : 'pill-amber')}>{statusLabels[status]}</span>;
+  const outcome = outcomeOf(attempt.evaluation);
+  const grade = attempt.evaluation.grade;
+  if (grade && ['B', 'A', 'S', 'C'].includes(grade)) return <span className={cn('pill', outcome === 'retry' ? 'pill-amber' : 'pill-green')}>当時の評価 {grade}</span>;
+  return <span className={cn('pill', outcome === 'retry' ? 'pill-amber' : 'pill-green')}>{outcome === 'retry' ? <RotateCcw size={13} /> : <Check size={13} />}{outcomeLabels[outcome]}</span>;
 }
 function GlossaryLibrary() {
   const { snapshot } = useGlossary();
@@ -102,7 +102,10 @@ function TermRoute() {
 }
 // A review round walks the saved words in random order; the words already explained ride along in the URL.
 type ReviewSession = { word: string; done: string[]; target: Level };
-function reviewTarget(params: URLSearchParams) { return levels.find(level => level === params.get('target')); }
+function reviewTarget(params: URLSearchParams): Level | undefined {
+  const value = params.get('target');
+  return levels.find(level => level === value) ?? (value === 'B' ? 'basic' : value === 'A' || value === 'S' ? 'deep' : undefined);
+}
 function reviewSession(params: URLSearchParams): ReviewSession | undefined {
   const word = params.get('review'); const target = reviewTarget(params);
   return word && target ? { word, done: groupReviewWords(params.getAll('done')).map(group => group.word), target } : undefined;
@@ -116,14 +119,14 @@ function reviewWordPath(word: string, done: string[], target: Level) {
 }
 function nextReviewPath(session: ReviewSession) { return `/glossary/review?${reviewQuery([...session.done, session.word], session.target)}`; }
 function ReviewGoal({ count }: { count: number }) {
-  const [target, setTarget] = useState<Level>('B');
-  return <><Intro title="単語復習の目標レベル" /><div className="review-goal"><p>{count}語を復習します。目標以上の評価を取れた単語は、復習キューから自動で外します。</p><fieldset><legend>目標レベルを選んでください</legend>{levels.map(level => <label className={cn('review-goal-option', target === level && 'review-goal-selected')} key={level}><input type="radio" name="review-target" value={level} checked={target === level} onChange={() => setTarget(level)} /><span><strong>{level} · {levelInfo[level].name}</strong><small>{levelInfo[level].description}</small></span></label>)}</fieldset><div className="actions"><Button asChild><Link to={`/glossary/review?${reviewQuery([], target)}`}>復習を始める<ArrowRight size={16} /></Link></Button><Button asChild variant="outline"><Link to="/reviews">復習ノートへ戻る</Link></Button></div></div></>;
+  const [target, setTarget] = useState<Level>('basic');
+  return <><Intro title="単語復習の目標" /><div className="review-goal"><p>{count}語を復習します。目標を達成した単語は、復習キューから自動で外します。深掘りのない用語は基本で合格です。</p><fieldset><legend>復習の目標を選んでください</legend>{levels.map(level => <label className={cn('review-goal-option', target === level && 'review-goal-selected')} key={level}><input type="radio" name="review-target" value={level} checked={target === level} onChange={() => setTarget(level)} /><span><strong>{level === 'basic' ? <Check size={17} /> : <Sparkles size={17} />}{levelInfo[level].name}</strong><small>{levelInfo[level].description}</small></span></label>)}</fieldset><div className="actions"><Button asChild><Link to={`/glossary/review?${reviewQuery([], target)}`}>復習を始める<ArrowRight size={16} /></Link></Button><Button asChild variant="outline"><Link to="/reviews">復習ノートへ戻る</Link></Button></div></div></>;
 }
 function ReviewWordsRoute() {
   const words = groupReviewWords(useLearning().snapshot.reviewWords).filter(group => group.term).map(group => group.word); const [params] = useSearchParams();
   const target = reviewTarget(params); const done = groupReviewWords(params.getAll('done')).map(group => group.word); const doneKeys = new Set(done.map(reviewWordKey)); const remaining = words.filter(word => !doneKeys.has(reviewWordKey(word)));
   const [pick] = useState(() => Math.random());
-  if (target && done.length && !remaining.length) return <div className="session-complete"><span className="completion-icon"><CheckCheck size={34} /></span><h1>単語の復習が終わりました</h1><p>今回の目標：{target}（{levelInfo[target].name}）。復習キューに残っている単語は{words.length}語です。</p><div className="actions">{words.length > 0 && <Button asChild><Link to="/glossary/review">もう一周する<RotateCcw size={16} /></Link></Button>}<Button variant="outline" asChild><Link to="/reviews">復習ノートへ戻る</Link></Button></div></div>;
+  if (target && done.length && !remaining.length) return <div className="session-complete"><span className="completion-icon"><CheckCheck size={34} /></span><h1>単語の復習が終わりました</h1><p>今回の目標：{levelInfo[target].name}。復習キューに残っている単語は{words.length}語です。</p><div className="actions">{words.length > 0 && <Button asChild><Link to="/glossary/review">もう一周する<RotateCcw size={16} /></Link></Button>}<Button variant="outline" asChild><Link to="/reviews">復習ノートへ戻る</Link></Button></div></div>;
   if (!words.length) return <div className="empty-state"><CheckCheck size={25} /><h2>復習する単語はありません</h2><p>問題の解説で「復習したい単語」を選ぶと、ここで続けて説明できます。</p><Link to="/reviews" className="text-link">復習ノートへ戻る<ArrowRight size={15} /></Link></div>;
   if (!target) return <ReviewGoal count={words.length} />;
   return <Navigate replace to={reviewWordPath(remaining[Math.min(Math.floor(pick * remaining.length), remaining.length - 1)], done, target)} />;
@@ -164,8 +167,7 @@ function TermPractice({ term, referenceInitially, attemptId, review }: { term: T
     catch { setRemoval('failed'); }
   }
   async function removeIfMastered(attempt: GlossaryAttempt) {
-    const grade = attempt.evaluation.grade;
-    if (review && grade && grade !== 'C' && levels.indexOf(grade) >= levels.indexOf(review.target)) await removeReviewedWord();
+    if (review && meetsReviewTarget(term, attempt.evaluation, review.target)) await removeReviewedWord();
   }
   async function retryResultSave() {
     if (!result) return;
@@ -189,7 +191,7 @@ function TermPractice({ term, referenceInitially, attemptId, review }: { term: T
   }
   function reveal() { hasSeenReference.current = true; setShowReference(true); if (!result) change({ referenceViewed: true }); }
   return <>
-    {review ? <div className="review-round-bar"><Link to="/reviews" className="back-link"><ArrowLeft size={15} />復習をやめる</Link><span className="review-round-count">単語の復習 {review.done.length + 1} / {reviewTotal}</span><span className="pill">目標 {review.target} · {levelInfo[review.target].name}</span>{!result && !saving && <Link to={nextReviewPath(review)} className="text-link">{reviewLast ? '復習を終える' : 'この単語をとばす'}<ChevronRight size={15} /></Link>}</div> : <Link to="/glossary" className="back-link"><ArrowLeft size={15} />用語一覧へ戻る</Link>}
+    {review ? <div className="review-round-bar"><Link to="/reviews" className="back-link"><ArrowLeft size={15} />復習をやめる</Link><span className="review-round-count">単語の復習 {review.done.length + 1} / {reviewTotal}</span><span className="pill">目標 {levelInfo[review.target].name}</span>{!result && !saving && <Link to={nextReviewPath(review)} className="text-link">{reviewLast ? '復習を終える' : 'この単語をとばす'}<ChevronRight size={15} /></Link>}</div> : <Link to="/glossary" className="back-link"><ArrowLeft size={15} />用語一覧へ戻る</Link>}
     <div className="term-practice-heading"><div><span className="pill">{term.category}</span><h1>{term.name}</h1><p>{term.reading}</p></div><span className="term-practice-count"><History size={14} />これまで{history.length}回説明</span></div>
     <div className="term-practice-layout"><div className="term-practice-main">
       {term.definition && !result && <ReferenceDisclosure term={term} open={showReference} disabled={speech.active || saving} onToggle={() => showReference ? setShowReference(false) : reveal()} />}
@@ -209,7 +211,7 @@ function TermPractice({ term, referenceInitially, attemptId, review }: { term: T
         {error && <p className="inline-error" role="alert">{error}</p>}
         <p className="speech-privacy">チェック時に説明文をOpenAIへ送信します。履歴はこのブラウザに保存。音声認識はブラウザのサービスを利用し、音声は当サイトに保存しません。</p>
       </form>}
-      {result && <div ref={feedbackRef} tabIndex={-1} className="glossary-feedback-focus"><Feedback attempt={result}>{review && !saveStates[result.id] && <div className="review-goal-result">{removal === 'failed' ? <><p className="inline-error" role="alert">目標に達しましたが、復習キューから外せませんでした。評価は保存されています。</p><Button type="button" variant="outline" disabled={saving} onClick={async () => { setSaving(true); try { await removeReviewedWord(); } finally { setSaving(false); } }}>キューから外す処理を再試行</Button></> : <p role="status" className={removal === 'removed' ? 'success-message' : 'muted'}>{saving ? '復習キューを更新しています…' : removal === 'removed' ? `目標${review.target}に達したので「${review.word}」を復習キューから外しました。` : `目標${review.target}に届かなかったので「${review.word}」は復習キューに残します。`}</p>}</div>}</Feedback><AttemptSaveStatus attempt={result} onRetry={retryResultSave} /><ReferenceDisclosure term={term} definition={result.reference} open={showReference} onToggle={() => showReference ? setShowReference(false) : reveal()} /><div className="actions glossary-next-actions">{saving || saveStates[result.id] ? <Button disabled>{review ? reviewLast ? '復習を終える' : '次の単語へ' : '次の用語へ'}<ArrowRight size={16} /></Button> : review ? removal === 'failed' ? <Button disabled>{reviewLast ? '復習を終える' : '次の単語へ'}<ArrowRight size={16} /></Button> : <Button asChild><Link to={nextReviewPath(review)}>{reviewLast ? '復習を終える' : '次の単語へ'}<ArrowRight size={16} /></Link></Button> : <Button asChild><Link to={`/glossary/${nextTerm.id}`}>次の用語へ<ArrowRight size={16} /></Link></Button>}</div></div>}
+      {result && <div ref={feedbackRef} tabIndex={-1} className="glossary-feedback-focus"><Feedback attempt={result}>{review && !saveStates[result.id] && <div className="review-goal-result">{removal === 'failed' ? <><p className="inline-error" role="alert">目標に達しましたが、復習キューから外せませんでした。評価は保存されています。</p><Button type="button" variant="outline" disabled={saving} onClick={async () => { setSaving(true); try { await removeReviewedWord(); } finally { setSaving(false); } }}>キューから外す処理を再試行</Button></> : <p role="status" className={removal === 'removed' ? 'success-message' : 'muted'}>{saving ? '復習キューを更新しています…' : removal === 'removed' ? `目標「${levelInfo[review.target].name}」に達したので「${review.word}」を復習キューから外しました。` : `目標「${levelInfo[review.target].name}」に届かなかったので「${review.word}」は復習キューに残します。`}</p>}</div>}</Feedback><AttemptSaveStatus attempt={result} onRetry={retryResultSave} /><ReferenceDisclosure term={term} definition={result.reference} open={showReference} onToggle={() => showReference ? setShowReference(false) : reveal()} /><div className="actions glossary-next-actions">{saving || saveStates[result.id] ? <Button disabled>{review ? reviewLast ? '復習を終える' : '次の単語へ' : '次の用語へ'}<ArrowRight size={16} /></Button> : review ? removal === 'failed' ? <Button disabled>{reviewLast ? '復習を終える' : '次の単語へ'}<ArrowRight size={16} /></Button> : <Button asChild><Link to={nextReviewPath(review)}>{reviewLast ? '復習を終える' : '次の単語へ'}<ArrowRight size={16} /></Link></Button> : <Button asChild><Link to={`/glossary/${nextTerm.id}`}>次の用語へ<ArrowRight size={16} /></Link></Button>}</div></div>}
       {!result && history.length > 0 && <details className="term-history"><summary><History size={16} />過去の説明を見る（{history.length}件）</summary>{history.slice(0, 5).map(attempt => <Link key={attempt.id} to={termPath(term.id, attempt.id)}><time>{formatDate(attempt.answeredAt, true)}</time><ResultBadge attempt={attempt} /><ChevronRight size={15} /></Link>)}</details>}
     </div>{term.related.length > 0 && <aside className="term-coach"><div className="related-terms"><h3>関連用語</h3>{term.related.map(id => { const related = termById.get(id); return related && <Link key={id} to={`/glossary/${id}`}>{related.name}<ChevronRight size={14} /></Link>; })}</div></aside>}</div>
   </>;
@@ -229,9 +231,10 @@ function Reference({ term, definition = term.definition }: { term: Term; definit
 }
 function Feedback({ attempt, children }: { attempt: GlossaryAttempt; children?: ReactNode }) {
   const evaluation = attempt.evaluation; const { grade } = evaluation; const compact = evaluation.api === 'decisions';
-  const passed = grade ? grade !== 'C' : evaluation.status === 'covered';
-  return <section className={cn('glossary-feedback', compact && 'rubric-compact')} aria-label="説明のチェック結果"><div className={cn('glossary-result-heading', passed && 'glossary-result-covered')}><div className="glossary-grade-summary"><h2>判定</h2><span className={cn('glossary-result-value', grade && 'glossary-grade')} aria-label={grade ? `評価 ${grade}` : undefined}>{grade ?? statusLabels[evaluation.status]}</span></div>{children}</div>
-    {levels.map(level => { const items = evaluation.criteria.filter(c => (c.level ?? 'B') === level); return items.length > 0 && <div className="rubric-level" key={level}>{grade && <h3 className="rubric-level-heading"><span>{level}</span>{levelInfo[level].name}<small>{levelInfo[level].description}</small></h3>}<div className="rubric-results">{items.map(criterion => <CriterionFeedback key={criterion.id} criterion={criterion} level={level} compact={compact} threshold={evaluation.coveredProbabilityThreshold} />)}</div></div>; })}
+  const outcome = outcomeOf(evaluation); const passed = outcome !== 'retry';
+  const historical = grade && ['B', 'A', 'S', 'C'].includes(grade);
+  return <section className={cn('glossary-feedback', compact && 'rubric-compact')} aria-label="説明のチェック結果"><div className={cn('glossary-result-heading', passed && 'glossary-result-covered')}><div className="glossary-grade-summary"><h2>判定</h2><span className="glossary-result-value" aria-label={`評価 ${historical ? grade : outcomeLabels[outcome]}`}>{passed ? <CheckCheck size={34} aria-hidden="true" /> : <RotateCcw size={30} aria-hidden="true" />}{historical ? grade : passed ? '合格' : '基本をもう一度'}</span>{!historical && outcome === 'pass-plus' && <span className="glossary-deep-badge"><Sparkles size={16} />深掘りできた</span>}{historical && <small>当時の評価 {grade}</small>}</div>{children}</div>
+    {levels.map(level => { const items = evaluation.criteria.filter(c => criterionLevel(c.level) === level); return items.length > 0 && <div className={cn('rubric-level', `rubric-${level}`)} key={level}><h3 className="rubric-level-heading"><span>{level === 'basic' ? <Check size={15} /> : <Sparkles size={15} />}</span>{levelInfo[level].name}<small>{levelInfo[level].description}</small><span className="rubric-count" aria-label={`${levelInfo[level].name} ${items.filter(c => c.status === 'covered').length} / ${items.length}`}>{items.filter(c => c.status === 'covered').length}/{items.length}</span></h3><div className="rubric-results">{items.map(criterion => <CriterionFeedback key={criterion.id} criterion={criterion} level={level} compact={compact} threshold={evaluation.coveredProbabilityThreshold} />)}</div></div>; })}
   </section>;
 }
 function CriterionFeedback({ criterion, level, compact, threshold }: { criterion: CriterionResult; level: Level; compact: boolean; threshold?: number }) {
@@ -241,7 +244,7 @@ function CriterionFeedback({ criterion, level, compact, threshold }: { criterion
   const percent = criterion.decision?.probabilities && Math.floor(criterion.decision.probabilities.covered * 1000) / 10;
   return <div className={cn('rubric-item', `rubric-${criterion.status}`)}>
     <span className="rubric-icon" role="img" aria-label={label}>{uncertain ? <Clock3 size={17} /> : criterion.status === 'covered' ? <Check size={17} /> : criterion.status === 'review' ? <TriangleAlert size={17} /> : <CircleHelp size={17} />}</span>
-    <div>{uncertain ? <span className="rubric-state" title="「説明できた」とするモデルの推定確率です。正答率の保証ではありません。">判定保留 · {percent}%{threshold !== undefined && ` / ${threshold * 100}%`}</span> : !compact && <span className="rubric-state">{criterion.status === 'covered' ? '説明に含まれています' : criterion.status === 'review' ? '内容に誤りがあります' : level === 'B' ? 'この説明では未確認' : 'まだ触れていません'}</span>}
+    <div>{uncertain ? <span className="rubric-state" title="「説明できた」とするモデルの推定確率です。正答率の保証ではありません。">判定保留 · {percent}%{threshold !== undefined && ` / ${threshold * 100}%`}</span> : !compact && <span className="rubric-state">{criterion.status === 'covered' ? '説明に含まれています' : criterion.status === 'review' ? '内容に誤りがあります' : level === 'basic' ? 'この説明では未確認' : 'まだ触れていません'}</span>}
       <h3>{criterion.title}</h3>{criterion.evidence && <blockquote>{criterion.evidence}</blockquote>}{criterion.hint && <p>{criterion.hint}</p>}
     </div>
   </div>;

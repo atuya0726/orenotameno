@@ -1,14 +1,17 @@
 import { z } from 'zod';
 
-// Levels describe exam-relevant depth: core meaning, applications, then specific details. Missing levels are B.
-// Shared wording for the feedback screen and review goals.
-export const levels = ['B', 'A', 'S'] as const;
+// Basics determine passing; deeper points are optional achievements.
+export const levels = ['basic', 'deep'] as const;
 export type Level = typeof levels[number];
 export const levelInfo: Record<Level, { name: string; description: string }> = {
-  B: { name: '基本', description: '用語の意味・目的・基本の仕組み' },
-  A: { name: '応用', description: '基本を踏まえた用途・理由・制約・影響' },
-  S: { name: '発展', description: '試験範囲内の細かな条件・仕様・例外' },
+  basic: { name: '基本', description: '用語の意味・目的・基本の仕組み。ここまでで合格' },
+  deep: { name: '深掘り', description: '理由・使いどころ・条件まで。できた分だけプラス' },
 };
+const legacyLevels = ['B', 'A', 'S'] as const;
+// Historical attempts/backups retain their original levels and grades.
+export function criterionLevel(level?: Level | typeof legacyLevels[number]): Level {
+  return level === 'deep' || level === 'A' || level === 'S' ? 'deep' : 'basic';
+}
 export type Criterion = { id: string; title: string; hint: string; level?: Level };
 export type Term = {
   // Aliases are other spellings of the same concept; related concepts get their own terms.
@@ -24,27 +27,31 @@ export const criterionDecisionSchema = z.object({
   probabilities: z.object({ covered: probabilitySchema, missing: probabilitySchema, review: probabilitySchema }).optional(),
 });
 export const criterionResultSchema = z.object({
-  id: z.string(), title: z.string(), status: criterionStatusSchema, evidence: z.string(), hint: z.string(), level: z.enum(levels).optional(),
+  id: z.string(), title: z.string(), status: criterionStatusSchema, evidence: z.string(), hint: z.string(), level: z.enum([...levels, ...legacyLevels]).optional(),
   decision: criterionDecisionSchema.optional(),
 });
 export type CriterionResult = z.infer<typeof criterionResultSchema>;
 export function isUncertainCriterion(criterion: CriterionResult) {
   return criterion.status === 'missing' && criterion.decision?.choice === 'covered' && criterion.decision.probabilities !== undefined;
 }
-export const grades = ['S', 'A', 'B', 'C'] as const;
+export const grades = ['pass', 'pass-plus', 'retry', 'S', 'A', 'B', 'C'] as const;
 export type Grade = typeof grades[number];
-// Only levels present in the rubric count. A B-only rubric can earn B, even with just one point.
-export function gradeOf(criteria: CriterionResult[]): Grade {
-  if (criteria.some(c => c.status === 'review')) return 'C';
-  const basics = criteria.filter(c => (c.level ?? 'B') === 'B');
-  if (!basics.length || basics.some(c => c.status !== 'covered')) return 'C';
-  let grade: Grade = 'B';
-  for (const level of ['A', 'S'] as const) {
-    const items = criteria.filter(c => c.level === level);
-    if (items.some(c => c.status !== 'covered')) break;
-    if (items.length) grade = level;
-  }
-  return grade;
+export type Outcome = 'pass' | 'pass-plus' | 'retry';
+export function gradeOf(criteria: CriterionResult[]): Outcome {
+  const basics = criteria.filter(c => criterionLevel(c.level) === 'basic');
+  if (!basics.length || basics.some(c => c.status !== 'covered')) return 'retry';
+  const deeper = criteria.filter(c => criterionLevel(c.level) === 'deep');
+  return deeper.some(c => c.status === 'covered') && !deeper.some(c => c.status === 'review') ? 'pass-plus' : 'pass';
+}
+export function outcomeOf(evaluation: Evaluation): Outcome {
+  if (evaluation.grade === 'S' || evaluation.grade === 'A') return 'pass-plus';
+  if (evaluation.grade === 'B') return 'pass';
+  if (evaluation.grade === 'C') return 'retry';
+  return evaluation.grade ?? (evaluation.status === 'covered' ? 'pass' : 'retry');
+}
+export function meetsReviewTarget(term: Term, evaluation: Evaluation, target: Level): boolean {
+  const outcome = outcomeOf(evaluation);
+  return evaluation.grade !== undefined && outcome !== 'retry' && (target === 'basic' || outcome === 'pass-plus' || !term.criteria.some(c => c.level === 'deep'));
 }
 // Retain earlier AI suggestions when reading historical attempts/backups.
 export const followUpSchema = z.object({ name: z.string().min(1).max(40), reason: z.string(), termId: z.string().optional() });
