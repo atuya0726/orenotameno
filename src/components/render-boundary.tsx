@@ -1,4 +1,5 @@
 import { Component, type ReactNode } from 'react';
+import { SITE_NAME, SiteBrand } from './site-brand';
 
 type Props = { children: ReactNode; fallback: (error: Error, retry: () => void) => ReactNode };
 
@@ -18,7 +19,7 @@ export class RenderBoundary extends Component<Props, { error: Error | null }> {
 
 export function AppRenderBoundary({ children }: { children: ReactNode }) {
   return <RenderBoundary fallback={(error, retry) => <div className="app-shell">
-    <header className="site-header"><div className="header-inner"><a href="/" className="brand">俺のための過去問</a></div></header>
+    <header className="site-header"><div className="header-inner"><a href="/" className="brand" aria-label={`${SITE_NAME} 学習ホーム`}><SiteBrand /></a></div></header>
     <div className="main-shell"><main className="main-content">
       <section className="empty-state" role="alert">
         <h1>画面を表示できませんでした</h1>

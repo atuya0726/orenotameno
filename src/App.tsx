@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { Link, NavLink, Route, Routes, useLocation, useParams, useSearchParams } from 'react-router';
-import { ArrowLeft, ArrowRight, BarChart3, BookMarked, BookOpen, Bookmark, Check, CheckCheck, ChevronRight, CircleHelp, LayoutDashboard, LoaderCircle, Plus, RotateCcw, Search, X } from 'lucide-react';
+import { ArrowLeft, ArrowRight, BarChart3, BookOpen, Bookmark, Check, CheckCheck, ChevronRight, CircleHelp, LayoutDashboard, LoaderCircle, Plus, RotateCcw, Search, X } from 'lucide-react';
+import { SITE_NAME, SiteBrand } from '@/components/site-brand';
 import { Button } from '@/components/ui/button';
 import { MathText } from '@/components/math-text';
 import { AnswerChoices } from '@/components/answer-choices';
@@ -38,7 +39,6 @@ export default function App() {
     <a className="skip-link" href="#main">本文へ移動</a>
     <SiteHeader />
     <div className="main-shell">
-      <div className="exam-context"><span className="breadcrumb"><span className="exam-code">SC</span><strong>情報処理安全確保支援士</strong><span className="context-subject">科目A1・A2</span></span></div>
       <main id="main" className="main-content">
         {error && <div className="error-banner" role="alert"><span>{error}</span>{ready && <button aria-label="通知を閉じる" onClick={clearError}><X size={16} /></button>}</div>}
         {!ready ? <div className="empty-state"><LoaderCircle className="animate-spin" size={28} /><h1>{error ? '学習記録を開けませんでした' : '学習ノートを開いています'}</h1><p>{error ? '保存を利用できる状態にしてから、ページを再読み込みしてください。' : 'このブラウザに保存した記録を確認しています。'}</p>{error && <Button onClick={() => window.location.reload()}>再読み込み</Button>}</div> :
@@ -53,7 +53,7 @@ export default function App() {
             <Route path="*" element={<Empty icon={<BookOpen />} title="ページが見つかりません" description="学習ホームから続けましょう。"><Button asChild><Link to="/">学習ホームへ</Link></Button></Empty>} />
           </Routes>}
       </main>
-      <footer className="page-footer"><Link to="/" className="footer-brand">俺のための過去問</Link></footer>
+      <footer className="page-footer"><Link to="/" className="footer-brand">{SITE_NAME}</Link></footer>
     </div>
   </div>;
 }
@@ -62,7 +62,7 @@ function SiteHeader() {
   const { snapshot } = useLearning();
   const dueCount = activeReviews(snapshot.cards).length;
   return <header className="site-header"><div className="header-inner">
-    <Link to="/" className="brand" aria-label="俺のための過去問 学習ホーム"><span className="brand-icon"><BookMarked size={23} strokeWidth={1.8} /></span><span>俺のための過去問</span></Link>
+    <Link to="/" className="brand" aria-label={`${SITE_NAME} 学習ホーム`}><SiteBrand /></Link>
     <nav className="main-nav" aria-label="メインメニュー">{menu.map(item => <NavLink key={item.to} to={item.to} end={item.end} className={({ isActive }) => cn('nav-item', isActive && 'active')}><item.icon size={19} strokeWidth={1.7} /><span>{item.label}</span>{item.to === '/reviews' && dueCount > 0 && <span className="nav-count">{dueCount}</span>}</NavLink>)}</nav>
   </div></header>;
 }
