@@ -43,7 +43,9 @@ Pass the Hash攻撃で、稼働中のAPIへ各1回送信した結果。実行先
 明示的に実行した場合だけ11回の有料AI評価を行う。通常の `npm test` には含めず、自動再試行しない。
 
 ```sh
-node scripts/glossary/check-typo-tolerance.mjs https://対象サイト 2026-10-21-confirmed-speech-words
+node scripts/glossary/check-typo-tolerance.mjs https://対象サイト 2026-10-21-confirmed-speech-words-v2
 ```
 
 最初にGETで `X-Glossary-Policy` を確認し、指定した採点方針と異なる場合はAI評価を送信せず終了する。これにより、旧版のAPIを新しい指示の検証結果として扱うことを避ける。
+
+`f3b3e59`（`2026-10-21-confirmed-speech-words`）では、ROCの正しい軸の説明は「利用成立」あり・修正済みの両方ともaxesがcovered（100%）となり、同じB評価だった。誤った軸の短い説明も両方axesがreview（97%）となり、語の復元と軸の評価は一致した。ただし軸の誤りが無関係な3項目にもreviewとして波及し、既存の表記修正済みの言いさし1例も67%で保留となったため、11例中8例の一致だった。項目間の誤りの波及を防ぐため、各項目が未説明なら他項目の誤りによらずmissingにすることを追記した。
