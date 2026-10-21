@@ -53,7 +53,7 @@ describe('OpenAI Decisions API', () => {
     expect(JSON.stringify(body)).not.toContain('test-key');
   });
 
-  it.each([0.45, 0.8999, 0.9, 0.9001, 1])('requires the coverage probability cutoff at %s', async probability => {
+  it.each([0.45, 0.6999, 0.7, 0.7001, 0.8, 1])('requires the coverage probability cutoff at %s', async probability => {
     const body = coverageProbability(decision(), 'sign', probability);
     const result = await evaluateWithOpenAI(term, text, 'key', undefined, fetchDecision(body));
     const accepted = probability >= MIN_COVERED_PROBABILITY;
@@ -70,7 +70,7 @@ describe('OpenAI Decisions API', () => {
   });
 
   it('keeps the basic grade when an applied point is uncertain, without labeling it as an error', async () => {
-    const body = coverageProbability(decision(), 'digest', 0.7);
+    const body = coverageProbability(decision(), 'digest', 0.6);
     const result = await evaluateWithOpenAI(term, text, 'key', undefined, fetchDecision(body));
     expect(result).toMatchObject({ grade: 'B', status: 'covered', covered: 3 });
     expect(result.criteria.find(c => c.id === 'digest')?.status).toBe('missing');

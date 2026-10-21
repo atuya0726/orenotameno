@@ -232,7 +232,7 @@ function Feedback({ attempt, children }: { attempt: GlossaryAttempt; children?: 
 function CriterionFeedback({ criterion, level, compact, threshold }: { criterion: CriterionResult; level: Level; compact: boolean; threshold?: number }) {
   const uncertain = isUncertainCriterion(criterion);
   const label = uncertain ? '判定保留' : criterion.status === 'covered' ? '説明できた' : criterion.status === 'review' ? '内容に誤り' : '未説明';
-  // Truncate so a probability just below 90% never appears to meet the 90% cutoff.
+  // Truncate so a probability just below the cutoff never appears to meet it.
   const percent = criterion.decision && Math.floor(criterion.decision.probabilities.covered * 1000) / 10;
   return <div className={cn('rubric-item', `rubric-${criterion.status}`)}>
     <span className="rubric-icon" role="img" aria-label={label}>{uncertain ? <Clock3 size={17} /> : criterion.status === 'covered' ? <Check size={17} /> : criterion.status === 'review' ? <TriangleAlert size={17} /> : <CircleHelp size={17} />}</span>

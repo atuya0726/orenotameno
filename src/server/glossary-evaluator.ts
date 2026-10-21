@@ -3,7 +3,7 @@ import { criterionDecisionSchema, gradeOf, probabilitySchema, type Evaluation, t
 
 export const DEFAULT_MODEL = 'gpt-6-luna';
 // Provisional cutoff for accepting coverage; tune with labeled learner examples, not as a guaranteed accuracy.
-export const MIN_COVERED_PROBABILITY = 0.9;
+export const MIN_COVERED_PROBABILITY = 0.7;
 export class EvaluationError extends Error {
   constructor(message: string, public status = 502, public code = 'AI_RESPONSE_INVALID', public upstreamStatus?: number) { super(message); }
 }
