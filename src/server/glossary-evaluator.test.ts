@@ -179,20 +179,14 @@ describe('OpenAI Decisions API', () => {
 });
 
 describe('Worker API boundary', () => {
-  it.each([false, true])('restores the confirmed ROC speech word with voice=%s while preserving the stated axes and negation', async usedVoice => {
+  it.each([false, true])('sends the original ROC explanation to the AI without fixed word replacements, with voice=%s', async usedVoice => {
     const roc = termById.get('roc-curve')!;
     const original = '縦軸を利用成立にとる。横軸は利用成立ではない。';
     const fetcher = fetchDecision(decision(roc)); vi.stubGlobal('fetch', fetcher);
     const res = await worker.fetch(request({ termId: roc.id, text: original, usedVoice }), { OPENAI_API_KEY: 'key' });
     expect(res.status).toBe(200);
     const input = JSON.parse(JSON.parse(fetcher.mock.calls[0][1].body).input);
-    expect(input.learnerExplanation).toBe('縦軸を偽陽性率にとる。横軸は偽陽性率ではない。');
-  });
-  it('does not apply the ROC interpretation to another term', async () => {
-    const original = 'この説明の利用成立について話します。';
-    const fetcher = fetchDecision(); vi.stubGlobal('fetch', fetcher);
-    await worker.fetch(request({ termId: term.id, text: original, usedVoice: true }), { OPENAI_API_KEY: 'key' });
-    expect(JSON.parse(JSON.parse(fetcher.mock.calls[0][1].body).input).learnerExplanation).toBe(original);
+    expect(input.learnerExplanation).toBe(original);
   });
   it.each([undefined, false, true])('forwards voice context (%s) into the provider instructions, keeping the learner text intact', async usedVoice => {
     const fetcher = fetchDecision(); vi.stubGlobal('fetch', fetcher);
