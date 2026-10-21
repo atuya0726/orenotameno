@@ -127,5 +127,53 @@
       "upperleft": "missing",
       "diagonal": "missing"
     }
+  },
+  {
+    "name": "roc-both-recognized-as-ordinary-words",
+    "termId": "roc-curve",
+    "usedVoice": true,
+    "text": "横軸は利用成立、縦軸は信用成立",
+    "expected": {
+      "axes": "covered",
+      "threshold": "missing",
+      "upperleft": "missing",
+      "diagonal": "missing"
+    }
+  },
+  {
+    "name": "roc-both-words-corrected",
+    "termId": "roc-curve",
+    "usedVoice": true,
+    "text": "横軸は偽陽性率、縦軸は真陽性率",
+    "expected": {
+      "axes": "covered",
+      "threshold": "missing",
+      "upperleft": "missing",
+      "diagonal": "missing"
+    }
+  },
+  {
+    "name": "signature-unseen-transcription",
+    "termId": "digital-signature",
+    "usedVoice": true,
+    "text": "書名者の秘密鍵で書名を作り、書名者の公開鍵で検証して改ざんを調べる",
+    "expected": {
+      "sign": "covered",
+      "verify": "covered",
+      "digest": "missing",
+      "certificate": "missing"
+    }
+  },
+  {
+    "name": "signature-incorrect-key-roles",
+    "termId": "digital-signature",
+    "usedVoice": true,
+    "text": "署名者の公開鍵で署名を作り、署名者の秘密鍵で検証します",
+    "expected": {
+      "sign": "review",
+      "verify": "review",
+      "digest": "missing",
+      "certificate": "missing"
+    }
   }
 ]

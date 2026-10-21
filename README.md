@@ -96,7 +96,7 @@ npm run dev
 
 判定は実際にある段階だけを下から積み上げます。Bの要点がすべて言えていればB、さらにAもすべて言えていればA、Sまで言えていればSです。Bだけの用語は全項目を説明できてもBで、存在しないA・Sは要求しません。Bに足りない要点があるか、どの段階でも内容に誤りがあればCになります。要点の定義は `src/features/glossary/terms.ts`（`level` がないものはB）、段階の文言は `src/features/glossary/model.ts` の `levelInfo` にあり、結果画面と復習目標の選択画面が参照します。
 
-評価ボタンを押したときだけ1回APIを呼びます。共通の採点方針は共有入力に1回だけ含め、各項目には短い指示を付けます。全項目を1回のリクエストで判定し、自動採点・自動再試行・文章生成・ツール呼び出しは行いません。Decisions APIに対応する `gpt-6-luna` を使います。`OPENAI_MODEL` に未対応モデルを設定すると、APIを呼ぶ前に設定エラーを返します。キー未設定・接続失敗時はその旨を表示し、架空の評価を返しません。[APIの公式仕様](https://developers.openai.com/api/docs/guides/decisions)に沿って `choice` を使用しています。
+評価ボタンを押したときだけ1回APIを呼びます。共通の採点方針は「音と文脈から読み取る→意味を採点する」の順に整理して共有入力へ1回だけ含め、各項目には短い指示を付けます。全項目を1回のリクエストで判定し、自動採点・自動再試行・文章生成・ツール呼び出しは行いません。Decisions APIに対応する `gpt-6-luna` を使います。`OPENAI_MODEL` に未対応モデルを設定すると、APIを呼ぶ前に設定エラーを返します。キー未設定・接続失敗時はその旨を表示し、架空の評価を返しません。[APIの公式仕様](https://developers.openai.com/api/docs/guides/decisions)に沿って `choice` を使用しています。
 
 返答の項目IDを収録データと照合し、順序が異なっても元の項目へ対応させます。エラー時は画面に確認番号を表示し、Cloudflare Workers Logsで同じ番号の `glossary_evaluation_failed` を検索できます。コードは `AI_TIMEOUT`（時間切れ）、`AI_RATE_LIMITED`（混雑・利用上限）、`AI_REFUSED`（判定の拒否）、`AI_RESPONSE_INVALID`（形式不正）、`AI_CRITERIA_INVALID`（項目不整合）などです。ログに残すのは確認番号・コード・HTTP状態（取得できた場合はOpenAI側の状態も含む）・収録用語ID・所要時間だけで、説明文・APIキー・AIの返答本文は記録しません。通常のリクエストログは無効にしています。
 

@@ -40,7 +40,7 @@ describe('OpenAI Decisions API', () => {
     expect(body.model).toBe('gpt-6-luna');
     const { gradingPolicy, ...input } = JSON.parse(body.input);
     expect(input).toEqual({ term: { name: term.name, definition: term.definition, example: term.example, commonMistakes: term.commonMistakes }, learnerExplanation: text });
-    expect(gradingPolicy).toContain('誤変換');
+    expect(gradingPolicy).toContain('誤認識');
     expect(gradingPolicy).toContain('否定');
     expect(body.questions.map((q: { name: string }) => q.name)).toEqual(term.criteria.map(c => c.id));
     for (const [index, question] of body.questions.entries()) {
@@ -204,7 +204,7 @@ describe('Worker API boundary', () => {
     expect(res.status).toBe(200);
     const input = JSON.parse(JSON.parse(fetcher.mock.calls[0][1].body).input);
     expect(input.learnerExplanation).toBe(text);
-    expect(input.gradingPolicy.includes('この学習者は音声入力を利用している')).toBe(usedVoice === true);
+    expect(input.gradingPolicy.includes('これは音声認識で文字起こしした口頭説明です。')).toBe(usedVoice === true);
   });
   it('correlates failures without logging learner text or provider secrets', async () => {
     const logger = vi.spyOn(console, 'error').mockImplementation(() => {});
