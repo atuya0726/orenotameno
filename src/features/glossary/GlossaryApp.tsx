@@ -20,7 +20,7 @@ function GlossaryShell() {
   const { ready, error, clearError, saveStates } = useGlossary();
   const unsaved = Object.values(saveStates).filter(state => state === 'failed').length;
   return <div className="glossary-app">
-    <div className="glossary-section-nav"><Link to="/glossary"><Mic size={16} />用語トレーニング</Link><Link to="/glossary/history"><History size={15} />説明の履歴</Link>{unsaved > 0 && <Link to="/glossary/history" className="pill pill-amber"><TriangleAlert size={15} />未保存 {unsaved}件</Link>}</div>
+    <div className="glossary-section-nav"><Link to="/glossary/history"><History size={15} />説明の履歴</Link>{unsaved > 0 && <Link to="/glossary/history" className="pill pill-amber"><TriangleAlert size={15} />未保存 {unsaved}件</Link>}</div>
     {error && <div className="error-banner" role="alert"><span>{error}</span>{ready && <button onClick={clearError} aria-label="用語学習の通知を閉じる"><X size={16} /></button>}</div>}
     {!ready ? <div className="empty-state"><LoaderCircle className={error ? '' : 'animate-spin'} /><h2>{error ? '用語の記録を開けませんでした' : '用語の学習記録を開いています'}</h2>{error && <Button onClick={() => window.location.reload()}>再読み込み</Button>}</div> : <Routes>
       <Route index element={<GlossaryLibrary />} />
