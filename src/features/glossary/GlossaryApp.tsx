@@ -151,7 +151,10 @@ function TermPractice({ term, referenceInitially, attemptId, review }: { term: T
   const speech = useSpeech(text => change({ text, usedVoice: true }));
   function startSpeaking() { setTranscriptFocused(false); speech.start(draftRef.current.text); }
   const history = snapshot.attempts.filter(a => a.termId === term.id).slice().reverse();
-  const nextTerm = terms[(terms.findIndex(t => t.id === term.id) + 1) % terms.length];
+  const [nextTerm] = useState(() => {
+    const candidates = terms.filter(candidate => candidate.id !== term.id);
+    return candidates[Math.floor(Math.random() * candidates.length)] ?? term;
+  });
   useEffect(() => { if (result) { setShowReference(false); feedbackRef.current?.focus({ preventScroll: true }); feedbackRef.current?.scrollIntoView({ block: 'start' }); } }, [result]);
   async function removeReviewedWord() {
     if (!review) return;
