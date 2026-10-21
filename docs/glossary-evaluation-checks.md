@@ -30,12 +30,14 @@ Pass the Hash攻撃で、稼働中のAPIへ各1回送信した結果。実行先
 
 ## 実APIによる確認
 
+音声入力の利用情報を追加した初版 `cc7730c`（`2026-10-21-speech-context`）では、7例中6例が期待した最終statusに一致した。「ハシュち」の例はB（hash-auth: 88%、no-crack: 95%）だったが、報告された言いさしの文はhash-authのcoveredが66%で保留になった。この結果を受け、表記の復元確度と読み取った内容の理解を区別し、助詞の乱れや口頭の言いさしの扱いを明示した。
+
 [確認例](../scripts/glossary/typo-cases.json)は、上の2文、基本項目を説明した誤字あり・修正済みの2文、事実の誤り、未説明、読みの音が近い「ハシュち」の計7件。`usedVoice` で音声入力かどうかも送り、修正済みの2文は文字入力、それ以外は音声入力として確認する。項目別の最終statusを確認し、推定確率も出力する。モデルの揺らぎがあるため、1回の成功は常に同じ結果になる保証ではない。
 
 明示的に実行した場合だけ7回の有料AI評価を行う。通常の `npm test` には含めず、自動再試行しない。
 
 ```sh
-node scripts/glossary/check-typo-tolerance.mjs https://対象サイト 2026-10-21-speech-context
+node scripts/glossary/check-typo-tolerance.mjs https://対象サイト 2026-10-21-speech-context-v2
 ```
 
 最初にGETで `X-Glossary-Policy` を確認し、指定した採点方針と異なる場合はAI評価を送信せず終了する。これにより、旧版のAPIを新しい指示の検証結果として扱うことを避ける。
