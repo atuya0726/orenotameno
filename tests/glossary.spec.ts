@@ -113,7 +113,7 @@ test('evaluates once, stores feedback separately from quizzes, and reviews a his
   const resultRegion = page.getByRole('region', { name: '説明のチェック結果' });
   const resultBox = await resultRegion.boundingBox();
   const formBox = await page.locator('.explanation-form').boundingBox();
-  expect(resultBox!.y + resultBox!.height).toBeLessThan(formBox!.y);
+  expect(formBox!.y + formBox!.height).toBeLessThan(resultBox!.y);
   await expect(page.locator('.term-reference')).toHaveCount(0);
   const exampleToggle = page.getByRole('button', { name: '説明例を見る', exact: true });
   await expect(exampleToggle).toHaveAttribute('aria-expanded', 'false');
