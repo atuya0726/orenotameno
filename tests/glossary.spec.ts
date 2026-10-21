@@ -99,7 +99,7 @@ test('searches terms and persists drafts without exposing the reference first', 
   await page.reload(); await expect(textbox(page)).toHaveValue('');
 });
 
-test('evaluates once, stores feedback separately from quizzes, and reviews a historical explanation', async ({ page }) => {
+test('evaluates once and preserves learning progress separately from quizzes', async ({ page }) => {
   let calls = 0;
   await page.route('**/api/glossary/evaluate', async route => {
     calls++; expect(route.request().postDataJSON()).toEqual({ termId: term.id, text, usedVoice: true });
@@ -131,13 +131,13 @@ test('evaluates once, stores feedback separately from quizzes, and reviews a his
   await expect(page.getByText('OpenAI · gpt-6-luna')).toHaveCount(0);
   expect(calls).toBe(1); expect(await entries(page, 'orenotameno-sc')).toEqual([]);
   expect(await entries(page)).toHaveLength(1);
-  await page.getByRole('link', { name: '説明の履歴', exact: true }).click();
-  await page.reload(); await page.getByRole('link', { name: '見直す', exact: true }).click();
-  await expect(page.locator('.saved-explanation')).toContainText(text);
-  await expect(page.getByRole('button', { name: '説明例を見る', exact: true })).toHaveAttribute('aria-expanded', 'false');
-  await expect(page.locator('.term-reference')).toHaveCount(0);
-  await expect(page.locator('.glossary-result-heading')).toHaveText('判定合格深掘りできた');
-  await expect(page.getByRole('link', { name: '次の用語へ' })).toBeVisible();
+  await page.goto('/glossary');
+  await page.getByRole('textbox', { name: '用語を検索' }).fill('Digital signature');
+  await expect(page.locator('.term-card .pill')).toHaveText('合格 ＋ 深掘りできた');
+  await page.getByRole('link', { name: '説明する', exact: true }).click();
+  await expect(textbox(page)).toHaveValue('');
+  await expect(page.getByRole('region', { name: '説明のチェック結果' })).toHaveCount(0);
+  expect(calls).toBe(1);
 });
 
 test('celebrates one deeper point while leaving other optional points unexplained', async ({ page }) => {
@@ -217,10 +217,6 @@ test('shows compact decision results and allows another spoken attempt', async (
   await expect(page.getByRole('img', { name: '説明できた', exact: true })).toHaveCount(term.criteria.length);
   expect(calls).toBe(2);
   await expect.poll(async () => (await entries(page)).length).toBe(2);
-  await page.getByRole('link', { name: '説明の履歴', exact: true }).click();
-  await page.reload();
-  await page.getByRole('link', { name: '見直す', exact: true }).first().click();
-  await expect(page.locator('.rubric-compact')).toBeVisible();
 });
 
 test('shows and persists choice-only results without requiring probabilities or a cutoff', async ({ page }) => {
@@ -239,13 +235,9 @@ test('shows and persists choice-only results without requiring probabilities or 
   const stored = (await entries(page))[0].evaluation as { coveredProbabilityThreshold?: number; criteria: { decision: unknown }[] };
   expect(stored.coveredProbabilityThreshold).toBeUndefined();
   expect(stored.criteria[0].decision).toEqual({ choice: 'covered' });
-  await page.getByRole('link', { name: '説明の履歴', exact: true }).click();
-  await page.reload(); await page.getByRole('link', { name: '見直す', exact: true }).click();
-  await expect(page.getByLabel('評価 合格 ＋ 深掘りできた', { exact: true })).toBeVisible();
-  await expect(page.getByRole('img', { name: '判定保留', exact: true })).toHaveCount(0);
 });
 
-test('preserves historical probability cutoffs and pending decisions in history', async ({ page }) => {
+test('preserves probability cutoffs and pending decisions in saved evaluations', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   const result = {
     ...evaluation(), api: 'decisions', coveredProbabilityThreshold: 0.7, grade: 'C', status: 'partial', covered: 2, summary: '', followUp: undefined,
@@ -267,10 +259,6 @@ test('preserves historical probability cutoffs and pending decisions in history'
   const stored = (await entries(page))[0].evaluation as typeof result;
   expect(stored.coveredProbabilityThreshold).toBe(0.7);
   expect(stored.criteria[0].decision).toEqual(result.criteria[0].decision);
-  await page.getByRole('link', { name: '説明の履歴', exact: true }).click();
-  await page.reload(); await page.getByRole('link', { name: '見直す', exact: true }).click();
-  await expect(page.getByRole('img', { name: '判定保留', exact: true })).toHaveCount(1);
-  await expect(page.locator('.rubric-missing')).toContainText('69.9% / 70%');
 });
 
 test('does not display historical follow-up suggestions or allow uncollected term practice', async ({ page }) => {
@@ -528,15 +516,23 @@ test('limits voice input to 1000 characters including existing text and stops re
   await expect(textbox(page)).toHaveValue(`${'あ'.repeat(990)}\n${'い'.repeat(9)}`);
 });
 
-test('backs up and merges history without duplicating paid evaluations', async ({ page }) => {
+test('removes explanation history while keeping learning progress', async ({ page }) => {
   await page.route('**/api/glossary/evaluate', route => route.fulfill({ json: evaluation() }));
   await page.goto('/glossary/digital-signature'); await speakExplanation(page, text); await check(page).click();
   await expect(page.getByRole('region', { name: '説明のチェック結果' })).toBeVisible();
-  await page.getByRole('link', { name: '説明の履歴', exact: true }).click();
-  const downloading = page.waitForEvent('download'); await page.getByRole('button', { name: '記録を書き出す' }).click();
-  const path = await (await downloading).path(); expect(path).toBeTruthy();
-  await page.getByLabel('用語学習のバックアップ').setInputFiles(path!);
-  await expect(page.getByText('用語の学習記録を取り込みました。')).toBeVisible(); expect(await entries(page)).toHaveLength(1);
+  await expect.poll(async () => (await entries(page)).length).toBe(1);
+  const attemptId = (await entries(page))[0].id;
+  await page.goto('/glossary/history');
+  await expect(page).toHaveURL(/\/glossary$/);
+  await expect(page.getByRole('heading', { name: '用語学習', exact: true })).toBeVisible();
+  await expect(page.getByRole('link', { name: '説明の履歴', exact: true })).toHaveCount(0);
+  await page.getByRole('textbox', { name: '用語を検索' }).fill('Digital signature');
+  await expect(page.locator('.term-card .pill')).toHaveText('合格 ＋ 深掘りできた');
+  await page.goto(`/glossary/digital-signature?attempt=${attemptId}`);
+  await expect(textbox(page)).toHaveValue('');
+  await expect(page.getByRole('region', { name: '説明のチェック結果' })).toHaveCount(0);
+  await expect(page.getByText(/過去の説明を見る|これまで\d+回説明/)).toHaveCount(0);
+  await expect(page.locator('.term-history, .saved-explanation, .glossary-history-list')).toHaveCount(0);
 });
 
 test('fits the glossary, explanation form, and compact C result at mobile width', async ({ page }) => {

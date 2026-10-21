@@ -80,19 +80,3 @@ test('cleans up permanently saved scratch work while preserving answer history a
   await page.getByRole('button', { name: '計算機を開く', exact: true }).click();
   await expect(page.getByRole('textbox', { name: '計算式', exact: true })).toHaveValue('');
 });
-
-test('restores drafts from older glossary backups only into the current tab', async ({ page, context }) => {
-  await page.goto('/glossary/history');
-  const backup = {
-    version: 1, kind: 'glossary', exportedAt: new Date().toISOString(), attempts: [],
-    drafts: [{ termId: 'digital-signature', text: explanation, referenceViewed: false, usedVoice: false, updatedAt: new Date().toISOString() }],
-  };
-  await page.getByLabel('用語学習のバックアップ').setInputFiles({ name: 'older.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify(backup)) });
-  await expect(page.getByText('用語の学習記録を取り込みました。')).toBeVisible();
-  await page.goto(termPath);
-  await expect(page.getByRole('textbox', { name: 'ディジタル署名についての説明' })).toHaveValue(explanation);
-  await page.close();
-  const other = await context.newPage();
-  await other.goto(termPath);
-  await expect(other.getByRole('textbox', { name: 'ディジタル署名についての説明' })).toHaveValue('');
-});

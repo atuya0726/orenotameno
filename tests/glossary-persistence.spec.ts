@@ -63,11 +63,11 @@ test('shows the grade before storage completes and does not reread the full hist
   const reads = await page.evaluate(() => (window as unknown as StorageControl).historyReads);
   await check(page).click();
   await expect(page.getByLabel('評価 合格 ＋ 深掘りできた', { exact: true })).toBeVisible();
-  await expect(page.getByRole('status').filter({ hasText: '履歴を保存中' })).toBeVisible();
+  await expect(page.getByRole('status').filter({ hasText: '評価を保存中' })).toBeVisible();
   await expect.poll(() => page.evaluate(() => Boolean((window as unknown as StorageControl).releaseSave))).toBe(true);
   expect(await page.evaluate(() => (window as unknown as StorageControl).historyReads)).toBe(reads);
   await page.evaluate(() => (window as unknown as StorageControl).releaseSave!());
-  await expect(page.getByRole('status').filter({ hasText: '履歴を保存中' })).toHaveCount(0);
+  await expect(page.getByRole('status').filter({ hasText: '評価を保存中' })).toHaveCount(0);
   await expect(page.getByRole('link', { name: '次の用語へ', exact: true })).toBeVisible();
   expect(await page.evaluate(() => (window as unknown as StorageControl).historyReads)).toBe(reads);
   expect(await storedCount(page)).toBe(1);
@@ -81,19 +81,19 @@ test('retains a failed save across navigation and retries storage without anothe
   await page.route('**/api/glossary/evaluate', route => { calls++; return route.fulfill({ json: evaluation }); });
   await page.goto('/glossary/digital-signature'); await speakExplanation(page, text); await check(page).click();
   await expect(page.getByLabel('評価 合格 ＋ 深掘りできた', { exact: true })).toBeVisible();
-  await expect(page.getByRole('alert')).toContainText('履歴に保存できませんでした');
+  await expect(page.getByRole('alert')).toContainText('学習状況を保存できませんでした');
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   expect(await storedCount(page)).toBe(0);
   expect(await page.evaluate(() => JSON.parse(sessionStorage.getItem('orenotameno:glossary-draft:digital-signature')!).text)).toBe(text);
-  await page.getByRole('link', { name: '説明の履歴', exact: true }).click();
-  await expect(page.locator('.glossary-history-list article')).toHaveCount(1);
-  await page.getByRole('button', { name: '保存を再試行', exact: true }).click();
-  await expect(page.getByRole('button', { name: '保存を再試行', exact: true })).toHaveCount(0);
+  await page.getByRole('link', { name: '用語一覧へ戻る', exact: true }).click();
+  await expect(page.getByRole('status').filter({ hasText: '未保存の評価 1件' })).toBeVisible();
+  await page.getByRole('button', { name: '未保存の評価を保存', exact: true }).click();
+  await expect(page.getByRole('button', { name: '未保存の評価を保存', exact: true })).toHaveCount(0);
   await expect.poll(() => storedCount(page)).toBe(1);
   expect(calls).toBe(1);
   await page.reload();
-  await expect(page.locator('.glossary-history-list article')).toHaveCount(1);
-  await expect(page.locator('.history-explanation')).toHaveText(text);
+  await page.getByRole('textbox', { name: '用語を検索' }).fill('Digital signature');
+  await expect(page.locator('.term-card .pill')).toHaveText('合格 ＋ 深掘りできた');
 });
 
 test('keeps a newer draft when a previous explanation finishes saving after navigation', async ({ page }) => {
