@@ -1,222 +1,149 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { evaluateWithOpenAI, parseAssessment } from './glossary-evaluator';
+import { evaluateWithOpenAI } from './glossary-evaluator';
 import worker from '../worker';
 import { termById } from '../features/glossary/terms';
-import { extraTerm } from '../features/glossary/model';
+import { evaluationSchema, type Term } from '../features/glossary/model';
 
 const term = termById.get('digital-signature')!;
 const text = '署名者の秘密鍵で署名を作り、公開鍵で検証して改ざんを検知します。';
-function assessment() { return { summary: '鍵の役割を説明できています。', criteria: term.criteria.map(c => ({ id: c.id, title: '', level: c.level ?? 'B', status: 'covered', evidence: text, feedback: '要点を正しく説明できています。' })), definition: '', followUp: { name: 'ハッシュ関数', reason: '署名の前に使われるため。', termId: 'hash' } }; }
-function upstream(raw: unknown = assessment(), extra: Record<string, unknown> = {}) {
-  const data = raw as ReturnType<typeof assessment>;
-  const criteria = Array.isArray(data.criteria) && data.criteria.every(c => term.criteria.some(known => known.id === c.id))
-    ? Object.fromEntries(data.criteria.map(({ id, status, evidence, feedback }) => [id, { status, evidence, feedback }])) : data.criteria;
-  return Response.json({ status: 'completed', model: 'gpt-6-luna', output: [{ type: 'reasoning' }, { type: 'message', content: [{ type: 'output_text', text: JSON.stringify({ ...data, criteria }) }] }], ...extra });
+function decision(item: Term = term, missing: string[] = [], wrong: string[] = []) {
+  return { model: 'gpt-6-luna', answers: item.criteria.map(c => ({ type: 'choice', name: c.id, choice: wrong.includes(c.id) ? 'review' : missing.includes(c.id) ? 'missing' : 'covered', confidence: 0.9, probabilities: [{ value: 'covered', probability: 0.9 }, { value: 'missing', probability: 0.05 }, { value: 'review', probability: 0.05 }] })) };
 }
+const fetchDecision = (body: unknown = decision()) => vi.fn().mockResolvedValue(Response.json(body));
 const request = (body: unknown = { termId: term.id, text }, headers = {}) => new Request('https://example.test/api/glossary/evaluate', { method: 'POST', headers: { 'Content-Type': 'application/json', Origin: 'https://example.test', ...headers }, body: JSON.stringify(body) });
 afterEach(() => { vi.unstubAllGlobals(); vi.restoreAllMocks(); });
-describe('LLM評価の検証と集計', () => {
-  it('derives coverage from the returned criteria, not a model-reported score', () => {
-    const raw = assessment(); raw.criteria[1] = { ...raw.criteria[1], status: 'missing', evidence: '' };
-    const result = parseAssessment(raw, term, text, 'gpt-6-luna');
-    expect(result).toMatchObject({ covered: 2, total: 3, status: 'partial', grade: 'C', engine: 'openai' });
-    expect(result.criteria[0].title).toBe(term.criteria[0].title);
-  });
-  it('grades B as the minimum line and A/S on top of it', () => {
-    const layeredTerm = termById.get('normal-distribution')!;
-    const explanation = '平均を中心に左右対称の釣鐘型です。標準偏差で広がりが変わり、平均から1標準偏差に約68%、2標準偏差に約95%が入り、1標準偏差の位置が変曲点です。';
-    const grade = (missing: string[]) => {
-      const raw = { ...assessment(), criteria: layeredTerm.criteria.map(c => ({ id: c.id, title: '', level: c.level ?? 'B', status: missing.includes(c.id) ? 'missing' : 'covered', evidence: missing.includes(c.id) ? '' : explanation, feedback: '要点を確認します。' })) };
-      return parseAssessment(raw, layeredTerm, explanation, 'gpt-6-luna').grade;
-    };
-    expect(grade([])).toBe('S');
-    expect(grade(['inflection'])).toBe('A');
-    expect(grade(['sd'])).toBe('B');
-    expect(grade(['sd', 'ratio', 'inflection'])).toBe('B');
-    expect(grade(['bell'])).toBe('C');
-    // S without A still stays at B
-    expect(grade(['sd'])).toBe('B');
-    const wrong = assessment(); wrong.criteria[4] = { ...wrong.criteria[4], status: 'review', evidence: '公開鍵で検証' };
-    expect(parseAssessment(wrong, term, text, 'gpt-6-luna').grade).toBe('C');
-  });
-  it('uses the term level, not the one the AI returned', () => {
-    const raw = assessment(); raw.criteria = raw.criteria.map(c => ({ ...c, level: 'B' }));
-    expect(parseAssessment(raw, term, text, 'gpt-6-luna').criteria.map(c => c.level)).toEqual(term.criteria.map(c => c.level ?? 'B'));
-  });
-  it('prioritizes a factual error over coverage', () => {
-    const raw = assessment(); raw.criteria[0] = { ...raw.criteria[0], status: 'review', evidence: '公開鍵で検証' };
-    expect(parseAssessment(raw, term, text, 'gpt-6-luna').status).toBe('review');
-  });
-  it('links a follow-up only to a known, different term', () => {
-    expect(parseAssessment(assessment(), term, text, 'gpt-6-luna').followUp).toEqual({ name: 'ハッシュ関数', reason: '署名の前に使われるため。', termId: 'hash' });
-    const self = assessment(); self.followUp.termId = term.id;
-    expect(parseAssessment(self, term, text, 'gpt-6-luna').followUp?.termId).toBeUndefined();
-    const unknown = assessment(); unknown.followUp = { name: '架空認証プロトコル', reason: '認証方式を確認するため。', termId: 'not-in-glossary' };
-    expect(parseAssessment(unknown, term, text, 'gpt-6-luna').followUp).toEqual({ name: '架空認証プロトコル', reason: '認証方式を確認するため。', termId: undefined });
-  });
-  it('lets the AI write criteria and a definition for a suggested term outside the list', () => {
-    const extra = extraTerm('公開鍵基盤');
-    const raw = { ...assessment(), definition: '公開鍵とその持ち主を認証局が証明書で結び付ける仕組みです。', criteria: [{ id: 'ca', title: '認証局が証明書を発行する', level: 'B', status: 'covered', evidence: text, feedback: 'OK' }, { id: 'binding', title: '公開鍵と持ち主を結び付ける', level: 'B', status: 'missing', evidence: '', feedback: '何と何を結び付けるかが足りません。' }, { id: 'chain', title: '証明書チェーンをルート証明書までたどる', level: 'A', status: 'missing', evidence: '', feedback: '信頼の連鎖が足りません。' }, { id: 'revoke', title: 'CRLやOCSPで失効を確認する', level: 'S', status: 'missing', evidence: '', feedback: '失効確認が足りません。' }] };
-    expect(parseAssessment(raw, extra, text, 'gpt-6-luna')).toMatchObject({ status: 'partial', grade: 'C', covered: 1, total: 2, definition: raw.definition, criteria: [{ title: '認証局が証明書を発行する', level: 'B' }, { level: 'B' }, { level: 'A' }, { level: 'S' }] });
-    expect(parseAssessment({ ...raw, criteria: raw.criteria.slice(1) }, extra, text, 'gpt-6-luna')).toMatchObject({ grade: 'C', covered: 0, total: 1 });
-    expect(parseAssessment({ ...raw, criteria: raw.criteria.slice(0, 3) }, extra, text, 'gpt-6-luna')).toMatchObject({ grade: 'C', covered: 1, total: 2 });
-    expect(() => parseAssessment({ ...raw, criteria: raw.criteria.slice(2) }, extra, text, 'gpt-6-luna')).toThrow('評価項目');
-    expect(() => parseAssessment({ ...raw, criteria: [raw.criteria[0], raw.criteria[0]] }, extra, text, 'gpt-6-luna')).toThrow('評価項目');
-    expect(() => parseAssessment({ ...raw, criteria: [{ ...raw.criteria[0], title: ' ' }] }, extra, text, 'gpt-6-luna')).toThrow('評価項目');
-    expect(() => parseAssessment({ ...raw, definition: '' }, extra, text, 'gpt-6-luna')).toThrow('評価項目');
-  });
-  it('accepts a single B point for built-in and generated terms and keeps the grade at B', () => {
-    const serverCertificate = termById.get('certificates')!;
-    const raw = { ...assessment(), definition: '', criteria: serverCertificate.criteria.map(c => ({ id: c.id, title: '', level: 'B', status: 'covered', evidence: text, feedback: '説明できています。' })) };
-    expect(parseAssessment(raw, serverCertificate, text, 'gpt-6-luna')).toMatchObject({ grade: 'B', status: 'covered', covered: 1, total: 1 });
-    const generated = { ...raw, definition: '公開鍵とその持ち主を認証局が証明書で結び付ける仕組みです。', criteria: [{ ...raw.criteria[0], title: '公開鍵と持ち主を結び付ける' }] };
-    expect(parseAssessment(generated, extraTerm('公開鍵基盤'), text, 'gpt-6-luna')).toMatchObject({ grade: 'B', covered: 1, total: 1 });
-    generated.criteria[0].evidence = '入力にない引用';
-    expect(() => parseAssessment(generated, extraTerm('公開鍵基盤'), text, 'gpt-6-luna')).toThrow('引用');
-  });
-  it('accepts a crashing explanation without requiring fast tracking or other compression techniques', () => {
-    const crashing = termById.get('schedule-compression')!;
-    const explanation = 'クリティカルパス上の作業に人員などの資源を追加して、期間を短縮することです。';
-    const raw = { ...assessment(), criteria: [{ id: 'meaning', title: '', level: 'B', status: 'covered', evidence: explanation, feedback: '説明できています。' }] };
-    const result = parseAssessment(raw, crashing, explanation, 'gpt-6-luna');
-    expect(result).toMatchObject({ status: 'covered', grade: 'B', covered: 1, total: 1 });
-    expect(result.criteria).toHaveLength(1);
-    expect(result.criteria[0].title).not.toContain('ファストトラッキング');
-  });
-  it('accepts the CIA overview without requiring definitions of authenticity or other properties', () => {
-    const overview = termById.get('security-properties')!;
-    const explanation = '情報セキュリティの基本の3要素は、機密性・完全性・可用性です。';
-    const raw = { ...assessment(), criteria: [{ id: 'cia', title: '', level: 'B', status: 'covered', evidence: explanation, feedback: '基本の3要素を挙げられています。' }] };
-    const result = parseAssessment(raw, overview, explanation, 'gpt-6-luna');
-    expect(result).toMatchObject({ status: 'covered', grade: 'B', covered: 1, total: 1 });
-    expect(result.criteria).toHaveLength(1);
-    expect(result.criteria[0].title).not.toContain('真正性');
-  });
-  it('accepts the quantum computing overview without requiring specialist topics', () => {
-    const quantum = termById.get('quantum-computer')!;
-    const explanation = '量子ビットの重ね合わせを利用して計算するコンピュータです。';
-    const raw = { ...assessment(), criteria: [{ id: 'qubit', title: '', level: 'B', status: 'covered', evidence: explanation, feedback: '基本を説明できています。' }, { id: 'crypto', title: '', level: 'A', status: 'missing', evidence: '', feedback: '暗号への影響はまだ説明していません。' }] };
-    const result = parseAssessment(raw, quantum, explanation, 'gpt-6-luna');
-    expect(result).toMatchObject({ status: 'covered', grade: 'B', covered: 1, total: 1 });
-    expect(result.criteria).toHaveLength(2);
-    const applied = explanation + '十分な規模になれば、RSAなど一部の暗号の解読を速くできる可能性があります。';
-    const complete = { ...raw, criteria: raw.criteria.map(c => ({ ...c, status: 'covered', evidence: applied })) };
-    expect(parseAssessment(complete, quantum, applied, 'gpt-6-luna')).toMatchObject({ status: 'covered', grade: 'A' });
-  });
-  it('rejects invented quotes, empty evidence, unknown and duplicated criteria', () => {
-    const invented = assessment(); invented.criteria[0].evidence = '公開鍵で署名を作る';
-    expect(() => parseAssessment(invented, term, text, 'gpt-6-luna')).toThrow('引用');
-    const empty = assessment(); empty.criteria[0].evidence = '';
-    expect(() => parseAssessment(empty, term, text, 'gpt-6-luna')).toThrow('引用');
-    const unknown = assessment(); unknown.criteria[0].id = 'not-a-criterion';
-    expect(() => parseAssessment(unknown, term, text, 'gpt-6-luna')).toThrow('評価項目');
-    const duplicate = assessment(); duplicate.criteria[0].id = duplicate.criteria[1].id;
-    expect(() => parseAssessment(duplicate, term, text, 'gpt-6-luna')).toThrow('評価項目');
-  });
-  it('keeps missing explanations distinct from incorrect explanations', () => {
-    const raw = assessment(); raw.criteria = raw.criteria.map(c => ({ ...c, status: 'missing', evidence: '' }));
-    expect(parseAssessment(raw, term, text, 'gpt-6-luna')).toMatchObject({ status: 'unconfirmed', covered: 0 });
-  });
-});
-describe('OpenAI Responses API', () => {
-  it('uses Luna, strict structured output, no storage/tools, and bounded output', async () => {
-    const fetcher = vi.fn().mockResolvedValue(upstream());
+
+describe('OpenAI Decisions API', () => {
+  it('assesses all fixed criteria in one Luna request without generating feedback', async () => {
+    const fetcher = fetchDecision();
     const result = await evaluateWithOpenAI(term, text, 'test-key', undefined, fetcher);
-    expect(result.status).toBe('covered');
+    expect(result).toMatchObject({ api: 'decisions', engine: 'openai', model: 'gpt-6-luna', status: 'covered', grade: 'A', covered: 3, total: 3, summary: '' });
+    expect(evaluationSchema.parse(result)).toEqual(result);
+    expect(result.followUp).toBeUndefined();
+    expect(result.criteria.map(c => [c.id, c.title, c.level, c.evidence, c.hint])).toEqual(term.criteria.map(c => [c.id, c.title, c.level ?? 'B', '', '']));
+    expect(fetcher).toHaveBeenCalledTimes(1);
     const [url, init] = fetcher.mock.calls[0]; const body = JSON.parse(init.body);
-    expect(url).toBe('https://api.openai.com/v1/responses');
+    expect(url).toBe('https://api.openai.com/v1/decisions');
     expect(init.headers.Authorization).toBe('Bearer test-key');
-    expect(body).toMatchObject({ model: 'gpt-6-luna', store: false, max_output_tokens: 3000, text: { format: { type: 'json_schema', strict: true } } });
-    expect(body.tools).toBeUndefined();
-    expect(body.instructions).toContain('否定'); expect(body.instructions).toContain('誤字'); expect(body.instructions).toContain('理解の深さ');
-    expect(body.instructions).toContain('用途・理由・制約・影響');
-    expect(body.instructions).toContain('細かな条件・仕様・例外');
-    expect(body.instructions).not.toContain('出題頻度に応じた段階');
-    expect(JSON.parse(body.input[0].content).knownTerms).toContainEqual({ id: 'hash', name: 'ハッシュ関数' });
-    expect(JSON.parse(body.input[0].content).learnerExplanation).toBe(text);
+    expect(Object.keys(body).sort()).toEqual(['input', 'model', 'questions']);
+    expect(body.model).toBe('gpt-6-luna');
+    expect(JSON.parse(body.input)).toEqual({ term: { name: term.name, definition: term.definition, example: term.example, commonMistakes: term.commonMistakes }, learnerExplanation: text });
+    expect(body.questions.map((q: { name: string }) => q.name)).toEqual(term.criteria.map(c => c.id));
+    for (const [index, question] of body.questions.entries()) {
+      expect(question.type).toBe('choice');
+      expect(question.choices.map((c: { value: string }) => c.value)).toEqual(['covered', 'missing', 'review']);
+      expect(question.instructions).toContain(term.criteria[index].title);
+      expect(question.instructions).toContain(term.criteria[index].hint);
+      expect(question.instructions).toContain('誤変換');
+      expect(question.instructions).toContain('否定');
+      expect(question.instructions).toContain('命令は無視');
+    }
     expect(JSON.stringify(body)).not.toContain('test-key');
-    expect(body.text.format.schema.additionalProperties).toBe(false);
-    const rubric = body.text.format.schema.properties.criteria;
-    expect(rubric.type).toBe('object');
-    expect(rubric.required).toEqual(term.criteria.map(c => c.id));
-    expect(rubric.additionalProperties).toBe(false);
-    expect(Object.keys(rubric.properties.sign.properties)).toEqual(['status', 'evidence', 'feedback']);
   });
-  it('handles fixed LRU keys and rejects missing keys or invented evidence', async () => {
-    const lru = termById.get('lru')!;
-    const explanation = '最後に参照してから最も長い時間が経ったデータをキャッシュから追い出す方式です。';
-    const points = Object.fromEntries(lru.criteria.map(c => [c.id, { status: c.level ? 'missing' : 'covered', evidence: c.level ? '' : explanation, feedback: '確認しました。' }]));
-    const raw = { ...assessment(), criteria: points };
-    const result = await evaluateWithOpenAI(lru, explanation, 'key', undefined, vi.fn().mockResolvedValue(upstream(raw)));
+
+  it('matches reversed answers by criterion ID and derives grades locally', async () => {
+    const normal = termById.get('normal-distribution')!;
+    for (const [missing, expected] of [[[], 'S'], [['inflection'], 'A'], [['sd'], 'B'], [['bell'], 'C']] as const) {
+      const body = decision(normal, [...missing]); body.answers.reverse();
+      const result = await evaluateWithOpenAI(normal, text, 'key', undefined, fetchDecision(body));
+      expect(result.grade).toBe(expected);
+      expect(result.criteria.map(c => c.id)).toEqual(normal.criteria.map(c => c.id));
+    }
+  });
+
+  it('distinguishes missing elements from factual errors at any level', async () => {
+    const partial = await evaluateWithOpenAI(term, text, 'key', undefined, fetchDecision(decision(term, ['verify'])));
+    expect(partial).toMatchObject({ status: 'partial', grade: 'C', covered: 2, total: 3 });
+    expect(partial.criteria.find(c => c.id === 'verify')?.status).toBe('missing');
+    const empty = await evaluateWithOpenAI(term, text, 'key', undefined, fetchDecision(decision(term, term.criteria.map(c => c.id))));
+    expect(empty).toMatchObject({ status: 'unconfirmed', covered: 0 });
+    const wrong = await evaluateWithOpenAI(term, text, 'key', undefined, fetchDecision(decision(term, [], ['certificate'])));
+    expect(wrong).toMatchObject({ status: 'review', grade: 'C', covered: 3 });
+    expect(wrong.criteria.find(c => c.id === 'certificate')?.status).toBe('review');
+  });
+
+  it('accepts a basic-only term without inventing additional requirements', async () => {
+    const certificate = termById.get('certificates')!;
+    const result = await evaluateWithOpenAI(certificate, text, 'key', undefined, fetchDecision(decision(certificate)));
     expect(result).toMatchObject({ grade: 'B', covered: 1, total: 1 });
-    expect(result.criteria.map(c => c.id)).toEqual(lru.criteria.map(c => c.id));
-    const missing = { ...points }; delete missing.oldest;
-    await expect(evaluateWithOpenAI(lru, explanation, 'key', undefined, vi.fn().mockResolvedValue(upstream({ ...raw, criteria: missing })))).rejects.toThrow('評価形式');
-    const invented = { ...points, oldest: { ...points.oldest, evidence: '入力に存在しない説明' } };
-    await expect(evaluateWithOpenAI(lru, explanation, 'key', undefined, vi.fn().mockResolvedValue(upstream({ ...raw, criteria: invented })))).rejects.toMatchObject({ code: 'AI_EVIDENCE_INVALID' });
+    expect(result.criteria).toHaveLength(1);
+    const quantum = termById.get('quantum-computer')!;
+    const overview = await evaluateWithOpenAI(quantum, text, 'key', undefined, fetchDecision(decision(quantum, ['crypto'])));
+    expect(overview).toMatchObject({ grade: 'B', covered: 1, total: 1 });
+    expect(overview.criteria).toHaveLength(2);
   });
-  it('distinguishes the output limit from other incomplete responses', async () => {
-    const fetcher = vi.fn().mockResolvedValue(upstream(assessment(), { status: 'incomplete', incomplete_details: { reason: 'max_output_tokens' } }));
-    await expect(evaluateWithOpenAI(term, text, 'key', undefined, fetcher)).rejects.toMatchObject({ code: 'AI_OUTPUT_LIMIT' });
-    expect(fetcher).toHaveBeenCalledTimes(1);
+
+  it('rejects missing, duplicate, and unknown answers rather than saving partial grades', async () => {
+    const body = decision();
+    const invalid = [body.answers.slice(1), [...body.answers.slice(1), body.answers[1]], [{ ...body.answers[0], name: 'invented' }, ...body.answers.slice(1)]];
+    for (const answers of invalid) await expect(evaluateWithOpenAI(term, text, 'key', undefined, fetchDecision({ ...body, answers }))).rejects.toMatchObject({ code: 'AI_CRITERIA_INVALID' });
   });
-  it('identifies timeouts while connecting or reading the response body without retrying', async () => {
+
+  it('rejects refusals and malformed decisions', async () => {
+    const body = decision();
+    await expect(evaluateWithOpenAI(term, text, 'key', undefined, fetchDecision({ ...body, answers: [{ type: 'refusal', name: 'sign' }, ...body.answers.slice(1)] }))).rejects.toMatchObject({ status: 422, code: 'AI_REFUSED' });
+    for (const invalid of [{}, { model: 'gpt-6-luna', answers: [] }, { ...body, answers: [{ type: 'choice', name: 'sign', choice: 'maybe' }] }, { ...body, status: 'incomplete' }]) {
+      await expect(evaluateWithOpenAI(term, text, 'key', undefined, fetchDecision(invalid))).rejects.toMatchObject({ code: 'AI_RESPONSE_INVALID' });
+    }
+  });
+
+  it('does not call the provider for an empty rubric or an unsupported configured model', async () => {
+    const fetcher = vi.fn();
+    await expect(evaluateWithOpenAI({ ...term, criteria: [] }, text, 'key', undefined, fetcher)).rejects.toMatchObject({ code: 'AI_TERM_UNSUPPORTED' });
+    await expect(evaluateWithOpenAI(term, text, 'key', 'unsupported-model', fetcher)).rejects.toMatchObject({ status: 503, code: 'AI_MODEL_UNSUPPORTED' });
+    expect(fetcher).not.toHaveBeenCalled();
+  });
+
+  it('handles connection, timeout, and unreadable-body failures without retrying', async () => {
     const timeout = new DOMException('The operation timed out', 'TimeoutError');
-    const connecting = vi.fn().mockRejectedValue(timeout);
-    await expect(evaluateWithOpenAI(term, text, 'key', undefined, connecting)).rejects.toMatchObject({ status: 504, code: 'AI_TIMEOUT' });
-    expect(connecting).toHaveBeenCalledTimes(1);
-    const reading = vi.fn().mockResolvedValue({ ok: true, json: () => Promise.reject(timeout) });
-    await expect(evaluateWithOpenAI(term, text, 'key', undefined, reading)).rejects.toMatchObject({ status: 504, code: 'AI_TIMEOUT' });
-    expect(reading).toHaveBeenCalledTimes(1);
+    const cases = [
+      [vi.fn().mockRejectedValue(timeout), 'AI_TIMEOUT'],
+      [vi.fn().mockRejectedValue(new Error('offline')), 'AI_CONNECTION_FAILED'],
+      [vi.fn().mockResolvedValue({ ok: true, json: () => Promise.reject(timeout) }), 'AI_TIMEOUT'],
+      [vi.fn().mockResolvedValue(new Response('not JSON')), 'AI_RESPONSE_UNREADABLE'],
+    ] as const;
+    for (const [fetcher, code] of cases) {
+      await expect(evaluateWithOpenAI(term, text, 'key', undefined, fetcher)).rejects.toMatchObject({ code });
+      expect(fetcher).toHaveBeenCalledTimes(1);
+    }
   });
-  it('does not save incomplete outputs or refusals', async () => {
-    await expect(evaluateWithOpenAI(term, text, 'key', undefined, vi.fn().mockResolvedValue(upstream(assessment(), { status: 'incomplete' })))).rejects.toThrow('完了しませんでした');
-    const refusal = upstream({}, { output: [{ type: 'message', content: [{ type: 'refusal' }] }] });
-    await expect(evaluateWithOpenAI(term, text, 'key', undefined, vi.fn().mockResolvedValue(refusal))).rejects.toThrow('評価を得られませんでした');
-  });
-  it('does not retry a rate limit or expose upstream error details', async () => {
-    const fetcher = vi.fn().mockResolvedValue(Response.json({ error: 'private provider details' }, { status: 429 }));
-    await expect(evaluateWithOpenAI(term, text, 'key', undefined, fetcher)).rejects.toThrow('利用上限');
-    expect(fetcher).toHaveBeenCalledTimes(1);
+
+  it('does not retry provider errors or expose their private response bodies', async () => {
+    for (const [status, code] of [[429, 'AI_RATE_LIMITED'], [401, 'AI_AUTH_FAILED'], [403, 'AI_AUTH_FAILED'], [500, 'AI_UPSTREAM_ERROR']] as const) {
+      const fetcher = vi.fn().mockResolvedValue(Response.json({ error: 'private provider details' }, { status }));
+      await expect(evaluateWithOpenAI(term, text, 'key', undefined, fetcher)).rejects.toMatchObject({ code, upstreamStatus: status });
+      expect(fetcher).toHaveBeenCalledTimes(1);
+    }
   });
 });
+
 describe('Worker API boundary', () => {
-  it('correlates failures without logging learner text, custom terms or provider secrets', async () => {
+  it('correlates failures without logging learner text or provider secrets', async () => {
     const logger = vi.spyOn(console, 'error').mockImplementation(() => {});
-    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(upstream(assessment(), { status: 'incomplete', incomplete_details: { reason: 'max_output_tokens' } })));
-    const res = await worker.fetch(request({ termId: 'extra:個別に入力した用語', text: '個人の説明文はログに記録しないこと。' }), { OPENAI_API_KEY: 'private-test-key' });
+    vi.stubGlobal('fetch', fetchDecision({ model: 'gpt-6-luna', answers: [] }));
+    const res = await worker.fetch(request({ termId: term.id, text: '個人の説明文はログに記録しないこと。' }), { OPENAI_API_KEY: 'private-test-key' });
     expect(res.status).toBe(502);
     const body = await res.json() as { error: string; code: string; reference: string };
-    expect(body.code).toBe('AI_OUTPUT_LIMIT');
+    expect(body.code).toBe('AI_RESPONSE_INVALID');
     expect(body.reference).toMatch(/^[a-f0-9]{8}$/);
     expect(body.error).toContain(body.reference);
     expect(logger).toHaveBeenCalledTimes(1);
-    expect(JSON.parse(logger.mock.calls[0][0])).toMatchObject({ event: 'glossary_evaluation_failed', code: body.code, reference: body.reference, termId: 'extra', status: 502 });
+    expect(JSON.parse(logger.mock.calls[0][0])).toMatchObject({ event: 'glossary_evaluation_failed', code: body.code, reference: body.reference, termId: term.id, status: 502 });
     const logs = JSON.stringify(logger.mock.calls);
     expect(logs).not.toContain('個人の説明文');
-    expect(logs).not.toContain('個別に入力した用語');
     expect(logs).not.toContain('private-test-key');
   });
-  it('returns a real evaluation with no caching', async () => {
-    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(upstream()));
+  it('returns a decision-based evaluation with no caching', async () => {
+    vi.stubGlobal('fetch', fetchDecision());
     const res = await worker.fetch(request(), { OPENAI_API_KEY: 'test-key' });
     expect(res.status).toBe(200); expect(res.headers.get('Cache-Control')).toBe('no-store');
-    expect(await res.json()).toMatchObject({ engine: 'openai', model: 'gpt-6-luna', status: 'covered' });
+    expect(await res.json()).toMatchObject({ engine: 'openai', api: 'decisions', model: 'gpt-6-luna', status: 'covered' });
   });
-  it('evaluates a suggested term outside the built-in list', async () => {
-    const raw = { ...assessment(), definition: '公開鍵とその持ち主を認証局が証明書で結び付ける仕組みです。', criteria: [{ id: 'ca', title: '認証局', level: 'B', status: 'covered', evidence: text, feedback: 'OK' }, { id: 'binding', title: '結び付け', level: 'B', status: 'covered', evidence: text, feedback: 'OK' }, { id: 'chain', title: 'チェーン', level: 'A', status: 'covered', evidence: text, feedback: 'OK' }, { id: 'revoke', title: '失効', level: 'S', status: 'missing', evidence: '', feedback: '失効確認が足りません。' }] };
-    const fetcher = vi.fn().mockResolvedValue(upstream(raw)); vi.stubGlobal('fetch', fetcher);
-    const res = await worker.fetch(request({ termId: 'extra:公開鍵基盤', text }), { OPENAI_API_KEY: 'key' });
-    expect(res.status).toBe(200); expect(await res.json()).toMatchObject({ status: 'covered', grade: 'A', definition: raw.definition });
-    expect(JSON.parse(JSON.parse(fetcher.mock.calls[0][1].body).input[0].content).term).toMatchObject({ name: '公開鍵基盤', criteria: [] });
-    expect((await worker.fetch(request({ termId: `extra:${'あ'.repeat(41)}`, text }), { OPENAI_API_KEY: 'key' })).status).toBe(404);
-  });
-  it('does not call a paid provider without a key, valid term and input', async () => {
+  it('does not call a paid provider without a key, a collected term and valid input', async () => {
     const fetcher = vi.fn(); vi.stubGlobal('fetch', fetcher);
     expect((await worker.fetch(request(), {})).status).toBe(503);
-    expect((await worker.fetch(request({ termId: 'fake', text }), { OPENAI_API_KEY: 'key' })).status).toBe(404);
+    for (const termId of ['fake', 'extra:公開鍵基盤']) expect((await worker.fetch(request({ termId, text }), { OPENAI_API_KEY: 'key' })).status).toBe(404);
     expect((await worker.fetch(request({ termId: term.id, text: '短い' }), { OPENAI_API_KEY: 'key' })).status).toBe(400);
-    expect((await worker.fetch(request({ termId: term.id, text: 'あ'.repeat(1000) }), {})).status).toBe(503);
     const tooLong = await worker.fetch(request({ termId: term.id, text: 'あ'.repeat(1001) }), { OPENAI_API_KEY: 'key' });
     expect(tooLong.status).toBe(400); expect(await tooLong.json()).toEqual({ error: '用語と10〜1,000文字の説明を送信してください。' });
     expect((await worker.fetch(request({ termId: term.id, text, model: 'expensive' }), { OPENAI_API_KEY: 'key' })).status).toBe(400);

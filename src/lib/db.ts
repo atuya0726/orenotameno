@@ -109,7 +109,7 @@ export async function saveReviewFlag(attemptId: string, flag: ReviewFlag, active
   await updateAttemptReview(attemptId, patch);
 }
 export async function saveReviewWord(term: string, active: boolean): Promise<void> {
-  if (!isQuestionTerm(term)) throw new Error('問題に含まれていない単語は登録できません。');
+  if (active && !isQuestionTerm(term)) throw new Error('問題に含まれていない単語は登録できません。');
   const db = await openDatabase();
   const tx = db.transaction(['attempts', 'cards', 'reviewWords'], 'readwrite');
   const done = completed(tx);

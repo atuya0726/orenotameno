@@ -756,6 +756,9 @@ svg { flex-shrink: 0; }
 .rubric-item h3 { font-size: 14px; line-height: 1.8; margin-top: var(--space-1); }
 .rubric-item p, .rubric-item blockquote { margin: var(--space-2) 0 0; font-size: 12px; line-height: 1.9; color: var(--text-secondary); }
 .rubric-item blockquote { padding-left: var(--space-3); border-left: 2px solid var(--brand); overflow-wrap: anywhere; }
+.rubric-compact .rubric-item { align-items: center; padding: var(--space-3) var(--space-4); }
+.rubric-compact .rubric-item h3 { margin: 0; }
+.rubric-compact .rubric-icon { flex-shrink: 0; padding: 0; }
 .term-reference { margin: 0 0 var(--space-5); border: 1px solid var(--border); border-radius: var(--radius-card); padding: var(--space-6); background: var(--surface-secondary); }
 .term-reference-disclosure { border: 1px solid var(--border); border-radius: var(--radius-card); margin-bottom: var(--space-4); overflow: hidden; }
 .term-reference-toggle { width: 100%; justify-content: flex-start; min-height: 48px; border-radius: 0; font-size: 13px; color: var(--text-secondary); }
@@ -814,6 +817,3 @@ svg { flex-shrink: 0; }
 .review-goal-option strong, .review-goal-option small { display: block; }
 .review-goal-option small { margin-top: var(--space-1); font-size: 12px; line-height: 1.8; color: var(--text-secondary); }
 .review-goal-result { margin: var(--space-4) 0; font-size: 13px; line-height: 1.9; }
-.glossary-follow-up { padding: var(--space-6); margin: var(--space-4) 0; border: 1px solid var(--border); border-radius: var(--radius-card); background: var(--surface-secondary); }
-.glossary-follow-up h3 { margin: var(--space-2) 0; font-size: 17px; overflow-wrap: anywhere; }
-.glossary-follow-up p { margin: 0 0 var(--space-4); font-size: 13px; line-height: 1.9; }

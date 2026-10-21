@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 // Levels describe exam-relevant depth: core meaning, applications, then specific details. Missing levels are B.
-// The same wording feeds the AI instructions and the feedback screen, so edit it here only.
+// Shared wording for the feedback screen and review goals.
 export const levels = ['B', 'A', 'S'] as const;
 export type Level = typeof levels[number];
 export const levelInfo: Record<Level, { name: string; description: string }> = {
@@ -34,13 +34,13 @@ export function gradeOf(criteria: CriterionResult[]): Grade {
   }
   return grade;
 }
-// A follow-up term the AI suggests; termId is set only when it matches a built-in term.
+// Retain earlier AI suggestions when reading historical attempts/backups.
 export const followUpSchema = z.object({ name: z.string().min(1).max(40), reason: z.string(), termId: z.string().optional() });
 export const evaluationSchema = z.object({
   version: z.literal(1), status: z.enum(['covered', 'partial', 'review', 'unconfirmed']),
   covered: z.number().int().nonnegative(), total: z.number().int().positive(),
   criteria: z.array(criterionResultSchema), summary: z.string(),
-  engine: z.literal('openai'), model: z.string().min(1),
+  engine: z.literal('openai'), api: z.literal('decisions').optional(), model: z.string().min(1),
   followUp: followUpSchema.optional(), definition: z.string().optional(), grade: z.enum(grades).optional(),
   // Older evaluations stored these before wording feedback was dropped.
   concerns: z.array(z.object({ message: z.string(), evidence: z.string() })).optional(), improvedExplanation: z.string().optional(),
@@ -62,15 +62,3 @@ export const glossaryAttemptSchema = z.object({
 export type GlossaryAttempt = z.infer<typeof glossaryAttemptSchema>;
 export type GlossarySnapshot = { attempts: GlossaryAttempt[]; drafts: GlossaryDraft[] };
 export const glossaryBackupSchema = z.object({ version: z.literal(1), kind: z.literal('glossary'), exportedAt: z.string().datetime(), attempts: z.array(glossaryAttemptSchema).max(50_000), drafts: z.array(glossaryDraftSchema).max(500) });
-
-// Terms suggested by the AI outside the built-in list. The AI writes their criteria and definition when evaluating.
-export const EXTRA_TERM_PREFIX = 'extra:';
-export const extraTermNameSchema = z.string().trim().min(1).max(40);
-export function extraTerm(name: string, fromTermId?: string): Term {
-  return { id: `${EXTRA_TERM_PREFIX}${name}`, name, reading: '', category: '追加の用語', definition: '', example: '', criteria: [], commonMistakes: [], related: fromTermId ? [fromTermId] : [] };
-}
-export function extraTermName(termId: string) {
-  if (!termId.startsWith(EXTRA_TERM_PREFIX)) return undefined;
-  const parsed = extraTermNameSchema.safeParse(termId.slice(EXTRA_TERM_PREFIX.length));
-  return parsed.success ? parsed.data : undefined;
-}

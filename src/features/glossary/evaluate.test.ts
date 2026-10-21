@@ -59,6 +59,13 @@ describe('用語学習のバックアップ', () => {
     expect(restored.evaluation).toEqual(attempt.evaluation);
     expect(restored.reference).toBe(attempt.reference);
   });
+  it('round-trips compact Decisions results and preserves older uncollected-term records', () => {
+    const compact: Evaluation = { ...evaluation, api: 'decisions', grade: 'A', summary: '', criteria: term.criteria.map(c => ({ id: c.id, title: c.title, level: c.level ?? 'B', status: 'covered', evidence: '', hint: '' })) };
+    const attempt = glossaryAttemptSchema.parse({ id: 'decision-attempt', termId: term.id, termName: term.name, text, answeredAt: '2026-10-21T03:00:00.000Z', usedVoice: true, referenceViewed: false, evaluation: compact, reference: term.definition });
+    const oldExtra = { ...attempt, id: 'older-extra', termId: 'extra:以前の用語', termName: '以前の用語', evaluation: { ...evaluation, followUp: { name: '別の用語', reason: '保存時点の提案です。' } } };
+    const restored = parseGlossaryBackup(serializeGlossary({ attempts: [attempt, oldExtra], drafts: [] }));
+    expect(restored.attempts).toEqual([attempt, oldExtra]);
+  });
   it('excludes temporary explanation drafts from exported backups', () => {
     const backup = parseGlossaryBackup(serializeGlossary({ attempts: [], drafts: [{ termId: term.id, text, usedVoice: false, referenceViewed: false, updatedAt: '2026-10-19T03:00:00.000Z' }] }));
     expect(backup.drafts).toEqual([]);

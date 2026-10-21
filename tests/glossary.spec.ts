@@ -106,7 +106,7 @@ test('evaluates once, stores feedback separately from quizzes, and reviews a his
     await route.fulfill({ json: evaluation() });
   });
   await page.goto('/glossary/digital-signature'); await speakExplanation(page, text); await check(page).click();
-  await expect(page.getByRole('heading', { name: '公開鍵基盤' })).toBeVisible();
+  await expect(page.locator('.glossary-follow-up')).toHaveCount(0);
   await expect(page.getByRole('heading', { name: '判定', exact: true })).toBeVisible();
   await expect(page.getByLabel('評価 A', { exact: true })).toBeVisible();
   await expect(page.locator('.glossary-result-heading')).toHaveText('判定A');
@@ -141,32 +141,72 @@ test('shows the specific conditions at S after the basic and applied explanation
   await expect(page.locator('.rubric-state').filter({ hasText: 'この説明では未確認' })).toHaveCount(0);
 });
 
-test('practices a follow-up term the AI suggested outside the built-in list', async ({ page }) => {
-  await page.route('**/api/glossary/evaluate', async route => {
-    const body = route.request().postDataJSON();
-    if (body.termId === term.id) return route.fulfill({ json: { ...evaluation(), followUp: { name: 'Kerberos認証', reason: 'チケットで認証する仕組みが説明にないためです。' } } });
-    expect(body.termId).toBe('extra:Kerberos認証');
-    await route.fulfill({ json: { ...evaluation(body.text), criteria: [{ id: 'ca', title: '認証局が証明書を発行する', status: 'missing', evidence: '', hint: '誰が証明書を発行するかが足りません。' }], covered: 0, total: 1, status: 'unconfirmed', definition: '公開鍵とその持ち主を認証局が証明書で結び付ける仕組みです。', followUp: { name: '認証局', reason: '証明書の発行者だからです。' } } });
+test('shows compact decision results and allows another spoken attempt', async ({ page }) => {
+  let calls = 0;
+  await page.route('**/api/glossary/evaluate', route => {
+    calls++;
+    return route.fulfill({ json: {
+      ...evaluation(), api: 'decisions', summary: '', followUp: undefined,
+      grade: calls === 1 ? 'C' : 'A', status: calls === 1 ? 'review' : 'covered', covered: calls === 1 ? 1 : 3,
+      criteria: term.criteria.map((c, index) => ({ ...c, level: c.level ?? 'B', status: calls === 1 && index === 0 ? 'review' : calls === 1 && index === 1 ? 'missing' : 'covered', evidence: '', hint: '' })),
+    } });
   });
-  await page.goto('/glossary/digital-signature'); await speakExplanation(page, text); await check(page).click();
-  await page.getByRole('link', { name: 'この用語を説明する' }).click();
-  await expect(page.getByRole('heading', { name: 'Kerberos認証', level: 1 })).toBeVisible();
-  await expect(page.getByRole('button', { name: '説明例を見る', exact: true })).toHaveCount(0);
-  await speakExplanation(page, '公開鍵が本人のものか確かめるための仕組みです。');
-  await check(page).click();
-  await expect(page.getByText('誰が証明書を発行するかが足りません。')).toBeVisible();
-  await expect(page.locator('.term-reference')).toContainText('認証局が証明書で結び付ける');
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/glossary/digital-signature');
+  await speakExplanation(page, text); await check(page).click();
+  await expect(page.getByLabel('評価 C', { exact: true })).toBeVisible();
+  await expect(page.locator('.rubric-compact .rubric-item')).toHaveCount(term.criteria.length);
+  await expect(page.getByRole('img', { name: '内容に誤り', exact: true })).toHaveCount(1);
+  await expect(page.getByRole('img', { name: '未説明', exact: true })).toHaveCount(1);
+  await expect(page.locator('.rubric-state, .rubric-item p, .rubric-item blockquote, .glossary-follow-up')).toHaveCount(0);
+  await expect(page.locator('.rubric-missing')).toContainText(term.criteria[1].title);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await page.screenshot({ path: '/private/tmp/orenotameno-decisions-mobile.png', fullPage: true });
+  await speakExplanation(page, '本文のハッシュ値に署名し、認証局の証明書で公開鍵が本人のものか確かめます。');
+  await expect(check(page)).toBeEnabled(); await check(page).click();
+  await expect(page.getByLabel('評価 A', { exact: true })).toBeVisible();
+  await expect(page.getByRole('img', { name: '説明できた', exact: true })).toHaveCount(term.criteria.length);
+  expect(calls).toBe(2);
+  await expect.poll(async () => (await entries(page)).length).toBe(2);
   await page.getByRole('link', { name: '説明の履歴', exact: true }).click();
-  await page.getByRole('link', { name: 'Kerberos認証' }).click();
-  await expect(page.locator('.saved-explanation')).toContainText('公開鍵が本人のものか');
+  await page.reload();
+  await page.getByRole('link', { name: '見直す', exact: true }).first().click();
+  await expect(page.locator('.rubric-compact')).toBeVisible();
 });
 
-test('opens the collected term when the AI names it by another spelling', async ({ page }) => {
+test('does not display historical follow-up suggestions or allow uncollected term practice', async ({ page }) => {
   await page.route('**/api/glossary/evaluate', route => route.fulfill({ json: evaluation() }));
   await page.goto('/glossary/digital-signature'); await speakExplanation(page, text); await check(page).click();
-  // 公開鍵基盤 is the parenthesized part of 「PKI（公開鍵基盤）」
-  await page.getByRole('link', { name: 'この用語を説明する' }).click();
-  await expect(page).toHaveURL(/\/glossary\/pki$/);
+  await expect(page.getByLabel('評価 A', { exact: true })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'この用語を説明する' })).toHaveCount(0);
+  await expect(page.locator('.glossary-follow-up')).toHaveCount(0);
+  await page.goto('/glossary/extra?name=未収録の用語');
+  await expect(page.getByRole('heading', { name: '用語が見つかりません' })).toBeVisible();
+  await expect(check(page)).toHaveCount(0);
+});
+
+test('skips uncollected saved words in review rounds and allows removing older words', async ({ page }) => {
+  await page.goto('/glossary');
+  await expect(page.getByRole('heading', { name: '用語学習' })).toBeVisible();
+  await page.evaluate(async () => {
+    const db = await new Promise<IDBDatabase>(resolve => { const request = indexedDB.open('orenotameno-sc'); request.onsuccess = () => resolve(request.result); });
+    const tx = db.transaction('reviewWords', 'readwrite');
+    for (const term of ['以前の未収録用語', 'デジタル署名']) tx.objectStore('reviewWords').put({ term });
+    await new Promise<void>((resolve, reject) => { tx.oncomplete = () => resolve(); tx.onabort = () => reject(tx.error); });
+    db.close();
+  });
+  await page.goto('/glossary?filter=words');
+  const older = page.locator('.term-card').filter({ hasText: '以前の未収録用語' });
+  await expect(older).toBeVisible();
+  await expect(older.getByRole('link')).toHaveCount(0);
+  await page.getByRole('link', { name: '単語を復習', exact: true }).click();
+  await expect(page.locator('.review-goal')).toContainText('1語を復習します');
+  await page.getByRole('link', { name: '復習を始める', exact: true }).click();
+  await expect(page.getByRole('heading', { name: 'ディジタル署名', level: 1 })).toBeVisible();
+  await expect(page.locator('.review-round-count')).toHaveText('単語の復習 1 / 1');
+  await page.goto('/glossary?filter=words');
+  await older.getByRole('button', { name: '以前の未収録用語を復習する単語から外す' }).click();
+  await expect(older).toHaveCount(0);
 });
 
 test('keeps text and allows retry after an AI failure, with no fabricated feedback', async ({ page }) => {
