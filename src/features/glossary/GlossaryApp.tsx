@@ -236,7 +236,7 @@ function CriterionFeedback({ criterion, level, compact, threshold }: { criterion
   const uncertain = isUncertainCriterion(criterion);
   const label = uncertain ? '判定保留' : criterion.status === 'covered' ? '説明できた' : criterion.status === 'review' ? '内容に誤り' : '未説明';
   // Truncate so a probability just below the cutoff never appears to meet it.
-  const percent = criterion.decision && Math.floor(criterion.decision.probabilities.covered * 1000) / 10;
+  const percent = criterion.decision?.probabilities && Math.floor(criterion.decision.probabilities.covered * 1000) / 10;
   return <div className={cn('rubric-item', `rubric-${criterion.status}`)}>
     <span className="rubric-icon" role="img" aria-label={label}>{uncertain ? <Clock3 size={17} /> : criterion.status === 'covered' ? <Check size={17} /> : criterion.status === 'review' ? <TriangleAlert size={17} /> : <CircleHelp size={17} />}</span>
     <div>{uncertain ? <span className="rubric-state" title="「説明できた」とするモデルの推定確率です。正答率の保証ではありません。">判定保留 · {percent}%{threshold !== undefined && ` / ${threshold * 100}%`}</span> : !compact && <span className="rubric-state">{criterion.status === 'covered' ? '説明に含まれています' : criterion.status === 'review' ? '内容に誤りがあります' : level === 'B' ? 'この説明では未確認' : 'まだ触れていません'}</span>}

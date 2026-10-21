@@ -18,8 +18,10 @@ export type Term = {
 const criterionStatusSchema = z.enum(['covered', 'missing', 'review']);
 export const probabilitySchema = z.number().finite().min(0).max(1);
 export const criterionDecisionSchema = z.object({
-  choice: criterionStatusSchema, confidence: probabilitySchema,
-  probabilities: z.object({ covered: probabilitySchema, missing: probabilitySchema, review: probabilitySchema }),
+  choice: criterionStatusSchema,
+  // Retain probability metadata from historical evaluations; new grades use only choice.
+  confidence: probabilitySchema.optional(),
+  probabilities: z.object({ covered: probabilitySchema, missing: probabilitySchema, review: probabilitySchema }).optional(),
 });
 export const criterionResultSchema = z.object({
   id: z.string(), title: z.string(), status: criterionStatusSchema, evidence: z.string(), hint: z.string(), level: z.enum(levels).optional(),
@@ -27,7 +29,7 @@ export const criterionResultSchema = z.object({
 });
 export type CriterionResult = z.infer<typeof criterionResultSchema>;
 export function isUncertainCriterion(criterion: CriterionResult) {
-  return criterion.status === 'missing' && criterion.decision?.choice === 'covered';
+  return criterion.status === 'missing' && criterion.decision?.choice === 'covered' && criterion.decision.probabilities !== undefined;
 }
 export const grades = ['S', 'A', 'B', 'C'] as const;
 export type Grade = typeof grades[number];
@@ -51,7 +53,7 @@ export const evaluationSchema = z.object({
   covered: z.number().int().nonnegative(), total: z.number().int().positive(),
   criteria: z.array(criterionResultSchema), summary: z.string(),
   engine: z.literal('openai'), api: z.literal('decisions').optional(), model: z.string().min(1),
-  coveredProbabilityThreshold: probabilitySchema.optional(),
+  coveredProbabilityThreshold: probabilitySchema.optional(), // Historical cutoffs only.
   followUp: followUpSchema.optional(), definition: z.string().optional(), grade: z.enum(grades).optional(),
   // Older evaluations stored these before wording feedback was dropped.
   concerns: z.array(z.object({ message: z.string(), evidence: z.string() })).optional(), improvedExplanation: z.string().optional(),

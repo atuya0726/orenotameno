@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { evaluateWithOpenAI, GRADING_POLICY_VERSION, MIN_COVERED_PROBABILITY } from './glossary-evaluator';
+import { evaluateWithOpenAI, GRADING_POLICY_VERSION } from './glossary-evaluator';
 import worker from '../worker';
 import { termById } from '../features/glossary/terms';
 import { evaluationSchema, type Term } from '../features/glossary/model';
@@ -26,11 +26,12 @@ describe('OpenAI Decisions API', () => {
   it('assesses all fixed criteria in one Luna request without generating feedback', async () => {
     const fetcher = fetchDecision();
     const result = await evaluateWithOpenAI(term, text, 'test-key', undefined, fetcher);
-    expect(result).toMatchObject({ api: 'decisions', engine: 'openai', model: 'gpt-6-luna', coveredProbabilityThreshold: MIN_COVERED_PROBABILITY, status: 'covered', grade: 'A', covered: 3, total: 3, summary: '' });
+    expect(result).toMatchObject({ api: 'decisions', engine: 'openai', model: 'gpt-6-luna', status: 'covered', grade: 'A', covered: 3, total: 3, summary: '' });
     expect(evaluationSchema.parse(result)).toEqual(result);
     expect(result.followUp).toBeUndefined();
     expect(result.criteria.map(c => [c.id, c.title, c.level, c.evidence, c.hint])).toEqual(term.criteria.map(c => [c.id, c.title, c.level ?? 'B', '', '']));
-    expect(result.criteria[0].decision).toEqual({ choice: 'covered', confidence: 0.9, probabilities: { covered: 0.95, missing: 0.025, review: 0.025 } });
+    expect(result.criteria[0].decision).toEqual({ choice: 'covered' });
+    expect(result.coveredProbabilityThreshold).toBeUndefined();
     expect(fetcher).toHaveBeenCalledTimes(1);
     const [url, init] = fetcher.mock.calls[0]; const body = JSON.parse(init.body);
     expect(url).toBe('https://api.openai.com/v1/decisions');
@@ -53,27 +54,26 @@ describe('OpenAI Decisions API', () => {
     expect(JSON.stringify(body)).not.toContain('test-key');
   });
 
-  it.each([0.45, 0.6999, 0.7, 0.7001, 0.8, 1])('requires the coverage probability cutoff at %s', async probability => {
+  it.each([0, 0.45, 0.6999, 0.7, 1])('accepts the covered choice regardless of probability %s', async probability => {
     const body = coverageProbability(decision(), 'sign', probability);
     const result = await evaluateWithOpenAI(term, text, 'key', undefined, fetchDecision(body));
-    const accepted = probability >= MIN_COVERED_PROBABILITY;
-    expect(result.grade).toBe(accepted ? 'A' : 'C');
-    expect(result.covered).toBe(accepted ? 3 : 2);
-    expect(result.criteria[0]).toMatchObject({ status: accepted ? 'covered' : 'missing', decision: { choice: 'covered', confidence: 0.99, probabilities: { covered: probability } } });
+    expect(result).toMatchObject({ grade: 'A', covered: 3 });
+    expect(result.criteria[0]).toMatchObject({ status: 'covered', decision: { choice: 'covered' } });
+    expect(result.coveredProbabilityThreshold).toBeUndefined();
   });
 
-  it('uses the coverage probability rather than the separate confidence metric', async () => {
+  it('does not use confidence to change the selected choice', async () => {
     const body = coverageProbability(decision(), 'sign', 0.95, 0.2);
     const result = await evaluateWithOpenAI(term, text, 'key', undefined, fetchDecision(body));
     expect(result.grade).toBe('A');
-    expect(result.criteria[0].decision?.confidence).toBe(0.2);
+    expect(result.criteria[0].decision).toEqual({ choice: 'covered' });
   });
 
-  it('keeps the basic grade when an applied point is uncertain, without labeling it as an error', async () => {
+  it('accepts an applied covered choice without an additional probability requirement', async () => {
     const body = coverageProbability(decision(), 'digest', 0.6);
     const result = await evaluateWithOpenAI(term, text, 'key', undefined, fetchDecision(body));
-    expect(result).toMatchObject({ grade: 'B', status: 'covered', covered: 3 });
-    expect(result.criteria.find(c => c.id === 'digest')?.status).toBe('missing');
+    expect(result).toMatchObject({ grade: 'A', status: 'covered', covered: 3 });
+    expect(result.criteria.find(c => c.id === 'digest')?.status).toBe('covered');
     expect(result.criteria.some(c => c.status === 'review')).toBe(false);
   });
 
@@ -87,7 +87,7 @@ describe('OpenAI Decisions API', () => {
     }
   });
 
-  it('rejects missing or invalid probability data rather than accepting the selected choice', async () => {
+  it('uses a valid choice even when unused probability metadata is missing or malformed', async () => {
     const valid = decision().answers[0];
     const invalid = [
       { ...valid, confidence: undefined }, { ...valid, confidence: 1.1 },
@@ -98,8 +98,18 @@ describe('OpenAI Decisions API', () => {
     ];
     for (const answer of invalid) {
       const body = decision();
-      await expect(evaluateWithOpenAI(term, text, 'key', undefined, fetchDecision({ ...body, answers: [answer, ...body.answers.slice(1)] }))).rejects.toMatchObject({ code: 'AI_RESPONSE_INVALID' });
+      const result = await evaluateWithOpenAI(term, text, 'key', undefined, fetchDecision({ ...body, answers: [answer, ...body.answers.slice(1)] }));
+      expect(result.grade).toBe('A');
+      expect(result.criteria[0].decision).toEqual({ choice: 'covered' });
     }
+  });
+
+  it('accepts responses containing only each criterion choice', async () => {
+    const body = decision();
+    const answers = body.answers.map(({ type, name, choice }) => ({ type, name, choice }));
+    const result = await evaluateWithOpenAI(term, text, 'key', undefined, fetchDecision({ ...body, answers }));
+    expect(result).toMatchObject({ grade: 'A', covered: 3 });
+    expect(evaluationSchema.parse(result)).toEqual(result);
   });
 
   it('matches reversed answers by criterion ID and derives grades locally', async () => {

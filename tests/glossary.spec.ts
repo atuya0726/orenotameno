@@ -193,7 +193,29 @@ test('shows compact decision results and allows another spoken attempt', async (
   await expect(page.locator('.rubric-compact')).toBeVisible();
 });
 
-test('shows a low-probability covered choice as pending and preserves its probabilities in history', async ({ page }) => {
+test('shows and persists choice-only results without requiring probabilities or a cutoff', async ({ page }) => {
+  const result = {
+    ...evaluation(), api: 'decisions', summary: '', followUp: undefined,
+    criteria: term.criteria.map(c => ({
+      id: c.id, title: c.title, level: c.level ?? 'B', status: 'covered', evidence: '', hint: '', decision: { choice: 'covered' },
+    })),
+  };
+  await page.route('**/api/glossary/evaluate', route => route.fulfill({ json: result }));
+  await page.goto('/glossary/digital-signature'); await speakExplanation(page, text); await check(page).click();
+  await expect(page.getByLabel('評価 A', { exact: true })).toBeVisible();
+  await expect(page.getByRole('img', { name: '説明できた', exact: true })).toHaveCount(term.criteria.length);
+  await expect(page.getByRole('img', { name: '判定保留', exact: true })).toHaveCount(0);
+  await expect.poll(async () => (await entries(page)).length).toBe(1);
+  const stored = (await entries(page))[0].evaluation as { coveredProbabilityThreshold?: number; criteria: { decision: unknown }[] };
+  expect(stored.coveredProbabilityThreshold).toBeUndefined();
+  expect(stored.criteria[0].decision).toEqual({ choice: 'covered' });
+  await page.getByRole('link', { name: '説明の履歴', exact: true }).click();
+  await page.reload(); await page.getByRole('link', { name: '見直す', exact: true }).click();
+  await expect(page.getByLabel('評価 A', { exact: true })).toBeVisible();
+  await expect(page.getByRole('img', { name: '判定保留', exact: true })).toHaveCount(0);
+});
+
+test('preserves historical probability cutoffs and pending decisions in history', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   const result = {
     ...evaluation(), api: 'decisions', coveredProbabilityThreshold: 0.7, grade: 'C', status: 'partial', covered: 2, summary: '', followUp: undefined,
