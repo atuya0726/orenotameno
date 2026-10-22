@@ -75,8 +75,7 @@ function Home() {
   const { snapshot } = useLearning();
   const now = useNow();
   const attempted = new Set(snapshot.attempts.map(a => a.questionId));
-  const due = activeReviews(snapshot.cards);
-  const uncertain = due.length;
+  const uncertain = activeReviews(snapshot.cards).length;
   const correct = snapshot.attempts.filter(a => a.correct).length;
   const percent = snapshot.attempts.length ? Math.round(correct / snapshot.attempts.length * 100) : null;
   const date = new Intl.DateTimeFormat('ja-JP', { month: 'long', day: 'numeric', weekday: 'long' }).format(new Date(now));
@@ -87,13 +86,8 @@ function Home() {
     </PageIntro>
     {interrupted && <section className="quiet-empty" aria-label="途中の学習"><RotateCcw size={28} strokeWidth={1.4} /><div><strong>途中の学習があります</strong><p>{courses[questionById.get(interrupted.questionIds[0])!.course].name} · {interrupted.attemptIds.length} / {interrupted.questionIds.length}問 回答済み</p><Button asChild><Link to={studySessionUrl(interrupted)}>続きから再開<ArrowRight size={16} /></Link></Button></div></section>}
     <PracticeSetup />
-    <Link to="/glossary" className="glossary-home-entry"><span className="glossary-home-icon"><Mic size={24} /></span><span><strong>用語学習</strong></span><ArrowRight size={20} /></Link>
     <div className="dashboard-grid">
       <section className="overview-card"><div className="section-kicker"><h2>これまでの学習</h2><Link to="/records" aria-label="学習記録を見る"><ArrowRight size={18} /></Link></div><div className="overview-main"><span>取り組んだ問題</span><strong>{attempted.size}<small> / {questions.length} 問</small></strong><div className="progress-track"><i style={{ width: `${attempted.size / questions.length * 100}%` }} /></div></div><div className="overview-bottom"><div><span className="stat-label">正答率</span><strong>{percent ?? '—'}<small>{percent === null ? '' : '%'}</small></strong></div><div><span className="stat-label">要復習</span><strong>{uncertain}<small>問</small></strong></div><div><span className="stat-label">あとで見る</span><strong>{snapshot.bookmarks.length}<small>問</small></strong></div></div></section>
-    </div>
-    <div className="bottom-grid">
-      <section className="review-peek"><div className="section-heading compact"><h2><RotateCcw size={18} />復習する問題</h2><Link className="text-link" to="/reviews">復習ノート<ArrowRight size={14} /></Link></div>{due.length ? <div className="peek-items">{due.slice(0, 3).map(card => { const q = questionById.get(card.questionId)!; return <Link className="peek-item" key={card.questionId} to={`/study/${q.course}?question=${q.id}`}><span className="mini-course">{q.course}</span><span><strong>{q.title}</strong><small>{q.topic}</small></span><span className="due-label due-now">{reviewPriorityLabel(card.remainingReviews)}</span><ChevronRight size={15} /></Link>; })}</div> : <div className="quiet-empty"><CheckCheck size={28} strokeWidth={1.4} /><div><strong>復習する問題はありません。</strong></div></div>}</section>
-
     </div>
 
   </>;
