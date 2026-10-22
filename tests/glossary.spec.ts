@@ -201,7 +201,7 @@ for (const deeperStatus of ['missing', 'review']) {
     await expect(page.getByLabel('評価 合格', { exact: true })).toBeVisible();
     await expect(page.locator('.glossary-deep-badge')).toHaveCount(0);
     await expect(page.locator('.rubric-deep .rubric-' + deeperStatus)).toHaveCount(term.criteria.filter(c => c.level === 'deep').length);
-    await expect(page.getByLabel('基本 3 / 3')).toBeVisible();
+    await expect(page.locator('.rubric-level-heading').filter({ hasText: /\d+\s*\/\s*\d+/ })).toHaveCount(0);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     await page.screenshot({ path: `/private/tmp/orenotameno-basic-pass-${deeperStatus}.png`, fullPage: true });
     await page.goto('/glossary?filter=review');
