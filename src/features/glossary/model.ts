@@ -15,6 +15,7 @@ export function criterionLevel(level?: Level | typeof legacyLevels[number]): Lev
 export type Criterion = { id: string; title: string; hint: string; level?: Level };
 export type Term = {
   // Aliases are other spellings of the same concept; related concepts get their own terms.
+  // reading is the English name, with abbreviations expanded (see docs/glossary-authoring.md).
   id: string; name: string; aliases?: string[]; reading: string; category: string; definition: string;
   criteria: Criterion[]; commonMistakes: string[]; related: string[];
 };

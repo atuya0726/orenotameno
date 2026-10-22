@@ -27,6 +27,15 @@
 
 別の概念、対になる語、上位・下位の語を、リンク先を用意するためだけに別名にしない。例えば `IPS` を `IDS` の別名にはせず、`ファストトラッキング` を `クラッシング` の別名にもしない。過去問の復習単語からは、その単語自体を学べる用語へ対応させる。
 
+## 英語欄では略語を正式名称に展開する
+
+- `reading` は発音や略称の写しではなく、画面に表示する英語名を書く欄。略語には省略しない正式名称を使う。`SNMP` → `Simple Network Management Protocol`、`CHAP` → `Challenge-Handshake Authentication Protocol`、`API` → `Application Programming Interface` とし、`Snmp` のように大文字小文字を変えるだけにしない。
+- 複合語の一部も確認する。`REST API` → `Representational State Transfer Application Programming Interface`、`ホストOS` → `Host operating system`、`APIエコノミー` → `Application Programming Interface economy` のように展開する。構成要素の頭文字を合わせた語は、`PDCA` → `Plan / Do / Check / Act` のように各要素を書く。
+- 学習対象の略称は `name`・`aliases` に残す。英語名を直すために用語IDや評価範囲を変えない。
+- 正式名称や人名の綴りが不確かな場合は、規格の原文・開発元・公的機関などの一次資料で確認する。過去の組織名は、その用語が扱う時代の正式名を使う。
+- 固有名（Git・OpenFlowなど）、プロトコル名自体（WHOIS・Telnetなど）、規格番号・数式の記号、SQLのキーワードは、架空の正式名称を作らず公式の表記を使う。PHPのような再帰的略語は公式の展開形 `PHP: Hypertext Preprocessor` を使う。SOAPやCOBITのように現在は名称自体として使われる語には、元の展開形であることを添える。公式名の中に略語が残るNOTICE・NTLMなどは、必要に応じて括弧内でその意味も補う。
+- 追加・修正時は、該当用語だけでなく同時に追加する全用語の `reading` を点検する。英語欄を略称から機械的に生成しない。
+
 ## 評価観点の数・区分をそろえない
 
 - その用語自体の理解を確かめるために必要な観点だけを設ける。基本が1個で十分なら1個にする。

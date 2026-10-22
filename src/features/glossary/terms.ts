@@ -6999,7 +6999,7 @@ export const terms: Term[] = [
     "aliases": [
       "EV証明書"
     ],
-    "reading": "Extended Validation certificate",
+    "reading": "Extended Validation Secure Sockets Layer certificate",
     "category": "暗号・認証",
     "definition": "申請した組織の法的な実在性やドメインの利用権限などを、認証局が厳格に確認して発行するサーバー証明書です。EVはExtended Validationの略で、発行前の組織確認を重視した証明書です。",
     "related": [
@@ -14818,7 +14818,7 @@ export const terms: Term[] = [
   {
     "id": "httponly-cookie",
     "name": "HttpOnly属性",
-    "reading": "Httponly Cookie",
+    "reading": "HttpOnly cookie",
     "category": "セキュリティ",
     "definition": "JavaScriptなどからcookieを読み書きできないようにする属性です。XSSでcookieの値が盗まれる影響を抑えます。",
     "related": [],
@@ -18079,7 +18079,7 @@ export const terms: Term[] = [
   {
     "id": "host-os",
     "name": "ホストOS",
-    "reading": "Host Os",
+    "reading": "Host operating system",
     "category": "システム構成",
     "definition": "仮想化ソフトウェアやコンテナなどの基盤として、物理マシン上で動作するOSです。",
     "related": [],
@@ -18095,7 +18095,7 @@ export const terms: Term[] = [
   {
     "id": "guest-os",
     "name": "ゲストOS",
-    "reading": "Guest Os",
+    "reading": "Guest operating system",
     "category": "システム構成",
     "definition": "仮想マシンにインストールされ、その仮想マシンの資源を管理するOSです。",
     "related": [],
@@ -18181,7 +18181,7 @@ export const terms: Term[] = [
   {
     "id": "xnor",
     "name": "等価演算",
-    "reading": "Xnor",
+    "reading": "NOT exclusive OR",
     "category": "基礎理論",
     "definition": "二つの入力が同じときに1、異なるときに0となる論理演算です。XORの結果を否定したXNORです。",
     "related": [],
@@ -18279,7 +18279,7 @@ export const terms: Term[] = [
   {
     "id": "db-consistency",
     "name": "一貫性",
-    "reading": "Db Consistency",
+    "reading": "Database consistency",
     "category": "データベース",
     "definition": "トランザクションの前後で、データベースが定められた整合性制約を満たす性質です。",
     "related": [
@@ -18315,7 +18315,7 @@ export const terms: Term[] = [
   {
     "id": "dhcp-lease",
     "name": "リース期間",
-    "reading": "Dhcp Lease",
+    "reading": "Dynamic Host Configuration Protocol lease",
     "category": "ネットワーク",
     "definition": "DHCPで端末にIPアドレスの利用を認める有効期間です。引き続き使うには更新します。",
     "related": [],
@@ -18331,7 +18331,7 @@ export const terms: Term[] = [
   {
     "id": "chap",
     "name": "CHAP",
-    "reading": "Chap",
+    "reading": "Challenge-Handshake Authentication Protocol",
     "category": "暗号・認証",
     "definition": "認証側のチャレンジに対して、秘密情報に基づく応答を返すチャレンジレスポンス型の認証プロトコルです。",
     "related": [],
@@ -18347,7 +18347,7 @@ export const terms: Term[] = [
   {
     "id": "snmp",
     "name": "SNMP",
-    "reading": "Snmp",
+    "reading": "Simple Network Management Protocol",
     "category": "ネットワーク",
     "definition": "ネットワーク機器の管理情報を取得・設定したり、機器からの通知を受けたりする管理用プロトコルです。",
     "related": [],
@@ -18397,7 +18397,7 @@ export const terms: Term[] = [
   {
     "id": "rest-api",
     "name": "REST API",
-    "reading": "Rest Api",
+    "reading": "Representational State Transfer Application Programming Interface",
     "category": "Web技術",
     "definition": "資源をURIで識別し、HTTPメソッドなどで操作するRESTの考え方に沿ったAPIです。",
     "related": [],
@@ -18419,7 +18419,7 @@ export const terms: Term[] = [
   {
     "id": "pppoe",
     "name": "PPPoE",
-    "reading": "Pppoe",
+    "reading": "Point-to-Point Protocol over Ethernet",
     "category": "ネットワーク",
     "definition": "PPPのフレームをイーサネットのフレームに入れて運ぶプロトコルです。",
     "related": [],
@@ -18441,7 +18441,7 @@ export const terms: Term[] = [
   {
     "id": "wpa",
     "name": "WPA",
-    "reading": "Wpa",
+    "reading": "Wi-Fi Protected Access",
     "category": "ネットワークセキュリティ",
     "definition": "無線LANの通信の暗号化や利用者・機器の認証などを行うセキュリティ方式です。",
     "related": [],
@@ -18597,7 +18597,7 @@ export const terms: Term[] = [
   {
     "id": "bcp",
     "name": "BCP",
-    "reading": "Bcp",
+    "reading": "Business Continuity Plan",
     "category": "システム戦略",
     "definition": "災害などで事業が中断しても、重要な事業を継続し、目標の水準まで復旧するための対応を定めた事業継続計画です。",
     "related": [],
@@ -18613,7 +18613,7 @@ export const terms: Term[] = [
   {
     "id": "bpo",
     "name": "BPO",
-    "reading": "Bpo",
+    "reading": "Business Process Outsourcing",
     "category": "システム戦略",
     "definition": "業務プロセスの一部や全部を、外部の専門事業者へ委託することです。",
     "related": [],
@@ -18634,7 +18634,7 @@ export const terms: Term[] = [
       "NPV法",
       "正味現在価値"
     ],
-    "reading": "Npv",
+    "reading": "Net Present Value",
     "category": "システム戦略",
     "definition": "将来のキャッシュフローを現在価値に換算した合計から、初期投資額を引いた正味現在価値です。",
     "related": [
@@ -18710,7 +18710,7 @@ export const terms: Term[] = [
   {
     "id": "api-economy",
     "name": "APIエコノミー",
-    "reading": "Api Economy",
+    "reading": "Application Programming Interface economy",
     "category": "経営戦略",
     "definition": "企業などがAPIで機能やデータを連携させ、新たなサービスや事業価値を生む経済の仕組みです。",
     "related": [],
@@ -18726,7 +18726,7 @@ export const terms: Term[] = [
   {
     "id": "api",
     "name": "API",
-    "reading": "Api",
+    "reading": "Application Programming Interface",
     "category": "Web技術",
     "definition": "ソフトウェアの機能やデータを、別のプログラムから利用するためのインタフェースです。",
     "related": [],
@@ -18742,7 +18742,7 @@ export const terms: Term[] = [
   {
     "id": "eai",
     "name": "EAI",
-    "reading": "Eai",
+    "reading": "Enterprise Application Integration",
     "category": "システム戦略",
     "definition": "企業内の異なる業務システムを連携させ、データ交換や業務の流れを統合する仕組みです。",
     "related": [],
@@ -18758,7 +18758,7 @@ export const terms: Term[] = [
   {
     "id": "bi",
     "name": "BI",
-    "reading": "Bi",
+    "reading": "Business Intelligence",
     "category": "システム戦略",
     "definition": "企業に蓄積したデータを集計・分析・可視化し、経営や業務の意思決定へ役立てる仕組みです。",
     "related": [],
@@ -18814,7 +18814,7 @@ export const terms: Term[] = [
   {
     "id": "nm-method",
     "name": "NM法",
-    "reading": "Nm Method",
+    "reading": "Nakayama Masakazu method",
     "category": "経営管理",
     "definition": "課題の特徴から類比や連想を広げ、そこから新しいアイデアを生み出す発想法です。",
     "related": [],
@@ -19024,7 +19024,7 @@ export const terms: Term[] = [
   {
     "id": "php",
     "name": "PHP",
-    "reading": "Php",
+    "reading": "PHP: Hypertext Preprocessor",
     "category": "ソフトウェア",
     "definition": "主にサーバ側で実行してWebページやWebアプリケーションを作るために使うプログラミング言語です。",
     "related": [],
@@ -19110,7 +19110,7 @@ export const terms: Term[] = [
   {
     "id": "i2c",
     "name": "I2C",
-    "reading": "I2C",
+    "reading": "Inter-Integrated Circuit",
     "category": "組込みシステム",
     "definition": "クロック線とデータ線の2本を使い、アドレスで指定した複数の機器と通信するシリアルバスです。",
     "related": [],
@@ -19262,7 +19262,7 @@ export const terms: Term[] = [
   {
     "id": "ftp",
     "name": "FTP",
-    "reading": "Ftp",
+    "reading": "File Transfer Protocol",
     "category": "ネットワーク",
     "definition": "TCPを使い、クライアントとサーバの間でファイルを転送するプロトコルです。",
     "related": [],
@@ -19300,7 +19300,7 @@ export const terms: Term[] = [
   {
     "id": "sdn",
     "name": "SDN",
-    "reading": "Sdn",
+    "reading": "Software-Defined Networking",
     "category": "ネットワーク",
     "definition": "通信の制御機能とデータ転送機能を論理的に分け、ソフトウェアからネットワークを制御する考え方です。",
     "related": [],
@@ -19316,7 +19316,7 @@ export const terms: Term[] = [
   {
     "id": "openflow",
     "name": "OpenFlow",
-    "reading": "Openflow",
+    "reading": "OpenFlow",
     "category": "ネットワーク",
     "definition": "SDNのコントローラと転送機器の間で、転送ルールなどをやり取りするためのプロトコルです。",
     "related": [],
@@ -19332,7 +19332,7 @@ export const terms: Term[] = [
   {
     "id": "san",
     "name": "SAN",
-    "reading": "San",
+    "reading": "Storage Area Network",
     "category": "システム構成",
     "definition": "サーバとストレージを接続し、ブロック単位のデータ入出力などを行うための専用ネットワークです。",
     "related": [],
@@ -19364,7 +19364,7 @@ export const terms: Term[] = [
   {
     "id": "vdi",
     "name": "VDI",
-    "reading": "Vdi",
+    "reading": "Virtual Desktop Infrastructure",
     "category": "システム構成",
     "definition": "サーバ側でデスクトップ環境を動かし、端末から画面の表示と操作を行う仕組みです。",
     "related": [],
@@ -19514,7 +19514,7 @@ export const terms: Term[] = [
   {
     "id": "eac",
     "name": "EAC",
-    "reading": "Eac",
+    "reading": "Estimate at Completion",
     "category": "プロジェクト管理",
     "definition": "プロジェクトの完了までに必要となる、実績を含めた総コストの見積額です。",
     "related": [],
@@ -19685,7 +19685,7 @@ export const terms: Term[] = [
       "回収期間",
       "投資回収期間"
     ],
-    "reading": "Pbp",
+    "reading": "Payback Period",
     "category": "システム戦略",
     "definition": "投資によるキャッシュフローの累計が初期投資額に達するまでの、投資回収期間です。",
     "related": [
@@ -19707,7 +19707,7 @@ export const terms: Term[] = [
       "IRR法",
       "内部収益率"
     ],
-    "reading": "Irr",
+    "reading": "Internal Rate of Return",
     "category": "システム戦略",
     "definition": "将来のキャッシュフローを割り引いた正味現在価値が0になる割引率で、内部収益率を表します。",
     "related": [
@@ -19796,7 +19796,7 @@ export const terms: Term[] = [
   {
     "id": "xbrl",
     "name": "XBRL",
-    "reading": "Xbrl",
+    "reading": "Extensible Business Reporting Language",
     "category": "Web技術",
     "definition": "企業の財務・事業報告などの情報を、XMLを基礎に記述・交換するための言語です。",
     "related": [],
@@ -19844,7 +19844,7 @@ export const terms: Term[] = [
   {
     "id": "pm-theory",
     "name": "PM理論",
-    "reading": "Pm Theory",
+    "reading": "Performance / Maintenance theory",
     "category": "プロジェクト管理",
     "definition": "リーダーシップを、目標達成のP機能と集団維持のM機能という二つの軸で捉える理論です。",
     "related": [],
@@ -19876,7 +19876,7 @@ export const terms: Term[] = [
   {
     "id": "sl-theory",
     "name": "SL理論",
-    "reading": "Sl Theory",
+    "reading": "Situational Leadership theory",
     "category": "プロジェクト管理",
     "definition": "部下の成熟度や自律性に合わせて、指示と支援の度合いを変えるリーダーシップ理論です。",
     "related": [],
@@ -20231,7 +20231,7 @@ export const terms: Term[] = [
     "aliases": [
       "PDCAサイクル"
     ],
-    "reading": "Pdca",
+    "reading": "Plan / Do / Check / Act",
     "category": "経営管理",
     "definition": "計画・実行・評価・改善のサイクルを繰り返し、活動を継続的に改善する考え方です。",
     "related": [
@@ -20249,7 +20249,7 @@ export const terms: Term[] = [
   {
     "id": "three-d-secure",
     "name": "3Dセキュア",
-    "reading": "Three D Secure",
+    "reading": "Three-Domain Secure",
     "category": "暗号・認証",
     "definition": "オンラインのカード決済で、カード会社などが利用者の本人確認を行うための仕組みです。",
     "related": [],
@@ -20265,7 +20265,7 @@ export const terms: Term[] = [
   {
     "id": "pin",
     "name": "PIN",
-    "reading": "Pin",
+    "reading": "Personal Identification Number",
     "category": "暗号・認証",
     "definition": "本人を認証するために使う短い番号などの秘密情報です。ICカードや認証器の利用時などに入力します。",
     "related": [],
@@ -20303,7 +20303,7 @@ export const terms: Term[] = [
   {
     "id": "ah",
     "name": "AH",
-    "reading": "Ah",
+    "reading": "Authentication Header",
     "category": "ネットワークセキュリティ",
     "definition": "IPsecで、IPパケットの完全性や送信元の認証などを提供する認証ヘッダです。暗号化は行いません。",
     "related": [],
@@ -20319,7 +20319,7 @@ export const terms: Term[] = [
   {
     "id": "esp",
     "name": "ESP",
-    "reading": "Esp",
+    "reading": "Encapsulating Security Payload",
     "category": "ネットワークセキュリティ",
     "definition": "IPsecで、IPパケットのペイロードの暗号化や完全性保護などを提供するプロトコルです。",
     "related": [],
@@ -20623,7 +20623,7 @@ export const terms: Term[] = [
   {
     "id": "kgi",
     "name": "KGI",
-    "reading": "Kgi",
+    "reading": "Key Goal Indicator",
     "category": "経営管理",
     "definition": "事業や活動の最終的な目標が達成されたかを測る、重要目標達成指標です。",
     "related": [
@@ -20664,7 +20664,7 @@ export const terms: Term[] = [
   {
     "id": "kpi",
     "name": "KPI",
-    "reading": "Kpi",
+    "reading": "Key Performance Indicator",
     "category": "経営管理",
     "definition": "目標に向かう活動やプロセスの進み具合を測る、重要業績評価指標です。",
     "related": [
@@ -20682,7 +20682,7 @@ export const terms: Term[] = [
   {
     "id": "mbo",
     "name": "MBO",
-    "reading": "Mbo",
+    "reading": "Management by Objectives",
     "category": "経営管理",
     "definition": "組織と個人の目標を結び付け、合意した目標の達成状況を評価して管理する、目標による管理の考え方です。",
     "related": [],
@@ -20778,7 +20778,7 @@ export const terms: Term[] = [
   {
     "id": "mvp",
     "name": "MVP",
-    "reading": "Mvp",
+    "reading": "Minimum Viable Product",
     "category": "経営戦略",
     "definition": "事業の仮説を検証するために必要な、最小限の機能を備えた製品です。",
     "related": [],
@@ -21148,7 +21148,7 @@ export const terms: Term[] = [
   {
     "id": "rfid",
     "name": "RFID",
-    "reading": "Rfid",
+    "reading": "Radio Frequency Identification",
     "category": "組込みシステム",
     "definition": "ICタグなどと電波で情報をやり取りし、人や物を識別・管理する技術です。",
     "related": [],
@@ -21164,7 +21164,7 @@ export const terms: Term[] = [
   {
     "id": "ic-tag",
     "name": "ICタグ",
-    "reading": "Ic Tag",
+    "reading": "Integrated circuit tag",
     "category": "組込みシステム",
     "definition": "識別情報などを保持するICチップとアンテナを備え、電波で読み書きするためのタグです。",
     "related": [],
@@ -21228,7 +21228,7 @@ export const terms: Term[] = [
   {
     "id": "olap",
     "name": "OLAP",
-    "reading": "Olap",
+    "reading": "Online Analytical Processing",
     "category": "データベース",
     "definition": "蓄積したデータを複数の軸や粒度で集計し、多次元的に分析する処理です。",
     "related": [],
@@ -21244,7 +21244,7 @@ export const terms: Term[] = [
   {
     "id": "nfv",
     "name": "NFV",
-    "reading": "Nfv",
+    "reading": "Network Functions Virtualisation",
     "category": "ネットワーク",
     "definition": "専用機器で提供していたネットワーク機能をソフトウェア化し、仮想化基盤などで動かす技術です。",
     "related": [],
@@ -21260,7 +21260,7 @@ export const terms: Term[] = [
   {
     "id": "cobit",
     "name": "COBIT",
-    "reading": "Cobit",
+    "reading": "COBIT (originally Control Objectives for Information and Related Technology)",
     "category": "システム戦略",
     "definition": "企業の情報と技術について、ガバナンスとマネジメントを整理・改善するためのフレームワークです。",
     "related": [],
@@ -21292,7 +21292,7 @@ export const terms: Term[] = [
   {
     "id": "nisc-historical",
     "name": "NISC",
-    "reading": "Nisc Historical",
+    "reading": "National center of Incident readiness and Strategy for Cybersecurity",
     "category": "セキュリティ管理",
     "definition": "内閣官房に置かれていた内閣サイバーセキュリティセンターの略称です。過去問では政府の対策の司令塔として登場します。",
     "related": [],
@@ -21314,7 +21314,7 @@ export const terms: Term[] = [
   {
     "id": "session-id",
     "name": "セッションID",
-    "reading": "Session Id",
+    "reading": "Session identifier",
     "category": "Web技術",
     "definition": "一連の通信を同じセッションとして識別するために用いる値です。Webのログイン状態の管理などに使います。",
     "related": [],
