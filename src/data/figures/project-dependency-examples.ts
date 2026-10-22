@@ -2,11 +2,13 @@ import { arrow, figureSvg, text } from './svg';
 
 const box = (x: number, y: number, name: string, days?: string) => `<rect x="${x}" y="${y}" width="82" height="48"/>${text(x + 41, y + (days ? 19 : 29), name, 'middle')}${days ? text(x + 41, y + 39, days, 'middle') : ''}`;
 const pid = 'lead-lag-schedule';
-export const leadLagScheduleFigure = figureSvg(pid, 440, 320, 'Aは6日。Aの終了2日前にBを開始する。Bは7日。Bの開始3日後にCを開始する。Cは5日。', [
-  box(180, 15, 'A', '6日'), box(180, 125, 'B', '7日'), box(180, 240, 'C', '5日'),
-  arrow(pid, 'M262 40H290V100H155V149H180'), text(16, 92, '終了→開始'), text(16, 113, 'リード2日'),
-  arrow(pid, 'M180 149H145V263H180'), text(16, 209, '開始→開始'), text(16, 230, 'ラグ3日'),
-].join(''), 14);
+const activity = (x: number, y: number, name: string, days: number) => `<rect x="${x}" y="${y}" width="156" height="64"/>${text(x + 78, y + 25, `アクティビティ${name}`, 'middle')}${text(x + 78, y + 50, `${days}日`, 'middle')}`;
+export const leadLagScheduleFigure = figureSvg(pid, 440, 312, 'Aは6日。Aの終了2日前にBを開始する。Bは7日。Bの開始3日後にCを開始する。Cは5日。', [
+  activity(62, 12, 'A', 6), activity(176, 124, 'B', 7), activity(264, 232, 'C', 5),
+  // Keep B's incoming and outgoing connections apart, as in the official figure.
+  arrow(pid, 'M218 44H246V100H148V140H176'), text(14, 127, '終了−開始関係'), text(14, 150, '（リード2日）'),
+  arrow(pid, 'M176 172H148V264H264'), text(14, 218, '開始−開始関係'), text(14, 241, '（ラグ3日）'),
+].join(''), 16);
 
 const did = 'precedence-2021';
 export const precedenceNetworkFigure = figureSvg(did, 670, 235, '開始からA→C→E→G→終了、B→D→F→H→終了の経路があり、さらにAの完了がFの開始条件となる。すべて終了開始関係。', [
