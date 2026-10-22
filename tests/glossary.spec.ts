@@ -89,6 +89,7 @@ test('searches terms and persists drafts without exposing the reference first', 
   await expect(check(page)).toBeEnabled();
   await expect.poll(() => page.evaluate(() => JSON.parse(sessionStorage.getItem('orenotameno:glossary-draft:digital-signature') ?? '{}').text)).toBe(text);
   await page.reload(); await expect(textbox(page)).toHaveValue(text);
+  await expect(page.getByRole('button', { name: '全文削除' })).toHaveText('');
   await page.getByRole('button', { name: '全文削除' }).click();
   await expect(textbox(page)).toHaveValue('');
   await expect(textbox(page)).toBeDisabled();
@@ -243,12 +244,29 @@ test('shows compact decision results and allows another spoken attempt', async (
   await expect(page.locator('.rubric-missing')).toContainText(term.criteria[1].title);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.screenshot({ path: '/private/tmp/orenotameno-decisions-mobile.png', fullPage: true });
+  await page.getByRole('button', { name: '説明を見る', exact: true }).click();
+  const again = page.getByRole('button', { name: 'もう一度', exact: true });
+  const nextBox = await page.getByRole('link', { name: '次の用語へ' }).boundingBox();
+  const againBox = await again.boundingBox();
+  expect(againBox!.y).toBe(nextBox!.y);
+  await again.click();
+  await expect(page).toHaveURL(/\/glossary\/digital-signature$/);
+  await expect(textbox(page)).toHaveValue('');
+  await expect(page.getByRole('button', { name: '押しながら話す' })).toBeFocused();
+  await expect(page.locator('.glossary-feedback, .term-reference')).toHaveCount(0);
+  await expect(check(page)).toBeDisabled();
+  expect(calls).toBe(1);
+  await expect.poll(async () => (await entries(page)).length).toBe(1);
   await speakExplanation(page, '本文のハッシュ値に署名し、認証局の証明書で公開鍵が本人のものか確かめます。');
   await expect(check(page)).toBeEnabled(); await check(page).click();
   await expect(page.getByLabel('評価 合格 ＋ 深掘りできた', { exact: true })).toBeVisible();
   await expect(page.getByRole('img', { name: '説明できた', exact: true })).toHaveCount(term.criteria.length);
   expect(calls).toBe(2);
   await expect.poll(async () => (await entries(page)).length).toBe(2);
+  expect(await entries(page)).toEqual(expect.arrayContaining([
+    expect.objectContaining({ text, referenceViewed: false }),
+    expect.objectContaining({ text: '本文のハッシュ値に署名し、認証局の証明書で公開鍵が本人のものか確かめます。', referenceViewed: true }),
+  ]));
 });
 
 test('shows and persists choice-only results without requiring probabilities or a cutoff', async ({ page }) => {

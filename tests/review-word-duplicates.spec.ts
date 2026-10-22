@@ -84,6 +84,13 @@ test('clears all aliases after mastery and does not repeat the concept within th
   await page.getByRole('button', { name: 'AIでチェック' }).click();
   await expect(page.getByRole('status').filter({ hasText: '復習キューから外しました' })).toBeVisible();
   await expect.poll(() => savedWords(page)).toEqual([]);
+  await page.getByRole('button', { name: 'もう一度', exact: true }).click();
+  await expect(page.locator('.review-round-count')).toHaveText('単語の復習 1 / 1');
+  await expect(page.getByRole('textbox', { name: 'ディジタル署名についての説明' })).toHaveValue('');
+  await speakExplanation(page, '秘密鍵で署名し、公開鍵で検証して、送信者と改ざんの有無を確かめます。');
+  await page.getByRole('button', { name: 'AIでチェック' }).click();
+  await expect(page.getByRole('status').filter({ hasText: '復習キューから外しました' })).toBeVisible();
+  await expect.poll(() => savedWords(page)).toEqual([]);
   await page.getByRole('link', { name: '復習を終える', exact: true }).click();
   await expect(page.getByRole('heading', { name: '単語の復習が終わりました' })).toBeVisible();
 });
