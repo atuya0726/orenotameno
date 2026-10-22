@@ -10,7 +10,7 @@ const config = (patch: Partial<PracticeConfig>): PracticeConfig => ({ ...default
 describe('practice setup', () => {
   it('lists exam sessions of a course from newest to oldest', () => {
     const sets = practiceSets('A1');
-    expect(sets.map(set => set.label)).toEqual(['令和7年度秋期', '令和7年度春期', '令和6年度秋期', '令和6年度春期', '令和5年度秋期', '令和5年度春期']);
+    expect(sets.map(set => set.label)).toEqual(['令和7年度秋期', '令和7年度春期', '令和6年度秋期', '令和6年度春期', '令和5年度秋期', '令和5年度春期', '令和4年度秋期', '令和4年度春期', '令和3年度秋期', '令和3年度春期']);
     expect(sets.every(set => set.count === 30)).toBe(true);
     expect(practiceSets('A2')).toEqual([
       { id: 'sc-2025-autumn-a2', label: '令和7年度秋期', count: 25 }, { id: 'sc-2025-spring-a2', label: '令和7年度春期', count: 25 },
@@ -20,7 +20,7 @@ describe('practice setup', () => {
     ]);
   });
   it('starts with every session and field selected, in random order without a limit', () => {
-    expect(matchingQuestions('A1', defaultPracticeConfig('A1'), empty)).toHaveLength(180);
+    expect(matchingQuestions('A1', defaultPracticeConfig('A1'), empty)).toHaveLength(300);
     expect(defaultPracticeConfig('A1')).toMatchObject({ mode: 'sets', order: 'random', limit: 0, target: 'all', calculation: 'include' });
   });
   it('filters by session, field, calculation and learning state', () => {
@@ -37,7 +37,7 @@ describe('practice setup', () => {
     const snapshot = { cards: [card('sc-2025-autumn-a1-1', 2), card('sc-2025-autumn-a1-2', 0)], bookmarks: ['sc-2024-autumn-a1-5'] };
     expect(matchingQuestions('A1', config({ target: 'review' }), snapshot).map(q => q.id)).toEqual(['sc-2025-autumn-a1-1']);
     expect(matchingQuestions('A1', config({ target: 'bookmarks' }), snapshot).map(q => q.id)).toEqual(['sc-2024-autumn-a1-5']);
-    expect(matchingQuestions('A1', config({ target: 'new' }), snapshot)).toHaveLength(178);
+    expect(matchingQuestions('A1', config({ target: 'new' }), snapshot)).toHaveLength(298);
   });
   it('shuffles and limits a session, or keeps exam order', () => {
     const ordered = buildPracticeQueue('A1', config({ order: 'number', limit: 3 }), empty);

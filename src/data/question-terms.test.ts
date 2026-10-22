@@ -97,4 +97,18 @@ describe('question vocabulary candidates', () => {
     expect(resolved.every(Boolean)).toBe(true);
     expect(new Set(resolved.map(term => term?.id)).size).toBe(words.length);
   });
+  it('distinguishes CPS meanings and opens each new concept instead of a parent topic', () => {
+    expect(termForWord('CPS')?.id).toBe('cps');
+    expect(termForWord('サイバーフィジカルシステム')?.id).toBe('cyber-physical-system');
+    expect(getQuestionTerms({ id: 'sc-2022-autumn-a1-28' })).toContain('サイバーフィジカルシステム');
+    expect(getQuestionTerms({ id: 'sc-2022-autumn-a1-28' })).not.toContain('CPS');
+    for (const group of [['第1正規形', '第2正規形', '第3正規形'], ['NPV', 'IRR', 'PBP'], ['アクティビティ図', 'シーケンス図', 'ユースケース図', '状態マシン図'], ['ACID特性', '原子性', '一貫性', '耐久性']]) {
+      const resolved = group.map(termForWord);
+      expect(resolved.every(Boolean)).toBe(true);
+      expect(new Set(resolved.map(t => t?.id)).size).toBe(group.length);
+    }
+    expect(termForWord('CSF')?.id).toBe('critical-success-factor');
+    expect(termForWord('CSF 2.0')?.id).toBe('csf-2');
+  });
+
 });

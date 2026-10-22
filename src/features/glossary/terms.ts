@@ -623,7 +623,10 @@ export const terms: Term[] = [
     "category": "データベース",
     "definition": "トランザクションに求める原子性（全部成功するか全部取り消す）・一貫性・独立性（隔離性）・耐久性の四つの性質です。一貫性は整合性制約を保つこと、独立性は並行実行の干渉を防ぐこと、耐久性はコミットした結果を障害後も保持することを指します。",
     "related": [
-      "base"
+      "base",
+      "atomicity",
+      "db-consistency",
+      "durability"
     ],
     "criteria": [
       {
@@ -1606,14 +1609,14 @@ export const terms: Term[] = [
   {
     "id": "normalization",
     "name": "正規化",
-    "aliases": [
-      "第3正規形",
-      "第2正規形"
-    ],
     "reading": "Normalization",
     "category": "データベース",
     "definition": "関係データベースの表を、関数従属性などに基づいて整理することです。データの重複と、更新・挿入・削除に伴う不整合を減らします。",
-    "related": [],
+    "related": [
+      "first-normal-form",
+      "second-normal-form",
+      "third-normal-form"
+    ],
     "criteria": [
       {
         "id": "purpose",
@@ -2622,14 +2625,14 @@ export const terms: Term[] = [
   {
     "id": "ppm",
     "name": "PPM",
-    "aliases": [
-      "市場成長率",
-      "相対的市場シェア"
-    ],
     "reading": "Product Portfolio Management",
     "category": "経営戦略",
     "definition": "市場成長率と相対的市場シェアの二軸で、事業や製品を花形・金のなる木・問題児・負け犬の四つに分類し、経営資源の配分を考える手法です。",
-    "related": [],
+    "related": [
+      "relative-market-share",
+      "market-growth",
+      "cash-cow"
+    ],
     "criteria": [
       {
         "id": "axes",
@@ -5580,15 +5583,13 @@ export const terms: Term[] = [
   {
     "id": "functional-dependency",
     "name": "関数従属性",
-    "aliases": [
-      "推移的関数従属",
-      "部分関数従属"
-    ],
     "reading": "Functional dependency",
     "category": "データベース",
     "definition": "ある列や列の組Aの値が決まると、列Bの値が一意に決まる関係（A→B）です。表の正規化を考える手掛かりになります。",
     "related": [
-      "normalization"
+      "normalization",
+      "partial-dependency",
+      "transitive-dependency"
     ],
     "criteria": [
       {
@@ -8526,19 +8527,20 @@ export const terms: Term[] = [
     "id": "uml",
     "name": "UML",
     "aliases": [
-      "アクティビティ図",
       "オブジェクト図",
       "コンポーネント図",
-      "ユースケース図",
-      "クラス図",
-      "状態マシン図",
       "多重度"
     ],
     "reading": "Unified Modeling Language",
     "category": "ソフトウェア設計",
     "definition": "システムの分析・設計で使うモデルの表記法を統一したものです。構造や振る舞いなど、表したい内容に応じて図を使い分けます。",
     "related": [
-      "oop"
+      "oop",
+      "activity-diagram",
+      "sequence-diagram",
+      "use-case-diagram",
+      "state-machine-diagram",
+      "class-diagram"
     ],
     "criteria": [
       {
@@ -9230,8 +9232,7 @@ export const terms: Term[] = [
       "ガバナンス",
       "マネジメント",
       "コントロール",
-      "IT投資",
-      "PDCAサイクル"
+      "IT投資"
     ],
     "reading": "Information technology governance",
     "category": "システム戦略",
@@ -9901,7 +9902,6 @@ export const terms: Term[] = [
     "id": "copyright",
     "name": "著作権",
     "aliases": [
-      "職務著作",
       "類似性",
       "依拠性",
       "アルゴリズム",
@@ -9912,7 +9912,8 @@ export const terms: Term[] = [
     "definition": "思想や感情を創作的に表現した著作物を保護し、複製などの利用を管理する権利です。登録を要せず創作した時点で発生し、アイデアそのものは保護の対象になりません。著作者人格権は譲渡できない別の権利として区別します。",
     "related": [
       "author-moral-rights",
-      "right-of-integrity"
+      "right-of-integrity",
+      "work-for-hire"
     ],
     "criteria": [
       {
@@ -10167,19 +10168,14 @@ export const terms: Term[] = [
   {
     "id": "investment-evaluation",
     "name": "投資評価手法",
-    "aliases": [
-      "NPV",
-      "PBP法",
-      "NPV法",
-      "IRR法",
-      "キャッシュフロー",
-      "割引率",
-      "回収期間"
-    ],
     "reading": "Investment appraisal",
     "category": "経営管理",
     "definition": "投資に必要な費用と将来の効果を評価し、実行の可否や案の選択に役立てる手法の総称です。投資効率・回収期間・貨幣の時間価値など、評価したい観点に応じて手法を使い分けます。",
-    "related": [],
+    "related": [
+      "npv",
+      "irr",
+      "pbp"
+    ],
     "criteria": [
       {
         "id": "meaning",
@@ -10655,7 +10651,10 @@ export const terms: Term[] = [
         "hint": "他社から何を受託する企業ですか？"
       }
     ],
-    "commonMistakes": []
+    "commonMistakes": [],
+    "aliases": [
+      "ファウンドリ"
+    ]
   },
   {
     "id": "franchise",
@@ -11744,6 +11743,9 @@ export const terms: Term[] = [
     ],
     "commonMistakes": [
       "耐タンパー対策を設けるだけで、処理時間の差も必ずなくなるわけではありません。"
+    ],
+    "aliases": [
+      "耐タンパ性"
     ]
   },
   {
@@ -12442,6 +12444,9 @@ export const terms: Term[] = [
     ],
     "commonMistakes": [
       "成果をステークホルダーと確認するスプリントレビューとは目的が異なります。"
+    ],
+    "aliases": [
+      "スプリントレトロスペクティブ"
     ]
   },
   {
@@ -12702,6 +12707,9 @@ export const terms: Term[] = [
     ],
     "commonMistakes": [
       "与えられたハッシュ値に対する入力の探索は原像計算困難性で、二入力の衝突探索とは違います。"
+    ],
+    "aliases": [
+      "衝突困難性"
     ]
   },
   {
@@ -12718,7 +12726,10 @@ export const terms: Term[] = [
         "hint": "原像計算困難性の目的や仕組みを説明できますか？"
       }
     ],
-    "commonMistakes": []
+    "commonMistakes": [],
+    "aliases": [
+      "一方向性"
+    ]
   },
   {
     "id": "birthday-attack",
@@ -13237,7 +13248,10 @@ export const terms: Term[] = [
         "hint": "運用費の目的や仕組みを説明できますか？"
       }
     ],
-    "commonMistakes": []
+    "commonMistakes": [],
+    "aliases": [
+      "運用費用"
+    ]
   },
   {
     "id": "incremental-profit",
@@ -17097,7 +17111,8 @@ export const terms: Term[] = [
     ],
     "commonMistakes": [],
     "aliases": [
-      "NOR"
+      "NOR",
+      "否定論理和"
     ]
   },
   {
@@ -17776,7 +17791,10 @@ export const terms: Term[] = [
         "hint": "この用語の意味や基本の仕組みを説明できますか？"
       }
     ],
-    "commonMistakes": []
+    "commonMistakes": [],
+    "aliases": [
+      "バリューチェーン"
+    ]
   },
   {
     "id": "pareto-chart",
@@ -17936,6 +17954,3923 @@ export const terms: Term[] = [
         "id": "meaning",
         "title": "著作物などについて、著作者の意に反して改変されないことに関する権利",
         "hint": "どのような利益を保護する権利ですか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "karnaugh-map",
+    "name": "カルノー図",
+    "reading": "Karnaugh Map",
+    "category": "基礎理論",
+    "definition": "論理関数の真理値を、1ビットだけ異なる入力が隣り合うよう配置した表です。同じ出力の領域をまとめ、論理式を簡単にします。",
+    "related": [
+      "logic-operation"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "論理関数の真理値を、1ビットだけ異なる入力が隣り合うよう配置した表です。同じ出力の領域をまとめ、論理式を簡単にします。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      },
+      {
+        "id": "tip",
+        "title": "端同士も隣接するため、左右端や上下端をまたいで領域をまとめられます。",
+        "hint": "基本に加えて、使うときの注意点や仕組みを説明できますか？",
+        "level": "deep"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "logical-not",
+    "name": "否定",
+    "reading": "Logical Not",
+    "category": "基礎理論",
+    "definition": "真を偽に、偽を真に反転する論理演算です。ビットでは0と1を入れ替えます。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "真を偽に、偽を真に反転する論理演算です。ビットでは0と1を入れ替えます。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "transfer-learning",
+    "name": "転移学習",
+    "reading": "Transfer Learning",
+    "category": "AI・機械学習",
+    "definition": "ある課題の学習で得たモデルや特徴を、別の関連する課題の学習に利用する手法です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "ある課題の学習で得たモデルや特徴を、別の関連する課題の学習に利用する手法です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      },
+      {
+        "id": "tip",
+        "title": "少ないデータで学習を進めやすい一方、元の課題と性質が違いすぎると性能が悪化する場合があります。",
+        "hint": "基本に加えて、使うときの注意点や仕組みを説明できますか？",
+        "level": "deep"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "backpropagation",
+    "name": "誤差逆伝播法",
+    "reading": "Backpropagation",
+    "category": "AI・機械学習",
+    "definition": "ニューラルネットワークの出力の誤差から、重みの調整に必要な勾配を出力側から入力側へさかのぼって計算する方法です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "ニューラルネットワークの出力の誤差から、重みの調整に必要な勾配を出力側から入力側へさかのぼって計算する方法です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "processor",
+    "name": "プロセッサ",
+    "reading": "Processor",
+    "category": "コンピュータ構成",
+    "definition": "命令を解釈し、演算や制御などの処理を実行する装置です。CPUはその代表です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "命令を解釈し、演算や制御などの処理を実行する装置です。CPUはその代表です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "container-virtualization",
+    "name": "コンテナ型仮想化",
+    "reading": "Container Virtualization",
+    "category": "システム構成",
+    "definition": "ホストOSのカーネルを共有しながら、アプリケーションごとの実行環境を分離する仮想化方式です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "ホストOSのカーネルを共有しながら、アプリケーションごとの実行環境を分離する仮想化方式です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      },
+      {
+        "id": "tip",
+        "title": "ゲストOSの起動が不要で軽量ですが、カーネルは共有するため、その脆弱性の影響にも注意します。",
+        "hint": "基本に加えて、使うときの注意点や仕組みを説明できますか？",
+        "level": "deep"
+      }
+    ],
+    "commonMistakes": [
+      "コンテナごとに独立したゲストOSを動かす方式ではありません。"
+    ]
+  },
+  {
+    "id": "host-os",
+    "name": "ホストOS",
+    "reading": "Host Os",
+    "category": "システム構成",
+    "definition": "仮想化ソフトウェアやコンテナなどの基盤として、物理マシン上で動作するOSです。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "仮想化ソフトウェアやコンテナなどの基盤として、物理マシン上で動作するOSです。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "guest-os",
+    "name": "ゲストOS",
+    "reading": "Guest Os",
+    "category": "システム構成",
+    "definition": "仮想マシンにインストールされ、その仮想マシンの資源を管理するOSです。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "仮想マシンにインストールされ、その仮想マシンの資源を管理するOSです。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "hypervisor",
+    "name": "ハイパーバイザ",
+    "reading": "Hypervisor",
+    "category": "システム構成",
+    "definition": "物理マシンの資源を複数の仮想マシンへ割り当て、各仮想マシンの実行を制御するソフトウェアです。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "物理マシンの資源を複数の仮想マシンへ割り当て、各仮想マシンの実行を制御するソフトウェアです。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "mutual-exclusion",
+    "name": "排他制御",
+    "reading": "Mutual Exclusion",
+    "category": "ソフトウェア",
+    "definition": "複数の処理が共有資源を同時に操作して不整合を起こさないよう、利用を制限する制御です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "複数の処理が共有資源を同時に操作して不整合を起こさないよう、利用を制限する制御です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      },
+      {
+        "id": "tip",
+        "title": "資源を保持したまま別の資源を待つと、デッドロックになる場合があります。",
+        "hint": "基本に加えて、使うときの注意点や仕組みを説明できますか？",
+        "level": "deep"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "task",
+    "name": "タスク",
+    "reading": "Task",
+    "category": "ソフトウェア",
+    "definition": "OSなどが実行やスケジューリングの対象として扱う、処理の単位です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "OSなどが実行やスケジューリングの対象として扱う、処理の単位です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "resource-order",
+    "name": "資源獲得順序",
+    "reading": "Resource Order",
+    "category": "ソフトウェア",
+    "definition": "処理が複数の共有資源を確保する際の順序です。全処理で同じ順序を守ると、資源待ちの循環を防げます。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "処理が複数の共有資源を確保する際の順序です。全処理で同じ順序を守ると、資源待ちの循環を防げます。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "xnor",
+    "name": "等価演算",
+    "reading": "Xnor",
+    "category": "基礎理論",
+    "definition": "二つの入力が同じときに1、異なるときに0となる論理演算です。XORの結果を否定したXNORです。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "二つの入力が同じときに1、異なるときに0となる論理演算です。XORの結果を否定したXNORです。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "customer-code",
+    "name": "顧客コード",
+    "reading": "Customer Code",
+    "category": "データベース",
+    "definition": "顧客を一意に識別するために割り当てる記号や番号です。異なる顧客に同じコードを割り当てないよう管理します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "顧客を一意に識別するために割り当てる記号や番号です。異なる顧客に同じコードを割り当てないよう管理します。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "permutation-repetition",
+    "name": "重複順列",
+    "reading": "Permutation Repetition",
+    "category": "基礎理論",
+    "definition": "同じ要素を繰り返し選ぶことを許して、順序を区別して並べることです。n種類からr個を選んで並べる総数はnのr乗です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "同じ要素を繰り返し選ぶことを許して、順序を区別して並べることです。n種類からr個を選んで並べる総数はnのr乗です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "exponent",
+    "name": "指数",
+    "reading": "Exponent",
+    "category": "基礎理論",
+    "definition": "同じ数を何回掛けるかなどを表す、累乗の肩に書く数です。aのn乗ではnが指数です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "同じ数を何回掛けるかなどを表す、累乗の肩に書く数です。aのn乗ではnが指数です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "compound-interest",
+    "name": "複利",
+    "reading": "Compound Interest",
+    "category": "経営管理",
+    "definition": "元本に加え、それまでに生じた利息にも利息を付ける計算方法です。一定率rでn期間増える金額は元本×(1+r)のn乗です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "元本に加え、それまでに生じた利息にも利息を付ける計算方法です。一定率rでn期間増える金額は元本×(1+r)のn乗です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "atomicity",
+    "name": "原子性",
+    "reading": "Atomicity",
+    "category": "データベース",
+    "definition": "トランザクションの処理を、全て実行するか、全て取り消すかのどちらかにする性質です。",
+    "related": [
+      "acid"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "トランザクションの処理を、全て実行するか、全て取り消すかのどちらかにする性質です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "db-consistency",
+    "name": "一貫性",
+    "reading": "Db Consistency",
+    "category": "データベース",
+    "definition": "トランザクションの前後で、データベースが定められた整合性制約を満たす性質です。",
+    "related": [
+      "acid"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "トランザクションの前後で、データベースが定められた整合性制約を満たす性質です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "durability",
+    "name": "耐久性",
+    "reading": "Durability",
+    "category": "データベース",
+    "definition": "コミットしたトランザクションの結果が、その後の障害でも失われない性質です。",
+    "related": [
+      "acid"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "コミットしたトランザクションの結果が、その後の障害でも失われない性質です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "dhcp-lease",
+    "name": "リース期間",
+    "reading": "Dhcp Lease",
+    "category": "ネットワーク",
+    "definition": "DHCPで端末にIPアドレスの利用を認める有効期間です。引き続き使うには更新します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "DHCPで端末にIPアドレスの利用を認める有効期間です。引き続き使うには更新します。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "chap",
+    "name": "CHAP",
+    "reading": "Chap",
+    "category": "暗号・認証",
+    "definition": "認証側のチャレンジに対して、秘密情報に基づく応答を返すチャレンジレスポンス型の認証プロトコルです。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "認証側のチャレンジに対して、秘密情報に基づく応答を返すチャレンジレスポンス型の認証プロトコルです。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "snmp",
+    "name": "SNMP",
+    "reading": "Snmp",
+    "category": "ネットワーク",
+    "definition": "ネットワーク機器の管理情報を取得・設定したり、機器からの通知を受けたりする管理用プロトコルです。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "ネットワーク機器の管理情報を取得・設定したり、機器からの通知を受けたりする管理用プロトコルです。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "risk-assessment",
+    "name": "リスクアセスメント",
+    "reading": "Risk Assessment",
+    "category": "セキュリティ管理",
+    "definition": "リスク特定・リスク分析・リスク評価を通じて、リスクを把握して判断する一連のプロセスです。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "リスク特定・リスク分析・リスク評価を通じて、リスクを把握して判断する一連のプロセスです。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": [
+      "リスク対応やリスク受容は、三つの構成プロセスそのものには含めません。"
+    ]
+  },
+  {
+    "id": "risk-analysis",
+    "name": "リスク分析",
+    "reading": "Risk Analysis",
+    "category": "セキュリティ管理",
+    "definition": "特定したリスクの性質を理解し、発生可能性や影響などからリスクの大きさを調べることです。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "特定したリスクの性質を理解し、発生可能性や影響などからリスクの大きさを調べることです。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "rest-api",
+    "name": "REST API",
+    "reading": "Rest Api",
+    "category": "Web技術",
+    "definition": "資源をURIで識別し、HTTPメソッドなどで操作するRESTの考え方に沿ったAPIです。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "資源をURIで識別し、HTTPメソッドなどで操作するRESTの考え方に沿ったAPIです。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      },
+      {
+        "id": "tip",
+        "title": "HTTPの検査をするWAFを利用できますが、認可の不備など全てのAPI攻撃を自動的に防げるわけではありません。",
+        "hint": "基本に加えて、使うときの注意点や仕組みを説明できますか？",
+        "level": "deep"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "pppoe",
+    "name": "PPPoE",
+    "reading": "Pppoe",
+    "category": "ネットワーク",
+    "definition": "PPPのフレームをイーサネットのフレームに入れて運ぶプロトコルです。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "PPPのフレームをイーサネットのフレームに入れて運ぶプロトコルです。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      },
+      {
+        "id": "tip",
+        "title": "PPPoEそのものは通信内容を暗号化する機能ではありません。",
+        "hint": "基本に加えて、使うときの注意点や仕組みを説明できますか？",
+        "level": "deep"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "wpa",
+    "name": "WPA",
+    "reading": "Wpa",
+    "category": "ネットワークセキュリティ",
+    "definition": "無線LANの通信の暗号化や利用者・機器の認証などを行うセキュリティ方式です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "無線LANの通信の暗号化や利用者・機器の認証などを行うセキュリティ方式です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      },
+      {
+        "id": "tip",
+        "title": "保護するのは無線区間であり、不正なWebサイトの判定やマルウェアの検査とは役割が異なります。",
+        "hint": "基本に加えて、使うときの注意点や仕組みを説明できますか？",
+        "level": "deep"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "precedence-diagram",
+    "name": "プレシデンスダイアグラム",
+    "reading": "Precedence Diagram",
+    "category": "プロジェクト管理",
+    "definition": "作業を箱で表し、箱の間の矢印で作業の依存関係を示す図です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "作業を箱で表し、箱の間の矢印で作業の依存関係を示す図です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "lead-time-overlap",
+    "name": "リード",
+    "reading": "Lead Time Overlap",
+    "category": "プロジェクト管理",
+    "definition": "先行作業と後続作業の依存関係で、後続作業の開始などを前倒しできる時間です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "先行作業と後続作業の依存関係で、後続作業の開始などを前倒しできる時間です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "lag-time",
+    "name": "ラグ",
+    "reading": "Lag Time",
+    "category": "プロジェクト管理",
+    "definition": "先行作業と後続作業の依存関係で、一定の待ち時間を設ける遅れの時間です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "先行作業と後続作業の依存関係で、一定の待ち時間を設ける遅れの時間です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "weighted-sum",
+    "name": "加重総和法",
+    "reading": "Weighted Sum",
+    "category": "プロジェクト管理",
+    "definition": "評価項目ごとの点数に重みを掛け、その合計で複数の案を比較する方法です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "評価項目ごとの点数に重みを掛け、その合計で複数の案を比較する方法です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "multicriteria-analysis",
+    "name": "多基準意思決定分析",
+    "reading": "Multicriteria Analysis",
+    "category": "プロジェクト管理",
+    "definition": "複数の評価基準を用いて候補を比較し、意思決定に役立てる分析です。加重総和法などがあります。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "複数の評価基準を用いて候補を比較し、意思決定に役立てる分析です。加重総和法などがあります。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "weighting",
+    "name": "重み付け",
+    "reading": "Weighting",
+    "category": "基礎理論",
+    "definition": "項目の重要度に応じて、計算や評価への寄与の大きさを変えることです。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "項目の重要度に応じて、計算や評価への寄与の大きさを変えることです。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "evaluation-score",
+    "name": "評価点数",
+    "reading": "Evaluation Score",
+    "category": "プロジェクト管理",
+    "definition": "評価基準に照らした対象の良さや達成度を、数値で表したものです。点数の高低が何を意味するかを事前に決めます。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "評価基準に照らした対象の良さや達成度を、数値で表したものです。点数の高低が何を意味するかを事前に決めます。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "risk-acceptance-criteria",
+    "name": "リスク受容基準",
+    "reading": "Risk Acceptance Criteria",
+    "category": "セキュリティ管理",
+    "definition": "どの程度のリスクなら受け入れられるかを判断するため、あらかじめ定める基準です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "どの程度のリスクなら受け入れられるかを判断するため、あらかじめ定める基準です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      },
+      {
+        "id": "tip",
+        "title": "アセスメントの結果に合わせて後から決めると、評価が恣意的になります。",
+        "hint": "基本に加えて、使うときの注意点や仕組みを説明できますか？",
+        "level": "deep"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "bcp",
+    "name": "BCP",
+    "reading": "Bcp",
+    "category": "システム戦略",
+    "definition": "災害などで事業が中断しても、重要な事業を継続し、目標の水準まで復旧するための対応を定めた事業継続計画です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "災害などで事業が中断しても、重要な事業を継続し、目標の水準まで復旧するための対応を定めた事業継続計画です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "bpo",
+    "name": "BPO",
+    "reading": "Bpo",
+    "category": "システム戦略",
+    "definition": "業務プロセスの一部や全部を、外部の専門事業者へ委託することです。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "業務プロセスの一部や全部を、外部の専門事業者へ委託することです。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "npv",
+    "name": "NPV",
+    "aliases": [
+      "正味現在価値法",
+      "NPV法",
+      "正味現在価値"
+    ],
+    "reading": "Npv",
+    "category": "システム戦略",
+    "definition": "将来のキャッシュフローを現在価値に換算した合計から、初期投資額を引いた正味現在価値です。",
+    "related": [
+      "investment-evaluation",
+      "cash-flow",
+      "discount-rate"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "将来のキャッシュフローを現在価値に換算した合計から、初期投資額を引いた正味現在価値です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      },
+      {
+        "id": "tip",
+        "title": "同じ条件で案を比較する場合、NPVが大きい案ほど投資効果が高いと判断します。",
+        "hint": "基本に加えて、使うときの注意点や仕組みを説明できますか？",
+        "level": "deep"
+      }
+    ],
+    "commonMistakes": [
+      "回収にかかる年数ではなく、現在価値へ換算した正味の金額です。"
+    ]
+  },
+  {
+    "id": "conjoint-analysis",
+    "name": "コンジョイント分析",
+    "reading": "Conjoint Analysis",
+    "category": "経営戦略",
+    "definition": "複数の属性を組み合わせた商品案への評価から、購入者が重視する属性やその効用を推定する分析です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "複数の属性を組み合わせた商品案への評価から、購入者が重視する属性やその効用を推定する分析です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "cohort-analysis",
+    "name": "コーホート分析",
+    "reading": "Cohort Analysis",
+    "category": "経営戦略",
+    "definition": "同じ時期に生まれたなど、共通する経験や属性を持つ集団を単位に、行動や意識の変化を分析する方法です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "同じ時期に生まれたなど、共通する経験や属性を持つ集団を単位に、行動や意識の変化を分析する方法です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "positioning",
+    "name": "ポジショニング",
+    "reading": "Positioning",
+    "category": "経営戦略",
+    "definition": "競合との違いを明確にし、顧客にとっての自社製品・サービスの位置付けを定めることです。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "競合との違いを明確にし、顧客にとっての自社製品・サービスの位置付けを定めることです。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "api-economy",
+    "name": "APIエコノミー",
+    "reading": "Api Economy",
+    "category": "経営戦略",
+    "definition": "企業などがAPIで機能やデータを連携させ、新たなサービスや事業価値を生む経済の仕組みです。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "企業などがAPIで機能やデータを連携させ、新たなサービスや事業価値を生む経済の仕組みです。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "api",
+    "name": "API",
+    "reading": "Api",
+    "category": "Web技術",
+    "definition": "ソフトウェアの機能やデータを、別のプログラムから利用するためのインタフェースです。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "ソフトウェアの機能やデータを、別のプログラムから利用するためのインタフェースです。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "eai",
+    "name": "EAI",
+    "reading": "Eai",
+    "category": "システム戦略",
+    "definition": "企業内の異なる業務システムを連携させ、データ交換や業務の流れを統合する仕組みです。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "企業内の異なる業務システムを連携させ、データ交換や業務の流れを統合する仕組みです。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "bi",
+    "name": "BI",
+    "reading": "Bi",
+    "category": "システム戦略",
+    "definition": "企業に蓄積したデータを集計・分析・可視化し、経営や業務の意思決定へ役立てる仕組みです。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "企業に蓄積したデータを集計・分析・可視化し、経営や業務の意思決定へ役立てる仕組みです。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "cyber-physical-system",
+    "name": "CPS（サイバーフィジカルシステム）",
+    "aliases": [
+      "サイバーフィジカルシステム"
+    ],
+    "reading": "Cyber Physical System",
+    "category": "システム戦略",
+    "definition": "現実世界のデータをサイバー空間で分析し、その結果を現実世界へフィードバックして価値を生む仕組みです。",
+    "related": [
+      "iot",
+      "feedback-control"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "現実世界のデータをサイバー空間で分析し、その結果を現実世界へフィードバックして価値を生む仕組みです。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": [
+      "認証局運用規程の略称CPSとは別の概念です。"
+    ]
+  },
+  {
+    "id": "affinity-diagram",
+    "name": "親和図法",
+    "reading": "Affinity Diagram",
+    "category": "経営管理",
+    "definition": "集めた事実やアイデアを、内容が似ているものごとにまとめて、問題の構造を整理する方法です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "集めた事実やアイデアを、内容が似ているものごとにまとめて、問題の構造を整理する方法です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "nm-method",
+    "name": "NM法",
+    "reading": "Nm Method",
+    "category": "経営管理",
+    "definition": "課題の特徴から類比や連想を広げ、そこから新しいアイデアを生み出す発想法です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "課題の特徴から類比や連想を広げ、そこから新しいアイデアを生み出す発想法です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "gordon-method",
+    "name": "ゴードン法",
+    "reading": "Gordon Method",
+    "category": "経営管理",
+    "definition": "参加者に具体的な課題をすぐには示さず、抽象的なテーマから連想を広げて発想を促す方法です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "参加者に具体的な課題をすぐには示さず、抽象的なテーマから連想を広げて発想を促す方法です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "program",
+    "name": "プログラム",
+    "reading": "Program",
+    "category": "ソフトウェア",
+    "definition": "コンピュータに処理を実行させるための命令を、順序や規則に従って記述したものです。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "コンピュータに処理を実行させるための命令を、順序や規則に従って記述したものです。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "outsourcing-contract",
+    "name": "委託契約",
+    "reading": "Outsourcing Contract",
+    "category": "法務",
+    "definition": "業務や作業を他者へ委ね、その範囲や報酬、責任などを定める契約です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "業務や作業を他者へ委ね、その範囲や報酬、責任などを定める契約です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      },
+      {
+        "id": "tip",
+        "title": "委託しただけでは成果物の著作権は自動的に移らず、帰属や譲渡の条件を別途確認します。",
+        "hint": "基本に加えて、使うときの注意点や仕組みを説明できますか？",
+        "level": "deep"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "redundant-bit",
+    "name": "冗長ビット",
+    "reading": "Redundant Bit",
+    "category": "基礎理論",
+    "definition": "誤りの検出や訂正などのため、元のデータへ追加するビットです。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "誤りの検出や訂正などのため、元のデータへ追加するビットです。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "array",
+    "name": "配列",
+    "reading": "Array",
+    "category": "アルゴリズム",
+    "definition": "要素を順序付けて並べ、添字を指定して各要素へアクセスするデータ構造です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "要素を順序付けて並べ、添字を指定して各要素へアクセスするデータ構造です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      },
+      {
+        "id": "tip",
+        "title": "途中へ要素を挿入・削除する場合、後続要素の移動が必要になることがあります。",
+        "hint": "基本に加えて、使うときの注意点や仕組みを説明できますか？",
+        "level": "deep"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "linked-list",
+    "name": "連結リスト",
+    "reading": "Linked List",
+    "category": "アルゴリズム",
+    "definition": "要素と次の要素などへの参照を結び、要素の並びを表すデータ構造です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "要素と次の要素などへの参照を結び、要素の並びを表すデータ構造です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      },
+      {
+        "id": "tip",
+        "title": "挿入位置が分かっていれば参照の付替えで挿入できますが、途中の要素へは順にたどる必要があります。",
+        "hint": "基本に加えて、使うときの注意点や仕組みを説明できますか？",
+        "level": "deep"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "pointer",
+    "name": "ポインタ",
+    "reading": "Pointer",
+    "category": "ソフトウェア",
+    "definition": "メモリ上のデータや処理などの位置を指す情報です。一般にアドレスを保持して間接参照に使います。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "メモリ上のデータや処理などの位置を指す情報です。一般にアドレスを保持して間接参照に使います。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "array-index",
+    "name": "添字",
+    "reading": "Array Index",
+    "category": "アルゴリズム",
+    "definition": "配列などの中で、対象の要素の位置を指定する番号や値です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "配列などの中で、対象の要素の位置を指定する番号や値です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "python",
+    "name": "Python",
+    "reading": "Python",
+    "category": "ソフトウェア",
+    "definition": "インデントによって文のブロックを表す、高水準のプログラミング言語です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "インデントによって文のブロックを表す、高水準のプログラミング言語です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "c-language",
+    "name": "C言語",
+    "reading": "C Language",
+    "category": "ソフトウェア",
+    "definition": "関数による手続を記述し、ポインタなどによってメモリを扱えるプログラミング言語です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "関数による手続を記述し、ポインタなどによってメモリを扱えるプログラミング言語です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "java",
+    "name": "Java",
+    "reading": "Java",
+    "category": "ソフトウェア",
+    "definition": "クラスを中心に記述し、通常はバイトコードへコンパイルしてJVM上で動かすプログラミング言語です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "クラスを中心に記述し、通常はバイトコードへコンパイルしてJVM上で動かすプログラミング言語です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "php",
+    "name": "PHP",
+    "reading": "Php",
+    "category": "ソフトウェア",
+    "definition": "主にサーバ側で実行してWebページやWebアプリケーションを作るために使うプログラミング言語です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "主にサーバ側で実行してWebページやWebアプリケーションを作るために使うプログラミング言語です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "amdahl-law",
+    "name": "アムダールの法則",
+    "reading": "Amdahl Law",
+    "category": "システム構成",
+    "definition": "処理の並列化による高速化は、並列化できない部分の割合によって上限が決まるという法則です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "処理の並列化による高速化は、並列化できない部分の割合によって上限が決まるという法則です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      },
+      {
+        "id": "tip",
+        "title": "並列化できる割合をp、プロセッサ数をnとすると、理想的な速度向上比は1/((1−p)+p/n)です。",
+        "hint": "基本に加えて、使うときの注意点や仕組みを説明できますか？",
+        "level": "deep"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "parallel-processing",
+    "name": "並列処理",
+    "reading": "Parallel Processing",
+    "category": "システム構成",
+    "definition": "複数の演算資源などを使い、複数の処理を同時に進めることです。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "複数の演算資源などを使い、複数の処理を同時に進めることです。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "speedup",
+    "name": "速度向上比",
+    "reading": "Speedup",
+    "category": "システム構成",
+    "definition": "基準の処理時間を改善後の処理時間で割り、何倍速くなったかを示す値です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "基準の処理時間を改善後の処理時間で割り、何倍速くなったかを示す値です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "semaphore",
+    "name": "セマフォ",
+    "reading": "Semaphore",
+    "category": "ソフトウェア",
+    "definition": "共有資源の利用可能数などを管理し、待ちと解放の操作で複数の処理を同期・排他制御する仕組みです。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "共有資源の利用可能数などを管理し、待ちと解放の操作で複数の処理を同期・排他制御する仕組みです。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "i2c",
+    "name": "I2C",
+    "reading": "I2C",
+    "category": "組込みシステム",
+    "definition": "クロック線とデータ線の2本を使い、アドレスで指定した複数の機器と通信するシリアルバスです。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "クロック線とデータ線の2本を使い、アドレスで指定した複数の機器と通信するシリアルバスです。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "first-normal-form",
+    "name": "第1正規形",
+    "reading": "First Normal Form",
+    "category": "データベース",
+    "definition": "各属性が単一の値を持ち、繰返し属性がない関係の形です。",
+    "related": [
+      "normalization"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "各属性が単一の値を持ち、繰返し属性がない関係の形です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "second-normal-form",
+    "name": "第2正規形",
+    "reading": "Second Normal Form",
+    "category": "データベース",
+    "definition": "第1正規形を満たし、非キー属性が候補キーの一部だけに従属する部分関数従属を持たない形です。",
+    "related": [
+      "normalization",
+      "partial-dependency"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "第1正規形を満たし、非キー属性が候補キーの一部だけに従属する部分関数従属を持たない形です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "third-normal-form",
+    "name": "第3正規形",
+    "reading": "Third Normal Form",
+    "category": "データベース",
+    "definition": "第2正規形を満たし、非キー属性を介した候補キーへの推移的な従属を取り除いた形です。",
+    "related": [
+      "normalization",
+      "transitive-dependency"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "第2正規形を満たし、非キー属性を介した候補キーへの推移的な従属を取り除いた形です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "partial-dependency",
+    "name": "部分関数従属",
+    "reading": "Partial Dependency",
+    "category": "データベース",
+    "definition": "複数の属性からなる決定項の、一部の属性だけでも従属先の値が決まる関係です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "複数の属性からなる決定項の、一部の属性だけでも従属先の値が決まる関係です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "transitive-dependency",
+    "name": "推移的関数従属",
+    "reading": "Transitive Dependency",
+    "category": "データベース",
+    "definition": "AからBが決まり、BからCが決まることで、AからCが間接的に決まる関数従属です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "AからBが決まり、BからCが決まることで、AからCが間接的に決まる関数従属です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "data-mining",
+    "name": "データマイニング",
+    "reading": "Data Mining",
+    "category": "データベース",
+    "definition": "蓄積されたデータを分析し、隠れた規則や相関関係などを発見することです。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "蓄積されたデータを分析し、隠れた規則や相関関係などを発見することです。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "data-mart",
+    "name": "データマート",
+    "reading": "Data Mart",
+    "category": "データベース",
+    "definition": "特定の部門や分析目的に合わせて、必要なデータをまとめたデータベースです。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "特定の部門や分析目的に合わせて、必要なデータをまとめたデータベースです。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "replication",
+    "name": "レプリケーション",
+    "reading": "Replication",
+    "category": "データベース",
+    "definition": "データの複製を別の場所にも保持し、更新を反映させて可用性や読取り性能などを高める仕組みです。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "データの複製を別の場所にも保持し、更新を反映させて可用性や読取り性能などを高める仕組みです。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "ftp",
+    "name": "FTP",
+    "reading": "Ftp",
+    "category": "ネットワーク",
+    "definition": "TCPを使い、クライアントとサーバの間でファイルを転送するプロトコルです。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "TCPを使い、クライアントとサーバの間でファイルを転送するプロトコルです。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "telnet",
+    "name": "TELNET",
+    "reading": "Telnet",
+    "category": "ネットワーク",
+    "definition": "ネットワークを通じて、別のコンピュータを端末から遠隔操作するためのプロトコルです。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "ネットワークを通じて、別のコンピュータを端末から遠隔操作するためのプロトコルです。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      },
+      {
+        "id": "tip",
+        "title": "通常のTELNETは通信を暗号化しないため、認証情報の盗聴に注意が必要です。",
+        "hint": "基本に加えて、使うときの注意点や仕組みを説明できますか？",
+        "level": "deep"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "sdn",
+    "name": "SDN",
+    "reading": "Sdn",
+    "category": "ネットワーク",
+    "definition": "通信の制御機能とデータ転送機能を論理的に分け、ソフトウェアからネットワークを制御する考え方です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "通信の制御機能とデータ転送機能を論理的に分け、ソフトウェアからネットワークを制御する考え方です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "openflow",
+    "name": "OpenFlow",
+    "reading": "Openflow",
+    "category": "ネットワーク",
+    "definition": "SDNのコントローラと転送機器の間で、転送ルールなどをやり取りするためのプロトコルです。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "SDNのコントローラと転送機器の間で、転送ルールなどをやり取りするためのプロトコルです。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "san",
+    "name": "SAN",
+    "reading": "San",
+    "category": "システム構成",
+    "definition": "サーバとストレージを接続し、ブロック単位のデータ入出力などを行うための専用ネットワークです。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "サーバとストレージを接続し、ブロック単位のデータ入出力などを行うための専用ネットワークです。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "tampering",
+    "name": "改ざん",
+    "reading": "Tampering",
+    "category": "セキュリティ",
+    "definition": "権限のない変更などによって、データやプログラムの内容を書き換えることです。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "権限のない変更などによって、データやプログラムの内容を書き換えることです。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "vdi",
+    "name": "VDI",
+    "reading": "Vdi",
+    "category": "システム構成",
+    "definition": "サーバ側でデスクトップ環境を動かし、端末から画面の表示と操作を行う仕組みです。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "サーバ側でデスクトップ環境を動かし、端末から画面の表示と操作を行う仕組みです。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      },
+      {
+        "id": "tip",
+        "title": "ブラウザをサーバ側へ分離すると、端末へWebのコードを直接渡す機会を減らせます。",
+        "hint": "基本に加えて、使うときの注意点や仕組みを説明できますか？",
+        "level": "deep"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "fuzzing",
+    "name": "ファジング",
+    "reading": "Fuzzing",
+    "category": "セキュリティ",
+    "definition": "問題を起こしそうな多様な入力をソフトウェアへ与え、異常な挙動から脆弱性などを見つけるテスト手法です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "問題を起こしそうな多様な入力をソフトウェアへ与え、異常な挙動から脆弱性などを見つけるテスト手法です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "port-scan",
+    "name": "ポートスキャン",
+    "reading": "Port Scan",
+    "category": "ネットワークセキュリティ",
+    "definition": "相手のポートへ通信を試み、応答から利用可能なサービスなどを調べることです。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "相手のポートへ通信を試み、応答から利用可能なサービスなどを調べることです。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "test-case",
+    "name": "テストケース",
+    "reading": "Test Case",
+    "category": "開発技術",
+    "definition": "テストで与える入力や前提条件、操作と、期待する結果をまとめた一つの試験条件です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "テストで与える入力や前提条件、操作と、期待する結果をまとめた一つの試験条件です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "flowchart",
+    "name": "流れ図",
+    "reading": "Flowchart",
+    "category": "開発技術",
+    "definition": "処理や判定を図形で表し、矢印で実行の順序や分岐を示す図です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "処理や判定を図形で表し、矢印で実行の順序や分岐を示す図です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "perfective-maintenance",
+    "name": "完全化保守",
+    "reading": "Perfective Maintenance",
+    "category": "開発技術",
+    "definition": "ソフトウェアの機能、性能、保守性などを改善するための保守です。不具合の修正に限りません。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "ソフトウェアの機能、性能、保守性などを改善するための保守です。不具合の修正に限りません。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "corrective-maintenance",
+    "name": "是正保守",
+    "reading": "Corrective Maintenance",
+    "category": "開発技術",
+    "definition": "発見された不具合や故障を修正し、求める動作へ戻すための保守です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "発見された不具合や故障を修正し、求める動作へ戻すための保守です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "adaptive-maintenance",
+    "name": "適応保守",
+    "reading": "Adaptive Maintenance",
+    "category": "開発技術",
+    "definition": "OSなどの動作環境や外部条件の変化に、ソフトウェアを適合させるための保守です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "OSなどの動作環境や外部条件の変化に、ソフトウェアを適合させるための保守です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "preventive-maintenance",
+    "name": "予防保守",
+    "reading": "Preventive Maintenance",
+    "category": "開発技術",
+    "definition": "将来故障につながる可能性がある潜在的な欠陥を、問題が起きる前に取り除くための保守です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "将来故障につながる可能性がある潜在的な欠陥を、問題が起きる前に取り除くための保守です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "eac",
+    "name": "EAC",
+    "reading": "Eac",
+    "category": "プロジェクト管理",
+    "definition": "プロジェクトの完了までに必要となる、実績を含めた総コストの見積額です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "プロジェクトの完了までに必要となる、実績を含めた総コストの見積額です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      },
+      {
+        "id": "tip",
+        "title": "現在のコスト効率が続くと仮定する場合、EACをBAC÷CPIで見積もれます。",
+        "hint": "基本に加えて、使うときの注意点や仕組みを説明できますか？",
+        "level": "deep"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "predecessor",
+    "name": "先行作業",
+    "reading": "Predecessor",
+    "category": "プロジェクト管理",
+    "definition": "依存関係によって、ある作業の開始や終了より前に実施される条件を持つ作業です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "依存関係によって、ある作業の開始や終了より前に実施される条件を持つ作業です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "parallel-activity",
+    "name": "並行作業",
+    "reading": "Parallel Activity",
+    "category": "プロジェクト管理",
+    "definition": "複数の作業を同じ期間に重ねて進めることです。依存関係や資源の競合を確認する必要があります。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "複数の作業を同じ期間に重ねて進めることです。依存関係や資源の競合を確認する必要があります。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "mean-service-restore-time",
+    "name": "平均サービス回復時間",
+    "reading": "Mean Service Restore Time",
+    "category": "サービス管理",
+    "definition": "サービスの障害や中断から、利用可能な状態へ回復するまでにかかる時間の平均です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "サービスの障害や中断から、利用可能な状態へ回復するまでにかかる時間の平均です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "data-administrator",
+    "name": "DA",
+    "reading": "Data Administrator",
+    "category": "データベース",
+    "definition": "組織で利用するデータの方針、標準化、論理設計などを管理するデータ管理者です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "組織で利用するデータの方針、標準化、論理設計などを管理するデータ管理者です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "database-administrator",
+    "name": "DBA",
+    "reading": "Database Administrator",
+    "category": "データベース",
+    "definition": "DBMSの構築・運用、性能調整、権限管理、障害回復などを担うデータベース管理者です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "DBMSの構築・運用、性能調整、権限管理、障害回復などを担うデータベース管理者です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "logical-database-design",
+    "name": "論理データベース設計",
+    "reading": "Logical Database Design",
+    "category": "データベース",
+    "definition": "業務で必要なデータと関係を整理し、特定の物理的な格納方法に依存せず、表やキーなどの論理構造へ落とし込む設計です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "業務で必要なデータと関係を整理し、特定の物理的な格納方法に依存せず、表やキーなどの論理構造へ落とし込む設計です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "performance-tuning",
+    "name": "パフォーマンスチューニング",
+    "reading": "Performance Tuning",
+    "category": "システム構成",
+    "definition": "処理時間や資源使用の状況を調べ、設定や処理方法を調整して性能を改善することです。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "処理時間や資源使用の状況を調べ、設定や処理方法を調整して性能を改善することです。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "agile",
+    "name": "アジャイル",
+    "reading": "Agile",
+    "category": "開発技術",
+    "definition": "短い期間で開発と検証を繰り返し、利用者の反応や要求の変化を取り入れながら進める開発の考え方です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "短い期間で開発と検証を繰り返し、利用者の反応や要求の変化を取り入れながら進める開発の考え方です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "portfolio-management",
+    "name": "ポートフォリオ管理",
+    "reading": "Portfolio Management",
+    "category": "プロジェクト管理",
+    "definition": "複数の事業やプロジェクトなどの組合せを、戦略・効果・リスク・資源配分などの面から全体として管理することです。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "複数の事業やプロジェクトなどの組合せを、戦略・効果・リスク・資源配分などの面から全体として管理することです。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "pbp",
+    "name": "PBP",
+    "aliases": [
+      "PBP法",
+      "回収期間",
+      "投資回収期間"
+    ],
+    "reading": "Pbp",
+    "category": "システム戦略",
+    "definition": "投資によるキャッシュフローの累計が初期投資額に達するまでの、投資回収期間です。",
+    "related": [
+      "investment-evaluation"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "投資によるキャッシュフローの累計が初期投資額に達するまでの、投資回収期間です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "irr",
+    "name": "IRR",
+    "aliases": [
+      "IRR法",
+      "内部収益率"
+    ],
+    "reading": "Irr",
+    "category": "システム戦略",
+    "definition": "将来のキャッシュフローを割り引いた正味現在価値が0になる割引率で、内部収益率を表します。",
+    "related": [
+      "investment-evaluation"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "将来のキャッシュフローを割り引いた正味現在価値が0になる割引率で、内部収益率を表します。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "cash-cow",
+    "name": "金のなる木",
+    "reading": "Cash Cow",
+    "category": "経営戦略",
+    "definition": "PPMで市場成長率が低く、相対的市場占有率が高い事業です。安定した資金を生み、他の事業への投資を支えます。",
+    "related": [
+      "ppm"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "PPMで市場成長率が低く、相対的市場占有率が高い事業です。安定した資金を生み、他の事業への投資を支えます。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "relative-market-share",
+    "name": "相対的市場占有率",
+    "aliases": [
+      "相対的市場シェア"
+    ],
+    "reading": "Relative Market Share",
+    "category": "経営戦略",
+    "definition": "自社の市場占有率を、最大の競合相手の市場占有率などと比べた値です。PPMの評価軸に使います。",
+    "related": [
+      "ppm"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "自社の市場占有率を、最大の競合相手の市場占有率などと比べた値です。PPMの評価軸に使います。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "semiconductor",
+    "name": "半導体",
+    "reading": "Semiconductor",
+    "category": "コンピュータ構成",
+    "definition": "導体と絶縁体の中間的な電気伝導性を持ち、条件や不純物で電流を制御できる材料です。ICなどの基盤になります。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "導体と絶縁体の中間的な電気伝導性を持ち、条件や不純物で電流を制御できる材料です。ICなどの基盤になります。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "outsourcing",
+    "name": "アウトソーシング",
+    "reading": "Outsourcing",
+    "category": "経営戦略",
+    "definition": "業務や機能の一部を、外部の専門事業者へ委託することです。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "業務や機能の一部を、外部の専門事業者へ委託することです。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "xbrl",
+    "name": "XBRL",
+    "reading": "Xbrl",
+    "category": "Web技術",
+    "definition": "企業の財務・事業報告などの情報を、XMLを基礎に記述・交換するための言語です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "企業の財務・事業報告などの情報を、XMLを基礎に記述・交換するための言語です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "financial-information",
+    "name": "財務情報",
+    "reading": "Financial Information",
+    "category": "経営管理",
+    "definition": "企業の資産・負債、収益・費用、資金の流れなど、財政状態や経営成績に関する情報です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "企業の資産・負債、収益・費用、資金の流れなど、財政状態や経営成績に関する情報です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "markup-tag",
+    "name": "タグ",
+    "reading": "Markup Tag",
+    "category": "Web技術",
+    "definition": "マークアップ言語などで、要素の種類や構造を表すために付ける印です。XMLでは開始・終了のタグなどを使います。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "マークアップ言語などで、要素の種類や構造を表すために付ける印です。XMLでは開始・終了のタグなどを使います。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "pm-theory",
+    "name": "PM理論",
+    "reading": "Pm Theory",
+    "category": "プロジェクト管理",
+    "definition": "リーダーシップを、目標達成のP機能と集団維持のM機能という二つの軸で捉える理論です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "リーダーシップを、目標達成のP機能と集団維持のM機能という二つの軸で捉える理論です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "leadership",
+    "name": "リーダーシップ",
+    "reading": "Leadership",
+    "category": "プロジェクト管理",
+    "definition": "集団が目標へ向かって行動できるよう、他者へ影響を与え導く働きです。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "集団が目標へ向かって行動できるよう、他者へ影響を与え導く働きです。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "sl-theory",
+    "name": "SL理論",
+    "reading": "Sl Theory",
+    "category": "プロジェクト管理",
+    "definition": "部下の成熟度や自律性に合わせて、指示と支援の度合いを変えるリーダーシップ理論です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "部下の成熟度や自律性に合わせて、指示と支援の度合いを変えるリーダーシップ理論です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "fiedler-contingency",
+    "name": "コンティンジェンシー理論",
+    "reading": "Fiedler Contingency",
+    "category": "プロジェクト管理",
+    "definition": "リーダーの特性と状況の組合せによって、リーダーシップの有効性が変わると捉える理論です。ここではフィードラーの理論を扱います。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "リーダーの特性と状況の組合せによって、リーダーシップの有効性が変わると捉える理論です。ここではフィードラーの理論を扱います。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "copyright-transfer",
+    "name": "著作権譲渡",
+    "reading": "Copyright Transfer",
+    "category": "法務",
+    "definition": "著作権の全部または一部を、他者へ移すことです。譲渡できない著作者人格権とは区別します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "著作権の全部または一部を、他者へ移すことです。譲渡できない著作者人格権とは区別します。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "newton-method",
+    "name": "ニュートン法",
+    "reading": "Newton Method",
+    "category": "基礎理論",
+    "definition": "関数の現在の近似点で引いた接線とx軸の交点を次の近似値とし、方程式の解へ近づける方法です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "関数の現在の近似点で引いた接線とx軸の交点を次の近似値とし、方程式の解へ近づける方法です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      },
+      {
+        "id": "tip",
+        "title": "初期値や導関数の値によっては収束しないため、適用条件を確認します。",
+        "hint": "基本に加えて、使うときの注意点や仕組みを説明できますか？",
+        "level": "deep"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "euler-method",
+    "name": "オイラー法",
+    "reading": "Euler Method",
+    "category": "基礎理論",
+    "definition": "微分方程式の現在の値と傾きから、短い時間刻みの次の値を順に近似する数値解法です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "微分方程式の現在の値と傾きから、短い時間刻みの次の値を順に近似する数値解法です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "gaussian-elimination",
+    "name": "ガウスの消去法",
+    "reading": "Gaussian Elimination",
+    "category": "基礎理論",
+    "definition": "連立一次方程式を行の基本操作で変形し、未知数を順に消去して解く方法です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "連立一次方程式を行の基本操作で変形し、未知数を順に消去して解く方法です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "simpson-rule",
+    "name": "シンプソン法",
+    "reading": "Simpson Rule",
+    "category": "基礎理論",
+    "definition": "関数を区間ごとに二次式で近似し、その積分を使って面積を求める数値積分法です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "関数を区間ごとに二次式で近似し、その積分を使って面積を求める数値積分法です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "shell-sort",
+    "name": "シェルソート",
+    "reading": "Shell Sort",
+    "category": "アルゴリズム",
+    "definition": "間隔を空けて取り出した要素を整列し、その間隔を徐々に狭め、最後に間隔1で整列する方法です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "間隔を空けて取り出した要素を整列し、その間隔を徐々に狭め、最後に間隔1で整列する方法です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "twos-complement",
+    "name": "2の補数",
+    "reading": "Twos Complement",
+    "category": "基礎理論",
+    "definition": "固定ビット長で、各ビットを反転して1を加えた値です。負の整数の表現に使います。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "固定ビット長で、各ビットを反転して1を加えた値です。負の整数の表現に使います。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      },
+      {
+        "id": "tip",
+        "title": "nビットの符号付き整数の範囲は−2の(n−1)乗から2の(n−1)乗−1です。",
+        "hint": "基本に加えて、使うときの注意点や仕組みを説明できますか？",
+        "level": "deep"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "overflow",
+    "name": "オーバフロー",
+    "reading": "Overflow",
+    "category": "基礎理論",
+    "definition": "演算結果などが、割り当てたビット数で表現できる範囲を超えることです。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "演算結果などが、割り当てたビット数で表現できる範囲を超えることです。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      },
+      {
+        "id": "tip",
+        "title": "2の補数による符号付き加算では、同符号の二数を加えた結果の符号が反転するとオーバフローです。",
+        "hint": "基本に加えて、使うときの注意点や仕組みを説明できますか？",
+        "level": "deep"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "signed-integer",
+    "name": "符号付き整数",
+    "reading": "Signed Integer",
+    "category": "基礎理論",
+    "definition": "正負の符号を含めて表現する整数です。固定ビット長では正と負それぞれの表現範囲が決まります。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "正負の符号を含めて表現する整数です。固定ビット長では正と負それぞれの表現範囲が決まります。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "absolute-value",
+    "name": "絶対値",
+    "reading": "Absolute Value",
+    "category": "基礎理論",
+    "definition": "数直線上で、ある数が0からどれだけ離れているかを表す、0以上の値です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "数直線上で、ある数が0からどれだけ離れているかを表す、0以上の値です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "thrashing",
+    "name": "スラッシング",
+    "reading": "Thrashing",
+    "category": "ソフトウェア",
+    "definition": "仮想記憶のページ入替えが頻発し、実際の処理に使える時間が減って性能が大きく低下する現象です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "仮想記憶のページ入替えが頻発し、実際の処理に使える時間が減って性能が大きく低下する現象です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "swap-out",
+    "name": "スワップアウト",
+    "reading": "Swap Out",
+    "category": "ソフトウェア",
+    "definition": "主記憶上のプロセスなどの内容を、補助記憶へ退避して空き領域を作る処理です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "主記憶上のプロセスなどの内容を、補助記憶へ退避して空き領域を作る処理です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "page-fault",
+    "name": "ページフォールト",
+    "reading": "Page Fault",
+    "category": "ソフトウェア",
+    "definition": "参照した仮想記憶のページが主記憶に存在せず、ページの読込みなどが必要になる事象です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "参照した仮想記憶のページが主記憶に存在せず、ページの読込みなどが必要になる事象です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "half-adder",
+    "name": "半加算器",
+    "reading": "Half Adder",
+    "category": "基礎理論",
+    "definition": "二つの1ビット入力を加算し、和の下位ビットと桁上がりを出力する回路です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "二つの1ビット入力を加算し、和の下位ビットと桁上がりを出力する回路です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      },
+      {
+        "id": "tip",
+        "title": "和はXOR、桁上がりはANDで求められます。",
+        "hint": "基本に加えて、使うときの注意点や仕組みを説明できますか？",
+        "level": "deep"
+      }
+    ],
+    "commonMistakes": [
+      "和の下位ビットはXOR、桁上がりはANDです。"
+    ]
+  },
+  {
+    "id": "carry-bit",
+    "name": "桁上がり",
+    "reading": "Carry Bit",
+    "category": "基礎理論",
+    "definition": "加算の結果が一つの桁で表せる範囲を超え、上位の桁へ繰り越されることです。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "加算の結果が一つの桁で表せる範囲を超え、上位の桁へ繰り越されることです。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "cartesian-product",
+    "name": "直積",
+    "reading": "Cartesian Product",
+    "category": "データベース",
+    "definition": "二つの関係の行を全ての組合せで結び付ける関係演算です。行数は元の二つの行数の積になります。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "二つの関係の行を全ての組合せで結び付ける関係演算です。行数は元の二つの行数の積になります。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "host-address",
+    "name": "ホストアドレス",
+    "reading": "Host Address",
+    "category": "ネットワーク",
+    "definition": "IPアドレスのうち、サブネット内の端末などを識別するホスト部の値です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "IPアドレスのうち、サブネット内の端末などを識別するホスト部の値です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      },
+      {
+        "id": "tip",
+        "title": "IPv4では、IPアドレスとサブネットマスクを反転した値との論理積でホスト部を取り出せます。",
+        "hint": "基本に加えて、使うときの注意点や仕組みを説明できますか？",
+        "level": "deep"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "software-update",
+    "name": "アップデート",
+    "reading": "Software Update",
+    "category": "ソフトウェア",
+    "definition": "ソフトウェアなどを新しい版へ更新し、不具合修正や機能変更、脆弱性への対応を反映することです。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "ソフトウェアなどを新しい版へ更新し、不具合修正や機能変更、脆弱性への対応を反映することです。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "pdca",
+    "name": "PDCA",
+    "aliases": [
+      "PDCAサイクル"
+    ],
+    "reading": "Pdca",
+    "category": "経営管理",
+    "definition": "計画・実行・評価・改善のサイクルを繰り返し、活動を継続的に改善する考え方です。",
+    "related": [
+      "continual-improvement"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "計画・実行・評価・改善のサイクルを繰り返し、活動を継続的に改善する考え方です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "three-d-secure",
+    "name": "3Dセキュア",
+    "reading": "Three D Secure",
+    "category": "暗号・認証",
+    "definition": "オンラインのカード決済で、カード会社などが利用者の本人確認を行うための仕組みです。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "オンラインのカード決済で、カード会社などが利用者の本人確認を行うための仕組みです。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "pin",
+    "name": "PIN",
+    "reading": "Pin",
+    "category": "暗号・認証",
+    "definition": "本人を認証するために使う短い番号などの秘密情報です。ICカードや認証器の利用時などに入力します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "本人を認証するために使う短い番号などの秘密情報です。ICカードや認証器の利用時などに入力します。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "card-security-code",
+    "name": "セキュリティコード",
+    "reading": "Card Security Code",
+    "category": "暗号・認証",
+    "definition": "カードの券面などに記載され、オンライン決済などでカード情報の所持確認に使うコードです。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "カードの券面などに記載され、オンライン決済などでカード情報の所持確認に使うコードです。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      },
+      {
+        "id": "tip",
+        "title": "盗難カードの券面から読めるため、このコードだけでは盗んだ者と本人を区別できません。",
+        "hint": "基本に加えて、使うときの注意点や仕組みを説明できますか？",
+        "level": "deep"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "ah",
+    "name": "AH",
+    "reading": "Ah",
+    "category": "ネットワークセキュリティ",
+    "definition": "IPsecで、IPパケットの完全性や送信元の認証などを提供する認証ヘッダです。暗号化は行いません。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "IPsecで、IPパケットの完全性や送信元の認証などを提供する認証ヘッダです。暗号化は行いません。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "esp",
+    "name": "ESP",
+    "reading": "Esp",
+    "category": "ネットワークセキュリティ",
+    "definition": "IPsecで、IPパケットのペイロードの暗号化や完全性保護などを提供するプロトコルです。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "IPsecで、IPパケットのペイロードの暗号化や完全性保護などを提供するプロトコルです。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "activity-diagram",
+    "name": "アクティビティ図",
+    "reading": "Activity Diagram",
+    "category": "ソフトウェア設計",
+    "definition": "業務や処理の制御の流れを、分岐・並行処理・同期などを含めて表すUMLの図です。",
+    "related": [
+      "uml"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "業務や処理の制御の流れを、分岐・並行処理・同期などを含めて表すUMLの図です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "sequence-diagram",
+    "name": "シーケンス図",
+    "reading": "Sequence Diagram",
+    "category": "ソフトウェア設計",
+    "definition": "オブジェクトなどの間のメッセージ交換を、時間の順序に沿って表すUMLの図です。",
+    "related": [
+      "uml"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "オブジェクトなどの間のメッセージ交換を、時間の順序に沿って表すUMLの図です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "use-case-diagram",
+    "name": "ユースケース図",
+    "reading": "Use Case Diagram",
+    "category": "ソフトウェア設計",
+    "definition": "システムが外部へ提供する機能と、それを利用する人や外部システムとの関係を表すUMLの図です。",
+    "related": [
+      "uml"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "システムが外部へ提供する機能と、それを利用する人や外部システムとの関係を表すUMLの図です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "state-machine-diagram",
+    "name": "状態マシン図",
+    "reading": "State Machine Diagram",
+    "category": "ソフトウェア設計",
+    "definition": "対象の状態が、イベントや時間経過などに応じてどのように変化するかを表すUMLの図です。",
+    "related": [
+      "uml"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "対象の状態が、イベントや時間経過などに応じてどのように変化するかを表すUMLの図です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "class-diagram",
+    "name": "クラス図",
+    "reading": "Class Diagram",
+    "category": "ソフトウェア設計",
+    "definition": "クラスの属性・操作と、クラス間の関連や継承などの静的な構造を表すUMLの図です。",
+    "related": [
+      "uml"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "クラスの属性・操作と、クラス間の関連や継承などの静的な構造を表すUMLの図です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "burndown-chart",
+    "name": "バーンダウンチャート",
+    "reading": "Burndown Chart",
+    "category": "開発技術",
+    "definition": "横軸に時間、縦軸に残作業量をとり、完了へ向けた作業の減り方を表すグラフです。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "横軸に時間、縦軸に残作業量をとり、完了へ向けた作業の減り方を表すグラフです。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      },
+      {
+        "id": "tip",
+        "title": "計画線と実績線の差を見ることで、遅れや作業量の見直しの必要性を把握できます。",
+        "hint": "基本に加えて、使うときの注意点や仕組みを説明できますか？",
+        "level": "deep"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "remaining-work",
+    "name": "残作業量",
+    "reading": "Remaining Work",
+    "category": "プロジェクト管理",
+    "definition": "作業を完了するために、今後実施する必要がある仕事の量です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "作業を完了するために、今後実施する必要がある仕事の量です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "cumulative-bugs",
+    "name": "累積バグ数",
+    "reading": "Cumulative Bugs",
+    "category": "開発技術",
+    "definition": "ある時点までに見つかった不具合の件数を、開始時から合計した値です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "ある時点までに見つかった不具合の件数を、開始時から合計した値です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "arrow-diagram",
+    "name": "アローダイアグラム",
+    "reading": "Arrow Diagram",
+    "category": "プロジェクト管理",
+    "definition": "作業を矢印で、作業の開始・終了などの結合点を丸印で表し、依存関係を示す図です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "作業を矢印で、作業の開始・終了などの結合点を丸印で表し、依存関係を示す図です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "finish-to-start",
+    "name": "FS関係",
+    "reading": "Finish To Start",
+    "category": "プロジェクト管理",
+    "definition": "先行作業が終了してから、後続作業を開始できるという依存関係です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "先行作業が終了してから、後続作業を開始できるという依存関係です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "quantitative-risk-analysis",
+    "name": "リスクの定量的分析",
+    "reading": "Quantitative Risk Analysis",
+    "category": "プロジェクト管理",
+    "definition": "リスクや不確実性がコストや完了時期などに与える影響を、数値や確率を使って分析することです。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "リスクや不確実性がコストや完了時期などに与える影響を、数値や確率を使って分析することです。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "qualitative-risk-analysis",
+    "name": "リスクの定性的分析",
+    "reading": "Qualitative Risk Analysis",
+    "category": "プロジェクト管理",
+    "definition": "発生可能性や影響の程度などからリスクを評価し、対応や詳細分析の優先順位を付けることです。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "発生可能性や影響の程度などからリスクを評価し、対応や詳細分析の優先順位を付けることです。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "known-error",
+    "name": "既知の誤り",
+    "reading": "Known Error",
+    "category": "サービス管理",
+    "definition": "原因などの分析が進み、対処に利用できる情報が記録された問題です。回避策の共有などに使います。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "原因などの分析が進み、対処に利用できる情報が記録された問題です。回避策の共有などに使います。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "workaround",
+    "name": "回避策",
+    "reading": "Workaround",
+    "category": "サービス管理",
+    "definition": "根本原因を恒久的に解消するまでの間などに、影響を減らしたりサービスを回復したりする方法です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "根本原因を恒久的に解消するまでの間などに、影響を減らしたりサービスを回復したりする方法です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "backup-generations",
+    "name": "世代管理",
+    "reading": "Backup Generations",
+    "category": "サービス管理",
+    "definition": "作成時点の異なるデータやバックアップを区別して保持し、必要な時点へ戻せるよう管理することです。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "作成時点の異なるデータやバックアップを区別して保持し、必要な時点へ戻せるよう管理することです。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "restore",
+    "name": "復元",
+    "reading": "Restore",
+    "category": "サービス管理",
+    "definition": "保存した複製などから、失われたデータや以前の状態を再現することです。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "保存した複製などから、失われたデータや以前の状態を再現することです。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "embedded-audit-module",
+    "name": "監査モジュール法",
+    "reading": "Embedded Audit Module",
+    "category": "システム監査",
+    "definition": "監査用の機能を業務システムへ組み込み、監査に必要な取引や処理の情報を収集する技法です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "監査用の機能を業務システムへ組み込み、監査に必要な取引や処理の情報を収集する技法です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "kgi",
+    "name": "KGI",
+    "reading": "Kgi",
+    "category": "経営管理",
+    "definition": "事業や活動の最終的な目標が達成されたかを測る、重要目標達成指標です。",
+    "related": [
+      "kpi"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "事業や活動の最終的な目標が達成されたかを測る、重要目標達成指標です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "critical-success-factor",
+    "name": "CSF（重要成功要因）",
+    "aliases": [
+      "CSF",
+      "重要成功要因"
+    ],
+    "reading": "Critical Success Factor",
+    "category": "経営管理",
+    "definition": "目標を達成するために、特に重要となる要因です。KPIでその取組の状況を測ります。",
+    "related": [
+      "kgi",
+      "kpi"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "目標を達成するために、特に重要となる要因です。KPIでその取組の状況を測ります。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "kpi",
+    "name": "KPI",
+    "reading": "Kpi",
+    "category": "経営管理",
+    "definition": "目標に向かう活動やプロセスの進み具合を測る、重要業績評価指標です。",
+    "related": [
+      "kgi"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "目標に向かう活動やプロセスの進み具合を測る、重要業績評価指標です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "mbo",
+    "name": "MBO",
+    "reading": "Mbo",
+    "category": "経営管理",
+    "definition": "組織と個人の目標を結び付け、合意した目標の達成状況を評価して管理する、目標による管理の考え方です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "組織と個人の目標を結び付け、合意した目標の達成状況を評価して管理する、目標による管理の考え方です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "telework",
+    "name": "テレワーク",
+    "reading": "Telework",
+    "category": "システム戦略",
+    "definition": "ICTを利用し、時間や場所を柔軟に選んで働く働き方です。在宅勤務などがあります。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "ICTを利用し、時間や場所を柔軟に選んで働く働き方です。在宅勤務などがあります。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "cost-effectiveness",
+    "name": "費用対効果",
+    "reading": "Cost Effectiveness",
+    "category": "システム戦略",
+    "definition": "必要な費用と、その実施によって得られる効果を比較して判断する考え方です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "必要な費用と、その実施によって得られる効果を比較して判断する考え方です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "business-specification",
+    "name": "業務仕様書",
+    "reading": "Business Specification",
+    "category": "システム戦略",
+    "definition": "対象となる業務の内容、処理の流れ、入出力などを整理して記述した文書です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "対象となる業務の内容、処理の流れ、入出力などを整理して記述した文書です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "business-domain",
+    "name": "事業ドメイン",
+    "reading": "Business Domain",
+    "category": "経営戦略",
+    "definition": "誰に、何を、どのように提供するかなどによって定める、企業が事業を行う領域です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "誰に、何を、どのように提供するかなどによって定める、企業が事業を行う領域です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "lean-startup",
+    "name": "リーンスタートアップ",
+    "reading": "Lean Startup",
+    "category": "経営戦略",
+    "definition": "小さな製品を早く作り、構築・計測・学習を繰り返して事業の仮説を検証・改善する手法です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "小さな製品を早く作り、構築・計測・学習を繰り返して事業の仮説を検証・改善する手法です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "mvp",
+    "name": "MVP",
+    "reading": "Mvp",
+    "category": "経営戦略",
+    "definition": "事業の仮説を検証するために必要な、最小限の機能を備えた製品です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "事業の仮説を検証するために必要な、最小限の機能を備えた製品です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "pivot",
+    "name": "ピボット",
+    "reading": "Pivot",
+    "category": "経営戦略",
+    "definition": "事業の検証で得た学びを踏まえ、製品や顧客層などの戦略を大きく方向転換することです。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "事業の検証で得た学びを踏まえ、製品や顧客層などの戦略を大きく方向転換することです。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "feedback-loop",
+    "name": "フィードバックループ",
+    "reading": "Feedback Loop",
+    "category": "開発技術",
+    "definition": "実施した結果を評価し、その情報を次の判断や行動へ戻す循環です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "実施した結果を評価し、その情報を次の判断や行動へ戻す循環です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "maximin",
+    "name": "マクシミン原理",
+    "reading": "Maximin",
+    "category": "経営管理",
+    "definition": "各選択肢の最悪の結果を比べ、その中で最も良い結果となる選択肢を選ぶ意思決定の基準です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "各選択肢の最悪の結果を比べ、その中で最も良い結果となる選択肢を選ぶ意思決定の基準です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "decision-making",
+    "name": "意思決定",
+    "reading": "Decision Making",
+    "category": "経営管理",
+    "definition": "目的や評価基準に照らして候補を比較し、実行する案などを選ぶことです。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "目的や評価基準に照らして候補を比較し、実行する案などを選ぶことです。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "minimum",
+    "name": "最小値",
+    "reading": "Minimum",
+    "category": "基礎理論",
+    "definition": "対象となる値の集合の中で、最も小さい値です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "対象となる値の集合の中で、最も小さい値です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "maximum",
+    "name": "最大値",
+    "reading": "Maximum",
+    "category": "基礎理論",
+    "definition": "対象となる値の集合の中で、最も大きい値です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "対象となる値の集合の中で、最も大きい値です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "agreement-36",
+    "name": "36協定",
+    "reading": "Agreement 36",
+    "category": "法務",
+    "definition": "法定の労働時間を超える労働や休日労働を行わせるため、使用者と労働者側が締結し、届け出る労使協定です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "法定の労働時間を超える労働や休日労働を行わせるため、使用者と労働者側が締結し、届け出る労使協定です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "special-overtime-clause",
+    "name": "特別条項",
+    "reading": "Special Overtime Clause",
+    "category": "法務",
+    "definition": "36協定で、臨時的な特別の事情がある場合に、所定の限度時間を超える時間外労働の条件などを定める条項です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "36協定で、臨時的な特別の事情がある場合に、所定の限度時間を超える時間外労働の条件などを定める条項です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      },
+      {
+        "id": "tip",
+        "title": "慢性的な人手不足など、恒常的な長時間労働を認めるための仕組みではありません。",
+        "hint": "基本に加えて、使うときの注意点や仕組みを説明できますか？",
+        "level": "deep"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "overtime-work",
+    "name": "時間外労働",
+    "reading": "Overtime Work",
+    "category": "法務",
+    "definition": "労働基準法で定める法定労働時間を超えて行う労働です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "労働基準法で定める法定労働時間を超えて行う労働です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "temporary-exceptional-circumstances",
+    "name": "臨時的な特別の事情",
+    "reading": "Temporary Exceptional Circumstances",
+    "category": "法務",
+    "definition": "36協定の特別条項などで、通常予見できない業務量の大幅な増加など、一時的に限度時間を超える必要が生じる事情です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "36協定の特別条項などで、通常予見できない業務量の大幅な増加など、一時的に限度時間を超える必要が生じる事情です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "divide-and-conquer",
+    "name": "分割統治法",
+    "reading": "Divide And Conquer",
+    "category": "アルゴリズム",
+    "definition": "問題を小さな部分問題に分割し、それぞれを解いた結果を統合して、元の問題を解く方法です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "問題を小さな部分問題に分割し、それぞれを解いた結果を統合して、元の問題を解く方法です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "subproblem",
+    "name": "部分問題",
+    "reading": "Subproblem",
+    "category": "アルゴリズム",
+    "definition": "大きな問題を分割して得られる、元の問題の解決に必要な小さな問題です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "大きな問題を分割して得られる、元の問題の解決に必要な小さな問題です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "greedy-algorithm",
+    "name": "貪欲法",
+    "reading": "Greedy Algorithm",
+    "category": "アルゴリズム",
+    "definition": "各段階でその時点の最も良い選択を行い、解を組み立てる方法です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "各段階でその時点の最も良い選択を行い、解を組み立てる方法です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      },
+      {
+        "id": "tip",
+        "title": "局所的に良い選択を重ねても、常に全体の最適解になるとは限りません。",
+        "hint": "基本に加えて、使うときの注意点や仕組みを説明できますか？",
+        "level": "deep"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "merge-sort",
+    "name": "マージソート",
+    "reading": "Merge Sort",
+    "category": "アルゴリズム",
+    "definition": "データを小さな列へ分割して整列し、整列済みの列を併合して全体を並べる方法です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "データを小さな列へ分割して整列し、整列済みの列を併合して全体を並べる方法です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "write-through",
+    "name": "ライトスルー",
+    "reading": "Write Through",
+    "category": "コンピュータ構成",
+    "definition": "キャッシュへの書込みとともに、主記憶にも同じ内容を書き込む方式です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "キャッシュへの書込みとともに、主記憶にも同じ内容を書き込む方式です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "write-back",
+    "name": "ライトバック",
+    "reading": "Write Back",
+    "category": "コンピュータ構成",
+    "definition": "書込みをまずキャッシュへ行い、変更済みのデータを追い出すときなどに主記憶へ反映する方式です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "書込みをまずキャッシュへ行い、変更済みのデータを追い出すときなどに主記憶へ反映する方式です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "dirty-bit",
+    "name": "ダーティビット",
+    "reading": "Dirty Bit",
+    "category": "コンピュータ構成",
+    "definition": "キャッシュやページなどの内容が変更され、下位の記憶へまだ反映されていないことを示すビットです。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "キャッシュやページなどの内容が変更され、下位の記憶へまだ反映されていないことを示すビットです。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "series-system",
+    "name": "直列構成",
+    "reading": "Series System",
+    "category": "システム構成",
+    "definition": "全ての構成要素が動作している場合にだけ、システムが動作する構成です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "全ての構成要素が動作している場合にだけ、システムが動作する構成です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "parallel-system",
+    "name": "並列構成",
+    "reading": "Parallel System",
+    "category": "システム構成",
+    "definition": "複数の構成要素のうち、少なくとも一つが動作すればシステムが動作する冗長構成です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "複数の構成要素のうち、少なくとも一つが動作すればシステムが動作する冗長構成です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "redundancy",
+    "name": "冗長化",
+    "reading": "Redundancy",
+    "category": "システム構成",
+    "definition": "同じ機能を持つ装置や経路などを複数用意し、一部の障害でも機能を維持できるようにすることです。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "同じ機能を持つ装置や経路などを複数用意し、一部の障害でも機能を維持できるようにすることです。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      },
+      {
+        "id": "tip",
+        "title": "同じ原因で全系統が停止する共通原因故障にも備える必要があります。",
+        "hint": "基本に加えて、使うときの注意点や仕組みを説明できますか？",
+        "level": "deep"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "page-out",
+    "name": "ページアウト",
+    "reading": "Page Out",
+    "category": "ソフトウェア",
+    "definition": "主記憶上のページを補助記憶へ書き出す処理です。主記憶の空き領域を確保する際などに行います。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "主記憶上のページを補助記憶へ書き出す処理です。主記憶の空き領域を確保する際などに行います。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "rfid",
+    "name": "RFID",
+    "reading": "Rfid",
+    "category": "組込みシステム",
+    "definition": "ICタグなどと電波で情報をやり取りし、人や物を識別・管理する技術です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "ICタグなどと電波で情報をやり取りし、人や物を識別・管理する技術です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "ic-tag",
+    "name": "ICタグ",
+    "reading": "Ic Tag",
+    "category": "組込みシステム",
+    "definition": "識別情報などを保持するICチップとアンテナを備え、電波で読み書きするためのタグです。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "識別情報などを保持するICチップとアンテナを備え、電波で読み書きするためのタグです。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "bluetooth",
+    "name": "Bluetooth",
+    "reading": "Bluetooth",
+    "category": "ネットワーク",
+    "definition": "周辺機器などを近距離で無線接続するための通信規格です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "周辺機器などを近距離で無線接続するための通信規格です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "barcode",
+    "name": "バーコード",
+    "reading": "Barcode",
+    "category": "組込みシステム",
+    "definition": "棒と空白などの模様で情報を符号化し、光学的に読み取る識別コードです。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "棒と空白などの模様で情報を符号化し、光学的に読み取る識別コードです。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "data-lake",
+    "name": "データレイク",
+    "reading": "Data Lake",
+    "category": "データベース",
+    "definition": "多様な形式のデータを元の形に近い状態で蓄積し、利用目的に応じて後から加工する基盤です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "多様な形式のデータを元の形に近い状態で蓄積し、利用目的に応じて後から加工する基盤です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "olap",
+    "name": "OLAP",
+    "reading": "Olap",
+    "category": "データベース",
+    "definition": "蓄積したデータを複数の軸や粒度で集計し、多次元的に分析する処理です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "蓄積したデータを複数の軸や粒度で集計し、多次元的に分析する処理です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "nfv",
+    "name": "NFV",
+    "reading": "Nfv",
+    "category": "ネットワーク",
+    "definition": "専用機器で提供していたネットワーク機能をソフトウェア化し、仮想化基盤などで動かす技術です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "専用機器で提供していたネットワーク機能をソフトウェア化し、仮想化基盤などで動かす技術です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "cobit",
+    "name": "COBIT",
+    "reading": "Cobit",
+    "category": "システム戦略",
+    "definition": "企業の情報と技術について、ガバナンスとマネジメントを整理・改善するためのフレームワークです。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "企業の情報と技術について、ガバナンスとマネジメントを整理・改善するためのフレームワークです。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "cybersecurity-basic-act",
+    "name": "サイバーセキュリティ基本法",
+    "reading": "Cybersecurity Basic Act",
+    "category": "法務",
+    "definition": "サイバーセキュリティ施策の基本理念や、国・事業者などの責務、推進体制などを定める法律です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "サイバーセキュリティ施策の基本理念や、国・事業者などの責務、推進体制などを定める法律です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "nisc-historical",
+    "name": "NISC",
+    "reading": "Nisc Historical",
+    "category": "セキュリティ管理",
+    "definition": "内閣官房に置かれていた内閣サイバーセキュリティセンターの略称です。過去問では政府の対策の司令塔として登場します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "内閣官房に置かれていた内閣サイバーセキュリティセンターの略称です。過去問では政府の対策の司令塔として登場します。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      },
+      {
+        "id": "tip",
+        "title": "2025年7月に国家サイバー統括室へ改組されており、過去問当時の名称と区別します。",
+        "hint": "基本に加えて、使うときの注意点や仕組みを説明できますか？",
+        "level": "deep"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "session-id",
+    "name": "セッションID",
+    "reading": "Session Id",
+    "category": "Web技術",
+    "definition": "一連の通信を同じセッションとして識別するために用いる値です。Webのログイン状態の管理などに使います。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "一連の通信を同じセッションとして識別するために用いる値です。Webのログイン状態の管理などに使います。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      },
+      {
+        "id": "tip",
+        "title": "ログアウト時はサーバ側で無効にし、盗まれた値を再利用されないようにします。",
+        "hint": "基本に加えて、使うときの注意点や仕組みを説明できますか？",
+        "level": "deep"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "cookie",
+    "name": "Cookie",
+    "reading": "Cookie",
+    "category": "Web技術",
+    "definition": "サーバから受け取った情報などをブラウザに保存し、条件に合う要求に付けて送信する仕組みです。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "サーバから受け取った情報などをブラウザに保存し、条件に合う要求に付けて送信する仕組みです。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "logout",
+    "name": "ログアウト",
+    "reading": "Logout",
+    "category": "暗号・認証",
+    "definition": "利用中の認証済み状態を終了させる処理です。サーバ側のセッションの失効などを行います。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "利用中の認証済み状態を終了させる処理です。サーバ側のセッションの失効などを行います。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "statement-coverage",
+    "name": "命令網羅",
+    "reading": "Statement Coverage",
+    "category": "開発技術",
+    "definition": "プログラムの全ての命令を、少なくとも一度実行するテストの基準です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "プログラムの全ての命令を、少なくとも一度実行するテストの基準です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      },
+      {
+        "id": "tip",
+        "title": "全命令を通っても、判定の真偽や全ての経路を通ったとは限りません。",
+        "hint": "基本に加えて、使うときの注意点や仕組みを説明できますか？",
+        "level": "deep"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "product-owner",
+    "name": "プロダクトオーナ",
+    "aliases": [
+      "プロダクトオーナー"
+    ],
+    "reading": "Product Owner",
+    "category": "開発技術",
+    "definition": "スクラムで、プロダクトの価値を最大化し、プロダクトバックログの内容や順序に責任を持つ役割です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "スクラムで、プロダクトの価値を最大化し、プロダクトバックログの内容や順序に責任を持つ役割です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "scrum-master",
+    "name": "スクラムマスター",
+    "reading": "Scrum Master",
+    "category": "開発技術",
+    "definition": "スクラムの理解と実践を支援し、チームが有効に働けるようにする役割です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "スクラムの理解と実践を支援し、チームが有効に働けるようにする役割です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "increment",
+    "name": "インクリメント",
+    "reading": "Increment",
+    "category": "開発技術",
+    "definition": "スクラムで、それまでの成果に積み上げられる、利用可能なプロダクトの成果です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "スクラムで、それまでの成果に積み上げられる、利用可能なプロダクトの成果です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "project-team",
+    "name": "プロジェクトチーム",
+    "reading": "Project Team",
+    "category": "プロジェクト管理",
+    "definition": "プロジェクトの目的を達成するため、役割を分担して作業を行う人々の集まりです。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "プロジェクトの目的を達成するため、役割を分担して作業を行う人々の集まりです。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "communication-channels",
+    "name": "コミュニケーション経路数",
+    "reading": "Communication Channels",
+    "category": "プロジェクト管理",
+    "definition": "メンバー間で一対一に情報をやり取りする組合せの数です。n人ならn(n−1)/2です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "メンバー間で一対一に情報をやり取りする組合せの数です。n人ならn(n−1)/2です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "project-member",
+    "name": "プロジェクトメンバ",
+    "reading": "Project Member",
+    "category": "プロジェクト管理",
+    "definition": "プロジェクトの達成に必要な作業や役割を担う参加者です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "プロジェクトの達成に必要な作業や役割を担う参加者です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "elapsed-time",
+    "name": "所要時間",
+    "reading": "Elapsed Time",
+    "category": "基礎理論",
+    "definition": "ある作業や処理の開始から完了までにかかる時間です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "ある作業や処理の開始から完了までにかかる時間です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "master-file",
+    "name": "マスタファイル",
+    "reading": "Master File",
+    "category": "データベース",
+    "definition": "顧客や商品などの基本情報を保持し、日々の取引処理などから参照するファイルです。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "顧客や商品などの基本情報を保持し、日々の取引処理などから参照するファイルです。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "audited-department",
+    "name": "被監査部門",
+    "reading": "Audited Department",
+    "category": "システム監査",
+    "definition": "監査の対象となる業務やシステムなどを担当する部門です。改善の計画や実行はその部門が担います。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "監査の対象となる業務やシステムなどを担当する部門です。改善の計画や実行はその部門が担います。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "enterprise-architecture",
+    "name": "エンタープライズアーキテクチャ",
+    "reading": "Enterprise Architecture",
+    "category": "システム戦略",
+    "definition": "組織全体の業務と情報システムを、ビジネス・データ・アプリケーション・テクノロジの体系で整理し、全体の最適化を図る考え方です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "組織全体の業務と情報システムを、ビジネス・データ・アプリケーション・テクノロジの体系で整理し、全体の最適化を図る考え方です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "data-architecture",
+    "name": "データアーキテクチャ",
+    "reading": "Data Architecture",
+    "category": "システム戦略",
+    "definition": "組織で必要なデータの内容、構造、関係などを整理する体系です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "組織で必要なデータの内容、構造、関係などを整理する体系です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "business-architecture",
+    "name": "ビジネスアーキテクチャ",
+    "reading": "Business Architecture",
+    "category": "システム戦略",
+    "definition": "組織の目的、業務機能、業務プロセスなどを整理する体系です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "組織の目的、業務機能、業務プロセスなどを整理する体系です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "technology-architecture",
+    "name": "テクノロジアーキテクチャ",
+    "reading": "Technology Architecture",
+    "category": "システム戦略",
+    "definition": "システムを支えるハードウェア、ソフトウェア、ネットワークなどの技術基盤を整理する体系です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "システムを支えるハードウェア、ソフトウェア、ネットワークなどの技術基盤を整理する体系です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "revenue-sharing",
+    "name": "レベニューシェア",
+    "reading": "Revenue Sharing",
+    "category": "システム戦略",
+    "definition": "事業から得る収益を、事前に合意した割合で関係者の間に分配する契約方式です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "事業から得る収益を、事前に合意した割合で関係者の間に分配する契約方式です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      },
+      {
+        "id": "tip",
+        "title": "収益に連動するため、固定額の報酬が継続して得られるとは限りません。",
+        "hint": "基本に加えて、使うときの注意点や仕組みを説明できますか？",
+        "level": "deep"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "revenue",
+    "name": "収益",
+    "reading": "Revenue",
+    "category": "経営管理",
+    "definition": "企業の事業活動などによって生じる、売上などの経済的な成果です。費用を差し引いた利益とは区別します。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "企業の事業活動などによって生じる、売上などの経済的な成果です。費用を差し引いた利益とは区別します。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "allocation-ratio",
+    "name": "配分率",
+    "reading": "Allocation Ratio",
+    "category": "経営管理",
+    "definition": "全体の量や金額を、各対象へどの割合で割り当てるかを表す比率です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "全体の量や金額を、各対象へどの割合で割り当てるかを表す比率です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "society-5",
+    "name": "Society 5.0",
+    "reading": "Society 5",
+    "category": "システム戦略",
+    "definition": "サイバー空間と現実空間の融合によって、経済発展と社会課題の解決を両立する人間中心の社会を目指す構想です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "サイバー空間と現実空間の融合によって、経済発展と社会課題の解決を両立する人間中心の社会を目指す構想です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "cyberspace",
+    "name": "サイバー空間",
+    "reading": "Cyberspace",
+    "category": "システム戦略",
+    "definition": "ネットワークやコンピュータ上で、情報が保存・処理・交換される仮想的な空間です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "ネットワークやコンピュータ上で、情報が保存・処理・交換される仮想的な空間です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "physical-space",
+    "name": "フィジカル空間",
+    "reading": "Physical Space",
+    "category": "システム戦略",
+    "definition": "人や物、設備などが存在し、活動する現実の空間です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "人や物、設備などが存在し、活動する現実の空間です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "finance",
+    "name": "財務",
+    "reading": "Finance",
+    "category": "経営管理",
+    "definition": "企業の資金調達や運用、資産・負債などを管理する活動です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "企業の資金調達や運用、資産・負債などを管理する活動です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "customer",
+    "name": "顧客",
+    "reading": "Customer",
+    "category": "経営戦略",
+    "definition": "商品やサービスを購入・利用する相手です。企業活動では、その要求や満足などが評価の対象となります。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "商品やサービスを購入・利用する相手です。企業活動では、その要求や満足などが評価の対象となります。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "electronic-signature-act",
+    "name": "電子署名法",
+    "reading": "Electronic Signature Act",
+    "category": "法務",
+    "definition": "一定の電子署名が付いた電磁的記録の真正な成立の推定や、認証業務の認定制度などを定める法律です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "一定の電子署名が付いた電磁的記録の真正な成立の推定や、認証業務の認定制度などを定める法律です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": [
+      "全ての電子署名に無条件で真正成立の推定が適用されるわけではありません。"
+    ]
+  },
+  {
+    "id": "electronic-signature",
+    "name": "電子署名",
+    "reading": "Electronic Signature",
+    "category": "法務",
+    "definition": "電磁的記録について、作成者を示し、改変の有無を確認できるようにする措置です。",
+    "related": [
+      "digital-signature",
+      "electronic-signature-act"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "電磁的記録について、作成者を示し、改変の有無を確認できるようにする措置です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      },
+      {
+        "id": "tip",
+        "title": "電子署名法の真正成立の推定には、本人だけが行えることなど一定の要件があります。",
+        "hint": "基本に加えて、使うときの注意点や仕組みを説明できますか？",
+        "level": "deep"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "electromagnetic-record",
+    "name": "電磁的記録",
+    "reading": "Electromagnetic Record",
+    "category": "法務",
+    "definition": "電子的・磁気的方式などで作られ、コンピュータによる情報処理に使われる記録です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "電子的・磁気的方式などで作られ、コンピュータによる情報処理に使われる記録です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "change-management",
+    "name": "変更管理",
+    "reading": "Change Management",
+    "category": "サービス管理",
+    "definition": "システムやサービスへの変更について、影響やリスクを評価し、承認・実施・確認を管理する活動です。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "システムやサービスへの変更について、影響やリスクを評価し、承認・実施・確認を管理する活動です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "work-for-hire",
+    "name": "職務著作",
+    "reading": "Work For Hire",
+    "category": "法務",
+    "definition": "法人などの発意に基づき従業者が職務上作成するなど、法律上の要件を満たす著作物について、法人などを著作者とする仕組みです。",
+    "related": [
+      "copyright"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "法人などの発意に基づき従業者が職務上作成するなど、法律上の要件を満たす著作物について、法人などを著作者とする仕組みです。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "market-growth",
+    "name": "市場成長率",
+    "reading": "Market Growth",
+    "category": "経営戦略",
+    "definition": "一定期間で市場全体の規模がどれだけ増減したかを示す割合です。",
+    "related": [
+      "ppm"
+    ],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "一定期間で市場全体の規模がどれだけ増減したかを示す割合です。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "cash-flow",
+    "name": "キャッシュフロー",
+    "reading": "Cash Flow",
+    "category": "経営管理",
+    "definition": "一定期間に実際に出入りする現金などの資金の流れです。会計上の利益と一致するとは限りません。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "一定期間に実際に出入りする現金などの資金の流れです。会計上の利益と一致するとは限りません。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
+      }
+    ],
+    "commonMistakes": []
+  },
+  {
+    "id": "discount-rate",
+    "name": "割引率",
+    "reading": "Discount Rate",
+    "category": "経営管理",
+    "definition": "将来の金額を現在の価値へ換算する際に使う率です。1年後の金額は1＋割引率で割って現在価値にします。",
+    "related": [],
+    "criteria": [
+      {
+        "id": "meaning",
+        "title": "将来の金額を現在の価値へ換算する際に使う率です。1年後の金額は1＋割引率で割って現在価値にします。",
+        "hint": "この用語の中心的な意味を、自分の言葉で説明できますか？"
       }
     ],
     "commonMistakes": []

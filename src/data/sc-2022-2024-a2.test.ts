@@ -55,9 +55,9 @@ describe.each(sets)('$key A2の収録データ', ({ key, data, answers, tables, 
 });
 
 describe('追加したA2の横断的な整合性', () => {
-  it('offers 200 A2 questions without colliding ids or changing the A1 count', () => {
+  it('offers 200 A2 questions without colliding ids across courses', () => {
     expect(questions.filter(q => q.course === 'A2')).toHaveLength(200);
-    expect(questions.filter(q => q.course === 'A1')).toHaveLength(180);
+    expect(questions.filter(q => q.course === 'A1')).toHaveLength(300);
     expect(new Set(questions.map(q => q.id)).size).toBe(questions.length);
   });
 

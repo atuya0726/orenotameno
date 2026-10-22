@@ -183,7 +183,7 @@ test('removes settings and daily goals while preserving saved learning records',
   await expect(page.getByRole('heading', { name: '今日の学習', exact: true })).toHaveCount(0);
   await expect(page.getByRole('progressbar', { name: '今日の学習目標' })).toHaveCount(0);
   await expect(page.locator('a[href="/settings"]')).toHaveCount(0);
-  await expect(page.locator('.overview-main > strong')).toHaveText('1 / 380 問');
+  await expect(page.locator('.overview-main > strong')).toHaveText('1 / 500 問');
   await page.goto('/settings');
   await expect(page.getByRole('heading', { name: 'ページが見つかりません', exact: true })).toBeVisible();
   await expect(page.getByRole('heading', { name: '学習の設定', exact: true })).toHaveCount(0);
@@ -213,7 +213,7 @@ test('shows the dashboard and subject selection with accurate empty stats', asyn
   await expect(page.getByRole('heading', { name: '学習ホーム' })).toBeVisible();
   await expect(page.getByRole('button', { name: /科目A1 共通知識/ })).toHaveAttribute('aria-pressed', 'true');
   await expect(page.getByRole('button', { name: /科目A2 セキュリティ専門知識/ })).toHaveAttribute('aria-pressed', 'false');
-  await expect(page.locator('.practice-count')).toHaveText('出題数 180問');
+  await expect(page.locator('.practice-count')).toHaveText('出題数 300問');
   await page.screenshot({ path: 'test-results/desktop-home.png', fullPage: true });
 });
 
@@ -228,7 +228,7 @@ test('chooses questions by session, field and options like a past-exam dojo, and
   await setup.getByRole('button', { name: '分野を指定' }).click();
   await setup.getByRole('button', { name: '分野の選択をすべて解除' }).click();
   await setup.getByRole('checkbox', { name: /^プロジェクトマネジメント/ }).check();
-  await expect(setup.locator('.practice-count')).toHaveText('出題数 14問');
+  await expect(setup.locator('.practice-count')).toHaveText('出題数 25問');
   await setup.getByRole('checkbox', { name: '試験回でも絞り込む' }).check();
   await expect(setup.locator('.practice-count')).toHaveText('出題数 3問');
   await setup.getByText('試験回・番号順', { exact: true }).click();
@@ -248,9 +248,9 @@ test('chooses questions by session, field and options like a past-exam dojo, and
   await expect(page.getByRole('heading', { name: /逆ポーランド表記法/ })).toBeVisible();
 });
 
-test('offers 180 A1 and 200 A2 questions and renders their tables', async ({ page }) => {
+test('offers 300 A1 and 200 A2 questions and renders their tables', async ({ page }) => {
   await page.goto('/questions?course=A1');
-  await expect(page.locator('.question-row')).toHaveCount(180);
+  await expect(page.locator('.question-row')).toHaveCount(300);
   await expect(page.getByText('2進数と情報量', { exact: true })).toHaveCount(0);
   await page.goto('/study/A1?question=sc-2025-autumn-a1-6');
   await expect(page.getByRole('table', { name: 'キャッシュメモリの状態' })).toBeVisible();
