@@ -105,6 +105,7 @@ function Study() {
   const location = useLocation();
   const { snapshot, answer, updateStudySession } = useLearning();
   const course: Course | undefined = courseParam === 'A1' || courseParam === 'A2' ? courseParam : undefined;
+  const reviewing = search.get('mode') === 'review' || (course !== undefined && parsePracticeSearch(course, search)?.target === 'review');
   const [session, setSession] = useState<StudySession>(() => {
     const path = studyPath(location.pathname, search);
     const saved = snapshot.studySessions.find(session => session.id === search.get('session') && session.path === path);
@@ -196,7 +197,7 @@ function Study() {
       <AnswerForm key={question.id} question={question} saving={saving} result={result} submitError={submitError} onSubmit={submit} />
       {result && <AnswerFlash key={result.id} attempt={result} />}
       {result && <div ref={resultRef} tabIndex={-1} className="result-focus result-reveal" role="region" aria-label="解答結果と解説">
-        <ResultDetails question={question} attempt={result} action={<Button disabled={saving} onClick={() => void next()}>{index + 1 === queue.length ? '今回の学習を終える' : '次の問題へ'}<ArrowRight size={17} /></Button>} />
+        <ResultDetails question={question} attempt={result} reviewing={reviewing} action={<Button disabled={saving} onClick={() => void next()}>{index + 1 === queue.length ? '今回の学習を終える' : '次の問題へ'}<ArrowRight size={17} /></Button>} />
       </div>}
     </div></div>
   </>;
@@ -277,7 +278,7 @@ function AnswerForm({ question, saving, result, submitError, onSubmit }: { quest
   </form>;
 }
 
-function ResultDetails({ question, attempt, action }: { question: Question; attempt: Attempt; action?: ReactNode }) {
+function ResultDetails({ question, attempt, action, reviewing = false }: { question: Question; attempt: Attempt; action?: ReactNode; reviewing?: boolean }) {
   const quick = isQuickAnswer(attempt);
   const unanswered = quick && attempt.confidence === 'unknown';
   return <div className="result-content">
@@ -291,11 +292,11 @@ function ResultDetails({ question, attempt, action }: { question: Question; atte
       <p><MathText text={option.explanation} /></p>
     </div>)}</div>
     {question.source.kind === 'ipa' && <div className="official-answer-source"><a className="official-answer-link" href={question.source.answerUrl} target="_blank" rel="noreferrer">IPA公式の解答例 ↗</a></div>}
-    <ReviewActions question={question} attempt={attempt} action={action} />
+    <ReviewActions question={question} attempt={attempt} action={action} reviewing={reviewing} />
   </div>;
 }
 
-function ReviewActions({ question, attempt, action }: { question: Question; attempt: Attempt; action?: ReactNode }) {
+function ReviewActions({ question, attempt, action, reviewing }: { question: Question; attempt: Attempt; action?: ReactNode; reviewing: boolean }) {
   const { snapshot, setReviewFlag, setReviewWord } = useLearning();
   const current = snapshot.attempts.find(saved => saved.id === attempt.id) ?? attempt;
   const marked = Boolean(current.reviewRequested || current.reviewDoubt);
@@ -323,7 +324,7 @@ function ReviewActions({ question, attempt, action }: { question: Question; atte
     </section>}
     <div className="result-actions">
       {attempt.correct && <Button type="button" variant="outline" className={cn('review-flag', marked && 'review-flag-active')} aria-pressed={marked} aria-busy={pending === 'question'} disabled={pending !== null} onClick={() => void save('question', () => setReviewFlag(attempt.id, 'reviewRequested', !marked))}>
-        {pending === 'question' ? <LoaderCircle className="animate-spin" size={17} /> : marked ? <Check size={17} /> : <Plus size={17} />}復習リストに追加
+        {pending === 'question' ? <LoaderCircle className="animate-spin" size={17} /> : marked ? <Check size={17} /> : reviewing ? <RotateCcw size={17} /> : <Plus size={17} />}{reviewing ? 'また復習する' : '復習リストに追加'}
       </Button>}
       {action}
     </div>

@@ -67,12 +67,60 @@ test('prioritizes unknown answers and clears them after a confident correct revi
   await page.getByRole('link', { name: '科目A1を復習', exact: true }).click();
   await expect(page.locator('.question-card h2')).toContainText('伝票処理システム');
   await page.getByRole('button', { name: 'イで回答', exact: true }).click();
-  await expect(toggle).toHaveAttribute('aria-pressed', 'false');
+  await expect(page.getByRole('button', { name: 'また復習する', exact: true })).toHaveAttribute('aria-pressed', 'false');
   await page.goto('/reviews');
   await expect(questions).toContainText('1問');
   await page.getByRole('link', { name: '科目A1を復習', exact: true }).click();
   await expect(page.locator('.question-card h2')).toContainText('ROC曲線');
 });
+
+for (const reviewPath of ['/study/A1?mode=review', '/study/A1?by=sets&target=review&order=number']) {
+  test(`keeps a correct question only when another review is requested: ${reviewPath}`, async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    for (const id of ['sc-2025-autumn-a1-1', 'sc-2025-autumn-a1-2']) {
+      await page.goto(`/study/A1?question=${id}`);
+      await page.getByRole('button', { name: 'わからない', exact: true }).click();
+      await expect(page.getByRole('region', { name: '解答結果と解説' })).toBeVisible();
+    }
+    await page.goto(reviewPath);
+    const again = page.getByRole('button', { name: 'また復習する', exact: true });
+    await expect(again).toHaveCount(0);
+    await page.getByRole('button', { name: 'イで回答', exact: true }).click();
+    await expect(again).toHaveAttribute('aria-pressed', 'false');
+    let saved = await readRecords(page);
+    expect(saved.cards.find(card => card.questionId === 'sc-2025-autumn-a1-1')?.remainingReviews).toBe(0);
+    const next = page.getByRole('button', { name: '次の問題へ', exact: true });
+    const againBox = await again.boundingBox();
+    const nextBox = await next.boundingBox();
+    expect(againBox!.y).toBe(nextBox!.y);
+    expect(againBox!.x + againBox!.width).toBeLessThan(nextBox!.x);
+    await again.click();
+    await expect(again).toHaveAttribute('aria-pressed', 'true');
+    await page.reload();
+    await expect(again).toHaveAttribute('aria-pressed', 'true');
+    expect((await readRecords(page)).attempts).toHaveLength(3);
+    await next.click();
+    await expect(page.locator('.question-card h2')).toContainText('ROC曲線');
+    await page.getByRole('button', { name: 'イで回答', exact: true }).click();
+    await expect(again).toHaveAttribute('aria-pressed', 'false');
+    await page.getByRole('button', { name: '今回の学習を終える', exact: true }).click();
+    await expect(page.locator('.session-complete')).toBeVisible();
+    saved = await readRecords(page);
+    expect(saved.cards.filter(card => Number(card.remainingReviews) > 0).map(card => card.questionId)).toEqual(['sc-2025-autumn-a1-1']);
+    // A later correct answer finishes the review without requiring a fixed number of passes.
+    await page.goto('/study/A1?mode=review');
+    await page.getByRole('button', { name: 'イで回答', exact: true }).click();
+    await expect(again).toHaveAttribute('aria-pressed', 'false');
+    await again.click();
+    await expect(again).toHaveAttribute('aria-pressed', 'true');
+    await again.click();
+    await expect(again).toHaveAttribute('aria-pressed', 'false');
+    await page.getByRole('button', { name: '今回の学習を終える', exact: true }).click();
+    await page.goto('/reviews');
+    await expect(page.getByRole('heading', { name: '復習する問題はありません' })).toBeVisible();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  });
+}
 
 test('shows an earlier doubt flag as a review request that can be cleared', async ({ page }) => {
   await page.goto('/study/A1?question=sc-2025-autumn-a1-2');
