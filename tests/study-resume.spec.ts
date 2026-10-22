@@ -25,7 +25,7 @@ test('resumes a mock exam at the explanation or current question, including opti
   await page.reload();
   await expect(page.locator('.question-prompt')).toHaveText(firstPrompt);
   await expect(page.locator('.answer-outcome strong')).toHaveText('未解答');
-  await expect(page.getByRole('button', { name: 'アで回答', exact: true })).toBeDisabled();
+  await expect(page.getByTestId('option-a')).toBeDisabled();
   expect((await progress(page)).count).toBe(1);
 
   await page.getByRole('button', { name: '次の問題へ' }).click();
@@ -70,10 +70,10 @@ test('preserves a random queue when answered questions leave the new-question fi
 test('keeps completion totals on reload and starts fresh when solving again', async ({ page }) => {
   const path = '/study/A1?question=sc-2025-autumn-a1-2';
   await page.goto(path);
-  await page.getByRole('button', { name: 'イで回答', exact: true }).click();
+  await page.getByTestId('option-b').click();
   await expect(page.getByRole('region', { name: '解答結果と解説' })).toBeVisible();
   await page.reload();
-  await expect(page.locator('.choice-selected')).toContainText('イ');
+  await expect(page.getByTestId('option-b').locator('..')).toHaveClass(/choice-selected/);
   await page.getByRole('button', { name: '今回の学習を終える' }).click();
   await expect(page.getByRole('heading', { name: '学習完了', exact: true })).toBeVisible();
   await page.reload();
@@ -85,12 +85,12 @@ test('keeps completion totals on reload and starts fresh when solving again', as
   await page.getByRole('link', { name: '学習ホームへ', exact: true }).click();
   await expect(page.getByRole('link', { name: '続きから再開', exact: true })).toHaveCount(0);
   await page.goto(path);
-  await page.getByRole('button', { name: 'イで回答', exact: true }).click();
+  await page.getByTestId('option-b').click();
   await expect(page.getByRole('region', { name: '解答結果と解説' })).toBeVisible();
   const saved = await progress(page);
   await page.goto(`/record/${saved.attemptIds[0]}`);
   await page.getByRole('link', { name: 'もう一度解く', exact: true }).click();
-  await expect(page.getByRole('button', { name: 'イで回答', exact: true })).toBeEnabled();
+  await expect(page.getByTestId('option-b')).toBeEnabled();
   await expect(page.getByRole('region', { name: '解答結果と解説' })).toHaveCount(0);
 });
 
@@ -142,7 +142,7 @@ test('rolls back answers when saving progress fails, then allows retry and reloa
     };
   });
   await page.goto('/study/A1?question=sc-2025-autumn-a1-2');
-  const answer = page.getByRole('button', { name: 'イで回答', exact: true });
+  const answer = page.getByTestId('option-b');
   await answer.click();
   await expect(page.getByRole('alert').filter({ hasText: '回答を保存できませんでした' })).toBeVisible();
   expect(await progress(page)).toMatchObject({ attemptIds: [], count: 0 });
@@ -180,7 +180,7 @@ test('retries advancing after a save failure without skipping a question', async
 
 test('removes old permanent progress while preserving answer history and preferences', async ({ page }) => {
   await page.goto('/study/A1?question=sc-2025-autumn-a1-2');
-  await page.getByRole('button', { name: 'イで回答', exact: true }).click();
+  await page.getByTestId('option-b').click();
   await expect(page.getByRole('region', { name: '解答結果と解説' })).toBeVisible();
   await page.evaluate(async () => {
     const db = await new Promise<IDBDatabase>(resolve => { const request = indexedDB.open('orenotameno-sc'); request.onsuccess = () => resolve(request.result); });

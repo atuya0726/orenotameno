@@ -45,23 +45,25 @@ for (const width of [320, 390, 1024]) {
 
 test('restores table marks and supports keyboard answers with an accessible description', async ({ page }) => {
   await page.goto('/study/A2?question=sc-2025-spring-a2-18');
-  const mark = page.getByRole('button', { name: 'イの印：はてな', exact: true });
+  const mark = page.getByTestId('mark-b');
   await mark.click();
-  await expect(page.getByRole('button', { name: 'イの印：まる', exact: true })).toBeVisible();
+  await expect(mark).toHaveText('○');
   await expect.poll(() => page.evaluate(() => {
     const draft = JSON.parse(sessionStorage.getItem('orenotameno:question-draft:sc-2025-spring-a2-18') ?? 'null');
     return draft?.optionMarks?.b;
   })).toBe('candidate');
   await page.reload();
-  await expect(page.getByRole('button', { name: 'イの印：まる', exact: true })).toBeVisible();
-  const answer = page.getByRole('button', { name: 'イで回答', exact: true });
+  await expect(mark).toHaveText('○');
+  const answer = page.getByTestId('option-b');
+  const selectedLabel = await answer.locator('.choice-letter').innerText();
+  const correctLabel = await page.getByTestId('option-a').locator('.choice-letter').innerText();
   await expect(answer).toHaveAccessibleDescription('コリジョンの伝搬：伝搬しない，ブロードキャストフレームの中継：中継する');
   await answer.focus();
   await expect(page.getByRole('region', { name: '解答結果と解説' })).toHaveCount(0);
   await answer.press('Space');
   await expect(page.locator('.answer-outcome strong')).toHaveText('不正解');
-  await expect(page.locator('.combination-row.choice-selected .choice-letter')).toHaveText('イ');
-  await expect(page.locator('.combination-row.choice-correct .choice-letter')).toHaveText('ア');
+  await expect(page.locator('.combination-row.choice-selected .choice-letter')).toHaveText(selectedLabel);
+  await expect(page.locator('.combination-row.choice-correct .choice-letter')).toHaveText(correctLabel);
 });
 
 test('reveals the correct combination for an unknown answer without selecting a row', async ({ page }) => {

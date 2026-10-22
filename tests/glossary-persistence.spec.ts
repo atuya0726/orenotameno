@@ -119,7 +119,7 @@ test('removes a mastered review word only after its evaluation is saved', async 
   let calls = 0;
   await page.route('**/api/glossary/evaluate', route => { calls++; return route.fulfill({ json: evaluation }); });
   await page.goto('/study/A1?question=sc-2025-autumn-a1-13');
-  await page.getByRole('button', { name: 'ウで回答', exact: true }).click();
+  await page.getByTestId('option-c').click();
   const word = page.getByRole('button', { name: 'デジタル署名を復習する', exact: true });
   await word.click(); await expect(word).toHaveAttribute('aria-pressed', 'true');
   await page.goto('/glossary/review');

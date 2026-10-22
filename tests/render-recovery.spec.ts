@@ -7,7 +7,7 @@ test('starts, answers and restores question 24 without the secure-context UUID A
   await page.goto('/study/A2?question=sc-2025-spring-a2-24');
   await expect(page).toHaveURL(/session=[0-9a-f-]{36}/);
   const url = page.url();
-  await page.getByRole('button', { name: 'ウで回答', exact: true }).tap();
+  await page.getByTestId('option-c').tap();
   await expect(page.locator('.answer-outcome strong')).toHaveText('正解');
   await page.reload();
   await expect(page).toHaveURL(url);
@@ -22,7 +22,7 @@ test('keeps the question and explanation visible when the loaded typesetter cras
     body: 'export default function BrokenFormula() { throw new Error("Typesetter render failed"); }',
   }));
   await page.goto('/study/A2?question=sc-2025-spring-a2-24');
-  await page.getByRole('button', { name: 'ウで回答', exact: true }).tap();
+  await page.getByTestId('option-c').tap();
   const result = page.getByRole('region', { name: '解答結果と解説' });
   await expect(result.locator('.math-fallback')).toHaveCount(7);
   await expect(result.locator('.answer-outcome strong')).toHaveText('正解');
@@ -47,7 +47,7 @@ test('shows the error and restores the saved question without reloading after a 
   await page.goto('/study/A2?question=sc-2025-spring-a2-24');
   await expect(page).toHaveURL(/session=/);
   const url = page.url();
-  await page.getByRole('button', { name: 'ウで回答', exact: true }).tap();
+  await page.getByTestId('option-c').tap();
   await expect(page.getByRole('heading', { name: '画面を表示できませんでした' })).toBeVisible();
   await page.getByText('エラーの詳細', { exact: true }).click();
   await expect(page.getByRole('alert')).toContainText('Answer render failed');
@@ -56,7 +56,7 @@ test('shows the error and restores the saved question without reloading after a 
   await expect(page).toHaveURL(url);
   await expect(page.locator('.question-prompt')).toContainText('サービス提供時間帯が毎日6時〜20時');
   await expect(page.locator('.answer-outcome strong')).toHaveText('正解');
-  await expect(page.getByRole('button', { name: 'ウで回答', exact: true })).toBeDisabled();
+  await expect(page.getByTestId('option-c')).toBeDisabled();
   expect(await page.evaluate(async () => {
     const db = await new Promise<IDBDatabase>(resolve => { const request = indexedDB.open('orenotameno-sc'); request.onsuccess = () => resolve(request.result); });
     const count = await new Promise<number>(resolve => { const request = db.transaction('attempts').objectStore('attempts').count(); request.onsuccess = () => resolve(request.result); });

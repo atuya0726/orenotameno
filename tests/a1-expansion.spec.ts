@@ -3,7 +3,6 @@ import { sc2022AutumnA1 } from '../src/data/sc-2022-autumn-a1';
 import { sc2022SpringA1 } from '../src/data/sc-2022-spring-a1';
 import { sc2021AutumnA1 } from '../src/data/sc-2021-autumn-a1';
 import { sc2021SpringA1 } from '../src/data/sc-2021-spring-a1';
-import { optionLabels } from '../src/lib/model';
 
 const sets = [
   { key: '2022-autumn', questions: sc2022AutumnA1, visual: [1, 7, 9, 18, 19, 24] },
@@ -25,7 +24,7 @@ for (const set of sets) test(`renders added A1 figures, tables and formulas from
     await expect(page.locator('.katex-error')).toHaveCount(0);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     if ([1, 7, 16, 18, 23].includes(number)) await page.screenshot({ path: `/private/tmp/a1-${set.key}-${number}.png`, fullPage: true });
-    await page.getByRole('button', { name: `${optionLabels[q.correct]}で回答`, exact: true }).click();
+    await page.getByTestId(`option-${q.correct}`).click();
     await expect(page.locator('.answer-outcome').getByText('正解', { exact: true })).toBeVisible();
     await expect(page.locator('.katex-error')).toHaveCount(0);
   }

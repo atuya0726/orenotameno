@@ -1,24 +1,27 @@
 import type { CSSProperties } from 'react';
 import { MathText } from './math-text';
 import { getCombinationOptions } from '@/lib/combination-options';
-import { optionLabels, optionMarkLabels, optionMarkSymbols, type Attempt, type Draft, type OptionId, type OptionMark, type Question } from '@/lib/model';
+import { orderedOptions } from '@/lib/option-order';
+import { optionMarkLabels, optionMarkSymbols, type Attempt, type Draft, type OptionId, type OptionMark, type Question } from '@/lib/model';
 import { cn } from '@/lib/utils';
 
 type AnswerChoicesProps = {
   question: Question; draft: Draft; result: Attempt | null; locked: boolean;
+  optionOrder?: OptionId[];
   onAnswer: (id: OptionId) => void; onMark: (id: OptionId) => void;
 };
 
-function MarkButton({ id, mark, locked, onMark }: { id: OptionId; mark: OptionMark; locked: boolean; onMark: (id: OptionId) => void }) {
-  return <button type="button" className="choice-mark-toggle" data-mark={mark} disabled={locked}
-    aria-label={`${optionLabels[id]}の印：${optionMarkLabels[mark]}`}
+function MarkButton({ id, label, mark, locked, onMark }: { id: OptionId; label: string; mark: OptionMark; locked: boolean; onMark: (id: OptionId) => void }) {
+  return <button type="button" className="choice-mark-toggle" data-testid={`mark-${id}`} data-mark={mark} disabled={locked}
+    aria-label={`${label}の印：${optionMarkLabels[mark]}`}
     title="初めは ?、押すと ○ → × → △ → ○ の順に切り替え" onClick={() => onMark(id)}>
     <span aria-hidden="true">{optionMarkSymbols[mark]}</span>
   </button>;
 }
 
-export function AnswerChoices({ question, draft, result, locked, onAnswer, onMark }: AnswerChoicesProps) {
-  const combination = getCombinationOptions(question.options);
+export function AnswerChoices({ question, optionOrder, draft, result, locked, onAnswer, onMark }: AnswerChoicesProps) {
+  const options = orderedOptions(question, optionOrder);
+  const combination = getCombinationOptions(options);
   const selected = result ? result.selected : draft.selected;
   if (combination) {
     const stackOnMobile = combination.headers.length > 3 || combination.rows.some(row => row.values.some(value => value.length > 24));
@@ -32,11 +35,12 @@ export function AnswerChoices({ question, draft, result, locked, onAnswer, onMar
         </tr></thead>
         <tbody role="rowgroup">{combination.rows.map(row => {
           const correct = Boolean(result) && row.id === question.correct;
+          const option = options.find(option => option.id === row.id)!;
           return <tr key={row.id} role="row" className={cn('combination-row', selected === row.id && 'choice-selected', correct && 'choice-correct')}>
             <th scope="row" role="rowheader" className="combination-letter-cell">
               <button type="button" className="combination-answer" disabled={locked} data-testid={`option-${row.id}`}
-                aria-label={`${optionLabels[row.id]}で回答`} aria-describedby={`choice-text-${row.id}`} onClick={() => onAnswer(row.id)}>
-                <span className="choice-letter">{optionLabels[row.id]}</span>
+                aria-label={`${option.label}で回答`} aria-describedby={`choice-text-${row.id}`} onClick={() => onAnswer(row.id)}>
+                <span className="choice-letter">{option.label}</span>
                 {correct && <span className="combination-outcome">正解</span>}
                 {result && selected === row.id && !correct && <span className="combination-outcome">回答</span>}
               </button>
@@ -46,16 +50,16 @@ export function AnswerChoices({ question, draft, result, locked, onAnswer, onMar
               <span className="combination-cell-label" aria-hidden="true"><MathText text={combination.headers[i]} /></span>
               <MathText text={value} />
             </td>)}
-            <td role="cell" className="combination-mark-cell"><MarkButton id={row.id} mark={draft.optionMarks?.[row.id] ?? 'unknown'} locked={locked} onMark={onMark} /></td>
+            <td role="cell" className="combination-mark-cell"><MarkButton id={row.id} label={option.label} mark={draft.optionMarks?.[row.id] ?? 'unknown'} locked={locked} onMark={onMark} /></td>
           </tr>;
         })}</tbody>
       </table>
     </div>;
   }
-  return <div className="choices">{question.options.map(option => <div key={option.id} className={cn('choice-card', selected === option.id && 'choice-selected')}>
-    <button type="button" className="answer-selector" disabled={locked} data-testid={`option-${option.id}`} aria-label={`${optionLabels[option.id]}で回答`} aria-describedby={`choice-text-${option.id}`} onClick={() => onAnswer(option.id)}>
-      <span className="choice-letter">{optionLabels[option.id]}</span><span id={`choice-text-${option.id}`} className="choice-text">{option.figure ? <><span className="choice-figure" dangerouslySetInnerHTML={{ __html: option.figure }} /><span className="sr-only">{option.text}</span></> : <MathText text={option.text} />}</span>
+  return <div className="choices">{options.map(option => <div key={option.id} className={cn('choice-card', selected === option.id && 'choice-selected')}>
+    <button type="button" className="answer-selector" disabled={locked} data-testid={`option-${option.id}`} aria-label={`${option.label}で回答`} aria-describedby={`choice-text-${option.id}`} onClick={() => onAnswer(option.id)}>
+      <span className="choice-letter">{option.label}</span><span id={`choice-text-${option.id}`} className="choice-text">{option.figure ? <><span className="choice-figure" dangerouslySetInnerHTML={{ __html: option.figure }} /><span className="sr-only">{option.text}</span></> : <MathText text={option.text} />}</span>
     </button>
-    <MarkButton id={option.id} mark={draft.optionMarks?.[option.id] ?? 'unknown'} locked={locked} onMark={onMark} />
+    <MarkButton id={option.id} label={option.label} mark={draft.optionMarks?.[option.id] ?? 'unknown'} locked={locked} onMark={onMark} />
   </div>)}</div>;
 }

@@ -9,7 +9,7 @@ import { courses, questions, questionById } from '@/data/questions';
 import { getQuestionTerms } from '@/data/question-terms';
 import { eraLabel } from '@/data/ipa';
 import { useLearning, useNow } from '@/lib/store';
-import { responseConfidenceLabels, attemptConfidenceLabel, createQuickAnswer, cycleOptionMark, isQuickAnswer, optionLabels, selectAnswer, type Attempt, type Course, type Draft, type OptionId, type Question, type QuickAnswerInput, type ResponseConfidence } from '@/lib/model';
+import { responseConfidenceLabels, attemptConfidenceLabel, createQuickAnswer, cycleOptionMark, isQuickAnswer, selectAnswer, type Attempt, type Course, type Draft, type OptionId, type Question, type QuickAnswerInput, type ResponseConfidence } from '@/lib/model';
 import { activeReviews, reviewPriorityLabel } from '@/lib/scheduler';
 import { dayKey, formatDate } from '@/lib/date';
 import { cn } from '@/lib/utils';
@@ -22,6 +22,7 @@ import { StudyCompletion } from '@/components/study-completion';
 import { buildPracticeQueue, parsePracticeSearch } from '@/lib/practice';
 import { studyPath, studySessionUrl, type StudySession } from '@/lib/study-session';
 import { randomId } from '@/lib/id';
+import { orderedOptions, shuffleOptionOrder } from '@/lib/option-order';
 
 const menu = [
   { to: '/', label: '学習ホーム', icon: LayoutDashboard, end: true },
@@ -113,7 +114,10 @@ function Study() {
       : mode === 'bookmarks' ? list.filter(q => snapshot.bookmarks.includes(q.id))
       : mode === 'review' ? activeReviews(snapshot.cards).map(card => list.find(q => q.id === card.questionId)).filter((q): q is Question => q !== undefined)
       : list;
-    return { id: randomId(), path, questionIds: queue.map(q => q.id), index: 0, attemptIds: [], updatedAt: new Date().toISOString() };
+    return {
+      id: randomId(), path, questionIds: queue.map(q => q.id), index: 0, attemptIds: [], updatedAt: new Date().toISOString(),
+      ...(practice && practice.mode === 'mock' ? {} : { optionOrders: Object.fromEntries(queue.map(q => [q.id, shuffleOptionOrder()])) }),
+    };
   });
   const queue = session.questionIds.map(id => questionById.get(id)!);
   const index = session.index;
@@ -168,7 +172,7 @@ function Study() {
     setSaving(true); setSubmitError('');
     try {
       await ensureSession();
-      const attempt = await answer(question, input, session);
+      const attempt = await answer(question, { ...input, ...(session.optionOrders?.[question.id] && { optionOrder: session.optionOrders[question.id] }) }, session);
       setSession(current => ({ ...current, attemptIds: [...current.attemptIds, attempt.id], updatedAt: attempt.answeredAt }));
     }
     catch { setSubmitError('回答を保存できませんでした。入力を確認して、もう一度お試しください。'); }
@@ -188,7 +192,7 @@ function Study() {
     <h1 className="sr-only">問題演習</h1>
     <div className="exercise-layout"><div className="exercise-main">
       <QuestionHeader question={question} />
-      <AnswerForm key={question.id} question={question} saving={saving} result={result} submitError={submitError} onSubmit={submit} />
+      <AnswerForm key={question.id} question={question} optionOrder={result?.optionOrder ?? session.optionOrders?.[question.id]} saving={saving} result={result} submitError={submitError} onSubmit={submit} />
       {result && <AnswerFlash key={result.id} attempt={result} />}
       {result && <div ref={resultRef} tabIndex={-1} className="result-focus result-reveal" role="region" aria-label="解答結果と解説">
         <ResultDetails question={question} attempt={result} reviewing={reviewing} action={<Button disabled={saving} onClick={() => void next()}>{index + 1 === queue.length ? '今回の学習を終える' : '次の問題へ'}<ArrowRight size={17} /></Button>} />
@@ -235,7 +239,7 @@ function QuestionSource({ question }: { question: Question }) {
   return <details className="question-source"><summary>出典</summary><p>{question.source.label}</p>{question.source.kind === 'ipa' && <a href={question.source.questionUrl} target="_blank" rel="noreferrer">IPA公式の問題PDF ↗</a>}</details>;
 }
 
-function AnswerForm({ question, saving, result, submitError, onSubmit }: { question: Question; saving: boolean; result: Attempt | null; submitError: string; onSubmit: (input: QuickAnswerInput) => Promise<void> }) {
+function AnswerForm({ question, optionOrder, saving, result, submitError, onSubmit }: { question: Question; optionOrder?: OptionId[]; saving: boolean; result: Attempt | null; submitError: string; onSubmit: (input: QuickAnswerInput) => Promise<void> }) {
   const { snapshot, updateDraft } = useLearning();
   const submitting = useRef(false);
   // Keep the submitted selection visible after saving removes the persisted draft.
@@ -262,7 +266,7 @@ function AnswerForm({ question, saving, result, submitError, onSubmit }: { quest
     } finally { submitting.current = false; }
   }
   return <form onSubmit={e => e.preventDefault()} aria-label="問題の回答" className={result ? 'answer-submitted' : undefined} aria-busy={saving}>
-    <AnswerChoices question={question} draft={draft} result={result} locked={locked} onAnswer={id => void submit('high', id)} onMark={changeMark} />
+    <AnswerChoices question={question} optionOrder={optionOrder} draft={draft} result={result} locked={locked} onAnswer={id => void submit('high', id)} onMark={changeMark} />
     <div className="answer-controls">
       <QuestionSource question={question} />
       <Button type="button" variant="ghost" className="unknown-response" disabled={locked} onClick={() => void submit('unknown')}>わからない</Button>
@@ -281,8 +285,8 @@ function ResultDetails({ question, attempt, action, reviewing = false }: { quest
       <p><MathText text={question.explanation} /></p>
     </section>
     <h3 className="option-review-title">選択肢の解説</h3>
-    <div className="option-reviews">{question.options.map(option => <div key={option.id} className={cn('option-review', option.id === question.correct && 'correct-option')}>
-      <div className="option-review-top"><span className="choice-letter">{optionLabels[option.id]}</span><strong>{option.figure && <span className="choice-figure" dangerouslySetInnerHTML={{ __html: option.figure }} />}<MathText text={option.text} /></strong>{option.id === question.correct && <span className="correct-answer-label"><Check size={14} />正解</span>}</div>
+    <div className="option-reviews">{orderedOptions(question, attempt.optionOrder).map(option => <div key={option.id} className={cn('option-review', option.id === question.correct && 'correct-option')}>
+      <div className="option-review-top"><span className="choice-letter">{option.label}</span><strong>{option.figure && <span className="choice-figure" dangerouslySetInnerHTML={{ __html: option.figure }} />}<MathText text={option.text} /></strong>{option.id === question.correct && <span className="correct-answer-label"><Check size={14} />正解</span>}</div>
       <p><MathText text={option.explanation} /></p>
     </div>)}</div>
     {question.source.kind === 'ipa' && <div className="official-answer-source"><a className="official-answer-link" href={question.source.answerUrl} target="_blank" rel="noreferrer">IPA公式の解答例 ↗</a></div>}

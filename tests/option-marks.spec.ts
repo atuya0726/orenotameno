@@ -4,7 +4,7 @@ test('cycles independent option notes, restores drafts, and locks them after ans
   await page.goto('/study/A1?question=sc-2025-autumn-a1-1');
   const marks = page.locator('.choice-mark-toggle');
   await expect(marks).toHaveText(['?', '?', '?', '?']);
-  const first = marks.nth(0);
+  const first = page.getByTestId('mark-a');
   for (const symbol of ['○', '×', '△', '○', '×', '△']) {
     await first.click();
     await expect(first).toHaveText(symbol);
@@ -13,17 +13,19 @@ test('cycles independent option notes, restores drafts, and locks them after ans
   }
   await first.focus();
   await first.press('Space');
-  await marks.nth(2).click();
+  await page.getByTestId('mark-c').click();
   await expect.poll(() => page.evaluate(() => {
     const draft = JSON.parse(sessionStorage.getItem('orenotameno:question-draft:sc-2025-autumn-a1-1') ?? 'null');
     return draft?.optionMarks;
   })).toEqual({ a: 'candidate', c: 'candidate' });
   await page.reload();
-  await expect(marks).toHaveText(['○', '?', '○', '?']);
-  await page.getByRole('button', { name: 'イで回答', exact: true }).click();
+  await expect(first).toHaveText('○');
+  await expect(page.getByTestId('mark-c')).toHaveText('○');
+  await page.getByTestId('option-b').click();
   await expect(page.getByRole('region', { name: '解答結果と解説' })).toBeVisible();
   for (const mark of await marks.all()) await expect(mark).toBeDisabled();
-  await expect(marks).toHaveText(['○', '?', '○', '?']);
+  await expect(first).toHaveText('○');
+  await expect(page.getByTestId('mark-c')).toHaveText('○');
 });
 
 test('resets option notes when advancing to another question', async ({ page }) => {

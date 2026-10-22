@@ -1,16 +1,19 @@
 import { z } from 'zod';
 import { questionById } from '@/data/questions';
-import type { Attempt } from './model';
+import { optionOrderSchema, type Attempt } from './model';
 
 export const studySessionSchema = z.object({
   id: z.string().min(1), path: z.string().startsWith('/study/'),
   questionIds: z.array(z.string()).min(1).max(1000),
+  optionOrders: z.record(z.string(), optionOrderSchema).optional(),
   index: z.number().int().nonnegative(), attemptIds: z.array(z.string()).max(1000),
   updatedAt: z.string().datetime(),
 }).refine(session => new Set(session.questionIds).size === session.questionIds.length
   && session.index <= session.questionIds.length
   && (session.attemptIds.length === session.index || (session.index < session.questionIds.length && session.attemptIds.length === session.index + 1))
-  && new Set(session.attemptIds).size === session.attemptIds.length);
+  && new Set(session.attemptIds).size === session.attemptIds.length
+  && (!session.optionOrders || (Object.keys(session.optionOrders).length === session.questionIds.length
+    && session.questionIds.every(id => session.optionOrders![id] !== undefined))));
 export type StudySession = z.infer<typeof studySessionSchema>;
 const storagePrefix = 'orenotameno:study:';
 

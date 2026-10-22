@@ -24,7 +24,7 @@ test('toggles a review request after answering and preserves it across reloads',
   await page.goto('/study/A1?question=sc-2025-autumn-a1-2');
   const toggle = page.getByRole('button', { name: '復習リストに追加', exact: true });
   await expect(toggle).toHaveCount(0);
-  await page.getByRole('button', { name: 'イで回答', exact: true }).click();
+  await page.getByTestId('option-b').click();
   await expect(page.getByRole('button', { name: '迷った', exact: true })).toHaveCount(0);
   await expect(toggle).toHaveAttribute('aria-pressed', 'false');
   await expect(page.getByText(/復習はあと/)).toHaveCount(0);
@@ -55,7 +55,7 @@ test('prioritizes unknown answers and clears them after a confident correct revi
   await expect(page.getByRole('region', { name: '解答結果と解説' })).toBeVisible();
   expect((await readRecords(page)).cards[0].remainingReviews).toBe(3);
   await page.goto('/study/A1?question=sc-2025-autumn-a1-2');
-  await page.getByRole('button', { name: 'イで回答', exact: true }).click();
+  await page.getByTestId('option-b').click();
   const toggle = page.getByRole('button', { name: '復習リストに追加', exact: true });
   await toggle.click();
   await expect(toggle).toHaveAttribute('aria-pressed', 'true');
@@ -66,7 +66,7 @@ test('prioritizes unknown answers and clears them after a confident correct revi
   await expect(page.locator('.question-row')).toHaveCount(0);
   await page.getByRole('link', { name: '科目A1を復習', exact: true }).click();
   await expect(page.locator('.question-card h2')).toContainText('伝票処理システム');
-  await page.getByRole('button', { name: 'イで回答', exact: true }).click();
+  await page.getByTestId('option-b').click();
   await expect(page.getByRole('button', { name: 'また復習する', exact: true })).toHaveAttribute('aria-pressed', 'false');
   await page.goto('/reviews');
   await expect(questions).toContainText('1問');
@@ -85,7 +85,7 @@ for (const reviewPath of ['/study/A1?mode=review', '/study/A1?by=sets&target=rev
     await page.goto(reviewPath);
     const again = page.getByRole('button', { name: 'また復習する', exact: true });
     await expect(again).toHaveCount(0);
-    await page.getByRole('button', { name: 'イで回答', exact: true }).click();
+    await page.getByTestId('option-b').click();
     await expect(again).toHaveAttribute('aria-pressed', 'false');
     let saved = await readRecords(page);
     expect(saved.cards.find(card => card.questionId === 'sc-2025-autumn-a1-1')?.remainingReviews).toBe(0);
@@ -101,7 +101,7 @@ for (const reviewPath of ['/study/A1?mode=review', '/study/A1?by=sets&target=rev
     expect((await readRecords(page)).attempts).toHaveLength(3);
     await next.click();
     await expect(page.locator('.question-card h2')).toContainText('ROC曲線');
-    await page.getByRole('button', { name: 'イで回答', exact: true }).click();
+    await page.getByTestId('option-b').click();
     await expect(again).toHaveAttribute('aria-pressed', 'false');
     await page.getByRole('button', { name: '今回の学習を終える', exact: true }).click();
     await expect(page.locator('.session-complete')).toBeVisible();
@@ -109,7 +109,7 @@ for (const reviewPath of ['/study/A1?mode=review', '/study/A1?by=sets&target=rev
     expect(saved.cards.filter(card => Number(card.remainingReviews) > 0).map(card => card.questionId)).toEqual(['sc-2025-autumn-a1-1']);
     // A later correct answer finishes the review without requiring a fixed number of passes.
     await page.goto('/study/A1?mode=review');
-    await page.getByRole('button', { name: 'イで回答', exact: true }).click();
+    await page.getByTestId('option-b').click();
     await expect(again).toHaveAttribute('aria-pressed', 'false');
     await again.click();
     await expect(again).toHaveAttribute('aria-pressed', 'true');
@@ -124,7 +124,7 @@ for (const reviewPath of ['/study/A1?mode=review', '/study/A1?by=sets&target=rev
 
 test('shows an earlier doubt flag as a review request that can be cleared', async ({ page }) => {
   await page.goto('/study/A1?question=sc-2025-autumn-a1-2');
-  await page.getByRole('button', { name: 'イで回答', exact: true }).click();
+  await page.getByTestId('option-b').click();
   await expect(page.getByRole('region', { name: '解答結果と解説' })).toBeVisible();
   const original = (await readRecords(page)).attempts[0];
   await page.evaluate(async id => {
@@ -152,7 +152,7 @@ test('shows an earlier doubt flag as a review request that can be cleared', asyn
 test('picks multiple question terms and restores them without adding an attempt', async ({ page }) => {
   await page.goto('/study/A1?question=sc-2025-autumn-a1-2');
   await expect(page.getByRole('heading', { name: '復習したい単語を選択' })).toHaveCount(0);
-  await page.getByRole('button', { name: 'イで回答', exact: true }).click();
+  await page.getByTestId('option-b').click();
   const picker = page.getByRole('region', { name: '復習したい単語を選択' });
   await expect(picker).toBeVisible();
   await expect(picker.getByRole('button')).toHaveCount(4);
@@ -202,7 +202,7 @@ test('keeps word picks unchanged on a failed save and allows retrying', async ({
     };
   });
   await page.goto('/study/A1?question=sc-2025-autumn-a1-2');
-  await page.getByRole('button', { name: 'イで回答', exact: true }).click();
+  await page.getByTestId('option-b').click();
   const term = page.getByRole('button', { name: 'ROC曲線を復習する', exact: true });
   await term.click();
   await expect(page.getByRole('alert')).toContainText('保存できませんでした');
@@ -219,15 +219,15 @@ test('keeps word picks unchanged on a failed save and allows retrying', async ({
 test('shares a saved word between questions and removes it globally from the review notebook', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/study/A1?question=sc-2025-autumn-a1-13');
-  await page.getByRole('button', { name: 'ウで回答', exact: true }).click();
+  await page.getByTestId('option-c').click();
   const word = page.getByRole('button', { name: 'デジタル署名を復習する', exact: true });
   await word.click();
   await expect(word).toHaveAttribute('aria-pressed', 'true');
   await page.goto('/study/A1?question=sc-2025-autumn-a1-15');
-  await page.getByRole('button', { name: 'アで回答', exact: true }).click();
+  await page.getByTestId('option-a').click();
   await expect(word).toHaveAttribute('aria-pressed', 'true');
   await page.reload();
-  await expect(page.getByRole('button', { name: 'アで回答', exact: true })).toBeDisabled();
+  await expect(page.getByTestId('option-a')).toBeDisabled();
   await expect(word).toHaveAttribute('aria-pressed', 'true');
   const saved = await readRecords(page);
   expect(saved.attempts).toHaveLength(2);
@@ -261,7 +261,7 @@ test('shares a saved word between questions and removes it globally from the rev
 
 test('upgrades existing per-answer word selections without losing learning records', async ({ page }) => {
   await page.goto('/study/A1?question=sc-2025-autumn-a1-2');
-  await page.getByRole('button', { name: 'イで回答', exact: true }).click();
+  await page.getByTestId('option-b').click();
   const word = page.getByRole('button', { name: 'ROC曲線を復習する', exact: true });
   await word.click();
   await expect(word).toHaveAttribute('aria-pressed', 'true');
@@ -306,7 +306,7 @@ test('keeps the saved state on failure and allows retrying the request', async (
     };
   });
   await page.goto('/study/A1?question=sc-2025-autumn-a1-2');
-  await page.getByRole('button', { name: 'イで回答', exact: true }).click();
+  await page.getByTestId('option-b').click();
   const toggle = page.getByRole('button', { name: '復習リストに追加', exact: true });
   await toggle.click();
   await expect(page.getByRole('alert')).toContainText('保存できませんでした');
@@ -321,7 +321,7 @@ test('keeps the saved state on failure and allows retrying the request', async (
 test('reviews saved words one after another in random order from the review notebook', async ({ page }) => {
   await page.route('**/api/glossary/evaluate', route => route.fulfill({ json: { version: 1, engine: 'openai', model: 'test-model', status: 'unconfirmed', grade: 'retry', covered: 0, total: 1, criteria: [{ id: 'core', title: '基本の仕組み', level: 'basic', status: 'missing', evidence: '', hint: '基本をもう一度確認しましょう。' }], summary: '基本の説明が不足しています。', definition: '用語の説明例です。' } }));
   await page.goto('/study/A1?question=sc-2025-autumn-a1-2');
-  await page.getByRole('button', { name: 'イで回答', exact: true }).click();
+  await page.getByTestId('option-b').click();
   await page.getByRole('button', { name: 'ROC曲線を復習する', exact: true }).click();
   await page.getByRole('button', { name: '偽陽性率を復習する', exact: true }).click();
   await expect(page.getByRole('button', { name: '偽陽性率を復習する', exact: true })).toHaveAttribute('aria-pressed', 'true');
@@ -354,7 +354,7 @@ function wordEvaluation(grade: string | undefined) {
 }
 async function startWordReview(page: Page, legacyTarget?: string) {
   await page.goto('/study/A1?question=sc-2025-autumn-a1-13');
-  await page.getByRole('button', { name: 'ウで回答', exact: true }).click();
+  await page.getByTestId('option-c').click();
   const word = page.getByRole('button', { name: 'デジタル署名を復習する', exact: true });
   await word.click();
   await expect(word).toHaveAttribute('aria-pressed', 'true');
@@ -431,7 +431,7 @@ test('retries a failed queue removal without paying for another evaluation', asy
 test('keeps progress stable as mastered concepts leave the queue and preserves other concepts', async ({ page }) => {
   await page.route('**/api/glossary/evaluate', route => route.fulfill({ json: wordEvaluation('S') }));
   await page.goto('/study/A1?question=sc-2025-autumn-a1-2');
-  await page.getByRole('button', { name: 'イで回答', exact: true }).click();
+  await page.getByTestId('option-b').click();
   await page.getByRole('button', { name: 'ROC曲線を復習する', exact: true }).click();
   await page.getByRole('button', { name: '偽陽性率を復習する', exact: true }).click();
   await expect(page.getByRole('button', { name: '偽陽性率を復習する', exact: true })).toHaveAttribute('aria-pressed', 'true');

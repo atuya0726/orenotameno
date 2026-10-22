@@ -1,8 +1,8 @@
 import { test, expect } from '@playwright/test';
 
 for (const answer of [
-  { selected: 'イ', outcome: '正解' },
-  { selected: 'ア', outcome: '不正解' },
+  { selected: 'b', outcome: '正解' },
+  { selected: 'a', outcome: '不正解' },
   { selected: null, outcome: '未解答' },
 ]) {
   test(`reveals ${answer.outcome} below the preserved answer form`, async ({ page }) => {
@@ -11,13 +11,15 @@ for (const answer of [
     const formBefore = await form.evaluate(element => ({ top: element.getBoundingClientRect().top + scrollY, height: element.getBoundingClientRect().height }));
     // A property on the DOM node proves that submitting did not replace the form.
     await form.evaluate(element => element.setAttribute('data-preserved-form', 'true'));
-    await form.getByRole('button', { name: answer.selected ? `${answer.selected}で回答` : 'わからない', exact: true }).click();
+    const choice = answer.selected ? form.getByTestId(`option-${answer.selected}`) : form.getByRole('button', { name: 'わからない', exact: true });
+    const label = answer.selected ? await choice.locator('.choice-letter').innerText() : null;
+    await choice.click();
     const feedback = page.getByRole('region', { name: '解答結果と解説' });
     await expect(feedback).toBeVisible();
     await expect(feedback.locator('.answer-outcome strong')).toHaveText(answer.outcome);
     await expect(feedback.getByRole('heading', { name: '解説', exact: true })).toBeVisible();
     await expect(form).toHaveAttribute('data-preserved-form', 'true');
-    if (answer.selected) await expect(form.locator('.choice-selected .choice-letter')).toHaveText(answer.selected);
+    if (label) await expect(form.locator('.choice-selected .choice-letter')).toHaveText(label);
     else await expect(form.locator('.choice-selected')).toHaveCount(0);
     for (const button of await form.getByRole('button').all()) await expect(button).toBeDisabled();
     const formAfter = await form.evaluate(element => ({ top: element.getBoundingClientRect().top + scrollY, height: element.getBoundingClientRect().height }));
@@ -33,7 +35,7 @@ for (const answer of [
 
 test('clears the previous answer and explanation only when moving to the next question', async ({ page }) => {
   await page.goto('/study/A1');
-  await page.getByRole('button', { name: 'イで回答', exact: true }).click();
+  await page.getByTestId('option-b').click();
   await expect(page.getByRole('region', { name: '解答結果と解説' })).toBeVisible();
   await page.getByRole('button', { name: '次の問題へ' }).click();
   await expect(page.locator('.question-card h2')).toContainText('ROC曲線');
@@ -46,7 +48,7 @@ test('shows inline feedback on mobile with reduced motion', async ({ page }) => 
   await page.setViewportSize({ width: 390, height: 844 });
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/study/A1?question=sc-2025-autumn-a1-2');
-  await page.getByRole('button', { name: 'イで回答', exact: true }).click();
+  await page.getByTestId('option-b').click();
   const feedback = page.getByRole('region', { name: '解答結果と解説' });
   await expect(feedback).toBeVisible();
   const toggle = feedback.getByRole('button', { name: '復習リストに追加', exact: true });
@@ -59,14 +61,14 @@ test('shows inline feedback on mobile with reduced motion', async ({ page }) => 
 });
 
 for (const width of [390, 1280]) for (const answer of [
-  { button: 'イで回答', outcome: 'correct' },
-  { button: 'アで回答', outcome: 'incorrect' },
+  { button: 'option-b', outcome: 'correct' },
+  { button: 'option-a', outcome: 'incorrect' },
   { button: 'わからない', outcome: 'unknown' },
 ]) for (const reducedMotion of ['no-preference', 'reduce'] as const) test(`scrolls the ${answer.outcome} answer's explanation to the top at ${width}px with ${reducedMotion} motion`, async ({ page }) => {
   await page.setViewportSize({ width, height: 800 });
   await page.emulateMedia({ reducedMotion });
   await page.goto('/study/A1?question=sc-2025-autumn-a1-2');
-  await page.getByRole('button', { name: answer.button, exact: true }).click();
+  await (answer.button === 'わからない' ? page.getByRole('button', { name: answer.button, exact: true }) : page.getByTestId(answer.button)).click();
   const heading = page.locator('.explanation-heading');
   const headerBottom = await page.locator('.site-header').evaluate(el => el.getBoundingClientRect().bottom);
   await expect.poll(() => heading.evaluate(el => el.getBoundingClientRect().top), { timeout: 4000 }).toBeLessThan(headerBottom + 40);

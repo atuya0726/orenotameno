@@ -9,7 +9,7 @@ const explanation = '署名者の秘密鍵で署名し、公開鍵で検証し�
 
 test('keeps notes, calculator work and explanation drafts through reload only in the current tab', async ({ page, context }) => {
   await page.goto(questionPath);
-  await page.getByRole('button', { name: 'アの印：はてな', exact: true }).click();
+  await page.getByTestId('mark-a').click();
   await page.getByRole('button', { name: '計算機を開く', exact: true }).click();
   const calculation = page.getByRole('textbox', { name: '計算式', exact: true });
   await calculation.fill('4+5'); await calculation.press('Enter');
@@ -19,12 +19,12 @@ test('keeps notes, calculator work and explanation drafts through reload only in
   await page.reload();
   await expect(page.getByRole('textbox', { name: 'ディジタル署名についての説明' })).toHaveValue(explanation);
   await page.goto(questionPath);
-  await expect(page.getByRole('button', { name: 'アの印：まる', exact: true })).toBeVisible();
+  await expect(page.getByTestId('mark-a')).toHaveText('○');
   await page.getByRole('button', { name: '計算機を開く', exact: true }).click();
   await expect(calculation).toHaveValue('9*2');
   await expect(page.getByRole('list', { name: '計算の履歴' })).toContainText('4+5= 9');
   await page.reload();
-  await expect(page.getByRole('button', { name: 'アの印：まる', exact: true })).toBeVisible();
+  await expect(page.getByTestId('mark-a')).toHaveText('○');
   await page.getByRole('button', { name: '計算機を開く', exact: true }).click();
   await expect(calculation).toHaveValue('9*2');
 
@@ -44,7 +44,7 @@ test('keeps notes, calculator work and explanation drafts through reload only in
 
 test('cleans up permanently saved scratch work while preserving answer history and unrelated settings', async ({ page }) => {
   await page.goto('/study/A1?question=sc-2025-autumn-a1-2');
-  await page.getByRole('button', { name: 'イで回答', exact: true }).click();
+  await page.getByTestId('option-b').click();
   await expect(page.getByRole('region', { name: '解答結果と解説' })).toBeVisible();
   await page.goto(termPath);
   await expect(page.getByRole('textbox', { name: 'ディジタル署名についての説明' })).toBeVisible();

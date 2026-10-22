@@ -1,8 +1,8 @@
 import { test, expect, type Page } from '@playwright/test';
 
-async function answerFirst(page: Page, selected = 'イ', requested = false) {
+async function answerFirst(page: Page, selected = 'b', requested = false) {
   await page.goto('/study/A1?question=sc-2025-autumn-a1-1');
-  await page.getByRole('button', { name: `${selected}で回答`, exact: true }).click();
+  await page.getByTestId(`option-${selected}`).click();
   await expect(page.getByRole('region', { name: '解答結果と解説' })).toBeVisible();
   if (requested) {
     const toggle = page.getByRole('button', { name: '復習リストに追加', exact: true });
@@ -31,9 +31,9 @@ test('answers a calculation in one tap and keeps untouched options unassessed', 
   await page.goto('/study/A1?question=sc-2025-autumn-a1-1');
   await expect(page.getByRole('button', { name: '自信あり', exact: true })).toHaveCount(0);
   await expect(page.getByRole('button', { name: /これも迷った/ })).toHaveCount(0);
-  await page.getByRole('button', { name: 'イで回答', exact: true }).click();
+  await page.getByTestId('option-b').click();
   await expect(page.getByTestId('option-b')).toBeDisabled();
-  await expect(page.locator('.choice-selected')).toContainText('イ');
+  await expect(page.getByTestId('option-b').locator('..')).toHaveClass(/choice-selected/);
   await expect(page.locator('.answer-outcome').getByText('正解', { exact: true })).toBeVisible();
   await expect(page.getByRole('button', { name: '復習リストに追加', exact: true })).toBeVisible();
   await expect(page.getByText('未評価', { exact: true })).toHaveCount(0);
@@ -74,7 +74,7 @@ test('keeps bookmarks across reloads and answers knowledge questions in one tap'
   await expect(page.getByRole('button', { name: 'あとで見るから外す', exact: true })).toBeVisible();
   await page.reload();
   await expect(page.getByRole('button', { name: 'あとで見るから外す', exact: true })).toBeVisible();
-  await page.getByRole('button', { name: 'イで回答', exact: true }).click();
+  await page.getByTestId('option-b').click();
   await expect(page.getByRole('button', { name: '復習リストに追加', exact: true })).toBeVisible();
   expect(await counts(page)).toEqual([1, 1, 0]);
   expect((await storedAttempts(page))[0]).toMatchObject({ selected: 'b', confidence: 'high', uncertainOptions: [] });
@@ -87,7 +87,7 @@ test('asks about review requests only after answering', async ({ page }) => {
   const toggle = page.getByRole('button', { name: '復習リストに追加', exact: true });
   await expect(toggle).toHaveCount(0);
   expect(await counts(page)).toEqual([0, 0, 0]);
-  await page.getByRole('button', { name: 'イで回答', exact: true }).click();
+  await page.getByTestId('option-b').click();
   await toggle.click(); await expect(toggle).toHaveAttribute('aria-pressed', 'true');
   await toggle.click(); await expect(toggle).toHaveAttribute('aria-pressed', 'false');
   expect((await storedAttempts(page))[0]).toMatchObject({ confidence: 'high', reviewRequested: false });
@@ -95,26 +95,26 @@ test('asks about review requests only after answering', async ({ page }) => {
 
 test('records a review request and resets the button for the next question', async ({ page }) => {
   await page.goto('/study/A1');
-  await page.getByRole('button', { name: 'イで回答', exact: true }).click();
+  await page.getByTestId('option-b').click();
   await page.getByRole('button', { name: '次の問題へ' }).click();
-  await page.getByRole('button', { name: 'イで回答', exact: true }).click();
+  await page.getByTestId('option-b').click();
   const toggle = page.getByRole('button', { name: '復習リストに追加', exact: true });
   await toggle.click();
   await expect(toggle).toHaveAttribute('aria-pressed', 'true');
   expect((await storedAttempts(page)).find(a => a.questionId === 'sc-2025-autumn-a1-2')).toMatchObject({ selected: 'b', confidence: 'high', reviewRequested: true, uncertainOptions: [] });
   await page.getByRole('button', { name: '次の問題へ' }).click();
   await expect(toggle).toHaveCount(0);
-  await page.getByRole('button', { name: 'イで回答', exact: true }).click();
+  await page.getByTestId('option-b').click();
   await expect(toggle).toHaveAttribute('aria-pressed', 'false');
   await expect(page.getByRole('button', { name: '復習リストに追加', exact: true })).toHaveAttribute('aria-pressed', 'false');
 });
 
 test('submits only once when choices are clicked rapidly', async ({ page }) => {
   await page.goto('/study/A1?question=sc-2025-autumn-a1-1');
-  await page.getByRole('button', { name: 'イで回答', exact: true }).waitFor();
+  await page.getByTestId('option-b').waitFor();
   await page.evaluate(() => {
-    const buttons = document.querySelectorAll<HTMLButtonElement>('.answer-selector');
-    buttons[1].click(); buttons[0].click(); buttons[1].click();
+    const correct = document.querySelector<HTMLButtonElement>('[data-testid=option-b]')!;
+    correct.click(); document.querySelector<HTMLButtonElement>('[data-testid=option-a]')!.click(); correct.click();
   });
   await expect(page.getByRole('region', { name: '解答結果と解説' })).toBeVisible();
   expect(await counts(page)).toEqual([1, 1, 0]);
@@ -133,7 +133,7 @@ test('allows retrying the same choice after a storage failure', async ({ page })
     };
   });
   await page.goto('/study/A1?question=sc-2025-autumn-a1-2');
-  const answer = page.getByRole('button', { name: 'イで回答', exact: true });
+  const answer = page.getByTestId('option-b');
   await answer.click();
   await expect(page.getByRole('alert').filter({ hasText: '回答を保存できませんでした' })).toBeVisible();
   await expect(answer).toBeEnabled();
@@ -147,7 +147,7 @@ test('allows retrying the same choice after a storage failure', async ({ page })
 
 test('answers with the keyboard without submitting when moving focus', async ({ page }) => {
   await page.goto('/study/A1?question=sc-2025-autumn-a1-2');
-  const answer = page.getByRole('button', { name: 'イで回答', exact: true });
+  const answer = page.getByTestId('option-b');
   await answer.focus();
   expect(await storedAttempts(page)).toHaveLength(0);
   await answer.press('Enter');
@@ -156,7 +156,7 @@ test('answers with the keyboard without submitting when moving focus', async ({ 
 });
 
 test('queues a requested calculation review and finishes a session', async ({ page }) => {
-  await answerFirst(page, 'イ', true);
+  await answerFirst(page, 'b', true);
   await expect(page.getByRole('button', { name: '復習リストに追加', exact: true })).toBeVisible();
   await page.getByRole('button', { name: '今回の学習を終える' }).click();
   await expect(page.getByRole('heading', { name: '学習完了' })).toBeVisible();
@@ -167,12 +167,12 @@ test('queues a requested calculation review and finishes a session', async ({ pa
 });
 
 test('requires three reviews for a confident mistake and exposes them immediately', async ({ page }) => {
-  await answerFirst(page, 'ア');
+  await answerFirst(page, 'a');
   await expect(page.getByRole('button', { name: '復習リストに追加', exact: true })).toHaveCount(0);
   await page.goto('/reviews');
   await page.getByRole('link', { name: '科目A1を復習' }).click();
   await expect(page.getByRole('heading', { name: /伝票処理システム/ })).toBeVisible();
-  await expect(page.getByRole('button', { name: 'イで回答', exact: true })).toBeEnabled();
+  await expect(page.getByTestId('option-b')).toBeEnabled();
   await expect(page.getByRole('button', { name: '迷いあり', exact: true })).toHaveCount(0);
 });
 
@@ -200,9 +200,9 @@ test('works at mobile width without horizontal overflow', async ({ page }) => {
   await expect(page.getByRole('heading', { name: '学習ホーム' })).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.goto('/study/A1?question=sc-2025-autumn-a1-2');
-  await expect(page.getByRole('button', { name: 'イで回答', exact: true })).toBeEnabled();
+  await expect(page.getByTestId('option-b')).toBeEnabled();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-  await page.getByRole('button', { name: 'イで回答', exact: true }).click();
+  await page.getByTestId('option-b').click();
   await expect(page.locator('.answer-outcome').getByText('正解', { exact: true })).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.screenshot({ path: 'test-results/mobile-review.png', fullPage: true });
@@ -279,7 +279,7 @@ test('offers 300 A1 and 200 A2 questions and renders their tables', async ({ pag
   await page.screenshot({ path: '.cache/past-exam/2025r07h_sc_am2/sql-preview.png', fullPage: true });
   await page.goto('/study/A2?question=sc-2025-spring-a2-24');
   await expect(page.getByText('システム障害によるサービス提供時間内の停止時間：7時間', { exact: true })).toBeVisible();
-  await page.getByRole('button', { name: 'ウで回答', exact: true }).click();
+  await page.getByTestId('option-c').click();
   await expect(page.getByRole('region', { name: '解答結果と解説' })).toBeVisible();
   await expect(page.locator('.katex').first()).toBeVisible();
   await expect(page.locator('.katex-error')).toHaveCount(0);
@@ -290,13 +290,13 @@ test('offers 300 A1 and 200 A2 questions and renders their tables', async ({ pag
 test('renders the added A2 questions across six sessions with figures and formulas', async ({ page }) => {
   await page.goto('/study/A2?question=sc-2024-autumn-a2-7');
   await expect(page.getByRole('heading', { name: /パスキー/ })).toBeVisible();
-  await page.getByRole('button', { name: 'アで回答', exact: true }).click();
+  await page.getByTestId('option-a').click();
   await expect(page.locator('.answer-outcome').getByText('正解', { exact: true })).toBeVisible();
 
   await page.goto('/study/A2?question=sc-2024-spring-a2-24');
   await expect(page.locator('.choice-figure svg')).toHaveCount(4);
   await page.screenshot({ path: '.cache/past-exam/three-years/tariff-preview.png', fullPage: true });
-  await page.getByRole('button', { name: 'ウで回答', exact: true }).click();
+  await page.getByTestId('option-c').click();
   await expect(page.locator('.answer-outcome').getByText('正解', { exact: true })).toBeVisible();
 
   await page.goto('/study/A2?question=sc-2023-autumn-a2-17');
@@ -306,7 +306,7 @@ test('renders the added A2 questions across six sessions with figures and formul
 
   await page.goto('/study/A2?question=sc-2023-spring-a2-18');
   await expect(page.locator('.katex').first()).toBeVisible();
-  await page.getByRole('button', { name: 'イで回答', exact: true }).click();
+  await page.getByTestId('option-b').click();
   await expect(page.getByRole('region', { name: '解答結果と解説' })).toBeVisible();
   await expect(page.locator('.katex-error')).toHaveCount(0);
 
@@ -318,7 +318,7 @@ test('renders the added A2 questions across six sessions with figures and formul
   await expect(page.getByLabel('SQL文')).toContainText('LEFT OUTER JOIN');
   await page.goto('/study/A2?question=sc-2022-autumn-a2-24');
   await expect(page.getByRole('table', { name: 'システム化案（単位：百万円）' })).toBeVisible();
-  await page.getByRole('button', { name: 'エで回答', exact: true }).click();
+  await page.getByTestId('option-d').click();
   await expect(page.getByRole('region', { name: '解答結果と解説' })).toContainText('175％');
   await expect(page.locator('.katex-error')).toHaveCount(0);
 
@@ -326,7 +326,7 @@ test('renders the added A2 questions across six sessions with figures and formul
   await expect(page.getByRole('table', { name: 'クラウドサービスの責務' })).toBeVisible();
   await page.goto('/study/A2?question=sc-2022-spring-a2-4');
   await expect(page.locator('.katex')).toHaveCount(4);
-  await page.getByRole('button', { name: 'アで回答', exact: true }).click();
+  await page.getByTestId('option-a').click();
   await expect(page.getByRole('region', { name: '解答結果と解説' })).toBeVisible();
   await expect(page.locator('.katex-error')).toHaveCount(0);
 });

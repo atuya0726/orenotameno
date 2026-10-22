@@ -7,6 +7,7 @@ export type Course = z.infer<typeof courseSchema>;
 export const optionIdSchema = z.enum(['a', 'b', 'c', 'd']);
 export type OptionId = z.infer<typeof optionIdSchema>;
 export const optionIds: OptionId[] = ['a', 'b', 'c', 'd'];
+export const optionOrderSchema = z.array(optionIdSchema).length(4).refine(ids => new Set(ids).size === 4, '選択肢の並びが正しくありません。');
 export const optionLabels: Record<OptionId, string> = { a: 'ア', b: 'イ', c: 'ウ', d: 'エ' };
 export const markSchema = z.enum(['candidate', 'exclude', 'unsure']);
 export type Mark = z.infer<typeof markSchema>;
@@ -31,6 +32,7 @@ const uncertainOptionsSchema = z.array(optionIdSchema).max(4).refine(ids => new 
 const quickAnswerBase = z.object({
   inputMode: z.literal('quick'), questionId: z.string(), selected: optionIdSchema.nullable(),
   confidence: responseConfidenceSchema, uncertainOptions: uncertainOptionsSchema, optionMarks: optionMarksSchema.optional(),
+  optionOrder: optionOrderSchema.optional(),
 });
 function validQuickAnswer(answer: { selected: OptionId | null; uncertainOptions: OptionId[]; confidence: ResponseConfidence }) {
   return answer.confidence === 'unknown' ? answer.selected === null : answer.selected !== null && !answer.uncertainOptions.includes(answer.selected);
@@ -61,6 +63,7 @@ export const reviewWordsSchema = z.array(z.string().min(1).max(100)).max(10_000)
   .refine(terms => new Set(terms).size === terms.length, '復習する単語が重複しています。');
 const attemptFields = {
   id: z.string(), answeredAt: z.string().datetime(), correct: z.boolean(),
+  optionOrder: optionOrderSchema.optional(),
   reason: z.string(), reviewMode: z.literal('count').optional(),
   reviewDoubt: z.boolean().optional(),
   reviewRequested: z.boolean().optional(),

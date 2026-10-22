@@ -74,9 +74,9 @@ describe('answering and recorded results', () => {
   it('restores each option mark without selecting or submitting an answer', () => {
     snapshot.drafts = [{ questionId: questions[0].id, uncertainOptions: [], optionMarks: { a: 'exclude', c: 'unsure' } }];
     const html = render(`/study/A1?question=${questions[0].id}`);
-    expect(html).toContain('aria-label="アの印：ばつ"');
-    expect(html).toContain('aria-label="イの印：はてな"');
-    expect(html).toContain('aria-label="ウの印：三角"');
+    expect(html).toContain('data-testid="mark-a" data-mark="exclude"');
+    expect(html).toContain('data-testid="mark-b" data-mark="unknown"');
+    expect(html).toContain('data-testid="mark-c" data-mark="unsure"');
     expect(html).not.toContain('choice-selected');
     expect(html).not.toContain('解答結果と解説');
   });
